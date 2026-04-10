@@ -86,27 +86,31 @@
         <span>© <script>document.write(new Date().getFullYear());</script> Copyright: </span>
         <a href="https://africa.pycon.org/" class="copyright-link" style="line-height: 1.2;">PyCon Uganda and PyCon Africa</a>
       </div>
-      <div style="display: flex; align-items: center; gap: 1.5rem; line-height: 1.2; margin: 0; padding: 0;">
-        <a href="https://twitter.com/PyConAfrica" target="_blank" rel="noopener noreferrer" class="copyright-link" aria-label="X (formerly Twitter)" style="font-size: 30px;">
-          <i class="fab fa-x-twitter"></i>
+      <div class="footer-social-icons" style="display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 1.25rem; line-height: 1.2; margin: 0; padding: 0;">
+        {# SVGs under 2026/img/social use explicit fill (#808080) — external FA files used fill="currentColor" which often paints invisible as <img> #}
+        <a href="https://bsky.app/profile/za.pycon.org" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="Bluesky">
+          <img src="{% static '2026/img/social/bluesky.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
         </a>
-        <a href="https://mastodon.social/@pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link" aria-label="Mastodon" style="font-size: 30px;">
-          <i class="fab fa-mastodon"></i>
+        <a href="https://mastodon.social/@pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="Mastodon">
+          <img src="{% static '2026/img/social/mastodon.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
         </a>
-        <a href="https://www.instagram.com/pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link" aria-label="Instagram" style="font-size: 30px;">
-          <i class="fab fa-instagram"></i>
+        <a href="https://twitter.com/PyConAfrica" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="X (formerly Twitter)">
+          <img src="{% static '2026/img/social/x-twitter.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
         </a>
-        <a href="https://www.facebook.com/pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link" aria-label="Facebook" style="font-size: 30px;">
-          <i class="fab fa-facebook"></i>
+        <a href="https://www.instagram.com/pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="Instagram">
+          <img src="{% static '2026/img/social/instagram.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
         </a>
-        <a href="https://www.linkedin.com/company/pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link" aria-label="LinkedIn" style="font-size: 30px;">
-          <i class="fab fa-linkedin"></i>
+        <a href="https://www.facebook.com/pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="Facebook">
+          <img src="{% static '2026/img/social/facebook.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
         </a>
-        <a href="https://discord.gg/pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link" aria-label="Discord" style="font-size: 30px;">
-          <i class="fab fa-discord"></i>
+        <a href="https://www.linkedin.com/company/pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="LinkedIn">
+          <img src="{% static '2026/img/social/linkedin-in.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
         </a>
-        <a href="https://www.youtube.com/@PyconAfrica" target="_blank" rel="noopener noreferrer" class="copyright-link" aria-label="YouTube" style="font-size: 30px;">
-          <i class="fab fa-youtube"></i>
+        <a href="https://www.youtube.com/@PyconAfrica" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="YouTube">
+          <img src="{% static '2026/img/social/youtube.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
+        </a>
+        <a href="https://discord.gg/pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="Discord">
+          <img src="{% static '2026/img/social/discord.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
         </a>
       </div>
     </div>

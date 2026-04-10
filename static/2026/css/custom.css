@@ -1252,6 +1252,20 @@ header[class*="bg-black"] {
   color: #666666 !important;
 }
 
+/* Footer social icons (SVG <img> — explicit fill in static/2026/img/social/*.svg) */
+.footer-social-img {
+  display: block;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  max-width: none; /* override Tailwind preflight img max-width:100% in flex rows */
+  opacity: 0.75;
+  vertical-align: middle;
+}
+.footer-social-img-link:hover .footer-social-img {
+  opacity: 1;
+}
+
 /* Footer - Mobile Responsive */
 @media (max-width: 768px) {
   .footer-grid {
