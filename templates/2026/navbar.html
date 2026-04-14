@@ -14,7 +14,10 @@
       <!-- About -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
-          About <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          About <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24"
+            fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
         </button>
         <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
           <a class="nav-dropdown-item" href="/2026/about/pycon-africa-2026/">
@@ -48,15 +51,13 @@
         </div>
       </div>
 
-      <!-- Blog -->
-      <a class="nav-item" href="https://pyconafrica.blogspot.com/" target="_blank" rel="noopener noreferrer">
-        <i class="fa-solid fa-rss" style="font-size:0.75rem; opacity:0.7;"></i> Blog
-      </a>
-
       <!-- Speak -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
-          Speak <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          Speak <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24"
+            fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
         </button>
         <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
           <a class="nav-dropdown-item" href="/2026/talks/proposals/">
@@ -97,7 +98,10 @@
       <!-- Sponsor -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
-          Sponsor <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          Sponsor <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24"
+            fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
         </button>
         <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
           <a class="nav-dropdown-item" href="/2026/sponsor-us/">
@@ -110,10 +114,32 @@
         </div>
       </div>
 
+      <!-- Attend -->
+      <div class="nav-dropdown-wrapper" x-data="{open:false}">
+        <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
+          Attend <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24"
+            fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+        <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
+          <a class="nav-dropdown-item" href="/2026/fin-aid/">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-hands-holding-heart"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Opportunity Grants</span>
+              <span class="nav-dropdown-desc">Apply for financial assistance</span>
+            </span>
+          </a>
+        </div>
+      </div>
+
       <!-- Regions -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
-          Regions <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          Regions <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24"
+            fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
         </button>
         <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
           <a class="nav-dropdown-item" href="/2026/region/kenya-region/">
@@ -150,7 +176,10 @@
       <!-- Uganda -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
-          Uganda <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          Uganda <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24"
+            fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
         </button>
         <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
           <a class="nav-dropdown-item" href="/2026/visa/apply/">
@@ -184,10 +213,14 @@
         </div>
       </div>
 
-      <!-- Past -->
+      <!-- Past Events -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
-          Past <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          Past Events <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12"
+            viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
         </button>
         <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
           <a class="nav-dropdown-item" href="https://za.pycon.org/" target="_blank" rel="noopener noreferrer">
@@ -224,11 +257,19 @@
         </div>
       </div>
 
-      <!-- User Account -->
-      {% if user.is_authenticated %}
+      <!-- Blog -->
+      <a class="nav-item" href="https://pyconafrica.blogspot.com/" target="_blank" rel="noopener noreferrer">
+        <i class="fa-solid fa-rss" style="font-size:0.75rem; opacity:0.7;"></i> Blog
+      </a>
+
+      <!-- User Account --> {% if user.is_authenticated %}
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
-          {{ user.username }} <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          {{ user.username }} <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12"
+            viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round"
+            stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
         </button>
         <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
           <a class="nav-dropdown-item" href="{% url 'profiles:profile_home' %}">
@@ -302,7 +343,10 @@
             <span class="nav-mobile-section-label">
               <i class="fa-solid fa-circle-info nav-mobile-section-icon"></i> About
             </span>
-            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24"
+              fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </button>
           <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
             <a class="nav-mobile-subitem" href="/2026/about/pycon-africa-2026/">About Us</a>
@@ -312,11 +356,6 @@
           </div>
         </div>
 
-        <!-- Blog -->
-        <a class="nav-mobile-link" href="https://pyconafrica.blogspot.com/" target="_blank" rel="noopener noreferrer">
-          <i class="fa fa-fw fa-rss nav-mobile-section-icon"></i> Blog
-        </a>
-
         <!-- Speak -->
         <div class="nav-mobile-section" x-data="{ openSection: false }">
           <button class="nav-mobile-section-btn" @click="openSection=!openSection" type="button"
@@ -324,7 +363,10 @@
             <span class="nav-mobile-section-label">
               <i class="fa fa-fw fa-microphone nav-mobile-section-icon"></i> Speak at PyCon
             </span>
-            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24"
+              fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </button>
           <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
             <a class="nav-mobile-subitem" href="/2026/talks/proposals/">Proposals</a>
@@ -346,10 +388,30 @@
             <span class="nav-mobile-section-label">
               <i class="fa fa-fw fa-handshake nav-mobile-section-icon"></i> Sponsor
             </span>
-            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24"
+              fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </button>
           <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
             <a class="nav-mobile-subitem" href="/2026/sponsor-us/">Sponsor Us</a>
+          </div>
+        </div>
+
+        <!-- Attend -->
+        <div class="nav-mobile-section" x-data="{ openSection: false }">
+          <button class="nav-mobile-section-btn" @click="openSection=!openSection" type="button"
+            :aria-expanded="openSection.toString()">
+            <span class="nav-mobile-section-label">
+              <i class="fa fa-fw fa-ticket nav-mobile-section-icon"></i> Attend
+            </span>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24"
+              fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
+            <a class="nav-mobile-subitem" href="/2026/fin-aid/">Opportunity Grants</a>
           </div>
         </div>
 
@@ -360,7 +422,10 @@
             <span class="nav-mobile-section-label">
               <i class="fa fa-fw fa-earth-africa nav-mobile-section-icon"></i> Regions
             </span>
-            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24"
+              fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </button>
           <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
             <a class="nav-mobile-subitem" href="/2026/region/kenya-region/">🇰🇪 Kenya</a>
@@ -377,7 +442,10 @@
             <span class="nav-mobile-section-label">
               <i class="fa fa-fw fa-map-location-dot nav-mobile-section-icon"></i> Uganda
             </span>
-            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24"
+              fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </button>
           <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
             <a class="nav-mobile-subitem" href="/2026/visa/apply/">Applying for a Visa</a>
@@ -394,7 +462,10 @@
             <span class="nav-mobile-section-label">
               <i class="fa fa-fw fa-clock-rotate-left nav-mobile-section-icon"></i> Past Events
             </span>
-            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24"
+              fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </button>
           <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
             <a class="nav-mobile-subitem" href="https://za.pycon.org/" target="_blank" rel="noopener noreferrer">2025 –
@@ -408,15 +479,22 @@
           </div>
         </div>
 
-        <!-- Account -->
-        {% if user.is_authenticated %}
+        <!-- Blog -->
+        <a class="nav-mobile-link" href="https://pyconafrica.blogspot.com/" target="_blank" rel="noopener noreferrer">
+          <i class="fa fa-fw fa-rss nav-mobile-section-icon"></i> Blog
+        </a>
+
+        <!-- Account --> {% if user.is_authenticated %}
         <div class="nav-mobile-section" x-data="{ openSection: false }">
           <button class="nav-mobile-section-btn" @click="openSection=!openSection" type="button"
             :aria-expanded="openSection.toString()">
             <span class="nav-mobile-section-label">
               <i class="fa fa-fw fa-user nav-mobile-section-icon"></i> {{ user.username }}
             </span>
-            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24"
+              fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </button>
           <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
             <a class="nav-mobile-subitem" href="{% url 'profiles:profile_home' %}">My Profile</a>
