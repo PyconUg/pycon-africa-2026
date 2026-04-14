@@ -1,170 +1,107 @@
 {% extends "base.html" %}
-{% load i18n static markdown_extras  permissions %}
-{% block meta_title %}{% if page %}{{ page.meta_title }}{% else %}{% trans "Opportunity Grant || PyCon Africa" %}{% endif %}{% endblock %}
+{% load i18n static markdown_extras permissions %}
+{% block meta_title %}{% if page %}{{ page.meta_title }}{% else %}{% trans "Opportunity Grants || PyCon Africa 2026"
+%}{% endif %}{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static '2026/css/custom.css' %}">
+{% endblock %}
 
 {% block content %}
-
-<!-- ========== HEADER ========== -->
 {% include '2026/navbar.html' %}
-<!-- ========== END HEADER ========== -->
 
+<!-- Hero -->
+<section style="background: linear-gradient(135deg, #2c1810 0%, #8B5E3C 60%, #c8a84b 100%); padding: 5rem 1rem 3rem;">
+  <div style="max-width:800px; margin:0 auto; text-align:center;">
+    <i class="fa-solid fa-hands-holding-heart"
+      style="font-size:3rem; color:#c8a84b; margin-bottom:1rem; display:block;"></i>
+    <h1 style="color:#ffffff; font-size:2.5rem; font-weight:800; margin:0 0 1rem;">Opportunity Grants</h1>
+    <p style="color:rgba(255,255,255,0.8); font-size:1.1rem; line-height:1.7; margin:0;">
+      PyCon Africa 2026 is offering grants so that those who might otherwise not be able to attend won't hesitate to
+      participate.
+    </p>
+  </div>
+</section>
 
-    <!-- Breadcrumbs -->
-    <section class="g-bg-gray-light-v5 g-py-80 g-pt-150">
-      <div class="max-w-7xl mx-auto px-4 text-center">
-        <h2 class="h2 g-color-black g-font-weight-600">Opportunity Grants</h2>
+<!-- Content -->
+<section style="background:#f8fafc; padding:4rem 1rem;">
+  <div style="max-width:860px; margin:0 auto;">
 
-        <ul class="u-list-inline">
-          <li class="list-inline-item g-mr-5">
-            <a class="u-link-v5 g-color-gray-dark-v1 g-color-primary--hover" href="#">Home</a>
-            <i class="g-color-gray-light-v2 g-ml-5">/</i>
-          </li> 
-          <li class="list-inline-item g-mr-5">
-            <a class="u-link-v5 g-color-gray-dark-v1 g-color-primary--hover" href="/2026/about/">About</a>
-            <i class="g-color-gray-light-v2 g-ml-5">/</i>
-          </li> 
-          <li class="list-inline-item g-color-primary">
-            <span>Opportunity Grants</span>
-          </li>
-        </ul><br> 
-        
-    
-        <i class="fa-solid fa-hands-holding-heart" style="font-size:41px;"></i>
+    {% for fin_aid in fin_aids %}
+
+    <!-- Grant info card -->
+    <div
+      style="background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:2.5rem; margin-bottom:2rem; box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+      <h2 style="color:#2c1810; font-size:1.5rem; font-weight:800; margin:0 0 1.5rem;">{{ fin_aid.title }}</h2>
+      <div style="color:#4b5563; line-height:1.8; font-size:1rem;">
+        {{ fin_aid.financial_assistance | markdown | safe }}
       </div>
-      
-    </section>
-    <!-- End Breadcrumbs --> 
- 
-  
+    </div>
 
-    <!-- body -->
-    <div class="max-w-7xl mx-auto px-4  g-pt-50">
-      <div class="flex flex-wrap gap-4">  
-        <div class="u-shadow-v1-5 g-line-height-2 g-pa-40 g-mb-30" >  
-        {% for fin_aid in fin_aids %}<br><br>
-          <h2 class="text-uppercase g-line-height-1 g-font-weight-700 g-font-size-20 g-mb-30"> 
-            <span class="g-color-primary"> {{ fin_aid.title }}</span>
-          </h2>
-          <!--================ Icon Box ================-->
-          <article class="text-size-medium"> 
-            <div class="mad-icon-box-content markdownx-preview"> 
-              <p class="markdownx-preview">{{ fin_aid.financial_assistance | markdown | safe }}</p>
-            {{ form.media }}
-            </div>
-          </article>
-          <!--================ End of Icon Box ================--> 
-  
-          {% if fin_aid.is_form_open %}
-          <section id="fin-form" class="mad-section size-5 mad-section--stretched mad-colorizer--scheme-color-3">
-            <br><br>
-              {% for fin_aid in fin_aids.all|slice:"0:1" %} 
-              <div class="max-w-7xl mx-auto px-4">
-                <div class="mad-col"> 
-                  <!--================ Icon Box ================--> 
-                 <h2 class="text-uppercase g-line-height-1 g-font-weight-700 g-font-size-20 g-mb-30"> 
-                   <span class="g-color-primary">Form</span>
-                 </h2> 
-                 <div class="overflow-h">
-                  {% if fin_aid.google_form_formfacade_code %}
-                      <a href="{{ fin_aid.google_form_formfacade_code }}" target="_blank" class="btn btn-primary">
-                          Apply for an Opportunity Grant
-                      </a>
-                  {% else %}
-                      <p>No application link available.</p>
-                  {% endif %}
-                  </div>   
-                        
-                <!--================ End of Icon Box ================-->  
-                </div>                         
-               
-              </div> {{ form.media }}
-              {% endfor %}
-            </section>  
-          {% elif fin_aid.is_form_closed %}
-          <section id="fin-form" class="mad-section size-5 mad-section--stretched mad-colorizer--scheme-color-3">
-            <br><br> 
-              <div class="max-w-7xl mx-auto px-4">
-                <div class="mad-col"> 
-                  <!--================ Icon Box ================--> 
-                <h2 class="text-uppercase g-line-height-1 g-font-weight-700 g-font-size-20 g-mb-30"> 
-                  <span class="g-color-primary">Form</span>
-                </h2> 
-          
-                  <!-- Border Alert -->
-                  <div class="alert fade show g-brd-around g-brd-red rounded-0" role="alert">
-                  <button type="button" class="close u-alert-close--light g-ml-10 g-mt-1" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                  </button>
-          
-                  <div class="media">
-                    <div class="d-flex g-mr-10">
-                      <span class="u-icon-v3 u-icon-size--sm g-bg-lightred g-color-white g-rounded-50x">
-                        <i class="icon-envelope"></i>
-                      </span>
-                    </div>
-                    <div class="media-body">
-                      <div class="d-flex justify-content-between">
-                        <p class="m-0"><strong>Hello there!  </strong>
-                        </p>
-                        <span class="align-self-center small text-nowrap">Just Now</span>
-                      </div>
-                      <p class="m-0 g-font-size-14">
-                        The Opportunity Grant application form is now closed.
-                    </p>
-                    
-                    </div>
-                  </div>
-                </div>
-                <!-- End Border Alert -->     
-              
-              </div>  
-            </section> 
-          {% elif fin_aid.is_form_not_open_yet %}
+    <!-- What's covered -->
+    <div style="background:#fef9c3; border:1px solid #fde68a; border-radius:1rem; padding:2rem; margin-bottom:2rem;">
+      <h3 style="color:#713f12; font-size:1.1rem; font-weight:700; margin:0 0 1rem;">
+        <i class="fa-solid fa-circle-check" style="color:#c8a84b; margin-right:0.5rem;"></i>What grants may cover
+      </h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:0.75rem;">
+        <div style="display:flex; align-items:center; gap:0.5rem; color:#713f12; font-size:0.9rem;">
+          <i class="fa-solid fa-plane" style="color:#8B5E3C;"></i> Travel costs
+        </div>
+        <div style="display:flex; align-items:center; gap:0.5rem; color:#713f12; font-size:0.9rem;">
+          <i class="fa-solid fa-bed" style="color:#8B5E3C;"></i> Accommodation
+        </div>
+        <div style="display:flex; align-items:center; gap:0.5rem; color:#713f12; font-size:0.9rem;">
+          <i class="fa-solid fa-ticket" style="color:#8B5E3C;"></i> Conference registration
+        </div>
+      </div>
+    </div>
 
-          <section id="fin-form" class="mad-section size-5 mad-section--stretched mad-colorizer--scheme-color-3">
-          <br><br> 
-            <div class="max-w-7xl mx-auto px-4">
-              <div class="mad-col"> 
-                <!--================ Icon Box ================--> 
-              <h2 class="text-uppercase g-line-height-1 g-font-weight-700 g-font-size-20 g-mb-30"> 
-                <span class="g-color-primary">Form</span>
-              </h2>  
-                <!-- Alert Gray Lighter 5 --> 
-                <div class="alert fade show g-bg-gray-light-v5 rounded-0" role="alert">
-                  <button type="button" class="close u-alert-close--light g-ml-10 g-mt-1" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                  </button>
+    <!-- Application status -->
+    {% if fin_aid.is_form_open %}
+    <div style="background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:2rem; text-align:center;">
+      <div
+        style="display:inline-flex; align-items:center; gap:0.5rem; background:#dcfce7; color:#16a34a; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; padding:0.35rem 1rem; border-radius:999px; margin-bottom:1.25rem;">
+        <i class="fa-solid fa-circle" style="font-size:0.5rem;"></i> Applications Open
+      </div>
+      <h3 style="color:#1f2937; font-size:1.2rem; font-weight:700; margin:0 0 0.75rem;">Ready to apply?</h3>
+      <p style="color:#6b7280; margin:0 0 1.5rem;">Submit your application before the deadline. We encourage everyone
+        who needs support to apply.</p>
+      {% for fin_aid in fin_aids.all|slice:"0:1" %}
+      {% if fin_aid.google_form_formfacade_code %}
+      <a href="{{ fin_aid.google_form_formfacade_code }}" target="_blank"
+        style="display:inline-block; background:#2c1810; color:#fff; font-weight:700; padding:0.875rem 2.5rem; border-radius:0.5rem; text-decoration:none; font-size:1rem;">
+        Apply for an Opportunity Grant
+      </a>
+      {% endif %}
+      {% endfor %}
+    </div>
 
-                  <div class="media">
-                    <div class="d-flex g-mr-10">
-                      <span class="u-icon-v3 u-icon-size--sm g-bg-lightinfo g-color-white g-rounded-50x">
-                        <i class="icon-envelope"></i>
-                      </span>
-                    </div>
-                    <div class="media-body">
-                      <div class="d-flex justify-content-between">
-                        <p class="m-0"><strong>Hello there!  </strong>
-                        </p>
-                        <span class="align-self-center small text-nowrap">Just Now</span>
-                      </div>
-                      <p class="m-0 g-font-size-14">
-                        The opportunity grant application form is yet to open.
-                  </p>
-                    </div>
-                  </div>
-                </div>
-                <!-- End Alert Gray Lighter 5 -->  
-              </div>  
-            </div>  
-          </section>  
-          {% endif %} 
-       {% endfor %}
-        </div> 
-      </div>       
-    </div>  
-  <!-- End body -->
+    {% elif fin_aid.is_form_closed %}
+    <div style="background:#fff; border:1px solid #fecaca; border-radius:1rem; padding:2rem; text-align:center;">
+      <div
+        style="display:inline-flex; align-items:center; gap:0.5rem; background:#fee2e2; color:#dc2626; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; padding:0.35rem 1rem; border-radius:999px; margin-bottom:1.25rem;">
+        <i class="fa-solid fa-circle" style="font-size:0.5rem;"></i> Applications Closed
+      </div>
+      <h3 style="color:#1f2937; font-size:1.2rem; font-weight:700; margin:0 0 0.75rem;">Applications are now closed</h3>
+      <p style="color:#6b7280; margin:0;">Thank you for your interest. Stay tuned for future opportunities at PyCon
+        Africa.</p>
+    </div>
 
-  
+    {% elif fin_aid.is_form_not_open_yet %}
+    <div style="background:#fff; border:1px solid #bfdbfe; border-radius:1rem; padding:2rem; text-align:center;">
+      <div
+        style="display:inline-flex; align-items:center; gap:0.5rem; background:#dbeafe; color:#2563eb; font-size:0.8rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; padding:0.35rem 1rem; border-radius:999px; margin-bottom:1.25rem;">
+        <i class="fa-solid fa-clock" style="font-size:0.75rem;"></i> Opening Soon
+      </div>
+      <h3 style="color:#1f2937; font-size:1.2rem; font-weight:700; margin:0 0 0.75rem;">Applications not yet open</h3>
+      <p style="color:#6b7280; margin:0;">The opportunity grant application form is not open yet. Please check back
+        later.</p>
+    </div>
+    {% endif %}
+
+    {% endfor %}
+
+  </div>
+</section>
 
 {% endblock %}
