@@ -13,73 +13,117 @@
 <!-- Header -->
 <div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
   <h1 class="text-5xl font-bold text-gray-900 text-center">Opportunity Grants</h1>
-  <p class="text-center text-gray-500 mt-3 text-lg">PyCon Africa 2026 is offering grants so that those who might
-    otherwise not be able to attend won't hesitate to participate.</p>
+  <p class="text-center text-gray-500 mt-3 text-lg">
+    Financial barriers should never stop passionate people from participating in PyCon Africa.
+  </p>
 </div>
 
-<!-- Content -->
-<div class="max-w-4xl mx-auto px-4 pb-16">
+<!-- Body -->
+<div class="max-w-7xl mx-auto px-4 pb-16">
+  <div class="max-w-4xl mx-auto">
 
-  {% for fin_aid in fin_aids %}
-
-  <!-- Grant info -->
-  <div class="mb-8">
-    <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ fin_aid.title }}</h2>
-    <div class="text-gray-700 leading-relaxed">
-      {{ fin_aid.financial_assistance | markdown | safe }}
+    <!-- About -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">About the Grant</h2>
+      <p class="text-gray-700 text-base leading-relaxed mb-3">
+        PyCon Africa 2026 is taking place in Kampala, Uganda from <strong>7–11 October 2026</strong>. We are committed
+        to making this event as inclusive and accessible as possible for the African Python community and beyond.
+      </p>
+      <p class="text-gray-700 text-base leading-relaxed">
+        Opportunity Grants are available to help community members who would otherwise be unable to attend due to
+        financial constraints. Grants are awarded based on need and the potential impact of your attendance on the
+        Python community in Africa.
+      </p>
     </div>
-  </div>
 
-  <!-- What's covered -->
-  <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mb-8">
-    <h3 class="font-bold text-gray-900 mb-3">What grants may cover</h3>
-    <ul class="space-y-2 text-gray-700">
-      <li><i class="fa-solid fa-plane text-yellow-600 mr-2"></i> Travel costs</li>
-      <li><i class="fa-solid fa-bed text-yellow-600 mr-2"></i> Accommodation</li>
-      <li><i class="fa-solid fa-ticket text-yellow-600 mr-2"></i> Conference registration</li>
-    </ul>
-  </div>
+    <!-- What's covered -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">What Grants May Cover</h2>
+      <ul class="space-y-2 text-gray-700 text-base">
+        <li><i class="fa-solid fa-plane text-yellow-600 mr-2"></i> Travel costs to Kampala</li>
+        <li><i class="fa-solid fa-bed text-yellow-600 mr-2"></i> Accommodation during the event</li>
+        <li><i class="fa-solid fa-ticket text-yellow-600 mr-2"></i> Conference registration fee</li>
+      </ul>
+    </div>
 
-  <!-- Application status -->
-  {% if fin_aid.is_form_open %}
-  <div class="border border-gray-200 rounded-xl p-8 text-center">
-    <span
-      class="inline-block bg-green-100 text-green-700 text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full mb-4">Applications
-      Open</span>
-    <h3 class="text-xl font-bold text-gray-900 mb-2">Ready to apply?</h3>
-    <p class="text-gray-500 mb-6">Submit your application before the deadline. We encourage everyone who needs support
-      to apply.</p>
-    {% for fin_aid in fin_aids.all|slice:"0:1" %}
-    {% if fin_aid.google_form_formfacade_code %}
-    <a href="{{ fin_aid.google_form_formfacade_code }}" target="_blank"
-      class="inline-block bg-gray-900 text-white font-bold px-8 py-3 rounded-lg hover:bg-gray-700 transition">
-      Apply for an Opportunity Grant
-    </a>
+    <!-- Who should apply -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Who Should Apply?</h2>
+      <ul class="space-y-2 text-gray-700 text-base">
+        <li><i class="fa-solid fa-check text-green-600 mr-2"></i> Community members who cannot afford to attend without
+          financial support</li>
+        <li><i class="fa-solid fa-check text-green-600 mr-2"></i> Students and early-career developers passionate about
+          Python</li>
+        <li><i class="fa-solid fa-check text-green-600 mr-2"></i> People from underrepresented groups in tech</li>
+        <li><i class="fa-solid fa-check text-green-600 mr-2"></i> First-time PyCon Africa attendees</li>
+        <li><i class="fa-solid fa-check text-green-600 mr-2"></i> Open source contributors and community organisers</li>
+      </ul>
+    </div>
+
+    <!-- Tips -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Tips for a Strong Application</h2>
+      <ul class="space-y-2 text-gray-700 text-base">
+        <li><i class="fa-solid fa-arrow-right text-blue-500 mr-2"></i> Be specific about why you want to attend and what
+          you hope to learn or contribute</li>
+        <li><i class="fa-solid fa-arrow-right text-blue-500 mr-2"></i> Explain how attending will benefit your local
+          Python community</li>
+        <li><i class="fa-solid fa-arrow-right text-blue-500 mr-2"></i> Mention any talks, workshops, or open source work
+          you plan to contribute</li>
+        <li><i class="fa-solid fa-arrow-right text-blue-500 mr-2"></i> Apply early — grants are limited and awarded on a
+          rolling basis</li>
+      </ul>
+    </div>
+
+    <!-- Dynamic DB content + application status -->
+    {% for fin_aid in fin_aids %}
+
+    {% if fin_aid.financial_assistance %}
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">{{ fin_aid.title }}</h2>
+      <div class="text-gray-700 text-base leading-relaxed">
+        {{ fin_aid.financial_assistance | markdown | safe }}
+      </div>
+    </div>
     {% endif %}
+
+    {% if fin_aid.is_form_open %}
+    <div class="mb-8 text-center">
+      <span
+        class="inline-block bg-green-100 text-green-700 text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full mb-4">Applications
+        Open</span>
+      <p class="text-gray-500 mb-4">Submit your application before the deadline. We encourage everyone who needs support
+        to apply.</p>
+      {% for fin_aid in fin_aids.all|slice:"0:1" %}
+      {% if fin_aid.google_form_formfacade_code %}
+      <a href="{{ fin_aid.google_form_formfacade_code }}" target="_blank"
+        class="inline-block bg-gray-900 text-white font-bold px-8 py-3 rounded-lg hover:bg-gray-700 transition">
+        Apply for an Opportunity Grant
+      </a>
+      {% endif %}
+      {% endfor %}
+    </div>
+
+    {% elif fin_aid.is_form_closed %}
+    <div class="mb-8 text-center">
+      <span
+        class="inline-block bg-red-100 text-red-700 text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full mb-4">Applications
+        Closed</span>
+      <p class="text-gray-500">Thank you for your interest. Stay tuned for future opportunities at PyCon Africa.</p>
+    </div>
+
+    {% elif fin_aid.is_form_not_open_yet %}
+    <div class="mb-8 text-center">
+      <span
+        class="inline-block bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full mb-4">Opening
+        Soon</span>
+      <p class="text-gray-500">The opportunity grant application form is not open yet. Please check back later.</p>
+    </div>
+    {% endif %}
+
     {% endfor %}
+
   </div>
-
-  {% elif fin_aid.is_form_closed %}
-  <div class="border border-red-200 rounded-xl p-8 text-center">
-    <span
-      class="inline-block bg-red-100 text-red-700 text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full mb-4">Applications
-      Closed</span>
-    <h3 class="text-xl font-bold text-gray-900 mb-2">Applications are now closed</h3>
-    <p class="text-gray-500">Thank you for your interest. Stay tuned for future opportunities at PyCon Africa.</p>
-  </div>
-
-  {% elif fin_aid.is_form_not_open_yet %}
-  <div class="border border-blue-200 rounded-xl p-8 text-center">
-    <span
-      class="inline-block bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-widest px-4 py-1 rounded-full mb-4">Opening
-      Soon</span>
-    <h3 class="text-xl font-bold text-gray-900 mb-2">Applications not yet open</h3>
-    <p class="text-gray-500">The opportunity grant application form is not open yet. Please check back later.</p>
-  </div>
-  {% endif %}
-
-  {% endfor %}
-
 </div>
 
 {% endblock %}
