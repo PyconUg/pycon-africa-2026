@@ -266,19 +266,25 @@
 
 <!-- Join Community section -->
 
-<section class="py-16"
-  style="background: linear-gradient(135deg, #f5ede4 0%, #ede0d4 50%, #f5ede4 100%); position: relative; overflow: hidden;">
-  <!-- subtle texture overlay -->
-  <div
-    style="position:absolute; inset:0; background-image: radial-gradient(circle at 20% 50%, rgba(139,94,60,0.08) 0%, transparent 60%), radial-gradient(circle at 80% 20%, rgba(200,168,75,0.06) 0%, transparent 50%); pointer-events:none;">
-  </div>
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+<style>
+  .community-bg-section {
+    background-image: url("{% static '2026/img/pycon1.jpeg' %}");
+    background-size: cover;
+    background-position: center;
+  }
+</style>
 
-    <h2 class="text-3xl lg:text-4xl font-bold" style="color:#3d1f0a;">
+<section class="py-16 community-bg-section" style="position: relative; overflow: hidden;">
+  <!-- brown color overlay -->
+  <div style="position:absolute; inset:0; background: rgba(44, 24, 16, 0.72); pointer-events:none; z-index:0;">
+  </div>
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8" style="position:relative; z-index:1;">
+
+    <h2 class="text-3xl lg:text-4xl font-bold" style="color:#ffffff;">
       Join the Python Community in Africa
     </h2>
 
-    <p class="text-lg max-w-3xl mx-auto mb-10" style="color:rgba(100,60,30,0.75);">
+    <p class="text-lg max-w-3xl mx-auto mb-10" style="color:rgba(255,255,255,0.95);">
       Be part of something special. Whether you're attending in person or online,
       contributing to our community, or just getting started with your Python journey -
       there's a place for you.
@@ -291,7 +297,7 @@
           <i class="fa-solid fa-ticket" style="font-size:1.75rem;"></i>
         </div>
         <h3 class="text-xl font-semibold mb-3" style="color:#60a5fa;">Get Your Tickets</h3>
-        <p class="mb-6 flex-grow" style="color:rgba(100,60,30,0.7);">
+        <p class="mb-6 flex-grow" style="color:#ffffff;">
           Join us in Kampala to attend Pycon Africa 2026. Early bird tickets are now available.
         </p>
         <div class="mt-auto">
@@ -305,7 +311,7 @@
           <i class="fa-solid fa-heart" style="font-size:1.75rem;"></i>
         </div>
         <h3 class="text-xl font-semibold mb-3" style="color:#4ade80;">Support Our Community</h3>
-        <p class="mb-6 flex-grow" style="color:rgba(100,60,30,0.7);">
+        <p class="mb-6 flex-grow" style="color:#ffffff;">
           Go to our tickets page and select Donate to Pycon Africa to support our community.
         </p>
         <div class="mt-auto">
@@ -319,7 +325,7 @@
           <i class="fa-solid fa-users" style="font-size:1.75rem;"></i>
         </div>
         <h3 class="text-xl font-semibold mb-3" style="color:#f87171;">Friends of PyCon Africa</h3>
-        <p class="mb-6 flex-grow" style="color:rgba(100,60,30,0.7);">
+        <p class="mb-6 flex-grow" style="color:#ffffff;">
           Join our free community livestream event in October.
         </p>
         <div class="mt-auto">
@@ -328,17 +334,17 @@
       </div>
 
       <div class="community-card-dark text-center flex flex-col"
-        style="min-height:220px; border-color:rgba(200,168,75,0.4);">
-        <div class="community-card-icon-wrap" style="color:#c8a84b;">
+        style="min-height:220px; border-color:rgba(250,204,21,0.4);">
+        <div class="community-card-icon-wrap" style="color:#facc15;">
           <i class="fa-solid fa-paper-plane" style="font-size:1.75rem;"></i>
         </div>
-        <h3 class="text-xl font-semibold mb-3" style="color:#c8a84b;">Call for Proposals</h3>
-        <p class="mb-6 flex-grow" style="color:rgba(100,60,30,0.7);">
+        <h3 class="text-xl font-semibold mb-3" style="color:#facc15;">Call for Proposals</h3>
+        <p class="mb-6 flex-grow" style="color:#ffffff;">
           Got something to share? Submit a talk, workshop, or tutorial for PyCon Africa 2026.
         </p>
         <div class="mt-auto">
-          <a href="/2026/talks/proposals/" class="btn" style="background-color: #2d6a2d; color: white;">Submit a
-            Talk</a>
+          <a href="/2026/talks/proposals/" class="btn"
+            style="background-color: #facc15; color: #1a0a00; font-weight:700;">Submit a Talk</a>
         </div>
       </div>
 
@@ -367,20 +373,22 @@
       }
 
       .community-card-dark {
-        background: rgba(255, 255, 255, 0.65);
-        border: 1px solid rgba(139, 94, 60, 0.2);
+        background: rgba(44, 24, 16, 0.55);
+        border: 1px solid rgba(200, 168, 75, 0.3);
         border-radius: 1rem;
         padding: 2rem 1.5rem;
         display: flex;
         flex-direction: column;
         transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-        backdrop-filter: blur(4px);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
       }
 
       .community-card-dark:hover {
-        background: rgba(255, 255, 255, 0.9);
+        background: rgba(44, 24, 16, 0.75);
         transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(139, 94, 60, 0.15);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        border-color: rgba(200, 168, 75, 0.6);
       }
 
       .community-card-icon-wrap {
