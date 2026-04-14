@@ -1,307 +1,454 @@
 {% load static %}
 
-<header class="{% if request.path == '/' or request.path == '' %}bg-black{% else %}bg-gray-700{% endif %}" id="main-header">
+<header id="main-header">
   <div class="navbar-container">
+
     <!-- Logo -->
-    <div>
-      <a href="/">
-        <img src="{% static '2026/img/logo final.png' %}" class="navbar-logo-img" alt="PyCon Africa 2026" style="max-width: 80px;">
-      </a>
-    </div>
+    <a href="/" class="navbar-logo-link" aria-label="PyCon Africa 2026 Home">
+      <img src="{% static '2026/img/logo final.png' %}" class="navbar-logo-img" alt="PyCon Africa 2026">
+    </a>
 
     <!-- Desktop Navigation -->
-    <div class="nav-desktop">
-      <!-- About Dropdown -->
+    <nav class="nav-desktop" aria-label="Main navigation">
+
+      <!-- About -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
-        <button class="nav-item" @click="open=!open">
-          ABOUT
-          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
-          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
+        <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
+          About <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
-        <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
-          <a class="nav-item" href="/2026/about/pycon-africa-2026/">About Us</a>
-          <a class="nav-item" href="/2026/coc/">Code of Conduct</a>
-          <a class="nav-item" href="/2026/about/privacy-policy/">Privacy Policy</a>
-          <a class="nav-item" href="/2026/about/contact-us/">Contact Us</a>
-          <!-- <a class="nav-item" href="/2026/travel/">Travel Guide</a> -->
+        <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
+          <a class="nav-dropdown-item" href="/2026/about/pycon-africa-2026/">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-circle-info"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">About Us</span>
+              <span class="nav-dropdown-desc">Our mission, team and story</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="/2026/coc/">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-shield-halved"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Code of Conduct</span>
+              <span class="nav-dropdown-desc">Our community standards</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="/2026/about/privacy-policy/">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-lock"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Privacy Policy</span>
+              <span class="nav-dropdown-desc">How we handle your data</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="/2026/about/contact-us/">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-envelope"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Contact Us</span>
+              <span class="nav-dropdown-desc">Get in touch with the team</span>
+            </span>
+          </a>
         </div>
       </div>
 
       <!-- Blog -->
-      <a class="nav-item" href="https://pyconafrica.blogspot.com/" target="_blank" rel="noopener noreferrer">BLOG</a>
+      <a class="nav-item" href="https://pyconafrica.blogspot.com/" target="_blank" rel="noopener noreferrer">
+        <i class="fa-solid fa-rss" style="font-size:0.75rem; opacity:0.7;"></i> Blog
+      </a>
 
-        <!-- Talks -->
+      <!-- Speak -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
-        <button class="nav-item" @click="open=!open">
-          SPEAK AT PYCON
-          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
-          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
+        <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
+          Speak <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
-        <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
-          {% comment %}<a class="nav-item" href="/2026/speakers_list/">Our Speakers</a>{% endcomment %}
-          <a class="nav-item" href="/2026/talks/proposals/">Proposals</a>
-          <a class="nav-item" href="/2026/talks/proposing_a_talk/">Proposing a Talk</a>
+        <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
+          <a class="nav-dropdown-item" href="/2026/talks/proposals/">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-file-lines"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Proposals</span>
+              <span class="nav-dropdown-desc">Browse submitted talk proposals</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="/2026/talks/proposing_a_talk/">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-lightbulb"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Proposing a Talk</span>
+              <span class="nav-dropdown-desc">Tips for a great submission</span>
+            </span>
+          </a>
           {% if user.is_authenticated %}
-            <a class="nav-item" href="{% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
-          {% else %}
-            <a class="nav-item" href="{% url 'auth_login' %}?next={% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
-          {% endif %}
-          <a class="nav-item" href="/2026/talks/recording-release/">Recording Release</a>
-          {% comment %}<a class="nav-item" href="/2026/talks/mentorship/">SPEAKER MENTORSHIP</a>{% endcomment %}
+          <a class="nav-dropdown-item" href="{% url 'talks:submit_talk' year=2026 %}">
+            {% else %}
+            <a class="nav-dropdown-item" href="{% url 'auth_login' %}?next={% url 'talks:submit_talk' year=2026 %}">
+              {% endif %}
+              <span class="nav-dropdown-icon"><i class="fa-solid fa-paper-plane"></i></span>
+              <span class="nav-dropdown-text">
+                <span class="nav-dropdown-title">Submit a Proposal</span>
+                <span class="nav-dropdown-desc">Share your knowledge with Africa</span>
+              </span>
+            </a>
+            <a class="nav-dropdown-item" href="/2026/talks/recording-release/">
+              <span class="nav-dropdown-icon"><i class="fa-solid fa-video"></i></span>
+              <span class="nav-dropdown-text">
+                <span class="nav-dropdown-title">Recording Release</span>
+                <span class="nav-dropdown-desc">Talk recording consent form</span>
+              </span>
+            </a>
         </div>
       </div>
 
-      <!-- Sponsors Dropdown -->
+      <!-- Sponsor -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
-        <button class="nav-item" @click="open=!open">
-          SPONSOR
-          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
-          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
+        <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
+          Sponsor <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
-        <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
-          <a class="nav-item" href="/2026/sponsor-us/">Sponsor Us</a>
-          {% comment %}<a class="nav-item" href="/2026/our-sponsors/">Our Sponsors</a>{% endcomment %}
-          <!-- <a class="nav-item" href="https://drive.google.com/file/d/1kFroSEsjlMDYiGPmuYnvSxAaTe-HfIRp/view?usp=drive_link" target="_blank">PyCon Uganda 2026 Sponsorship Prospectus</a> -->
+        <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
+          <a class="nav-dropdown-item" href="/2026/sponsor-us/">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-handshake"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Sponsor Us</span>
+              <span class="nav-dropdown-desc">Partner with PyCon Africa 2026</span>
+            </span>
+          </a>
         </div>
       </div>
 
-       <!-- Regions -->
+      <!-- Regions -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
-        <button class="nav-item" @click="open=!open">
-          REGIONS
-          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
-          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
+        <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
+          Regions <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
-        <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
-          <!-- <a class="nav-item" href="/2026/travel/">Travel Guide</a> -->
-          <a class="nav-item" href="/2026/region/kenya-region/">PYCON AFRICA 2026 – KENYA REGION</a>
-          <a class="nav-item" href="/2026/region/rwanda-region/">PYCON AFRICA 2026 – RWANDA REGION</a>
-          <a class="nav-item" href="/2026/region/tanzania-region/">PYCON AFRICA 2026 – TANZANIA REGION</a>
-          <a class="nav-item" href="/2026/region/south-sudan-region/">PYCON AFRICA 2026 – SOUTH SUDAN REGION</a>
+        <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
+          <a class="nav-dropdown-item" href="/2026/region/kenya-region/">
+            <span class="nav-dropdown-icon">🇰🇪</span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Kenya</span>
+              <span class="nav-dropdown-desc">PyCon Africa – Kenya Region</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="/2026/region/rwanda-region/">
+            <span class="nav-dropdown-icon">🇷🇼</span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Rwanda</span>
+              <span class="nav-dropdown-desc">PyCon Africa – Rwanda Region</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="/2026/region/tanzania-region/">
+            <span class="nav-dropdown-icon">🇹🇿</span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Tanzania</span>
+              <span class="nav-dropdown-desc">PyCon Africa – Tanzania Region</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="/2026/region/south-sudan-region/">
+            <span class="nav-dropdown-icon">🇸🇸</span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">South Sudan</span>
+              <span class="nav-dropdown-desc">PyCon Africa – South Sudan Region</span>
+            </span>
+          </a>
         </div>
       </div>
 
-      <!-- Venue -->
-      <!-- <div class="nav-dropdown-wrapper" x-data="{open:false}">
-        <button class="nav-item" @click="open=!open">
-          VENUE
-          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
-          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
-        </button>
-
-      </div> -->
-
-      <!-- Talks Dropdown -->
-      {% comment %}
+      <!-- Uganda -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
-        <button class="nav-item" @click="open=!open">
-          TALKS
-          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
-          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
+        <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
+          Uganda <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
-        <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
-          <a class="nav-item" href="/2026/schedule/">Schedule</a>
-          <a class="nav-item" href="/2026/speakers_list/">Speakers</a>
-          <a class="nav-item" href="/2026/talks/submit_talk/">Submit a Proposal</a>
+        <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
+          <a class="nav-dropdown-item" href="/2026/visa/apply/">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-passport"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Applying for a Visa</span>
+              <span class="nav-dropdown-desc">Step-by-step visa guide</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="/2026/visa/letter/">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-file-signature"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Get a Visa Letter</span>
+              <span class="nav-dropdown-desc">Request your invitation letter</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="/2026/visa/bus/">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-bus"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Arriving by Bus</span>
+              <span class="nav-dropdown-desc">Bus routes to Kampala</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="/2026/visa/flying/">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-plane-arrival"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Flying to Uganda</span>
+              <span class="nav-dropdown-desc">Airports and flight info</span>
+            </span>
+          </a>
         </div>
       </div>
-      {% endcomment %}
 
-      <!-- Past Events Dropdown -->
-      {% comment %}
+      <!-- Past -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
-        <button class="nav-item" @click="open=!open">
-          PAST EVENTS
-          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
-          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
+        <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
+          Past <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
-        <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
-          <a class="nav-item" href="/2020/">2020</a>
-          <a class="nav-item" href="/2019/report/">2019</a>
-        </div>
-      </div>
-      {% endcomment %}
-
-      <!-- Uganda Dropdown -->
-      <div class="nav-dropdown-wrapper" x-data="{open:false}">
-        <button class="nav-item" @click="open=!open">
-          UGANDA
-          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
-          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
-        </button>
-        <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
-          <a class="nav-item" href="/2026/visa/apply/">APPLYING FOR A VISA</a>
-          <a class="nav-item" href="/2026/visa/letter/">GET A VISA LETTER</a>
-          <a class="nav-item" href="/2026/visa/bus/">ARRIVING BY BUS TO KAMPALA</a>
-          <a class="nav-item" href="/2026/visa/flying/">FLYING TO UGANDA</a>
-          <!-- <a class="nav-item" href="/2026/travel/">TRAVEL GUIDE</a> -->
-        </div>
-      </div>
-
-      <div class="nav-dropdown-wrapper" x-data="{open:false}">
-        <button class="nav-item" @click="open=!open">
-          PAST
-          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
-          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
-        </button>
-        <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
-          <a class="nav-item" href="https://za.pycon.org/" target="_blank" rel="noopener noreferrer">2025</a>
-          <a class="nav-item" href="https://pyconafrica.pythonanywhere.com/2024/" target="_blank" rel="noopener noreferrer">2024</a>
-          <a class="nav-item" href="https://pyconafrica.pythonanywhere.com/2020/" target="_blank" rel="noopener noreferrer">2020</a>
-          <a class="nav-item" href="https://pyconafrica.pythonanywhere.com/2019/" target="_blank" rel="noopener noreferrer">2019</a>
+        <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
+          <a class="nav-dropdown-item" href="https://za.pycon.org/" target="_blank" rel="noopener noreferrer">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-calendar-days"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">PyCon Africa 2025</span>
+              <span class="nav-dropdown-desc">South Africa</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="https://pyconafrica.pythonanywhere.com/2024/" target="_blank"
+            rel="noopener noreferrer">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-calendar-days"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">PyCon Africa 2024</span>
+              <span class="nav-dropdown-desc">Ghana</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="https://pyconafrica.pythonanywhere.com/2020/" target="_blank"
+            rel="noopener noreferrer">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-calendar-days"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">PyCon Africa 2020</span>
+              <span class="nav-dropdown-desc">Ghana (Virtual)</span>
+            </span>
+          </a>
+          <a class="nav-dropdown-item" href="https://pyconafrica.pythonanywhere.com/2019/" target="_blank"
+            rel="noopener noreferrer">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-calendar-days"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">PyCon Africa 2019</span>
+              <span class="nav-dropdown-desc">Ghana</span>
+            </span>
+          </a>
         </div>
       </div>
 
-      <!-- User Authentication -->
+      <!-- User Account -->
       {% if user.is_authenticated %}
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
-        <button class="nav-item" @click="open=!open">
-          <i class='fa-solid fa-user' aria-hidden='true'></i> {{ user.username }}
-          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
-          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
+        <button class="nav-item" @click="open=!open" :aria-expanded="open.toString()">
+          {{ user.username }} <svg class="nav-svg-arrow" :class="open ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
         </button>
-        <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
-          <a class="nav-item" href="{% url 'profiles:profile_home' %}">My Profile</a>
+        <div x-show="open" @click.outside="open=false" class="nav-dropdown-menu" style="display:none;">
+          <a class="nav-dropdown-item" href="{% url 'profiles:profile_home' %}">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-id-card"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">My Profile</span>
+              <span class="nav-dropdown-desc">View and edit your profile</span>
+            </span>
+          </a>
           {% if request.user.is_superuser %}
-          <a class="nav-item" href="/organizers/">Admin Dashboard</a>
+          <a class="nav-dropdown-item" href="/organizers/">
+            <span class="nav-dropdown-icon"><i class="fa-solid fa-gauge"></i></span>
+            <span class="nav-dropdown-text">
+              <span class="nav-dropdown-title">Admin Dashboard</span>
+              <span class="nav-dropdown-desc">Organizer tools</span>
+            </span>
+          </a>
           {% endif %}
-          <form method="POST" action="/accounts/logout/" style="display: inline;">
+          <form method="POST" action="/accounts/logout/">
             {% csrf_token %}
-            <button type="submit" class="nav-item">Log out</button>
+            <button type="submit" class="nav-dropdown-item nav-dropdown-item-btn">
+              <span class="nav-dropdown-icon"><i class="fa-solid fa-right-from-bracket"></i></span>
+              <span class="nav-dropdown-text">
+                <span class="nav-dropdown-title">Log out</span>
+                <span class="nav-dropdown-desc">Sign out of your account</span>
+              </span>
+            </button>
           </form>
         </div>
       </div>
       {% else %}
-      <a class="nav-item" href="/accounts/login/">SIGN UP / LOG IN</a>
+      <a class="nav-item" href="/accounts/login/">Sign In</a>
       {% endif %}
+
+    </nav>
+
+    <!-- CTA Buttons (desktop) -->
+    <div class="nav-action-buttons">
+      <a href="https://www.quicket.co.ug/events/361146-pycon-africa-2026/" target="_blank" rel="noopener noreferrer"
+        class="nav-action-btn nav-action-btn-primary">
+        Buy Tickets
+      </a>
+      <a href="/2026/sponsor-us/" class="nav-action-btn nav-action-btn-secondary">
+        Sponsor Us
+      </a>
     </div>
 
-    <!-- Mobile Navigation -->
+    <!-- Mobile Toggle — Alpine.js powered, no GSAP dependency -->
     <div class="nav-mobile" x-data="{ open: false }">
-      <button class="nav-mobile-toggle" @click="open = !open">
-        <i class="fa fa-bars" aria-hidden="true" x-show="!open" style="display:none;"></i>
-        <i class="fa fa-caret-down" aria-hidden="true" x-show="open" style="display:none;"></i>
-      </button>
+      <div class="nav-mobile-right">
+        <a href="https://www.quicket.co.ug/events/361146-pycon-africa-2026/" target="_blank" rel="noopener noreferrer"
+          class="nav-action-btn nav-action-btn-primary nav-mobile-ticket-btn">
+          Tickets
+        </a>
+        <button class="nav-mobile-toggle" @click="open = !open" :aria-expanded="open.toString()"
+          aria-label="Toggle menu">
+          &#9776;
+        </button>
+      </div>
 
-      <div x-show="open" style="display:none;" class="nav-mobile-menu" @click.outside="open = false">
-        <!-- About (dropdown) -->
-        <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
-            ABOUT
-            <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
-            <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
+      <!-- Mobile Drawer -->
+      <nav x-show="open" x-transition:enter="nav-drawer-enter" x-transition:enter-start="nav-drawer-enter-start"
+        x-transition:enter-end="nav-drawer-enter-end" x-transition:leave="nav-drawer-leave"
+        x-transition:leave-start="nav-drawer-leave-start" x-transition:leave-end="nav-drawer-leave-end"
+        @click.outside="open = false" class="nav-mobile-menu" style="display:none;" aria-label="Mobile navigation">
+
+        <!-- About -->
+        <div class="nav-mobile-section" x-data="{ openSection: false }">
+          <button class="nav-mobile-section-btn" @click="openSection=!openSection" type="button"
+            :aria-expanded="openSection.toString()">
+            <span class="nav-mobile-section-label">
+              <i class="fa-solid fa-circle-info nav-mobile-section-icon"></i> About
+            </span>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
-          <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
-            <a class="nav-item nav-item-indent" href="/2026/about/pycon-africa-2026/">About Us</a>
-            <a class="nav-item nav-item-indent" href="/2026/coc/">Code of Conduct</a>
-            <a class="nav-item nav-item-indent" href="/2026/about/privacy-policy/">Privacy Policy</a>
-            <a class="nav-item nav-item-indent" href="/2026/about/contact-us/">Contact Us</a>
+          <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
+            <a class="nav-mobile-subitem" href="/2026/about/pycon-africa-2026/">About Us</a>
+            <a class="nav-mobile-subitem" href="/2026/coc/">Code of Conduct</a>
+            <a class="nav-mobile-subitem" href="/2026/about/privacy-policy/">Privacy Policy</a>
+            <a class="nav-mobile-subitem" href="/2026/about/contact-us/">Contact Us</a>
           </div>
         </div>
 
         <!-- Blog -->
-        <a class="nav-item" href="https://pyconafrica.blogspot.com/" target="_blank" rel="noopener noreferrer">BLOG</a>
+        <a class="nav-mobile-link" href="https://pyconafrica.blogspot.com/" target="_blank" rel="noopener noreferrer">
+          <i class="fa fa-fw fa-rss nav-mobile-section-icon"></i> Blog
+        </a>
 
-        <!-- Speak at PyCon (dropdown) -->
-        <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
-            SPEAK AT PYCON
-            <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
-            <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
+        <!-- Speak -->
+        <div class="nav-mobile-section" x-data="{ openSection: false }">
+          <button class="nav-mobile-section-btn" @click="openSection=!openSection" type="button"
+            :aria-expanded="openSection.toString()">
+            <span class="nav-mobile-section-label">
+              <i class="fa fa-fw fa-microphone nav-mobile-section-icon"></i> Speak at PyCon
+            </span>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
-          <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
-            {% comment %}<a class="nav-item nav-item-indent" href="/2026/speakers_list/">Our Speakers</a>{% endcomment %}
-            <a class="nav-item nav-item-indent" href="/2026/talks/proposals/">Proposals</a>
-            <a class="nav-item nav-item-indent" href="/2026/talks/proposing_a_talk/">Proposing a Talk</a>
+          <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
+            <a class="nav-mobile-subitem" href="/2026/talks/proposals/">Proposals</a>
+            <a class="nav-mobile-subitem" href="/2026/talks/proposing_a_talk/">Proposing a Talk</a>
             {% if user.is_authenticated %}
-              <a class="nav-item nav-item-indent" href="{% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
+            <a class="nav-mobile-subitem" href="{% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
             {% else %}
-              <a class="nav-item nav-item-indent" href="{% url 'auth_login' %}?next={% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
+            <a class="nav-mobile-subitem"
+              href="{% url 'auth_login' %}?next={% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
             {% endif %}
-            <a class="nav-item nav-item-indent" href="/2026/talks/recording-release/">Recording Release</a>
+            <a class="nav-mobile-subitem" href="/2026/talks/recording-release/">Recording Release</a>
           </div>
         </div>
 
-        <!-- Sponsor (dropdown) -->
-        <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
-            SPONSOR
-            <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
-            <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
+        <!-- Sponsor -->
+        <div class="nav-mobile-section" x-data="{ openSection: false }">
+          <button class="nav-mobile-section-btn" @click="openSection=!openSection" type="button"
+            :aria-expanded="openSection.toString()">
+            <span class="nav-mobile-section-label">
+              <i class="fa fa-fw fa-handshake nav-mobile-section-icon"></i> Sponsor
+            </span>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
-          <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
-            <a class="nav-item nav-item-indent" href="/2026/sponsor-us/">Sponsor Us</a>
+          <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
+            <a class="nav-mobile-subitem" href="/2026/sponsor-us/">Sponsor Us</a>
           </div>
         </div>
 
-        <!-- Regions (dropdown) -->
-        <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
-            REGIONS
-            <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
-            <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
+        <!-- Regions -->
+        <div class="nav-mobile-section" x-data="{ openSection: false }">
+          <button class="nav-mobile-section-btn" @click="openSection=!openSection" type="button"
+            :aria-expanded="openSection.toString()">
+            <span class="nav-mobile-section-label">
+              <i class="fa fa-fw fa-earth-africa nav-mobile-section-icon"></i> Regions
+            </span>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
-          <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
-            <a class="nav-item nav-item-indent" href="/2026/region/kenya-region/">PYCON AFRICA 2026 – KENYA REGION</a>
-            <a class="nav-item nav-item-indent" href="/2026/region/rwanda-region/">PYCON AFRICA 2026 – RWANDA REGION</a>
-            <a class="nav-item nav-item-indent" href="/2026/region/tanzania-region/">PYCON AFRICA 2026 – TANZANIA REGION</a>
-            <a class="nav-item nav-item-indent" href="/2026/region/south-sudan-region/">PYCON AFRICA 2026 – SOUTH SUDAN REGION</a>
+          <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
+            <a class="nav-mobile-subitem" href="/2026/region/kenya-region/">🇰🇪 Kenya</a>
+            <a class="nav-mobile-subitem" href="/2026/region/rwanda-region/">🇷🇼 Rwanda</a>
+            <a class="nav-mobile-subitem" href="/2026/region/tanzania-region/">🇹🇿 Tanzania</a>
+            <a class="nav-mobile-subitem" href="/2026/region/south-sudan-region/">🇸🇸 South Sudan</a>
           </div>
         </div>
 
-        <!-- Uganda (dropdown) -->
-        <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
-            UGANDA
-            <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
-            <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
+        <!-- Uganda -->
+        <div class="nav-mobile-section" x-data="{ openSection: false }">
+          <button class="nav-mobile-section-btn" @click="openSection=!openSection" type="button"
+            :aria-expanded="openSection.toString()">
+            <span class="nav-mobile-section-label">
+              <i class="fa fa-fw fa-map-location-dot nav-mobile-section-icon"></i> Uganda
+            </span>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
-          <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
-            <a class="nav-item nav-item-indent" href="/2026/visa/apply/">APPLYING FOR A VISA</a>
-            <a class="nav-item nav-item-indent" href="/2026/visa/letter/">GET A VISA LETTER</a>
-            <a class="nav-item nav-item-indent" href="/2026/visa/bus/">ARRIVING BY BUS TO KAMPALA</a>
-            <a class="nav-item nav-item-indent" href="/2026/visa/flying/">FLYING TO UGANDA</a>
+          <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
+            <a class="nav-mobile-subitem" href="/2026/visa/apply/">Applying for a Visa</a>
+            <a class="nav-mobile-subitem" href="/2026/visa/letter/">Get a Visa Letter</a>
+            <a class="nav-mobile-subitem" href="/2026/visa/bus/">Arriving by Bus</a>
+            <a class="nav-mobile-subitem" href="/2026/visa/flying/">Flying to Uganda</a>
           </div>
         </div>
 
-        <!-- Past (dropdown) -->
-        <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
-            PAST
-            <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
-            <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
+        <!-- Past -->
+        <div class="nav-mobile-section" x-data="{ openSection: false }">
+          <button class="nav-mobile-section-btn" @click="openSection=!openSection" type="button"
+            :aria-expanded="openSection.toString()">
+            <span class="nav-mobile-section-label">
+              <i class="fa fa-fw fa-clock-rotate-left nav-mobile-section-icon"></i> Past Events
+            </span>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
-          <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
-            <a class="nav-item nav-item-indent" href="https://za.pycon.org/" target="_blank" rel="noopener noreferrer">2025</a>
-            <a class="nav-item nav-item-indent" href="https://pyconafrica.pythonanywhere.com/2024/" target="_blank" rel="noopener noreferrer">2024</a>
-            <a class="nav-item nav-item-indent" href="https://pyconafrica.pythonanywhere.com/2020/" target="_blank" rel="noopener noreferrer">2020</a>
-            <a class="nav-item nav-item-indent" href="https://pyconafrica.pythonanywhere.com/2019/" target="_blank" rel="noopener noreferrer">2019</a>
+          <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
+            <a class="nav-mobile-subitem" href="https://za.pycon.org/" target="_blank" rel="noopener noreferrer">2025 –
+              South Africa</a>
+            <a class="nav-mobile-subitem" href="https://pyconafrica.pythonanywhere.com/2024/" target="_blank"
+              rel="noopener noreferrer">2024 – Ghana</a>
+            <a class="nav-mobile-subitem" href="https://pyconafrica.pythonanywhere.com/2020/" target="_blank"
+              rel="noopener noreferrer">2020 – Ghana (Virtual)</a>
+            <a class="nav-mobile-subitem" href="https://pyconafrica.pythonanywhere.com/2019/" target="_blank"
+              rel="noopener noreferrer">2019 – Ghana</a>
           </div>
         </div>
 
         <!-- Account -->
         {% if user.is_authenticated %}
-        <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
-            <span><i class="fa-solid fa-user" aria-hidden="true"></i> {{ user.username }}</span>
-            <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
-            <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
+        <div class="nav-mobile-section" x-data="{ openSection: false }">
+          <button class="nav-mobile-section-btn" @click="openSection=!openSection" type="button"
+            :aria-expanded="openSection.toString()">
+            <span class="nav-mobile-section-label">
+              <i class="fa fa-fw fa-user nav-mobile-section-icon"></i> {{ user.username }}
+            </span>
+            <svg class="nav-svg-arrow" :class="openSection ? 'rotate' : ''" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#c8a84b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
           </button>
-          <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
-            <a class="nav-item nav-item-indent" href="{% url 'profiles:profile_home' %}">My Profile</a>
+          <div x-show="openSection" x-transition style="display:none;" class="nav-mobile-subitems">
+            <a class="nav-mobile-subitem" href="{% url 'profiles:profile_home' %}">My Profile</a>
             {% if request.user.is_superuser %}
-            <a class="nav-item nav-item-indent" href="/organizers/">Admin Dashboard</a>
+            <a class="nav-mobile-subitem" href="/organizers/">Admin Dashboard</a>
             {% endif %}
-            <form method="POST" action="/accounts/logout/" style="display: inline;">
+            <form method="POST" action="/accounts/logout/">
               {% csrf_token %}
-              <button type="submit" class="nav-item nav-item-indent">Log out</button>
+              <button type="submit" class="nav-mobile-subitem nav-mobile-subitem-btn">Log out</button>
             </form>
           </div>
         </div>
         {% else %}
-        <a class="nav-item" href="/accounts/login/">SIGN UP / LOG IN</a>
+        <a class="nav-mobile-link" href="/accounts/login/">
+          <i class="fa fa-fw fa-right-to-bracket nav-mobile-section-icon"></i> Sign In
+        </a>
         {% endif %}
-      </div>
+
+        <!-- Mobile CTAs -->
+        <div class="nav-mobile-ctas">
+          <a href="https://www.quicket.co.ug/events/361146-pycon-africa-2026/" target="_blank" rel="noopener noreferrer"
+            class="nav-action-btn nav-action-btn-primary" style="width:100%; justify-content:center;">
+            Buy Tickets
+          </a>
+          <a href="/2026/sponsor-us/" class="nav-action-btn nav-action-btn-secondary"
+            style="width:100%; justify-content:center;">
+            Sponsor Us
+          </a>
+        </div>
+
+      </nav>
     </div>
+
   </div>
 </header>
