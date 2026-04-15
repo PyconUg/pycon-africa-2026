@@ -1,52 +1,58 @@
-<!-- financial-grant.html -->
-<div id="shortcode32">
-    <div class="shortcode-html">
-      <div class="g-bg-img-hero" style="background-image: url(../../assets/include/svg/svg-bg3.svg);">
-        <div class="max-w-7xl mx-auto px-4 g-pt-60 g-pb-30">
-          <div class="row justify-content-lg-center align-items-md-center">
-            <div class="col-md-9 col-lg-7 g-mb-30">
-              <!-- Media -->
-              <div class="media align-items-center g-pr-15--lg">
-                <div class="d-flex mr-5">
-                  <span class="u-icon-v3 u-icon-size--lg g-color-primary g-bg-primary-opacity-0_1 rounded-circle">
-                    <i class="fa-solid fa-hands-holding-heart" style="font-size:41px;"></i>
-                  </span>
-                </div>
-                <div class="media-body">
-                  {% for status in fin_aid_status %}
-                    {% if status.is_open %}
-                      <h3 class="h2">Our Opportunity Grant is now open.</h3>
-                      <p>PyCon Africa 2026 is offering grants to attendees and speakers, so
-                        that those who might otherwise not be able to attend won’t hesitate to
-                        participate. Some expenses for the conference attendance (which can
-                        include travel, hotel, registration etc.) will be covered for
-                        opportunity grant recipients. We actively encourage people to apply
-                        for an opportunity grant. While we wish we could give grants to
-                        everyone who applies, we do not have the funds to do that. Our goal is
-                        to maximise the impact our grant program has, within the limited funds
-                        we have.</p>
-                    {% elif status.is_closed %}
-                      <h3 class="h2">Our Opportunity Grant is now <b>closed</b>.</h3>
-                      <p>Thank you for your interest in PyCon Africa. Unfortunately, our Opportunity assistance programme is now <b>closed</b>. Stay tuned for future opportunities!</p>
-                    {% elif status.not_open_yet %}
-                      <h3 class="h2">Our Opportunity Grant is not open yet.</h3>
-                      <p>Our Opportunity assistance programme is not open yet. Please check back later for more information on how to apply.</p>
-                    {% endif %}
-                  {% endfor %}
-                </div>
-              </div>
-              <!-- End Media -->
-            </div>
-            <div class="col-5 col-md-3 col-lg-2 mx-auto g-mx-0--lg g-mb-30">
-               {% if status.is_closed %}
-              <button class="btn btn-block u-shadow-v33 g-color-white g-bg-primary g-bg-main--hover g-rounded-30 g-px-25 g-py-13 disabled" type="button" disabled>Apply now . . .</button>
-            {% else %}
-              <a href="/2026/fin-aid/" class="btn btn-block u-shadow-v33 g-color-white g-bg-primary g-bg-main--hover g-rounded-30 g-px-25 g-py-13">Apply now . . .</a>
-            {% endif %}
-            </div>
-          </div>
-        </div>
+<!-- financial-grant.html — Opportunity Grant teaser, included on the home page -->
+{% if fin_aid_status %}
+<section class="py-16 bg-white border-t border-gray-100">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-lg shadow-md border border-gray-200 p-8 flex flex-col md:flex-row items-center gap-8">
+
+      <!-- Icon -->
+      <div class="flex-shrink-0 flex items-center justify-center w-20 h-20 rounded-full g-bg-primary-opacity-0_1">
+        <i class="fa-solid fa-hands-holding-heart g-color-primary" style="font-size: 2.5rem;"></i>
       </div>
+
+      <!-- Text -->
+      <div class="flex-grow text-center md:text-left">
+        {% for status in fin_aid_status %}
+          {% if status.is_open %}
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Our Opportunity Grant is now open!</h3>
+            <p class="text-gray-600 text-lg">
+              PyCon Africa 2026 is offering grants to attendees and speakers, so that those who might
+              otherwise not be able to attend won't hesitate to participate. Some expenses for the
+              conference attendance (which can include travel, hotel, registration etc.) will be covered
+              for opportunity grant recipients. We actively encourage people to apply for an opportunity
+              grant. While we wish we could give grants to everyone who applies, we do not have the funds
+              to do that. Our goal is to maximise the impact our grant program has, within the limited
+              funds we have.
+            </p>
+          {% elif status.is_closed %}
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Our Opportunity Grant is now <span class="text-red-600">closed</span>.</h3>
+            <p class="text-gray-600 text-lg">
+              Thank you for your interest in PyCon Africa 2026. Our Opportunity Grant programme is now closed.
+              Stay tuned for future opportunities!
+            </p>
+          {% elif status.not_open_yet %}
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Opportunity Grants — Coming Soon</h3>
+            <p class="text-gray-600 text-lg">
+              Our Opportunity Grant programme is not open yet. Check back soon for information on how to apply.
+              {% if status.form_status_message %}
+                <br><span class="text-sm text-gray-500 mt-1 block">{{ status.form_status_message }}</span>
+              {% endif %}
+            </p>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <!-- Button -->
+      <div class="flex-shrink-0">
+        {% for status in fin_aid_status %}
+          {% if not status.is_closed %}
+            <a href="/2026/fin-aid/" class="btn btn-block u-shadow-v33 g-color-white g-bg-primary g-bg-main--hover g-rounded-30 g-px-25 g-py-13">
+              Learn more
+            </a>
+          {% endif %}
+        {% endfor %}
+      </div>
+
     </div>
   </div>
-  
+</section>
+{% endif %}

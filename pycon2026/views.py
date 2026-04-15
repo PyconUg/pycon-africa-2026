@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from fin_aid.models import Fin_aid
+from home.models import EventYear
 
 # Create your views here.
 
@@ -142,10 +144,16 @@ def visa_flying(request):
     return render(request, '2026/visa/flying.html', context)
 
 def fin_aid(request):
-    context = {}
-    template = '2026/fin-aid/fin-aid.html'
+    event_year = get_object_or_404(EventYear, year=2026)
+    fin_aids = Fin_aid.objects.filter(event_year=event_year).order_by('-date_created')
+    for fa in fin_aids:
+        fa.is_open = fa.is_form_open()
+        fa.is_closed = fa.is_form_closed()
+        fa.not_open_yet = fa.is_form_not_open_yet()
+        fa.form_status_message = fa.get_form_status_message()
+    context = {'fin_aids': fin_aids, 'year': 2026}
+    template = '2026/fin_aid/fin_aid.html'
     return render(request, template, context)
-
 def team(request):
     context = {}
     template = '2026/team/team.html'
@@ -180,6 +188,25 @@ def ngombor(request):
     }
     return render(request, '2026/community/ngombor.html', context)
 
+# def pyladies_con_africa(request):
+#     context = {
+#         'title': 'Pyladies Conference Africa',
+#         'description': 'Pyladies Conference Africa is a one-day event aimed at building community and promoting contributions to open source.',
+#     }
+#     return render(request, '2026/community/pyladies_con_africa.html', context)
 
+# def refugee_persons_of_concern(request):
+#     context = {
+#         'title': 'Refugee Persons of Concern',
+#         'description': 'We are committed to helping refugee women and girls in Uganda and other parts of Africa to learn how to code and build careers in technology.',
+#     }
+#     return render(request, '2026/community/refugee_persons_of_concern.html', context)
+
+# def women_in_data_science(request):
+#     context = {
+#         'title': 'Women in Data Science',
+#         'description': 'We are a group of women who are passionate about data science and want to see more women involved in the field.',
+#     }
+#     return render(request, '2026/community/women_in_data_science.html', context)
 def past_events(request):
     return render(request, '2026/past_events/past_events.html')

@@ -35,13 +35,16 @@ urlpatterns = [
     path('visa/letter/', view=views.visa_letter, name='visa_letter'),
     path('visa/bus/', view=views.visa_bus, name='visa_bus'),
     path('visa/flying/', view=views.visa_flying, name='visa_flying'),
-    # path('fin-aid/', view=views.fin_aid, name='fin_aid'),
+    path('fin-aid/', view=views.fin_aid, name='fin_aid'),
     path('team/', view=views.team, name='team'),
     path('report/', view=views.report, name='report'),
     path('platform/', view=views.hopin, name='hopin'), 
     # path('community/pyladies/', view=views.pyladies, name='pyladies'),
     path('community/django-girls/', view=views.django_girls, name='django_girls'),
     path('community/pyladies-wksp/', view=views.pyladies_wksp, name='pyladies_wksp'),   
+    # path('community/pyladies_con_africa/', views.pyladies_con_africa, name='pyladies_con_africa'),
+    # path('community/refugee_persons_of_concern/', views.refugee_persons_of_concern, name='refugee_persons_of_concern'),
+    # path('community/women_in_data_science/', views.women_in_data_science, name='women_in_data_science'),
     # path('community/ngombor/', view=views.ngombor, name='ngombor')
     path('past-events/', view=views.past_events, name='past_events'),
 
