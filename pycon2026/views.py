@@ -146,6 +146,11 @@ def fin_aid(request):
     template = '2026/fin_aid/fin_aid.html'
     return render(request, template, context)
 
+def refugee_program_financial_aid(request):
+    context = {}
+    template = '2026/fin_aid/refugee_program_financial_aid.html'
+    return render(request, template, context)
+
 def team(request):
     context = {}
     template = '2026/team/team.html'

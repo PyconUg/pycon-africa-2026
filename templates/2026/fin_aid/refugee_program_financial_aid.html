@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% block meta_title %}{% trans "Refugee Program Financial Aid || PyCon Africa 2026" %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static '2026/css/custom.css' %}">
+{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
+  <h1 class="text-5xl font-bold text-gray-900 text-center">Refugee Program Financial Aid</h1>
+  <p class="text-center text-gray-500 mt-3 text-lg">
+    Financial Aid Information - Refugee Program Python Workshop
+  </p>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 pb-16">
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">About Financial Aid</h2>
+      <p class="text-gray-700 text-base leading-relaxed mb-3">
+        Financial aid is available to support participants who may not be able to attend without assistance, with a
+        focus on refugees, women, and underserved communities.
+      </p>
+      <p class="text-gray-700 text-base leading-relaxed">
+        This support is intended to reduce financial barriers that often prevent talented and motivated individuals
+        from accessing learning opportunities in tech and participating in events like this workshop.
+      </p>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">What the Support Covers</h2>
+      <ul class="space-y-2 text-gray-700 text-base">
+        <li><i class="fa-solid fa-ticket text-yellow-600 mr-2"></i> Conference tickets</li>
+        <li><i class="fa-solid fa-bus text-yellow-600 mr-2"></i> Transportation (especially for participants traveling from Arua)</li>
+        <li><i class="fa-solid fa-bed text-yellow-600 mr-2"></i> Accommodation where necessary</li>
+      </ul>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Priority Will Be Given To</h2>
+      <ul class="space-y-2 text-gray-700 text-base">
+        <li><i class="fa-solid fa-check text-green-600 mr-2"></i> Refugees and underserved youth</li>
+        <li><i class="fa-solid fa-check text-green-600 mr-2"></i> Women and beginners in tech</li>
+        <li><i class="fa-solid fa-check text-green-600 mr-2"></i> Applicants who demonstrate strong interest but have limited access to resources</li>
+      </ul>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Application Process</h2>
+      <p class="text-gray-700 text-base leading-relaxed mb-3">
+        Applicants will be required to complete a short application form, where they will share a bit about their
+        background, interest in the workshop, and need for support.
+      </p>
+      <p class="text-gray-700 text-base leading-relaxed mb-3">
+        Applications will be reviewed by the organizing team, and selected participants will be contacted with further
+        details.
+      </p>
+      <p class="text-gray-700 text-base leading-relaxed mb-3">
+        Due to limited resources, financial aid will be provided based on need and availability.
+      </p>
+      <p class="text-gray-700 text-base leading-relaxed">
+        Our goal is to ensure that financial constraints do not prevent motivated individuals from participating,
+        learning, and benefiting from the opportunities offered during the workshop and the wider event.
+      </p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
