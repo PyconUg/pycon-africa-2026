@@ -132,3 +132,4 @@ secrets.py
 
 node_modules/
 package-lock.json
+pycon2026/context/
