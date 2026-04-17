@@ -19,23 +19,22 @@
 <script src="//code.tidio.co/00hkw5reeffaallvkbjizeykysxulx6p.js" async></script>
 
 <section class="hero-section">
-  <div class="hero-background" style='background-image: url("{% static "2026/img/resort-pathway.jpg" %}")'></div>
+  <div class="hero-background" style="background-image: url('{% static '2026/img/resort-pathway.jpg' %}');"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content flex justify-center flex-col hero-content-height">
     <div class="flex justify-center hero-logo">
-      <img src="{% static '2026/img/logo final.png' %}" alt="PyCon Africa 2026 Logo" width="200px" height="auto" />
+      <img src="{% static '2026/img/logo final.png' %}" alt="PyCon Africa 2026 Logo" width="200px"
+        height="auto" />
     </div>
 
-    <div class="flex justify-center flex-col text-center hero-text-container">
+    <div class="flex justify-center flex-col text-center hero-text-container" style="margin-top: -2rem !important;">
       <!-- <h1 class="hero-title">PyCon Africa 2026</h1> -->
       <h2 class="hero-subtitle mt-10">Code Community and Opportunity</h2>
       <p class="hero-description">Build and Lead the Future with Python</p>
     </div>
 
     <!-- Date and Venue Info -->
-    <div
-      class="flex flex-col md:flex-row items-center justify-center w-full md:w-[464px] h-auto md:h-[51px] mx-auto mt-6 text-white gap-4 md:gap-[39px] px-4"
-      style="margin-top: 3rem !important;">
+    <div class="flex flex-col md:flex-row items-center justify-center w-full md:w-[464px] h-auto md:h-[51px] mx-auto mt-6 text-white gap-4 md:gap-[39px] px-4" style="margin-top: 3rem !important;">
       <!-- Date Section -->
       <div class="flex items-center gap-4">
         <i class="far fa-calendar-alt text-white" style="font-size: 50px;" aria-hidden="true"></i>
@@ -46,8 +45,7 @@
       </div>
 
       <!-- Vertical Separator -->
-      <div class="hidden md:block flex-shrink-0"
-        style="width: 2px; height: 51px; background-color: #ffffff !important; opacity: 1 !important;"></div>
+      <div class="hidden md:block flex-shrink-0" style="width: 2px; height: 51px; background-color: #ffffff !important; opacity: 1 !important;"></div>
 
       <!-- Venue Section -->
       <div class="flex items-center gap-4">
@@ -60,21 +58,14 @@
     </div>
 
     <!-- Action Buttons -->
-    <div
-      class="flex flex-wrap items-center justify-center hero-action-buttons gap-3 md:gap-3 mt-8 lg:mt-16 md:mt-10 px-4 w-full max-w-2xl mx-auto">
-      <a href="/2026/talks/submit/"
-        class="hero-action-btn text-white font-medium whitespace-nowrap flex items-center justify-center font-sans text-decoration-none rounded shadow-sm"
-        style="min-width: 140px; height: 50px; padding: 14px 24px; border-radius: 5px; background-color: #F59E0B; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+    <div class="flex flex-wrap items-center justify-center hero-action-buttons gap-3 md:gap-3 mt-8 lg:mt-16 md:mt-10 px-4 w-full max-w-2xl mx-auto">
+      <a href="/2026/talks/submit/" class="hero-action-btn text-white font-medium whitespace-nowrap flex items-center justify-center font-sans text-decoration-none rounded shadow-sm" style="min-width: 140px; height: 50px; padding: 14px 24px; border-radius: 5px; background-color: #F59E0B; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
         Submit a Talk
       </a>
-      <a href="https://www.quicket.co.ug/events/361146-pycon-africa-2026/" target="_blank" rel="noopener noreferrer"
-        class="hero-action-btn text-white font-medium whitespace-nowrap flex items-center justify-center font-sans text-decoration-none rounded shadow-sm"
-        style="min-width: 140px; height: 50px; padding: 14px 24px; border-radius: 5px; background-color: #2196F3; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+      <a href="https://www.quicket.co.ug/events/361146-pycon-africa-2026/" target="_blank" rel="noopener noreferrer" class="hero-action-btn text-white font-medium whitespace-nowrap flex items-center justify-center font-sans text-decoration-none rounded shadow-sm" style="min-width: 140px; height: 50px; padding: 14px 24px; border-radius: 5px; background-color: #2196F3; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
         Buy a Ticket
       </a>
-      <a href="/2026/sponsor-us/"
-        class="hero-action-btn text-white font-medium whitespace-nowrap flex items-center justify-center font-sans text-decoration-none rounded shadow-sm"
-        style="min-width: 140px; height: 50px; padding: 14px 24px; border-radius: 5px; background-color: #084C61; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
+      <a href="/2026/sponsor-us/" class="hero-action-btn text-white font-medium whitespace-nowrap flex items-center justify-center font-sans text-decoration-none rounded shadow-sm" style="min-width: 140px; height: 50px; padding: 14px 24px; border-radius: 5px; background-color: #084C61; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
         Sponsor Us
       </a>
     </div>
@@ -83,450 +74,238 @@
 
 <!-- End Promo Block -->
 
-<!-- Programme section -->
-
-<section style="background: #ffffff; padding: 5rem 0;">
+<!-- Latest Updates Section -->
+<section class="py-16" style="background: linear-gradient(to right, #2196F3, #4CAF50);">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-    <!-- Header -->
-    <div style="text-align:center; margin-bottom: 3.5rem;">
-      <h2 style="color:#1f2937; font-size:2.25rem; font-weight:800; margin:0 0 0.75rem;">Our Programme</h2>
-      <p style="color:#6b7280; font-size:1rem; max-width:520px; margin:0 auto; line-height:1.7;">Five
-        days of learning, networking, and collaboration designed for Python enthusiasts at every level.</p>
-    </div>
-
-    <!-- Cards -->
-    <div class="programme-cards">
-
-      <!-- Beginners Day -->
-      <div class="programme-card">
-        <div class="programme-card-img-wrap">
-          <img src="{% static '2026/img/tutorials.jpg' %}" alt="Beginners Day" class="programme-card-img">
-          <div class="programme-card-badge" style="background:#2d6a2d;">Day 1</div>
+    <h2 class="text-3xl lg:text-4xl font-bold text-center mb-12" style="color: #ffffff;">
+      🎉 Latest Updates
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+      <!-- CFP is Live Card -->
+      <div class="bg-white rounded-lg shadow-lg p-8 flex flex-col justify-between min-w-0 min-h-[280px]">
+        <div class="flex-grow flex flex-col justify-start">
+          <div class="text-center mb-2">
+            <div class="text-5xl mb-2">🎉</div>
+          </div>
+          <h3 class="text-2xl font-bold mb-2 text-center" style="color: #1f2937;">
+            CFP is Live!
+          </h3>
+          <p class="text-center" style="color: #4b5563; font-size: 18px; line-height: 1.6;">
+            Our Call for Proposals is now open! Share your knowledge, experience, and passion with the Python community in Africa.
+          </p>
         </div>
-        <div class="programme-card-body">
-          <div class="programme-card-icon" style="color:#4ade80;">
-            <i class="fa-solid fa-seedling"></i>
-          </div>
-          <h3 class="programme-card-title" style="color:#4ade80;">Beginners Day</h3>
-          <p class="programme-card-desc">Free hands-on workshops for complete newcomers to Python. No experience needed
-            — just curiosity.</p>
-          <div class="programme-card-tag"
-            style="background:rgba(74,222,128,0.1); color:#4ade80; border-color:rgba(74,222,128,0.25);">Free &amp; Open
-          </div>
+        <div class="text-center mt-4">
+          <a href="/2026/talks/submit/" class="inline-block px-5 py-3 rounded-lg text-white font-semibold" style="background-color: #F59E0B; font-size: 18px; text-decoration: none;">
+            Submit a Talk
+          </a>
         </div>
       </div>
 
-      <!-- Main Conference -->
-      <div class="programme-card programme-card-featured">
-        <div class="programme-card-img-wrap">
-          <img src="{% static '2026/img/speakers.jpg' %}" alt="Main Conference" class="programme-card-img">
-          <div class="programme-card-badge" style="background:#c8a84b; color:#111810;">Days 2–4</div>
-        </div>
-        <div class="programme-card-body">
-          <div class="programme-card-icon" style="color:#c8a84b;">
-            <i class="fa-solid fa-microphone-lines"></i>
+      <!-- Tickets Card -->
+      <div class="bg-white rounded-lg shadow-lg p-8 flex flex-col justify-between min-w-0 min-h-[280px]">
+        <div class="flex-grow flex flex-col justify-start">
+          <div class="text-center mb-2">
+            <div class="text-5xl mb-2">🏷️</div>
           </div>
-          <h3 class="programme-card-title" style="color:#c8a84b;">Main Conference</h3>
-          <p class="programme-card-desc">Inspiring talks, workshops, and networking with speakers from across Africa and
-            beyond.</p>
-          <div class="programme-card-tag"
-            style="background:rgba(200,168,75,0.1); color:#c8a84b; border-color:rgba(200,168,75,0.25);">Talks &amp;
-            Workshops</div>
+          <h3 class="text-2xl font-bold mb-2 text-center" style="color: #1f2937;">
+            Get Your Tickets
+          </h3>
+          <p class="text-center" style="color: #4b5563; font-size: 18px; line-height: 1.6;">
+            Secure your spot at PyCon Africa 2026! Get your tickets now and join us for an unforgettable Python conference experience.
+          </p>
+        </div>
+        <div class="text-center mt-4">
+          <a href="https://www.quicket.co.ug/events/361146-pycon-africa-2026/" target="_blank" rel="noopener noreferrer" class="inline-block px-5 py-3 rounded-lg text-white font-semibold" style="background-color: #2196F3; font-size: 18px; text-decoration: none;">
+            Buy Tickets
+          </a>
         </div>
       </div>
 
-      <!-- Sprints -->
-      <div class="programme-card">
-        <div class="programme-card-img-wrap">
-          <img src="{% static '2026/img/PyConAfrica-sprints.jpg' %}" alt="Sprints" class="programme-card-img">
-          <div class="programme-card-badge" style="background:#dc2626;">Day 5</div>
+      <!-- Sponsor Us Card -->
+      <div class="bg-white rounded-lg shadow-lg p-8 flex flex-col justify-between min-w-0 min-h-[280px]">
+        <div class="flex-grow flex flex-col justify-start">
+          <div class="text-center mb-2">
+            <div class="text-5xl mb-2">🤝</div>
+          </div>
+          <h3 class="text-2xl font-bold mb-2 text-center" style="color: #1f2937;">
+            Sponsor Us!
+          </h3>
+          <p class="text-center" style="color: #4b5563; font-size: 18px; line-height: 1.6;">
+            Help us make PyCon Africa 2026 amazing! Partner with us to support the Python community in Africa.
+          </p>
         </div>
-        <div class="programme-card-body">
-          <div class="programme-card-icon" style="color:#f87171;">
-            <i class="fa-solid fa-code-branch"></i>
-          </div>
-          <h3 class="programme-card-title" style="color:#f87171;">Sprints</h3>
-          <p class="programme-card-desc">Collaborate on open-source Python projects with fellow developers from the
-            community.</p>
-          <div class="programme-card-tag"
-            style="background:rgba(248,113,113,0.1); color:#f87171; border-color:rgba(248,113,113,0.25);">Open Source
-          </div>
+        <div class="text-center mt-4">
+          <a href="/2026/sponsor-us/" class="inline-block px-5 py-3 rounded-lg text-white font-semibold" style="background-color: #4CAF50; font-size: 18px; text-decoration: none;">
+            Sponsor Us
+          </a>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<style>
-  .programme-cards {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
+<section class="bg-gray-50 py-16">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
 
-  @media (min-width: 768px) {
-    .programme-cards {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  .programme-card {
-    background: #f9fafb;
-    border: 1px solid #e5e7eb;
-    border-radius: 1rem;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .programme-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
-  }
-
-  .programme-card-featured {
-    border-color: #c8a84b;
-    background: #fffdf5;
-  }
-
-  .programme-card-img-wrap {
-    position: relative;
-  }
-
-  .programme-card-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    display: block;
-  }
-
-  .programme-card-badge {
-    position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.25rem 0.625rem;
-    border-radius: 999px;
-    color: #fff;
-  }
-
-  .programme-card-body {
-    padding: 1.5rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.625rem;
-  }
-
-  .programme-card-icon {
-    font-size: 1.5rem;
-  }
-
-  .programme-card-title {
-    font-size: 1.1rem;
-    font-weight: 700;
-    margin: 0;
-  }
-
-  .programme-card-desc {
-    font-size: 0.875rem;
-    color: #6b7280;
-    line-height: 1.65;
-    flex: 1;
-    margin: 0;
-  }
-
-  .programme-card-tag {
-    display: inline-block;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 0.25rem 0.625rem;
-    border-radius: 999px;
-    border: 1px solid;
-    margin-top: 0.25rem;
-    align-self: flex-start;
-  }
-</style>
-
-<div
-  style="text-align:center; padding: 0.75rem 1rem 3rem; border-top:1px solid #e5e7eb; max-width:72rem; margin:0.5rem auto 0;">
-  <p style="color:#9ca3af; font-size:0.875rem; margin:0;">New to Python? Stay updated for our beginners' workshop during
-    the conference.</p>
-</div>
-
-</section>
-
-<!-- Join Community section -->
-
-<style>
-  .community-bg-section {
-    background-image: url("{% static '2026/img/pycon1.jpeg' %}");
-    background-size: cover;
-    background-position: center;
-  }
-</style>
-
-<section class="py-16 community-bg-section" style="position: relative; overflow: hidden;">
-  <!-- brown color overlay -->
-  <div style="position:absolute; inset:0; background: rgba(44, 24, 16, 0.72); pointer-events:none; z-index:0;">
-  </div>
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8" style="position:relative; z-index:1;">
-
-    <h2 class="text-3xl lg:text-4xl font-bold" style="color:#ffffff;">
+    <h2 class="text-3xl lg:text-4xl font-bold">
       Join the Python Community in Africa
     </h2>
 
-    <p class="text-lg max-w-3xl mx-auto mb-10" style="color:rgba(255,255,255,0.95);">
+    <p class="text-gray-600 text-lg max-w-3xl mx-auto mb-10">
       Be part of something special. Whether you're attending in person or online,
       contributing to our community, or just getting started with your Python journey -
       there's a place for you.
     </p>
 
-    <div class="community-cards mt-12 mb-10">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 mb-10" style="gap: 2rem !important;"> 
 
-      <div class="community-card-dark text-center flex flex-col" style="min-height:220px;">
-        <div class="community-card-icon-wrap" style="color:#60a5fa;">
-          <i class="fa-solid fa-ticket" style="font-size:1.75rem;"></i>
-        </div>
-        <h3 class="text-xl font-semibold mb-3" style="color:#60a5fa;">Get Your Tickets</h3>
-        <p class="mb-6 flex-grow" style="color:#ffffff;">
+      <div class="bg-white border border-gray-200 rounded-lg p-8 min-h-[220px] text-center flex flex-col">
+        <h3 class="text-pycon-blue text-xl font-semibold mb-4">
+          Get Your Tickets
+        </h3>
+        <p class="text-gray-700 mb-6 flex-grow">
           Join us in Kampala to attend Pycon Africa 2026. Early bird tickets are now available.
         </p>
         <div class="mt-auto">
-          <a href="https://www.quicket.co.ug/events/361146-pycon-africa-2026/" target="_blank" rel="noopener noreferrer"
-            class="btn" style="background-color: #2196F3; color: white;">Get Tickets</a>
+          <a href="https://www.quicket.co.ug/events/361146-pycon-africa-2026/" target="_blank" rel="noopener noreferrer" class="btn" style="background-color: #2196F3; color: white;">
+            Get Tickets
+          </a>
         </div>
       </div>
 
-      <div class="community-card-dark text-center flex flex-col" style="min-height:220px;">
-        <div class="community-card-icon-wrap" style="color:#4ade80;">
-          <i class="fa-solid fa-heart" style="font-size:1.75rem;"></i>
-        </div>
-        <h3 class="text-xl font-semibold mb-3" style="color:#4ade80;">Support Our Community</h3>
-        <p class="mb-6 flex-grow" style="color:#ffffff;">
+      <div class="bg-white border border-gray-200 rounded-lg p-8 min-h-[220px] text-center flex flex-col">
+        <h3 class="text-pycon-green text-xl font-semibold mb-4">
+          Support Our Community
+        </h3>
+        <p class="text-gray-700 mb-6 flex-grow">
           Go to our tickets page and select Donate to Pycon Africa to support our community.
         </p>
         <div class="mt-auto">
-          <a href="https://www.quicket.co.ug/events/361146-pycon-africa-2026/" target="_blank" rel="noopener noreferrer"
-            class="btn btn-success">Donate</a>
+          <a href="https://www.quicket.co.ug/events/361146-pycon-africa-2026/" target="_blank" rel="noopener noreferrer" class="btn btn-success">
+            Donate
+          </a>
         </div>
       </div>
 
-      <div class="community-card-dark text-center flex flex-col" style="min-height:220px;">
-        <div class="community-card-icon-wrap" style="color:#f87171;">
-          <i class="fa-solid fa-users" style="font-size:1.75rem;"></i>
-        </div>
-        <h3 class="text-xl font-semibold mb-3" style="color:#f87171;">Friends of PyCon Africa</h3>
-        <p class="mb-6 flex-grow" style="color:#ffffff;">
+      <div class="bg-white border border-gray-200 rounded-lg p-8 min-h-[220px] text-center flex flex-col">
+        <h3 class="text-pycon-red text-xl font-semibold mb-4">
+          Friends of PyCon Africa
+        </h3>
+        <p class="text-gray-700 mb-6 flex-grow">
           Join our free community livestream event in October.
         </p>
         <div class="mt-auto">
-          <a href="/accounts/login/" class="btn btn-secondary">Join Now</a>
-        </div>
-      </div>
-
-      <div class="community-card-dark text-center flex flex-col"
-        style="min-height:220px; border-color:rgba(250,204,21,0.4);">
-        <div class="community-card-icon-wrap" style="color:#facc15;">
-          <i class="fa-solid fa-paper-plane" style="font-size:1.75rem;"></i>
-        </div>
-        <h3 class="text-xl font-semibold mb-3" style="color:#facc15;">Call for Proposals</h3>
-        <p class="mb-6 flex-grow" style="color:#ffffff;">
-          Got something to share? Submit a talk, workshop, or tutorial for PyCon Africa 2026.
-        </p>
-        <div class="mt-auto">
-          <a href="/2026/talks/proposals/" class="btn"
-            style="background-color: #facc15; color: #1a0a00; font-weight:700;">Submit a Talk</a>
+          <a href="/accounts/login/" class="btn btn-secondary">
+            Join Now
+          </a>
         </div>
       </div>
 
     </div>
 
-    <style>
-      .community-cards {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 1.25rem;
-        position: relative;
-        z-index: 1;
-      }
-
-      @media (min-width: 600px) {
-        .community-cards {
-          grid-template-columns: repeat(2, 1fr);
-        }
-      }
-
-      @media (min-width: 1024px) {
-        .community-cards {
-          grid-template-columns: repeat(4, 1fr);
-          gap: 1.5rem;
-        }
-      }
-
-      .community-card-dark {
-        background: rgba(44, 24, 16, 0.55);
-        border: 1px solid rgba(200, 168, 75, 0.3);
-        border-radius: 1rem;
-        padding: 2rem 1.5rem;
-        display: flex;
-        flex-direction: column;
-        transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-      }
-
-      .community-card-dark:hover {
-        background: rgba(44, 24, 16, 0.75);
-        transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-        border-color: rgba(200, 168, 75, 0.6);
-      }
-
-      .community-card-icon-wrap {
-        margin-bottom: 1rem;
-      }
-    </style>
+    <div class="pt-8 border-t border-gray-200">
+      <p class="text-gray-500">
+        New to Python? Stay updated for our beginners' workshop during the conference.
+      </p>
+    </div>
 
   </div>
 </section>
 
-<!-- Video section -->
-<section class="py-16 bg-gray-50">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Programme section -->
 
-    <!-- Two-column layout -->
-    <div class="video-section-grid" style="display:grid; grid-template-columns:1fr; gap:3rem; align-items:center;">
-
-      <style>
-        @media (min-width: 768px) {
-          .video-section-grid {
-            grid-template-columns: 1fr 1fr !important;
-          }
-        }
-      </style>
-
-      <!-- Left: video -->
-      <div>
-        <div class="bg-white rounded-xl shadow-md overflow-hidden">
-          <iframe src="https://www.youtube.com/embed/nH9fLYR0Kfo" title="PyCon Africa 2025 Highlights" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen
-            style="width:100%; height:320px; display:block;"></iframe>
+<section class="py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-12">
+        <div class="space-y-4">
+            <h2>Our Programme</h2>
+            <p class="text-gray-600 text-lg max-w-3xl mx-auto">
+                Five days of learning, networking, and collaboration designed for Python enthusiasts at every level
+            </p>
         </div>
-      </div>
 
-      <!-- Right: text -->
-      <div>
-        <p class="text-sm font-semibold uppercase tracking-widest mb-3" style="color:#8B5E3C;">PyCon Africa 2025</p>
-        <h2 class="text-3xl font-bold text-gray-900 mb-4">See What You Missed</h2>
-        <p class="text-gray-600 text-lg leading-relaxed mb-6">
-          Get a taste of the energy, learning, and community that makes PyCon Africa special. Five days of talks,
-          workshops, sprints, and connections that last a lifetime.
-        </p>
-        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:1.5rem;">
-          <div class="text-center">
-            <div class="text-2xl font-bold" style="color:#8B5E3C;">500+</div>
-            <div class="text-sm text-gray-500">Attendees</div>
-          </div>
-          <div class="text-center">
-            <div class="text-2xl font-bold" style="color:#8B5E3C;">40+</div>
-            <div class="text-sm text-gray-500">Talks</div>
-          </div>
-          <div class="text-center">
-            <div class="text-2xl font-bold" style="color:#8B5E3C;">20+</div>
-            <div class="text-sm text-gray-500">Countries</div>
-          </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center flex flex-col">
+                <img src="{% static '2026/img/tutorials.jpg' %}" class="w-full h-64 object-cover rounded-t-lg" alt="Beginners Day Image">
+                <h3 class="text-pycon-green text-xl font-bold mb-4">Beginners Day</h3>
+                <p class="text-gray-700 mb-6 flex-grow">Free hands-on workshops for complete newcomers to Python. No experience needed!</p>
+                <!-- <div class="mt-auto">
+                    <a href="/beginners-day" class="btn btn-success">Learn More</a>
+                </div> -->
+            </div>
+
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center flex flex-col">
+                <img src="{% static '2026/img/speakers.jpg' %}" class="w-full h-64 object-cover rounded-t-lg" alt="Main Conference Days Image">
+                <h3 class="text-pycon-blue text-xl font-bold mb-4">Main Conference Days</h3>
+                <p class="text-gray-700 mb-6 flex-grow">Inspiring talks, hands-on workshops, and networking with amazing speakers from across the continent and beyond</p>
+                <!-- <div class="mt-auto">
+                    <a href="/tickets" class="btn">Get Tickets</a>
+                </div> -->
+            </div>
+
+            <div class="bg-white shadow-lg rounded-lg p-6 text-center flex flex-col">
+              <img src="{% static '2026/img/PyConAfrica-sprints.jpg' %}" class="w-full h-64 object-cover rounded-t-lg" alt="Sprints Image">
+               <h3 class="text-pycon-red text-xl font-semibold mb-4">Sprints</h3>
+                <p class="text-gray-700 mb-6 flex-grow">Collaboration on new and established open-source Python projects with fellow developers</p>
+                <!-- <div class="mt-auto">
+                    <a href="/sprints" class="btn btn-secondary">Join Sprints</a>
+                </div> -->
+            </div>
         </div>
-        <a href="https://za.pycon.org/" target="_blank" rel="noopener noreferrer" class="btn"
-          style="background:#8B5E3C; color:#fff; display:inline-block;">
-          Visit PyCon Africa 2025
-        </a>
-      </div>
-
     </div>
+</section>
+
+<section class="bg-gray-50 py-16">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+      <div class="space-y-4">
+          <h2>See What You Missed in 2025</h2>
+          <p class="text-gray-600 text-lg">Get a taste of the energy, learning, and community that makes PyCon Africa special</p>
+      </div>
+      
+      <div class="bg-white rounded-lg p-6 shadow-sm">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/nH9fLYR0Kfo" title="PyCon Africa 2024 Highlights" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen="" class="mx-auto w-full max-w-[560px] rounded-lg"></iframe>
+      </div>
   </div>
 </section>
 
 <!-- Get Involved section -->
-<section class="py-16" style="background: #f8fafc;">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-
-    <div class="text-center mb-12">
-      <h2 class="text-3xl font-bold text-gray-900 mb-3">Ready to Get Involved?</h2>
-      <p class="text-gray-500 text-lg">There's a place for everyone at PyCon Africa 2026.</p>
+<section class="bg-pycon-blue/5 py-16">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+        <h2>Ready to Get Involved?</h2>
+        
+        <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
+                <h3 class="text-pycon-green text-lg font-semibold">New to Python?</h3>
+                <p class="text-gray-700">Join our free Beginner's Day workshop - no experience needed to become a Pythonista!</p>
+                <a href="/accounts/login/" class="btn btn-success">Sign-up to get involved</a>
+            </div>
+            
+            <div class="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
+                <h3 class="text-pycon-red text-lg font-semibold">International Attendees</h3>
+                <p class="text-gray-700">Get a visa to Uganda to attend in-person and get the full experience of Pycon Africa.</p>
+                <a href="/2026/visa/apply/" class="btn btn-secondary">Get a Visa</a>
+            </div>
+        </div>
+        
+        <div class="pt-8">
+            <p class="text-gray-600">
+                Questions? <a href="/2026/about/contact-us/" class="text-pycon-blue hover:underline">Get in touch</a> - we're here to help make your PyCon Africa experience amazing.
+            </p>
+        </div>
     </div>
-
-    <div class="get-involved-grid" style="display:grid; grid-template-columns:1fr; gap:1.5rem;">
-
-      <div style="background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:2rem;">
-        <i class="fa-solid fa-laptop-code"
-          style="font-size:2.5rem; color:#16a34a; display:block; margin-bottom:1rem;"></i>
-        <h3 style="color:#16a34a; font-size:1.1rem; font-weight:700; margin:0 0 0.75rem;">New to Python?</h3>
-        <p style="color:#4b5563; margin:0 0 1.5rem; line-height:1.6;">Join our free Beginner's Day workshop — no
-          experience needed to become a Pythonista!</p>
-        <a href="/accounts/login/" class="btn btn-success">Sign up to get involved</a>
-      </div>
-
-      <div style="background:#fff; border:1px solid #e2e8f0; border-radius:1rem; padding:2rem;">
-        <i class="fa-solid fa-globe" style="font-size:2.5rem; color:#2563eb; display:block; margin-bottom:1rem;"></i>
-        <h3 style="color:#2563eb; font-size:1.1rem; font-weight:700; margin:0 0 0.75rem;">International Attendees</h3>
-        <p style="color:#4b5563; margin:0 0 1.5rem; line-height:1.6;">Get a visa to Uganda to attend in-person and get
-          the full experience of PyCon Africa.</p>
-        <a href="/2026/visa/apply/" class="btn btn-secondary">Get a Visa</a>
-      </div>
-
-    </div>
-
-    <style>
-      @media (min-width: 640px) {
-        .get-involved-grid {
-          grid-template-columns: 1fr 1fr !important;
-        }
-      }
-    </style>
-
-    <div class="text-center mt-10">
-      <p style="color:#6b7280;">
-        Questions? <a href="/2026/about/contact-us/" style="color:#2563eb; text-decoration:underline;">Get in touch</a>
-        — we're here to help make your PyCon Africa experience amazing.
-      </p>
-    </div>
-  </div>
 </section>
-
-<style>
-  @media (min-width: 640px) {
-    .get-involved-grid {
-      grid-template-columns: 1fr 1fr !important;
-    }
-  }
-</style>
 
 <!-- Thank you section -->
-<section class="py-16" style="background: linear-gradient(135deg, #fefce8 0%, #fef9c3 50%, #fefce8 100%);">
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <div style="font-size:2.5rem; margin-bottom:1rem;">🐍</div>
-    <h2 style="color:#713f12; font-size:2rem; font-weight:800; margin-bottom:1rem;">Thanks for stopping by!</h2>
-    <p style="color:#92400e; font-size:1.1rem; line-height:1.7; margin-bottom:2rem; opacity:0.8;">
-      We're excited to have you join our community of Python enthusiasts. Stay tuned for more updates about PyCon Africa
-      2026.
-    </p>
-    <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
-      <a href="https://www.quicket.co.ug/events/361146-pycon-africa-2026/" target="_blank" rel="noopener noreferrer"
-        class="btn" style="background:#2563eb; color:#fff; border:none;">Buy Tickets</a>
-      <a href="/2026/talks/proposals/" class="btn btn-secondary">Submit a Talk</a>
+<section class="py-16 bg-pycon-blue/5">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2>Thanks for stopping by!</h2>
+        <p class="text-gray-600">
+            We're excited to have you join our community of Python enthusiasts. Stay tuned for more updates and information about Pycon Africa.
+        </p>
     </div>
-  </div>
 </section>
+
+<!-- Commented out sections: About, Tickets, and Sponsors -->
 <!--
 <section id="about" class="py-5 bg-gray-800 about-section">
   <div class="max-w-7xl mx-auto px-4 mx-auto max-w-screen-xl px-4">

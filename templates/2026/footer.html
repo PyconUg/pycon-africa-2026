@@ -11,12 +11,10 @@
       line-height: 1.2 !important;
       gap: 1.5rem !important;
     }
-
-    .copyright>div:first-child {
+    .copyright > div:first-child {
       text-align: center !important;
     }
-
-    .copyright>div:last-child {
+    .copyright > div:last-child {
       justify-content: center !important;
     }
   }
@@ -37,17 +35,17 @@
         <ul class="footer-link-list">
           <li><a href="/" class="footer-link">Home</a></li>
           <li><a href="/2026/coc/" class="footer-link">Code Of Conduct</a></li> -->
-  <!-- <li><a href="https://www.quicket.co.ug/events/309365-pycon-uganda-2026/" class="footer-link" target="_blank" rel="noopener">Tickets</a></li> -->
-  <!-- <li><a href="/privacy-policy" class="footer-link">Privacy Policy</a></li> -->
-  <!-- <li><a href="/2026/h&g/" class="footer-link">Health and Safety Guidelines</a></li> -->
-  <!-- <li class="footer-links-editions">
+          <!-- <li><a href="https://www.quicket.co.ug/events/309365-pycon-uganda-2026/" class="footer-link" target="_blank" rel="noopener">Tickets</a></li> -->
+          <!-- <li><a href="/privacy-policy" class="footer-link">Privacy Policy</a></li> -->
+          <!-- <li><a href="/2026/h&g/" class="footer-link">Health and Safety Guidelines</a></li> -->
+          <!-- <li class="footer-links-editions">
             Our PyCon Africa Editions:
             <ul class="footer-sublist">
               <li><a href="https://pyconug.netlify.app/2024" target="_blank" rel="noopener" class="footer-sublink">PyCon Africa 2024</a></li>
               <li><a href="https://pyconug.netlify.app/2023" target="_blank" rel="noopener" class="footer-sublink">PyCon Africa 2023</a></li>
             </ul>
           </li> -->
-  <!-- </ul>
+        <!-- </ul>
       </div>
       <div class="footer-section footer-contact">
         <h6 class="footer-heading">Contact</h6>
@@ -82,60 +80,34 @@
       </div>
     </div>
   </div> -->
-  <div style="border-top: 2px solid #e2e8f0; width: 100%; margin: 0; padding: 0;">
-    <div class="copyright"
-      style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 2rem; max-width: 1200px; margin: 0 auto; line-height: 1.2;">
-      <div style="text-align: left; font-size: 15px; line-height: 1.2; margin: 0; padding: 0; color: #64748b;">
-        <span>©
-          <script>document.write(new Date().getFullYear());</script>
-        </span>
-        <a href="https://africa.pycon.org/" class="copyright-link"
-          style="line-height: 1.2; color: #2563eb; font-weight: 600; text-decoration: none;">PyCon Uganda &amp; PyCon
-          Africa</a>
+  <div style="border-top: 2px solid #d3d3d3; width: 100%; margin: 0; padding: 0;">
+    <div class="copyright" style="display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.5rem 2rem; max-width: 1200px; margin: 0 auto; line-height: 1.2;">
+      <div style="text-align: left; font-size: 16px; line-height: 1.2; margin: 0; padding: 0;">
+        <span>© <script>document.write(new Date().getFullYear());</script> Copyright: </span>
+        <a href="https://africa.pycon.org/" class="copyright-link" style="line-height: 1.2;">PyCon Uganda and PyCon Africa</a>
       </div>
-      <div class="footer-social-icons"
-        style="display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 1rem; line-height: 1.2; margin: 0; padding: 0;">
-        <a href="https://mastodon.social/@pyconafrica" target="_blank" rel="noopener noreferrer"
-          class="footer-social-img-link" aria-label="Mastodon" style="opacity:0.6; transition:opacity 0.2s;"
-          onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-          <img src="{% static '2026/img/social/mastodon.svg' %}" alt="" width="28" height="28" loading="lazy"
-            decoding="async" class="footer-social-img">
+      <div class="footer-social-icons" style="display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 1.25rem; line-height: 1.2; margin: 0; padding: 0;">
+        {# SVGs under 2026/img/social use explicit fill (#808080) — external FA files used fill="currentColor" which often paints invisible as <img> #}
+        <a href="https://mastodon.social/@pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="Mastodon">
+          <img src="{% static '2026/img/social/mastodon.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
         </a>
-        <a href="https://x.com/pyconafrica" target="_blank" rel="noopener noreferrer" class="footer-social-img-link"
-          aria-label="X (formerly Twitter)" style="opacity:0.6; transition:opacity 0.2s;"
-          onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-          <img src="{% static '2026/img/social/x-twitter.svg' %}" alt="" width="28" height="28" loading="lazy"
-            decoding="async" class="footer-social-img">
+        <a href="https://x.com/pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="X (formerly Twitter)">
+          <img src="{% static '2026/img/social/x-twitter.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
         </a>
-        <a href="https://www.instagram.com/pyconafrica" target="_blank" rel="noopener noreferrer"
-          class="footer-social-img-link" aria-label="Instagram" style="opacity:0.6; transition:opacity 0.2s;"
-          onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-          <img src="{% static '2026/img/social/instagram.svg' %}" alt="" width="28" height="28" loading="lazy"
-            decoding="async" class="footer-social-img">
+        <a href="https://www.instagram.com/pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="Instagram">
+          <img src="{% static '2026/img/social/instagram.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
         </a>
-        <a href="https://www.facebook.com/pyconafrica" target="_blank" rel="noopener noreferrer"
-          class="footer-social-img-link" aria-label="Facebook" style="opacity:0.6; transition:opacity 0.2s;"
-          onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-          <img src="{% static '2026/img/social/facebook.svg' %}" alt="" width="28" height="28" loading="lazy"
-            decoding="async" class="footer-social-img">
+        <a href="https://www.facebook.com/pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="Facebook">
+          <img src="{% static '2026/img/social/facebook.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
         </a>
-        <a href="https://www.linkedin.com/company/pyconafrica" target="_blank" rel="noopener noreferrer"
-          class="footer-social-img-link" aria-label="LinkedIn" style="opacity:0.6; transition:opacity 0.2s;"
-          onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-          <img src="{% static '2026/img/social/linkedin-in.svg' %}" alt="" width="28" height="28" loading="lazy"
-            decoding="async" class="footer-social-img">
+        <a href="https://www.linkedin.com/company/pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="LinkedIn">
+          <img src="{% static '2026/img/social/linkedin-in.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
         </a>
-        <a href="https://www.youtube.com/@PyconAfrica" target="_blank" rel="noopener noreferrer"
-          class="footer-social-img-link" aria-label="YouTube" style="opacity:0.6; transition:opacity 0.2s;"
-          onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-          <img src="{% static '2026/img/social/youtube.svg' %}" alt="" width="28" height="28" loading="lazy"
-            decoding="async" class="footer-social-img">
+        <a href="https://www.youtube.com/@PyconAfrica" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="YouTube">
+          <img src="{% static '2026/img/social/youtube.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
         </a>
-        <a href="https://discord.gg/pyconafrica" target="_blank" rel="noopener noreferrer"
-          class="footer-social-img-link" aria-label="Discord" style="opacity:0.6; transition:opacity 0.2s;"
-          onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
-          <img src="{% static '2026/img/social/discord.svg' %}" alt="" width="28" height="28" loading="lazy"
-            decoding="async" class="footer-social-img">
+        <a href="https://discord.gg/pyconafrica" target="_blank" rel="noopener noreferrer" class="copyright-link footer-social-img-link" aria-label="Discord">
+          <img src="{% static '2026/img/social/discord.svg' %}" alt="" width="32" height="32" loading="lazy" decoding="async" class="footer-social-img">
         </a>
       </div>
     </div>

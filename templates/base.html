@@ -18,8 +18,7 @@
 
   <!-- Open Graph Metadata -->
   <meta property="og:title" content="{% block og_title %}PyCon Africa 2026{% endblock %}">
-  <meta property="og:description"
-    content="{% block og_description %}PyCon Africa 2026 is the annual gathering for the community using and developing the open-source Python programming language in Africa.{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}PyCon Africa 2026 is the annual gathering for the community using and developing the open-source Python programming language in Africa.{% endblock %}">
   <meta property="og:image" content="{% static '2026/img/logo final.png' %}">
   <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">
   <meta property="og:type" content="{% block og_type %}website{% endblock %}">
@@ -28,16 +27,14 @@
   <!-- Twitter Cards Metadata -->
   <meta name="twitter:card" content="{% block twitter_card %}summary_large_image{% endblock %}">
   <meta name="twitter:title" content="{% block twitter_title %}PyCon Africa 2026{% endblock %}">
-  <meta name="twitter:description"
-    content="{% block twitter_description %}PyCon Africa 2026 is the annual gathering for the community using and developing the open-source Python programming language in Africa.{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}PyCon Africa 2026 is the annual gathering for the community using and developing the open-source Python programming language in Africa.{% endblock %}">
   <meta name="twitter:image" content="{% static '2026/img/logo final.png' %}">
   <meta name="twitter:site" content="{% block twitter_site %}@pyconafrica{% endblock %}">
 
   {% block extra_meta %}{% endblock %}
 
   <!-- Google Fonts -->
-  <link rel="stylesheet"
-    href="//fonts.googleapis.com/css?family=Kanchenjunga:wght@400;500;600;700&family=Open+Sans:400,300,500,600,700,800">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Kanchenjunga:wght@400;500;600;700&family=Open+Sans:400,300,500,600,700,800">
 
   <!-- Tailwind CSS (build output) -->
   <link rel="stylesheet" href="{% static 'vendor/main.css' %}">
@@ -51,9 +48,7 @@
   {% block extra_css %}{% endblock %}
   <style>
     /* Minimal gap below navbar on auth/registration pages */
-    .auth-page-content {
-      padding-top: 4rem;
-    }
+    .auth-page-content { padding-top: 4rem; }
   </style>
 </head>
 
@@ -67,14 +62,9 @@
   {% include '2026/footer.html' %}
 
   <!-- Back to top -->
-  <a href="#" id="js-go-to"
-    class="fixed bottom-4 right-4 z-50 p-3 rounded-full bg-gray-700 text-white hover:bg-gray-600 shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500"
-    aria-label="Back to top">
+  <a href="#" id="js-go-to" class="fixed bottom-4 right-4 z-50 p-3 rounded-full bg-gray-700 text-white hover:bg-gray-600 shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500" aria-label="Back to top">
     <i class="fas fa-arrow-up"></i>
   </a>
-
-  <!-- GSAP -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 
   <!-- Alpine.js -->
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -83,10 +73,10 @@
   {% block extra_js %}{% endblock %}
 
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
       var goTo = document.getElementById('js-go-to');
       if (goTo) {
-        goTo.addEventListener('click', function (e) {
+        goTo.addEventListener('click', function(e) {
           e.preventDefault();
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
@@ -94,5 +84,4 @@
     });
   </script>
 </body>
-
 </html>
