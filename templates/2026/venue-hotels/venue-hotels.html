@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% block meta_title %}{% trans "Venue & Hotels | PyCon Africa 2026" %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&amp;icon_names=add_circle,remove_circle" />
+<style>
+  /* Accordion +/- icons: same optical size as .venue-accordion-heading (35.2px) */
+  .venue-accordion-toggle-icon .material-symbols-outlined {
+    font-size: 35.2px;
+    line-height: 1;
+    font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 48;
+  }
+  [x-cloak] { display: none !important; }
+  /* Layered shadow for expanded accordion cards (elevation / realism) */
+  .venue-accordion-card--expanded {
+    box-shadow:
+      0 1px 2px rgba(15, 23, 42, 0.06),
+      0 4px 14px rgba(15, 23, 42, 0.09),
+      0 14px 36px rgba(15, 23, 42, 0.11),
+      0 28px 64px rgba(15, 23, 42, 0.08);
+  }
+  /* Match reference toggle heading: ~35.2px, dark navy */
+  .venue-accordion-page-title {
+    font-size: 35.2px;
+    line-height: 1.2;
+    color: #091130;
+  }
+  .venue-accordion-heading {
+    font-size: 35.2px;
+    line-height: 1.2;
+    color: #091130;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<div class="bg-gray-50 min-h-screen" x-data="{ openId: 'venue' }">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-16 overflow-x-hidden">
+    <h1 class="venue-accordion-page-title font-bold text-center mb-12">
+      {% trans "Venue + Hotels" %}
+    </h1>
+
+    <div>
+      <!-- Venue: first row — no line above; expanded card keeps full rounded corners -->
+      <div class="border-b border-gray-200 -mx-6 px-6 sm:-mx-10 sm:px-10">
+        <div
+          :class="openId === 'venue'
+            ? 'bg-white rounded-xl px-5 sm:px-6 py-5 sm:py-6 mt-0 mb-3 venue-accordion-card--expanded transition-all duration-200'
+            : 'transition-all duration-200'"
+        >
+          <button
+            type="button"
+            id="accordion-venue-heading"
+            class="flex w-full items-center justify-between gap-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-pycon-teal focus-visible:ring-offset-2 rounded-md transition-colors cursor-pointer"
+            :class="openId === 'venue' ? '' : 'py-6 sm:py-7 hover:bg-gray-100/70'"
+            @click="openId = openId === 'venue' ? null : 'venue'"
+            :aria-expanded="openId === 'venue'"
+            aria-controls="accordion-venue-panel"
+          >
+            <span class="venue-accordion-heading font-semibold">{% trans "Venue" %}</span>
+            {% include '2026/venue-hotels/_accordion_toggle_icon.html' with section_key='venue' %}
+          </button>
+          <div
+            id="accordion-venue-panel"
+            role="region"
+            aria-labelledby="accordion-venue-heading"
+            x-show="openId === 'venue'"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 -translate-y-1"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="pt-4 sm:pt-5 mt-2"
+          >
+            <div class="space-y-6 text-gray-900">
+              <p class="text-base leading-relaxed">
+                {% blocktrans trimmed %}
+                PyCon Africa 2026 is taking place at
+                {% endblocktrans %}
+                <a
+                  href="https://www.spekeresort.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-pycon-teal font-medium underline decoration-1 underline-offset-2 hover:text-teal-800"
+                >{% trans "Speke Resort Munyonyo" %}</a>,
+                {% blocktrans trimmed %}
+                which offers conference facilities, accommodation options, and amenities in Kampala.
+                {% endblocktrans %}
+              </p>
+              <div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">{% trans "Venue address" %}</h3>
+                <p class="text-base leading-relaxed">
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Speke+Resort+Munyonyo+Kampala+Uganda"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-pycon-teal font-medium underline decoration-1 underline-offset-2 hover:text-teal-800"
+                  >{% trans "Speke Resort Munyonyo, Munyonyo, Kampala, Uganda" %}</a>
+                </p>
+              </div>
+              <p class="text-base leading-relaxed text-gray-700">
+                {% blocktrans trimmed %}
+                We will share more details about directions, on-site logistics, and accessibility as the event approaches.
+                {% endblocktrans %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotels -->
+      <div class="border-b border-gray-200 -mx-6 px-6 sm:-mx-10 sm:px-10">
+        <div
+          :class="openId === 'hotels'
+            ? 'bg-white rounded-xl px-5 sm:px-6 py-5 sm:py-6 mt-0 mb-3 venue-accordion-card--expanded transition-all duration-200'
+            : 'transition-all duration-200'"
+        >
+          <button
+            type="button"
+            id="accordion-hotels-heading"
+            class="flex w-full items-center justify-between gap-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-pycon-teal focus-visible:ring-offset-2 rounded-md transition-colors cursor-pointer"
+            :class="openId === 'hotels' ? '' : 'py-6 sm:py-7 hover:bg-gray-100/70'"
+            @click="openId = openId === 'hotels' ? null : 'hotels'"
+            :aria-expanded="openId === 'hotels'"
+            aria-controls="accordion-hotels-panel"
+          >
+            <span class="venue-accordion-heading font-semibold">{% trans "Hotels" %}</span>
+            {% include '2026/venue-hotels/_accordion_toggle_icon.html' with section_key='hotels' %}
+          </button>
+          <div
+            id="accordion-hotels-panel"
+            role="region"
+            aria-labelledby="accordion-hotels-heading"
+            x-show="openId === 'hotels'"
+            x-cloak
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 -translate-y-1"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="pt-4 sm:pt-5 mt-2"
+          >
+            <div class="space-y-4 text-gray-900">
+              <p class="text-base leading-relaxed">
+                {% blocktrans trimmed %}
+                Information about recommended hotels, partner rates, and booking options will be published here.
+                {% endblocktrans %}
+              </p>
+              <p class="text-base leading-relaxed">
+                {% trans "For travel and visa support, see the" %}
+                <a href="/2026/visa/apply/" class="text-pycon-teal font-medium underline decoration-1 underline-offset-2 hover:text-teal-800">{% trans "Uganda" %}</a>
+                {% trans "pages in the site navigation." %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hotel Discount -->
+      <div class="border-b border-gray-200 -mx-6 px-6 sm:-mx-10 sm:px-10">
+        <div
+          :class="openId === 'hotel-discount'
+            ? 'bg-white rounded-xl px-5 sm:px-6 py-5 sm:py-6 mt-0 mb-3 venue-accordion-card--expanded transition-all duration-200'
+            : 'transition-all duration-200'"
+        >
+          <button
+            type="button"
+            id="accordion-hotel-discount-heading"
+            class="flex w-full items-center justify-between gap-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-pycon-teal focus-visible:ring-offset-2 rounded-md transition-colors cursor-pointer"
+            :class="openId === 'hotel-discount' ? '' : 'py-6 sm:py-7 hover:bg-gray-100/70'"
+            @click="openId = openId === 'hotel-discount' ? null : 'hotel-discount'"
+            :aria-expanded="openId === 'hotel-discount'"
+            aria-controls="accordion-hotel-discount-panel"
+          >
+            <span class="venue-accordion-heading font-semibold">{% trans "Hotel Discount" %}</span>
+            {% include '2026/venue-hotels/_accordion_toggle_icon.html' with section_key='hotel-discount' %}
+          </button>
+          <div
+            id="accordion-hotel-discount-panel"
+            role="region"
+            aria-labelledby="accordion-hotel-discount-heading"
+            x-show="openId === 'hotel-discount'"
+            x-cloak
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 -translate-y-1"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="pt-4 sm:pt-5 mt-2"
+          >
+            <div class="space-y-4 text-gray-900">
+              <p class="text-base leading-relaxed">
+                {% blocktrans trimmed %}
+                Information about hotel discounts and partner rates will be published here closer to the event.
+                {% endblocktrans %}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

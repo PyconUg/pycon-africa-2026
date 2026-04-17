@@ -41,6 +41,12 @@ def about_south_sudan_region(request):
     context = {}
     return render(request, '2026/about/south_sudan_region.html', context)
 
+
+def venue_hotels(request):
+    context = {}
+    return render(request, '2026/venue-hotels/venue-hotels.html', context)
+
+
 def privacy_policy(request):
     context = {}
     return render(request, '2026/about/privacy_policy.html', context)
