@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% load i18n static markdown_extras %}
+{% block meta_title %}{% trans "PyLadiesCon Africa | PyCon Africa 2026" %}{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<!-- Header -->
+<div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
+  <div class="text-center">
+    <h1 class="text-4xl lg:text-5xl font-bold mb-4">PyLadiesCon Africa @ PyCon Africa 2026</h1>
+  </div>
+</div>
+
+<!-- Body -->
+<div class="max-w-7xl mx-auto px-4 pb-16">
+  <div class="max-w-4xl mx-auto text-gray-900">
+    
+    <!-- About Section -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-6">About</h2>
+      <p class="text-lg leading-relaxed mb-6">
+        PyLadiesCon Africa is a dedicated program within PyCon Africa 2026 designed to empower and support 
+        women in the Python ecosystem across the continent.
+      </p>
+      <p class="text-lg leading-relaxed">
+        The program creates a safe, inclusive, and inspiring space for women to learn, connect, and grow 
+        through technical sessions, mentorship, and community engagement.
+      </p>
+    </div>
+
+    <!-- Objective Section -->
+    <div class="rounded-lg px-6 py-8 mb-12" style="background-color: #fdf2f8; border: 1px solid #f3e8ff;">
+      <h2 class="text-2xl font-bold mb-4">Objective</h2>
+      <p class="text-lg leading-relaxed">
+        To strengthen women's participation in Python by building confidence, skills, visibility, and 
+        leadership within the African tech ecosystem.
+      </p>
+    </div>
+
+    <!-- What to Expect Section -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-8">What to Expect</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-lg p-6 shadow-sm" style="border: 1px solid #f3e8ff;">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-4 mt-1" style="background-color: #fdf2f8;">
+              <i class="fas fa-microphone"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900 mb-2">Inspiring Talks</h3>
+              <p class="text-gray-600">From women in tech across Africa</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg p-6 shadow-sm" style="border: 1px solid #f3e8ff;">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-4 mt-1" style="background-color: #fdf2f8;">
+              <i class="fas fa-laptop-code"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900 mb-2">Hands-on Workshops</h3>
+              <p class="text-gray-600">Python workshops for all skill levels</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg p-6 shadow-sm" style="border: 1px solid #f3e8ff;">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-4 mt-1" style="background-color: #fdf2f8;">
+              <i class="fas fa-users"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900 mb-2">Mentorship & Networking</h3>
+              <p class="text-gray-600">Connect with mentors and peers</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg p-6 shadow-sm" style="border: 1px solid #f3e8ff;">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-4 mt-1" style="background-color: #fdf2f8;">
+              <i class="fas fa-star"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900 mb-2">Speaking Opportunities</h3>
+              <p class="text-gray-600">Opportunities to speak, learn, and contribute</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg p-6 shadow-sm md:col-span-2" style="border: 1px solid #f3e8ff;">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-4 mt-1" style="background-color: #fdf2f8;">
+              <i class="fas fa-heart"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900 mb-2">Community Showcases</h3>
+              <p class="text-gray-600">Engagement and community building activities</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Who Should Apply Section -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold mb-8">Who Should Apply</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="rounded-lg p-4 text-center" style="background-color: #fdf2f8; border: 1px solid #f3e8ff;">
+          <p class="font-medium text-gray-900">Women in tech (all experience levels)</p>
+        </div>
+        <div class="rounded-lg p-4 text-center" style="background-color: #fdf2f8; border: 1px solid #f3e8ff;">
+          <p class="font-medium text-gray-900">Beginners interested in Python</p>
+        </div>
+        <div class="rounded-lg p-4 text-center" style="background-color: #fdf2f8; border: 1px solid #f3e8ff;">
+          <p class="font-medium text-gray-900">Students and recent graduates</p>
+        </div>
+        <div class="rounded-lg p-4 text-center" style="background-color: #fdf2f8; border: 1px solid #f3e8ff;">
+          <p class="font-medium text-gray-900">Career switchers</p>
+        </div>
+        <div class="rounded-lg p-4 text-center" style="background-color: #fdf2f8; border: 1px solid #f3e8ff;">
+          <p class="font-medium text-gray-900">PyLadies chapter members</p>
+        </div>
+        <div class="rounded-lg p-4 text-center" style="background-color: #fdf2f8; border: 1px solid #f3e8ff;">
+          <p class="font-medium text-gray-900">Underrepresented groups, including refugees</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Impact Section -->
+    <div class="rounded-lg px-6 py-8 mb-12" style="background: linear-gradient(to right, #fdf2f8, #f8fafc); border: 1px solid #f3e8ff;">
+      <h2 class="text-2xl font-bold mb-6">Impact</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background-color: #fdf2f8;">
+            <i class="fas fa-chart-line text-xl"></i>
+          </div>
+          <p class="font-medium text-gray-900">Increased participation of women in PyCon Africa</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background-color: #fdf2f8;">
+            <i class="fas fa-network-wired text-xl"></i>
+          </div>
+          <p class="font-medium text-gray-900">Stronger PyLadies chapters and networks</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-3" style="background-color: #fdf2f8;">
+            <i class="fas fa-seedling text-xl"></i>
+          </div>
+          <p class="font-medium text-gray-900">Growth of future speakers, mentors, and leaders</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center text-white rounded-lg px-8 py-12" style="background-color: rgba(255, 75, 75, 0.8);">
+      <h2 class="text-2xl font-bold mb-4">Ready to Join Us?</h2>
+      <p class="text-lg mb-8">
+        Apply to join PyLadiesCon Africa and be part of a growing community of women shaping the future of Python in Africa.
+      </p>
+      <a href="https://forms.gle/nQz6GeSmDvzw5mrd7" target="_blank" rel="noopener noreferrer"  style="color: rgba(255, 75, 75, 0.8);"
+         class="inline-block px-8 py-4 text-lg font-semibold bg-white rounded-lg transition-colors hover:bg-gray-100">
+        Apply Now
+      </a>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

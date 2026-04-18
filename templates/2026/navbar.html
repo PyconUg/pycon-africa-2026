@@ -51,6 +51,21 @@
         </div>
       </div>
 
+      <!-- Co-events -->
+       <div class="nav-dropdown-wrapper" x-data="{open:false}">
+        <button class="nav-item" @click="open=!open">
+          Co-events
+          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
+          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
+        </button>
+        <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
+          <a class="nav-item" href="/2026/co-events/pyladies/">PyLadiesCon Africa</a>
+          <a class="nav-item" href="/2026/co-events/django-girls/">Django Girls</a>
+          <a class="nav-item" href="/2026/co-events/persons_of_concern/">Persons of Concern</a>
+          <!-- <a class="nav-item" href="/2026/co-events/women_in_data_science/">Women in Data Science</a> -->
+        </div>
+      </div>
+
       <!-- Sponsors Dropdown -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open">
