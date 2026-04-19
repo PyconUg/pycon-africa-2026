@@ -40,10 +40,13 @@ urlpatterns = [
     path('team/', view=views.team, name='team'),
     path('report/', view=views.report, name='report'),
     path('platform/', view=views.hopin, name='hopin'), 
-    # path('community/pyladies/', view=views.pyladies, name='pyladies'),
-    path('community/django-girls/', view=views.django_girls, name='django_girls'),
-    path('community/pyladies-wksp/', view=views.pyladies_wksp, name='pyladies_wksp'),   
-    # path('community/ngombor/', view=views.ngombor, name='ngombor')
+    path('co-events/pyladies/', view=views.pyladies, name='pyladies'),
+    path('co-events/django-girls/', view=views.django_girls, name='django_girls'),
+    # path('co-events/pyladies-wksp/', view=views.pyladies_wksp, name='pyladies_wksp'),   
+    # path('co-events/pyladies_con_africa/', views.pyladies_con_africa, name='pyladies_con_africa'),
+    path('co-events/persons_of_concern/', views.persons_of_concern, name='persons_of_concern'),
+    # path('co-events/women_in_data_science/', views.women_in_data_science, name='women_in_data_science'),   
+    # path('co-events/ngombor/', view=views.ngombor, name='ngombor')
     path('past-events/', view=views.past_events, name='past_events'),
 
 ]

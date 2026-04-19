@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+{% load i18n static markdown_extras %}
+{% block meta_title %}{% trans "PyLadies Arua Refugee Python Workshop | PyCon Africa 2026" %}{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<!-- Header -->
+<div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
+  <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 text-center">PyLadies Arua Refugee Python Web Development Workshop</h1>
+</div>
+
+<!-- Body -->
+<div class="max-w-7xl mx-auto px-4 pb-16">
+  <div class="max-w-4xl mx-auto text-gray-900">
+    
+    <!-- Introduction -->
+    <div class="text-center mb-12">
+      <p class="text-lg leading-relaxed mb-6">
+        The PyLadies Arua Refugee Python Web Development Workshop is a full-day, hands-on session designed to 
+        introduce refugees and underserved youth to Python and web development.
+      </p>
+      <p class="text-lg leading-relaxed mb-8">
+        Organized by PyLadies Kampala, this workshop builds on the success of our 2025 bootcamp in Arua, which 
+        trained over 100 participants from refugee and university communities through practical, project-based learning.
+      </p>
+    </div>
+
+    <!-- Event Details -->
+    <div class="rounded-lg bg-blue-50 border border-blue-200 px-6 py-8 mb-12">
+      <h2 class="text-2xl font-bold text-blue-800 mb-6">Event Details</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="text-center">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="fas fa-calendar text-blue-600 text-xl"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Date</h3>
+          <p class="text-gray-700">12 October 2026 (tentative)</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="fas fa-map-marker-alt text-blue-600 text-xl"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Location</h3>
+          <p class="text-gray-700">Kampala, Uganda<br><span class="text-sm">(exact venue to be communicated)</span></p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="fas fa-clock text-blue-600 text-xl"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Duration</h3>
+          <p class="text-gray-700">Full-day workshop</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Why This Workshop Matters -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-blue-800 mb-6">Why This Workshop Matters</h2>
+      <p class="text-lg leading-relaxed">
+        Refugee communities in Arua face limited access to digital skills training and opportunities in the tech space. 
+        This workshop aims to bridge that gap by equipping participants with practical skills that can open pathways 
+        to employment, freelancing, and continued learning.
+      </p>
+    </div>
+
+    <!-- What Participants Will Do -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-blue-800 mb-8">What Participants Will Do</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white border border-blue-100 rounded-lg p-6 shadow-sm">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-4 mt-1">
+              <i class="fas fa-code text-blue-600"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900 mb-2">Learn Python Basics</h3>
+              <p class="text-gray-600">Learn the basics of Python and web development</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white border border-blue-100 rounded-lg p-6 shadow-sm">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-4 mt-1">
+              <i class="fas fa-globe text-blue-600"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900 mb-2">Build Web Applications</h3>
+              <p class="text-gray-600">Build a simple web application using Django</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white border border-blue-100 rounded-lg p-6 shadow-sm">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-4 mt-1">
+              <i class="fas fa-users text-blue-600"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900 mb-2">Mentored Learning</h3>
+              <p class="text-gray-600">Work in a supportive, mentor-led environment</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white border border-blue-100 rounded-lg p-6 shadow-sm">
+          <div class="flex items-start">
+            <div class="flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-4 mt-1">
+              <i class="fab fa-github text-blue-600"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900 mb-2">Share Your Work</h3>
+              <p class="text-gray-600">Push their code to GitHub and share their progress</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Who Should Attend -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-blue-800 mb-8">Who Should Attend</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+          <p class="font-medium text-gray-900">Refugees and underserved youth</p>
+        </div>
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+          <p class="font-medium text-gray-900">Beginners with little or no programming experience</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Expected Impact -->
+    <div class="rounded-lg bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 px-6 py-8 mb-12">
+      <h2 class="text-2xl font-bold text-blue-800 mb-6">Expected Impact</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="text-center">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="fas fa-graduation-cap text-blue-600 text-xl"></i>
+          </div>
+          <p class="font-medium text-gray-900">Train 50–100 participants</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="fas fa-laptop-code text-blue-600 text-xl"></i>
+          </div>
+          <p class="font-medium text-gray-900">Increase access to digital and employable skills</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="fas fa-female text-blue-600 text-xl"></i>
+          </div>
+          <p class="font-medium text-gray-900">Support women and underrepresented groups in tech</p>
+        </div>
+        <div class="text-center">
+          <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="fas fa-community text-blue-600 text-xl"></i>
+          </div>
+          <p class="font-medium text-gray-900">Contribute to the growth of the local Python community</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workshop Schedule -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-center mb-8 text-blue-800">Workshop Schedule (Full-Day)</h2>
+      
+      <!-- Morning Session -->
+      <div class="mb-8">
+        <h3 class="text-xl font-semibold mb-4 text-blue-700">Morning Session</h3>
+        <div class="space-y-3">
+          <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-blue-100">
+            <div class="flex-shrink-0 w-24 text-center">
+              <span class="text-sm font-semibold text-blue-600">09:00 – 09:30</span>
+            </div>
+            <div class="ml-4">
+              <p class="font-medium text-gray-900">Registration & Welcome</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-blue-100">
+            <div class="flex-shrink-0 w-24 text-center">
+              <span class="text-sm font-semibold text-blue-600">09:30 – 10:00</span>
+            </div>
+            <div class="ml-4">
+              <p class="font-medium text-gray-900">Introduction to the workshop & goals</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-blue-100">
+            <div class="flex-shrink-0 w-24 text-center">
+              <span class="text-sm font-semibold text-blue-600">10:00 – 11:00</span>
+            </div>
+            <div class="ml-4">
+              <p class="font-medium text-gray-900">Introduction to Python (basics & setup)</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center p-4 bg-blue-50 rounded-lg shadow-sm border border-blue-200">
+            <div class="flex-shrink-0 w-24 text-center">
+              <span class="text-sm font-semibold text-blue-600">11:00 – 11:15</span>
+            </div>
+            <div class="ml-4">
+              <p class="font-medium text-gray-900">Break</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-blue-100">
+            <div class="flex-shrink-0 w-24 text-center">
+              <span class="text-sm font-semibold text-blue-600">11:15 – 12:30</span>
+            </div>
+            <div class="ml-4">
+              <p class="font-medium text-gray-900">Getting started with Django (first project setup)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Afternoon Session -->
+      <div>
+        <h3 class="text-xl font-semibold mb-4 text-blue-700">Afternoon Session</h3>
+        <div class="space-y-3">
+          <div class="flex items-center p-4 bg-blue-50 rounded-lg shadow-sm border border-blue-200">
+            <div class="flex-shrink-0 w-24 text-center">
+              <span class="text-sm font-semibold text-blue-600">12:30 – 13:30</span>
+            </div>
+            <div class="ml-4">
+              <p class="font-medium text-gray-900">Lunch Break</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-blue-100">
+            <div class="flex-shrink-0 w-24 text-center">
+              <span class="text-sm font-semibold text-blue-600">13:30 – 15:00</span>
+            </div>
+            <div class="ml-4">
+              <p class="font-medium text-gray-900">Building a simple web application (Django core concepts)</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center p-4 bg-blue-50 rounded-lg shadow-sm border border-blue-200">
+            <div class="flex-shrink-0 w-24 text-center">
+              <span class="text-sm font-semibold text-blue-600">15:00 – 15:15</span>
+            </div>
+            <div class="ml-4">
+              <p class="font-medium text-gray-900">Break</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-blue-100">
+            <div class="flex-shrink-0 w-24 text-center">
+              <span class="text-sm font-semibold text-blue-600">15:15 – 16:30</span>
+            </div>
+            <div class="ml-4">
+              <p class="font-medium text-gray-900">Completing the project & adding features</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-blue-100">
+            <div class="flex-shrink-0 w-24 text-center">
+              <span class="text-sm font-semibold text-blue-600">16:30 – 17:00</span>
+            </div>
+            <div class="ml-4">
+              <p class="font-medium text-gray-900">Pushing code to GitHub & project sharing</p>
+            </div>
+          </div>
+          
+          <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-blue-100">
+            <div class="flex-shrink-0 w-24 text-center">
+              <span class="text-sm font-semibold text-blue-600">17:00 – 17:30</span>
+            </div>
+            <div class="ml-4">
+              <p class="font-medium text-gray-900">Wrap-up, reflections & closing</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Registration -->
+    <div class="rounded-lg bg-green-50 border border-green-200 px-6 py-8 mb-12 text-center">
+      <h2 class="text-2xl font-bold text-green-800 mb-4">Registration</h2>
+      <p class="text-lg leading-relaxed text-gray-700 mb-6">
+        Participation will be free for selected attendees, with priority given to refugees and underserved communities.
+      </p>
+      <a href="https://docs.google.com/forms/d/1uAFVvCkN5WA6cclrHzV5M6UwYIPenDAWvsUxjAjR7c0/edit" target="_blank" rel="noopener noreferrer" 
+         class="inline-block px-8 py-3 text-lg font-semibold text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors">
+        Apply for the Workshop
+      </a>
+    </div>
+
+    <!-- Get Involved -->
+    <div class="text-center text-white rounded-lg px-8 py-12" style="background-color: #084C61;">
+      <h2 class="text-2xl font-bold mb-4">Get Involved</h2>
+      <p class="text-lg mb-6">
+        We welcome partners and supporters interested in expanding access to technology education and 
+        empowering underserved communities through tech.
+      </p>
+      <div class="flex items-center justify-center">
+        <i class="fas fa-envelope mr-3 text-xl"></i>
+        <a href="mailto:kampala@pyladies.com" class="text-lg font-semibold hover:underline">
+          kampala@pyladies.com
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
