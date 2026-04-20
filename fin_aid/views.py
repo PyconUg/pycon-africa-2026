@@ -3,7 +3,7 @@ from collections import OrderedDict
 
 from django.shortcuts import render, get_object_or_404, redirect 
 from django.contrib import messages
-from django.db.models import Q 
+from django.db.models import Q, Count 
 from django.template import RequestContext
 from django.views.generic.detail import DetailView
 from django.views.generic import (
@@ -377,7 +377,9 @@ def fin_aid_reviews_list(request, year):
     fin_aids = Fin_aid.objects.filter(event_year=event_year)
     applications = OpportunityGrantApplication.objects.filter(
         fin_aid__in=fin_aids,
-    ).select_related('user', 'fin_aid')
+    ).select_related('user', 'fin_aid').annotate(
+        review_count=Count('reviews')
+    )
 
     reviewed_ids = set(
         FinAidApplicationReview.objects.filter(reviewer=reviewer).values_list(
@@ -387,7 +389,8 @@ def fin_aid_reviews_list(request, year):
     )
     awaiting = [a for a in applications if a.pk not in reviewed_ids]
     reviewed = [a for a in applications if a.pk in reviewed_ids]
-    awaiting.sort(key=lambda a: a.submitted_at, reverse=True)
+    # Sort awaiting by review_count ascending (fewest reviews first), then by submitted_at descending
+    awaiting.sort(key=lambda a: (a.review_count, -a.submitted_at.timestamp()))
     reviewed.sort(key=lambda a: a.submitted_at, reverse=True)
 
     applications_by_support_type = OrderedDict()

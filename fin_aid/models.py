@@ -143,6 +143,39 @@ class OpportunityGrantApplication(models.Model):
     def is_locked_for_applicant_edits(self):
         return self.reviews.exists()
 
+    def get_review_summary(self):
+        """Return a dict with counts of each recommendation type."""
+        reviews = self.reviews.all()
+        summary = {
+            'accept': 0,
+            'reject': 0,
+            'unsure': 0,
+            'total': reviews.count(),
+        }
+        for review in reviews:
+            summary[review.recommendation] += 1
+        return summary
+
+    def get_suggested_status(self):
+        """Suggest a status based on review consensus."""
+        summary = self.get_review_summary()
+        total = summary['total']
+        if total == 0:
+            return self.STATUS_IN_REVIEW
+        
+        accept_count = summary['accept']
+        reject_count = summary['reject']
+        
+        # If majority accept, suggest accepted
+        if accept_count > reject_count and accept_count > total / 2:
+            return self.STATUS_ACCEPTED
+        # If any reject, suggest rejected (strict)
+        elif reject_count > 0:
+            return self.STATUS_REJECTED
+    def get_suggested_status_display(self):
+        """Return the display name for the suggested status."""
+        return dict(self.STATUS_CHOICES)[self.get_suggested_status()]
+
 
 class FinAidApplicationReview(models.Model):
     RECOMMEND_ACCEPT = 'accept'

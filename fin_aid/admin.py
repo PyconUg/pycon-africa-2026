@@ -74,6 +74,8 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
         'status',
         'support_type',
         'submitted_at',
+        'review_summary_display',
+        'suggested_status_display',
     )
     list_filter = ('status', 'support_type', 'fin_aid')
     search_fields = (
@@ -116,6 +118,20 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
             {'fields': ('submitted_at', 'updated_at')},
         ),
     )
+
+    def review_summary_display(self, obj):
+        summary = obj.get_review_summary()
+        return f"A:{summary['accept']} R:{summary['reject']} U:{summary['unsure']} (Total: {summary['total']})"
+    review_summary_display.short_description = 'Review Summary'
+
+    def suggested_status_display(self, obj):
+        suggested = obj.get_suggested_status()
+        current = obj.status
+        if suggested == current:
+            return f"{obj.get_status_display()} ✓"
+        else:
+            return f"{obj.get_status_display()} → {dict(obj.STATUS_CHOICES)[suggested]}"
+    suggested_status_display.short_description = 'Status (Suggested)'
 
 
 @admin.register(FinAidApplicationReview)

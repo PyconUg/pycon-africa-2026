@@ -79,6 +79,30 @@
             </div>
 
             <div class="mt-8 pt-8 border-t border-gray-200">
+              <h3 class="text-lg font-semibold text-gray-900 mb-4">{% trans "Review Summary" %}</h3>
+              {% with summary=application.get_review_summary %}
+                <div class="grid grid-cols-3 gap-4 mb-4">
+                  <div class="text-center p-4 bg-green-50 rounded-lg">
+                    <div class="text-2xl font-bold text-green-600">{{ summary.accept }}</div>
+                    <div class="text-sm text-green-800">Accept</div>
+                  </div>
+                  <div class="text-center p-4 bg-red-50 rounded-lg">
+                    <div class="text-2xl font-bold text-red-600">{{ summary.reject }}</div>
+                    <div class="text-sm text-red-800">Reject</div>
+                  </div>
+                  <div class="text-center p-4 bg-yellow-50 rounded-lg">
+                    <div class="text-2xl font-bold text-yellow-600">{{ summary.unsure }}</div>
+                    <div class="text-sm text-yellow-800">Unsure</div>
+                  </div>
+                </div>
+                <p class="text-gray-600 text-sm">Total reviews: {{ summary.total }}</p>
+                {% if summary.total > 0 %}
+                  <p class="text-gray-600 text-sm">Suggested status: <strong>{{ application.get_suggested_status_display }}</strong></p>
+                {% endif %}
+              {% endwith %}
+            </div>
+
+            <div class="mt-8 pt-8 border-t border-gray-200">
               <h3 class="text-lg font-semibold text-gray-900 mb-4">{% trans "Your review" %}</h3>
 
               {% if already_reviewed %}

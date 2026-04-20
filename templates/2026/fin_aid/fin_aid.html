@@ -18,10 +18,28 @@
         </p>
       {% else %}
         {% with fin_aid=fin_aids.0 %}
-          {% if fin_aid.is_closed %}
-            <p class="text-center text-gray-500 text-lg py-16">
-              {% trans "Opportunity grant information will be available soon. Please check back later." %}
-            </p>
+          {% if fin_aid.is_form_not_open_yet %}
+            <div class="rounded-lg bg-blue-50 border border-blue-200 px-4 py-4 mb-10">
+              <h2 class="text-xl font-bold text-gray-900 mb-3">{% trans "Applications not yet open" %}</h2>
+              <p class="text-lg leading-relaxed mb-4">
+                {% trans "Opportunity grant applications will open soon." %}
+              </p>
+              <ul class="list-disc list-inside space-y-2 text-lg leading-relaxed">
+                <li><strong>{% trans "Applications open:" %}</strong> {{ fin_aid.fin_open_date|date:"j F Y, H:i" }} (EAT)</li>
+                <li><strong>{% trans "Applications close:" %}</strong> {{ fin_aid.fin_close_date|date:"j F Y, H:i" }} (EAT)</li>
+              </ul>
+            </div>
+          {% elif fin_aid.is_closed %}
+            <div class="rounded-lg bg-gray-50 border border-gray-200 px-4 py-4 mb-10">
+              <h2 class="text-xl font-bold text-gray-900 mb-3">{% trans "Applications closed" %}</h2>
+              <p class="text-lg leading-relaxed mb-4">
+                {% trans "Opportunity grant applications are now closed." %}
+              </p>
+              <ul class="list-disc list-inside space-y-2 text-lg leading-relaxed">
+                <li><strong>{% trans "Applications opened:" %}</strong> {{ fin_aid.fin_open_date|date:"j F Y, H:i" }} (EAT)</li>
+                <li><strong>{% trans "Applications closed:" %}</strong> {{ fin_aid.fin_close_date|date:"j F Y, H:i" }} (EAT)</li>
+              </ul>
+            </div>
           {% else %}
 
             <div class="rounded-lg bg-amber-50 border border-amber-200 px-4 py-4 mb-10">
@@ -54,11 +72,6 @@
                   <p class="text-sm text-gray-600 mt-4">{% trans "You can view your application; editing is not available after the deadline or once review has begun." %}</p>
                 {% endif %}
               {% endif %}
-            </div>
-            {% elif fin_aid.not_open_yet %}
-            <div class="rounded-lg bg-amber-50 border border-amber-200 px-6 py-6 mt-10">
-              <h2 class="text-xl font-bold text-gray-900 mb-2">{% trans "Applications opening soon" %}</h2>
-              <p class="text-gray-700">{{ fin_aid.form_status_message }}</p>
             </div>
             {% endif %}
 

@@ -44,6 +44,7 @@
           {% else %}
 
             <h3 class="text-base font-semibold text-gray-900 mb-3">{% trans "Applications awaiting your review" %}</h3>
+            <p class="text-sm text-gray-600 mb-4">{% trans "Applications are sorted by number of reviews (fewest first) to help distribute review workload evenly." %}</p>
 
             {% if applications_by_support_type %}
               {% for support_label, apps in applications_by_support_type.items %}
@@ -56,23 +57,35 @@
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Applicant" %}</th>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Email" %}</th>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Country" %}</th>
+                          <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Reviews" %}</th>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Submitted" %}</th>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Actions" %}</th>
                         </tr>
                       </thead>
                       <tbody class="divide-y divide-gray-100 bg-white">
                         {% for app in apps %}
+                          {% with summary=app.get_review_summary %}
                           <tr class="hover:bg-gray-50">
                             <td class="px-3 sm:px-4 py-2.5 align-top">
                               <a href="{% fin_aid_review_detail_url app.pk %}" class="font-medium text-pycon-teal hover:underline">{{ app.legal_name }}</a>
                             </td>
                             <td class="px-3 sm:px-4 py-2.5 align-top text-gray-700">{{ app.user.email }}</td>
                             <td class="px-3 sm:px-4 py-2.5 align-top text-gray-700">{{ app.country.name }}</td>
+                            <td class="px-3 sm:px-4 py-2.5 align-top text-gray-700">
+                              {% if summary.total > 0 %}
+                                <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">{{ summary.accept }}A</span>
+                                <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded ml-1">{{ summary.reject }}R</span>
+                                <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded ml-1">{{ summary.unsure }}U</span>
+                              {% else %}
+                                <span class="text-xs text-gray-500">No reviews</span>
+                              {% endif %}
+                            </td>
                             <td class="px-3 sm:px-4 py-2.5 align-top text-gray-700">{{ app.submitted_at|date:"Y-m-d" }}</td>
                             <td class="px-3 sm:px-4 py-2.5 align-top">
                               <a href="{% fin_aid_review_detail_url app.pk %}" class="inline-flex items-center rounded-lg bg-pycon-teal px-3 py-1.5 text-xs font-semibold text-white hover:bg-teal-700">{% trans "Review" %}</a>
                             </td>
                           </tr>
+                          {% endwith %}
                         {% endfor %}
                       </tbody>
                     </table>
@@ -97,20 +110,28 @@
                       <tr>
                         <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Applicant" %}</th>
                         <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Support type" %}</th>
+                        <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "All reviews" %}</th>
                         <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Your recommendation" %}</th>
                         <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Actions" %}</th>
                       </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 bg-white">
                       {% for app, rev in reviewed_with_reviews %}
+                        {% with summary=app.get_review_summary %}
                         <tr class="hover:bg-gray-50">
                           <td class="px-3 sm:px-4 py-2.5 text-gray-900">{{ app.legal_name }}</td>
                           <td class="px-3 sm:px-4 py-2.5 text-gray-700">{{ app.get_support_type_display }}</td>
+                          <td class="px-3 sm:px-4 py-2.5 text-gray-700">
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">{{ summary.accept }}A</span>
+                            <span class="text-xs bg-red-100 text-red-800 px-2 py-1 rounded ml-1">{{ summary.reject }}R</span>
+                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded ml-1">{{ summary.unsure }}U</span>
+                          </td>
                           <td class="px-3 sm:px-4 py-2.5 text-gray-700">{{ rev.get_recommendation_display }}</td>
                           <td class="px-3 sm:px-4 py-2.5">
                             <a href="{% fin_aid_review_detail_url app.pk %}" class="text-pycon-teal font-medium hover:underline">{% trans "View" %}</a>
                           </td>
                         </tr>
+                        {% endwith %}
                       {% endfor %}
                     </tbody>
                   </table>
