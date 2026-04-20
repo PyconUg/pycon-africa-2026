@@ -182,6 +182,18 @@ def django_girls(request):
     template = '2026/co-events/django_girls.html'
     return render(request, template, context)
 
+
+def pyladies_wksp(request):
+    context = {
+        'title': 'PyLadies Open Source Summit',
+        'description': (
+            'A PyLadies program at PyCon Africa 2026 bringing together Python enthusiasts and open-source '
+            'advocates for community building and contributions to open source.'
+        ),
+    }
+    return render(request, '2026/community/pyladies_wksp.html', context)
+
+
 def persons_of_concern(request):
     context = {
         'title': 'Refugee Persons of Concern @ PyCon Africa 2026',
