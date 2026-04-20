@@ -1,0 +1,12 @@
+{% load i18n fin_aid_permissions fin_aid_review_urls %}
+{% fin_aid_submitted_application_url as legacy_fin_aid_submitted_url %}
+{% if legacy_fin_aid_submitted_url %}
+<a href="{{ legacy_fin_aid_submitted_url }}" class="list-group-item list-group-item-action justify-content-between{% if legacy_fin_aid_submitted_active %} active{% endif %}">
+  <span><i class="fa-light fa-file-lines g-pos-rel g-top-1 g-mr-8"></i> {% trans "View submitted opportunity grant" %}</span>
+</a>
+{% endif %}
+{% if request.user|is_fin_aid_reviewer %}
+<a href="{% fin_aid_reviews_url %}" class="list-group-item list-group-item-action justify-content-between{% if legacy_fin_aid_review_active %} active{% endif %}">
+  <span><i class="fa-light fa-hand-holding-heart g-pos-rel g-top-1 g-mr-8"></i> {% trans "Review opportunity grants" %}</span>
+</a>
+{% endif %}

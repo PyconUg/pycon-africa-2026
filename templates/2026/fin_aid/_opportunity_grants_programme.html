@@ -1,0 +1,214 @@
+{% load i18n %}
+<div class="text-lg leading-relaxed space-y-10">
+
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">{% trans "PyCon Africa 2026 Opportunity Grants Programme" %}</h2>
+    <p class="mb-4">
+      {% blocktrans trimmed %}
+        We are delighted you are interested in attending PyCon Africa 2026, which will be held in <strong>October 2026</strong> in
+        <strong>Kampala, Uganda</strong>. The conference will take place at <strong>Speke Resort Munyonyo</strong>, which offers
+        conference facilities, accommodation options, and amenities in the Munyonyo area of the city.
+      {% endblocktrans %}
+    </p>
+    <p>
+      {% blocktrans trimmed %}
+        As part of our commitment to fostering an inclusive community, we recognize that some individuals may need financial
+        assistance to make conference participation possible.
+      {% endblocktrans %}
+    </p>
+  </div>
+
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">{% trans "Grant availability and coverage" %}</h2>
+    <p class="mb-4">
+      {% blocktrans trimmed %}
+        Due to budget limitations, we can only support a limited number of attendees with opportunity grants. These grants will be
+        awarded based on financial need and responses provided in the application form. Please note that approved grants may only
+        cover certain expenses (for example, a conference ticket but not accommodation). Any expenses not covered by your specific
+        grant would remain your responsibility.
+      {% endblocktrans %}
+    </p>
+  </div>
+
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">{% trans "Application details" %}</h2>
+    <p class="mb-4">
+      {% blocktrans trimmed %}
+        Please complete the form to provide details on your financial needs and circumstances. This information is essential for the
+        grants review committee to evaluate applicants and make fair and informed decisions on grant recipients.
+      {% endblocktrans %}
+    </p>
+    <p class="mb-4">
+      {% blocktrans trimmed %}
+        We welcome your open and honest responses, even for basic needs. Our goal is to make the conference accessible to as many
+        Python enthusiasts as possible from around Africa.
+      {% endblocktrans %}
+    </p>
+    <p class="font-medium">{% trans "Your application will be treated in complete confidence." %}</p>
+  </div>
+
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">{% trans "Who will receive opportunity grants?" %}</h2>
+    <p class="mb-4">{% trans "We would love to support everyone who applies, but unfortunately, our funds are limited." %}</p>
+    <p class="mb-3">{% trans "The opportunity grants programme will prioritise:" %}</p>
+    <ul class="list-disc list-inside space-y-2">
+      <li>{% trans "Speakers" %}</li>
+      <li>{% trans "Those who will contribute back to their local communities" %}</li>
+      <li>{% trans "Those who will help increase diversity at the event and in African programming" %}</li>
+    </ul>
+    <p class="mt-4">{% trans "We will do our best to maximise the impact of our opportunity grant funding." %}</p>
+  </div>
+
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">{% trans "How to apply" %}</h2>
+    <ol class="list-decimal list-inside space-y-3">
+      <li>
+        {% trans "First, create an account or log in. You can do that" %}
+        <a href="{% url 'auth_login' %}?next={% url 'pycon2026:fin_aid' %}" class="text-pycon-teal font-medium hover:underline">{% trans "here" %}</a>.
+      </li>
+      <li>
+        {% trans "Next, you can review or update your details on" %}
+        <a href="{% url 'profiles:profile_home' %}" class="text-pycon-teal font-medium hover:underline">{% trans "your profile" %}</a>.
+      </li>
+      <li>
+        {% blocktrans trimmed %}
+          When applications are open, use the <strong>Apply for an opportunity grant</strong> button on this page to complete the
+          online form before the deadline:
+          <strong>{{ fin_aid.fin_close_date|date:"j F Y" }}, {{ fin_aid.fin_close_date|date:"H:i" }} (EAT)</strong>.
+          We will not accept applications after this date.
+        {% endblocktrans %}
+      </li>
+      <li>{% trans "Read the questions on the form carefully and answer them as best you can." %}</li>
+    </ol>
+  </div>
+
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">{% trans "What can I request?" %}</h2>
+    <p>
+      {% blocktrans trimmed %}
+        You can request a free ticket only, or a grant as well as a free ticket. Anyone who is allocated a grant will automatically
+        receive a free ticket.
+      {% endblocktrans %}
+    </p>
+  </div>
+
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">{% trans "How much should I request?" %}</h2>
+    <p class="mb-4">
+      {% blocktrans trimmed %}
+        Our budget is limited, and we will have to make some hard decisions. Generally, it is easier for us to accept smaller
+        requests, as a single large request could consume most of our budget. The lower your request, the more likely it is that we
+        will be able to accept it.
+      {% endblocktrans %}
+    </p>
+    <p class="mb-2">{% trans "You need to consider:" %}</p>
+    <ul class="list-disc list-inside space-y-2 mb-4">
+      <li>{% trans "How much you will need to spend in total in order to attend the conference" %}</li>
+      <li>{% trans "How much of this you can contribute yourself" %}</li>
+    </ul>
+    <p>{% trans "The difference between these two figures is the amount you should request." %}</p>
+  </div>
+
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">{% trans "How should I calculate how much I should request?" %}</h2>
+    <p class="mb-4">{% trans "You will need to budget for:" %}</p>
+    <ul class="list-disc list-inside space-y-2 mb-6">
+      <li>{% trans "Travel" %}</li>
+      <li>{% trans "Visa, if necessary" %}</li>
+      <li>{% trans "Accommodation" %}</li>
+      <li>{% trans "Subsistence (evening meals, local transport, etc.) while in Kampala" %}</li>
+    </ul>
+
+    <h3 class="text-xl font-semibold text-gray-900 mb-2">{% trans "Travel" %}</h3>
+    <p class="mb-6">
+      {% blocktrans trimmed %}
+        Spend a little time researching your options. If you will need to travel by air, use websites such as Skyscanner or
+        Google Flights to estimate the cost of airfare. A little flexibility with dates or routes can make a big difference to the
+        price of a ticket.
+      {% endblocktrans %}
+    </p>
+
+    <h3 class="text-xl font-semibold text-gray-900 mb-2">{% trans "Accommodation" %}</h3>
+    <p class="mb-4">
+      {% blocktrans trimmed %}
+        Many sites help you estimate accommodation costs (for example, major booking platforms or hostels). Kampala offers a range
+        of options, from budget hostels to mid-range hotels.
+      {% endblocktrans %}
+    </p>
+    <p class="mb-2">
+      {% blocktrans trimmed %}
+        The conference venue is <strong>Speke Resort Munyonyo</strong>. We recommend looking nearby or along routes with reasonable
+        access to Munyonyo (for example areas with reliable transport links toward the lake side of the city). If you are willing to
+        share a room to reduce costs, mention this in your application.
+      {% endblocktrans %}
+    </p>
+    <p>
+      {% blocktrans trimmed %}
+        Be reasonable – we want you to stay somewhere clean, safe, and comfortable, but we cannot afford to place you in a luxury
+        hotel.
+      {% endblocktrans %}
+    </p>
+
+    <h3 class="text-xl font-semibold text-gray-900 mt-6 mb-2">{% trans "Subsistence" %}</h3>
+    <p class="mb-4">
+      {% blocktrans trimmed %}
+        Lunch and refreshments will be provided each day during the conference. For evening meals and local transport in Kampala,
+        costs vary widely; plan using your own research and local prices. Ride-hailing apps and safe taxis are widely used.
+      {% endblocktrans %}
+    </p>
+    <p>
+      {% blocktrans trimmed %}
+        We recommend budgeting conservatively for evening meals and transport for each day you are in the city, on top of travel
+        and accommodation.
+      {% endblocktrans %}
+    </p>
+  </div>
+
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">{% trans "Timeline" %}</h2>
+    <ul class="list-disc list-inside space-y-2">
+      <li>
+        <strong>{{ fin_aid.fin_open_date|date:"j F Y" }}:</strong>
+        {% trans "Opportunity grants applications open" %}
+      </li>
+      <li>
+        <strong>{{ fin_aid.fin_close_date|date:"j F Y" }}:</strong>
+        {% trans "Opportunity grants applications close" %}
+      </li>
+      <li>
+        <strong>{% trans "October 2026:" %}</strong>
+        {% trans "PyCon Africa 2026 — Kampala, Uganda" %}
+      </li>
+      <li>
+        {% blocktrans trimmed %}
+          <strong>During / after the conference:</strong> Disbursement of funds to successful applicants is handled according to the
+          process communicated by the organisers.
+        {% endblocktrans %}
+      </li>
+    </ul>
+  </div>
+
+  <div>
+    <h2 class="text-2xl font-bold text-gray-900 mb-4">{% trans "When will I receive the funds?" %}</h2>
+    <p class="mb-4">
+      {% blocktrans trimmed %}
+        Funds will be provided to successful applicants according to the conference team’s process, typically aligned with attendance
+        at the event.
+      {% endblocktrans %}
+    </p>
+    <p class="mb-4">
+      {% blocktrans trimmed %}
+        Unfortunately, applicants who have received funds in the past and failed to attend have negatively impacted previous
+        conferences. Our financial situation cannot withstand this kind of abuse.
+      {% endblocktrans %}
+    </p>
+    <p>
+      {% blocktrans trimmed %}
+        In exceptional circumstances, we may be able to provide funds in advance to those who would otherwise find it impossible to
+        attend. Please contact the organisers as soon as possible if this is the case (for example via the
+        <a href="/2026/about/contact-us/" class="text-pycon-teal font-medium hover:underline">contact page</a>).
+      {% endblocktrans %}
+    </p>
+  </div>
+
+</div>

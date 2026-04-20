@@ -41,13 +41,11 @@
 
 <div class="auth-page-content min-h-screen bg-gray-50">
   {% if user_profile %}
- 
 
-  <section class="max-w-6xl mx-auto px-4 py-6 sm:py-8 sm:px-6 lg:px-8 flex flex-col md:flex-row gap-6 lg:gap-10">
-    <div class="flex flex-col lg:flex-row gap-6 lg:gap-10">
-      <!-- Profile Sidebar -->
-      <aside class="w-full lg:w-64 shrink-0 lg:order-1 order-2">
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden lg:sticky lg:top-24">
+  <section class="max-w-6xl mx-auto px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row gap-6 lg:gap-10">
+      <aside class="w-full md:w-64 shrink-0 md:order-1 order-2">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden md:sticky md:top-24">
           <div class="p-4 sm:p-5">
             <div class="mb-4 flex justify-center">
               <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden shrink-0 border-2 border-gray-100 shadow-sm [&_img]:w-full [&_img]:h-full [&_img]:object-cover">
@@ -60,59 +58,16 @@
               <span class="text-gray-600">{{ request.user.last_login|date:"M. j, Y" }} · {{ request.user.last_login|time:"g:i a" }}</span>
             </div>
             {% endif %}
-            <nav class="flex flex-col gap-0.5" aria-label="Profile menu">
-              <a href="{% url 'profiles:profile_home' %}" class="profile-nav-link active">
-                <i class="fa-solid fa-house w-4 text-center" aria-hidden="true"></i>
-                <span>My Profile</span>
-              </a>
-              <a href="{% url 'profiles:profile_update' pk=request.user.user_profile.profile_id.hashid %}" class="profile-nav-link">
-                <i class="fa-solid fa-id-card w-4 text-center" aria-hidden="true"></i>
-                <span>Update my Profile</span>
-              </a>
-              <a href="/accounts/password/change/" class="profile-nav-link">
-                <i class="fa-solid fa-lock w-4 text-center" aria-hidden="true"></i>
-                <span>Change Password</span>
-              </a>
-              <a href="{% url 'talks:talk_list' year=year %}" class="profile-nav-link">
-                <i class="fa-solid fa-microphone w-4 text-center" aria-hidden="true"></i>
-                <span>My Submitted Talks</span>
-              </a>
-              <a href="{% url 'talks:submit_talk' year=year %}" class="profile-nav-link">
-                <i class="fa-solid fa-plus w-4 text-center" aria-hidden="true"></i>
-                <span>Submit a new Talk</span>
-              </a>
-              {% if perms.reviews.add_review or request.user.reviewer_profile or request.user.is_superuser %}
-              <a href="{% url 'talks:talks_to_review' year=year %}" class="profile-nav-link">
-                <i class="fa-solid fa-list-check w-4 text-center" aria-hidden="true"></i>
-                <span>Review Proposals</span>
-              </a>
-              {% endif %}
-              {% if request.user.is_superuser or request.user.reviewer_profile %}
-              <a href="{% url 'talks:reviewed_talks_by_category' year=year %}" class="profile-nav-link">
-                <i class="fa-solid fa-list w-4 text-center" aria-hidden="true"></i>
-                <span>Proposals by Category</span>
-              </a>
-              <a href="{% url 'talks:reviewed_talks_by_type' year=year %}" class="profile-nav-link">
-                <i class="fa-solid fa-list w-4 text-center" aria-hidden="true"></i>
-                <span>Proposals by Type</span>
-              </a>
-              {% endif %}
-              {% if perms.schedule.add_talkschedule or perms.schedule.change_talkschedule %}
-              <a href="/organizers/conference_schedule/" target="_blank" rel="noopener noreferrer" class="profile-nav-link">
-                <i class="fa-solid fa-calendar-days w-4 text-center" aria-hidden="true"></i>
-                <span>Create/Add to the Schedule</span>
-              </a>
-              {% endif %}
-            </nav>
+            {% include '2026/account/_account_sidebar_nav.html' with account_nav_active='profile_home' show_schedule_link=True %}
           </div>
         </div>
-      </div>
+      </aside>
 
       {% if user_profile %}
       <!-- Profile Content -->
       {% for user_p in user_profile %}
       {% for detail in details %}
-      <div class="flex-1 min-w-0 lg:order-2 order-1">
+      <div class="flex-1 min-w-0 md:order-2 order-1">
         <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-4 sm:p-6 lg:p-8">
           <!-- Name and title -->
           <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n static fin_aid_review_urls %}
+{% block meta_title %}{% trans "Review submitted | Opportunity grants" %}{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<div class="auth-page-content min-h-screen bg-gray-50">
+  <section class="max-w-6xl mx-auto px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row gap-6 lg:gap-10">
+      {% include '2026/fin_aid/reviews/_reviewer_sidebar.html' %}
+
+      <div class="flex-1 min-w-0 md:order-2 order-1">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-4 sm:p-6 lg:px-8">
+          <div class="mb-6">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{% trans "Opportunity grant review" %}</h1>
+            <nav class="mt-2 text-sm text-gray-600 flex flex-wrap items-center gap-x-2 gap-y-1" aria-label="{% trans 'Breadcrumb' %}">
+              <a href="/{{ year }}/" class="text-pycon-teal font-medium hover:underline">{% trans "Home" %}</a>
+              <span class="text-gray-400">/</span>
+              <a href="/accounts/profile/" class="text-pycon-teal font-medium hover:underline">{% trans "Profile" %}</a>
+              <span class="text-gray-400">/</span>
+              <a href="{% fin_aid_public_url %}" class="text-pycon-teal font-medium hover:underline">{% trans "Opportunity grants" %}</a>
+              <span class="text-gray-400">/</span>
+              <span class="text-gray-900 font-medium">{% trans "Review submitted" %}</span>
+            </nav>
+          </div>
+          <div class="rounded-lg bg-emerald-50 border border-emerald-200 px-4 py-3 mb-6">
+            <p class="font-semibold text-emerald-900">{% trans "Review submitted successfully" %}</p>
+            <p class="text-sm text-emerald-800 mt-1">{% trans "Your review has been saved. Thank you for your contribution." %}</p>
+          </div>
+          <a href="{% fin_aid_reviews_url %}" class="inline-flex items-center justify-center rounded-lg bg-pycon-teal px-5 py-2.5 text-sm font-semibold text-white hover:bg-teal-700">
+            {% trans "Review another application" %}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

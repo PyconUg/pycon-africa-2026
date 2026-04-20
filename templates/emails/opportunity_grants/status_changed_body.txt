@@ -1,0 +1,11 @@
+Hello {{ applicant_name }},
+
+The status of your opportunity grant application for "{{ round_title }}" for PyCon Africa {{ year }} has been updated.
+
+Previous status: {{ old_status_display }}
+Current status: {{ new_status_display }}
+
+View your application:
+{{ view_url }}
+
+— PyCon Africa {{ year }} Team

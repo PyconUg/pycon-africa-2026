@@ -101,6 +101,7 @@
                         </a>
                         <!-- End Profile --> 
                       {% endif %}
+                      {% include '2026/fin_aid/_legacy_list_group_fin_aid_link.html' %}
                       
                       {% if request.user.is_superuser or request.user.reviewer_profile %}
                      <!-- Review Talks List-->

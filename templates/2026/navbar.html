@@ -96,6 +96,32 @@
         </div>
       </div>
 
+      <!-- Community -->
+
+      <!-- <div class="nav-dropdown-wrapper" x-data="{open:false}">
+        <button class="nav-item" @click="open=!open">
+          COMMUNITY
+          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
+          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
+        </button>
+        <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
+          <a class="nav-item" href="/2026/community/django-girls/">Django Girls</a>
+          <a class="nav-item" href="/2026/community/pyladies_con_africa/">PyladiesCon Africa</a>
+          <a class="nav-item" href="/2026/community/refugee_persons_of_concern/">Refugee (persons of concern)</a>
+          <a class="nav-item" href="/2026/community/women_in_data_science/">Women in data science (WiDs)</a>
+        </div>
+      </div> -->
+
+      <div class="nav-dropdown-wrapper" x-data="{open:false}">
+        <button class="nav-item" @click="open=!open">
+          DIVERSITY
+          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
+          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
+        </button>
+        <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
+          <a class="nav-item" href="{% url 'pycon2026:fin_aid' %}">Opportunity Grants</a>
+        </div>
+      </div>
       <a class="nav-item" href="{% url 'pycon2026:venue_hotels' %}">VENUE + HOTELS</a>
 
       <!-- Venue -->
