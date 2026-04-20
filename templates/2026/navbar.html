@@ -112,6 +112,8 @@
         </div>
       </div> -->
 
+      {% comment %}Diversity nav hidden for now; keep route accessible directly.{% endcomment %}
+      {% comment %}
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open">
           DIVERSITY
@@ -122,6 +124,7 @@
           <a class="nav-item" href="{% url 'pycon2026:fin_aid' %}">Opportunity Grants</a>
         </div>
       </div>
+      {% endcomment %}
       <a class="nav-item" href="{% url 'pycon2026:venue_hotels' %}">VENUE + HOTELS</a>
 
       <!-- Venue -->
