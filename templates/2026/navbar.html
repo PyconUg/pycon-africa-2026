@@ -41,11 +41,13 @@
           {% comment %}<a class="nav-item" href="/2026/speakers_list/">Our Speakers</a>{% endcomment %}
           <a class="nav-item" href="/2026/talks/proposals/">Proposals</a>
           <a class="nav-item" href="/2026/talks/proposing_a_talk/">Proposing a Talk</a>
+          {% comment %}
           {% if user.is_authenticated %}
             <a class="nav-item" href="{% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
           {% else %}
             <a class="nav-item" href="{% url 'auth_login' %}?next={% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
           {% endif %}
+          {% endcomment %}
           <a class="nav-item" href="/2026/talks/recording-release/">Recording Release</a>
           {% comment %}<a class="nav-item" href="/2026/talks/mentorship/">SPEAKER MENTORSHIP</a>{% endcomment %}
         </div>
@@ -259,11 +261,13 @@
             {% comment %}<a class="nav-item nav-item-indent" href="/2026/speakers_list/">Our Speakers</a>{% endcomment %}
             <a class="nav-item nav-item-indent" href="/2026/talks/proposals/">Proposals</a>
             <a class="nav-item nav-item-indent" href="/2026/talks/proposing_a_talk/">Proposing a Talk</a>
+            {% comment %}
             {% if user.is_authenticated %}
               <a class="nav-item nav-item-indent" href="{% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
             {% else %}
               <a class="nav-item nav-item-indent" href="{% url 'auth_login' %}?next={% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
             {% endif %}
+            {% endcomment %}
             <a class="nav-item nav-item-indent" href="/2026/talks/recording-release/">Recording Release</a>
           </div>
         </div>

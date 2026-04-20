@@ -126,30 +126,19 @@
 
           {% invitation_list %}
 
-          <!-- Speaking & My Talks panels -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:mt-8">
-            <div class="bg-gray-50 rounded-lg border border-gray-100 p-4 sm:p-5">
-              <h3 class="text-sm sm:text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
-                <i class="fa-solid fa-microphone text-pycon-teal shrink-0" aria-hidden="true"></i>
-                <span>Speaking</span>
-              </h3>
-              <p class="text-gray-600 text-xs sm:text-sm leading-relaxed mb-4">
-                We are inviting speakers of all experience levels and backgrounds to contribute to our conference program at PyCon Africa 2026!
-              </p>
-              <a href="{% url 'pycon2026:submit' %}" class="inline-flex items-center gap-1 text-xs sm:text-sm font-medium text-pycon-teal hover:underline">
-                Read more
-                <i class="fa-solid fa-arrow-right text-xs" aria-hidden="true"></i>
-              </a>
-            </div>
+          <!-- My Talks panel -->
+          <div class="grid grid-cols-1 gap-4 sm:gap-6 mt-6 sm:mt-8">
             <div class="bg-gray-50 rounded-lg border border-gray-100 p-4 sm:p-5">
               <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 mb-3">
                 <h3 class="text-sm sm:text-base font-semibold text-gray-900 flex items-center gap-2">
                   <i class="fa-solid fa-podium-star text-pycon-teal shrink-0" aria-hidden="true"></i>
                   <span>My Talks</span>
                 </h3>
+                {% comment %}
                 <a href="{% url 'talks:submit_talk' year=year %}" class="text-xs sm:text-sm font-medium text-pycon-teal hover:underline shrink-0">
                   Submit a Talk
                 </a>
+                {% endcomment %}
               </div>
               <div class="my-talks-summary">
                 {% user_talks_summary request.user %}
