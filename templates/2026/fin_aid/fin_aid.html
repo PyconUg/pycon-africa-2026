@@ -13,32 +13,18 @@
     <div class="max-w-4xl mx-auto text-gray-900">
 
       {% if not fin_aids %}
-        <p class="text-center text-gray-500 text-lg py-16">
+        <p class="text-center text-gray-500 text-lg py-8">
           {% trans "Opportunity grant information will be available soon. Please check back later." %}
         </p>
       {% else %}
         {% with fin_aid=fin_aids.0 %}
           {% if fin_aid.is_closed %}
-            <p class="text-center text-gray-500 text-lg py-16">
+            <p class="text-center text-gray-500 text-lg py-8">
               {% trans "Opportunity grant information will be available soon. Please check back later." %}
             </p>
           {% else %}
 
-            <div class="rounded-lg bg-amber-50 border border-amber-200 px-4 py-4 mb-10">
-              <h2 class="text-xl font-bold text-gray-900 mb-3">{% trans "Important dates" %}</h2>
-              <ul class="list-disc list-inside space-y-2 text-lg leading-relaxed">
-                <li><strong>{% trans "Applications open:" %}</strong> {{ fin_aid.fin_open_date|date:"j F Y, H:i" }} (EAT)</li>
-                <li><strong>{% trans "Applications close:" %}</strong> {{ fin_aid.fin_close_date|date:"j F Y, H:i" }} (EAT)</li>
-              </ul>
-            </div>
-
-            {% if fin_aid.is_open %}
-            <div class="mb-10 flex flex-col items-center sm:items-start">
-              {% include '2026/fin_aid/_opportunity_grants_apply_buttons.html' %}
-            </div>
-            {% endif %}
-
-            {% include '2026/fin_aid/_opportunity_grants_programme.html' with fin_aid=fin_aid only %}
+            {% include '2026/fin_aid/_opportunity_grants_programme.html' with fin_aid=fin_aid %}
 
             {% if fin_aid.is_open %}
             <div class="mt-12 mb-10 pt-10 border-t border-gray-200">

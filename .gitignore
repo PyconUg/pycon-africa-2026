@@ -8,6 +8,7 @@ secrets.py
 #static/
 media/
 migrations/
+migrations/__pycache__/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
