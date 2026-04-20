@@ -65,16 +65,8 @@
   <p class="text-sm text-gray-600">
     {% trans "You currently have no proposal submitted." %}
   </p>
-  {% if event_year %}
-    <a href="{% url 'talks:submit_talk' year=event_year.year %}"
-       class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-amber-500 hover:bg-amber-600 rounded-lg shadow-sm hover:shadow">
-      {% trans "Submit a new talk" %}
-    </a>
-  {% else %}
-    <a href="{% url 'talks:submit_talk' year=2026 %}"
-       class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-white bg-amber-500 hover:bg-amber-600 rounded-lg shadow-sm hover:shadow">
-      {% trans "Submit a new talk" %}
-    </a>
-  {% endif %}
+  <p class="text-xs text-gray-500">
+    {% trans "The call for proposals is currently closed." %}
+  </p>
 </div>
 {% endif %}
