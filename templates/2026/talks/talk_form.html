@@ -89,40 +89,7 @@
               <span class="text-gray-600">{{ request.user.last_login|date:"M. j, Y" }} · {{ request.user.last_login|time:"g:i a" }}</span>
             </div>
             {% endif %}
-            <nav class="flex flex-col gap-0.5" aria-label="Profile menu">
-              <a href="/accounts/profile/" class="profile-nav-link">
-                <i class="fa-solid fa-house w-4 text-center" aria-hidden="true"></i>
-                <span>My Profile</span>
-              </a>
-              <a href="{% url 'profiles:profile_update' pk=request.user.user_profile.profile_id.hashid %}" class="profile-nav-link">
-                <i class="fa-solid fa-id-card w-4 text-center" aria-hidden="true"></i>
-                <span>Update my Profile</span>
-              </a>
-              <a href="/accounts/password/change/" class="profile-nav-link">
-                <i class="fa-solid fa-lock w-4 text-center" aria-hidden="true"></i>
-                <span>Change Password</span>
-              </a>
-              <a href="{% url 'talks:talk_list' year=year %}" class="profile-nav-link">
-                <i class="fa-solid fa-microphone w-4 text-center" aria-hidden="true"></i>
-                <span>My Submitted Talks</span>
-              </a>
-              <a href="{% url 'talks:submit_talk' year=year %}" class="profile-nav-link active">
-                <i class="fa-solid fa-podium w-4 text-center" aria-hidden="true"></i>
-                <span>Submit a new Talk</span>
-              </a>
-              {% if perms.reviews.add_review or request.user.reviewer_profile or request.user.is_superuser %}
-              <a href="{% url 'talks:talks_to_review' year=year %}" class="profile-nav-link">
-                <i class="fa-solid fa-list-check w-4 text-center" aria-hidden="true"></i>
-                <span>Review Proposals</span>
-              </a>
-              {% endif %}
-              {% if request.user.is_superuser or request.user.reviewer_profile %}
-              <a href="{% url 'talks:reviewed_talks_by_category' year=year %}" class="profile-nav-link">
-                <i class="fa-solid fa-clipboard-list w-4 text-center" aria-hidden="true"></i>
-                <span>Proposals by Category</span>
-              </a>
-              {% endif %}
-            </nav>
+            {% include '2026/account/_account_sidebar_nav.html' with account_nav_active='submit_talk' %}
           </div>
         </div>
       </aside>

@@ -1,0 +1,30 @@
+{% load i18n %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% blocktrans with y=year %}PyCon Africa {{ y }}{% endblocktrans %} — {% trans "Opportunity grant application" %}</title>
+</head>
+<body>
+  <br>
+  {% blocktrans %}Greetings{% endblocktrans %} {% if user.get_full_name %}{{ user.get_full_name }}{% else %}{{ user.get_username }}{% endif %},
+  <br><br>
+  {% blocktrans with title=application.fin_aid.title year=year %}Thank you for submitting your opportunity grant application for <strong>{{ title }}</strong> for PyCon Africa {{ year }}.{% endblocktrans %}
+  <br><br>
+  {% blocktrans %}We have received your responses and will be in touch if we need anything further. You can review what you submitted at any time using the link below.{% endblocktrans %}
+  <br><br>
+  {% trans "View your application:" %}
+  <br>
+  <a rel="noreferrer" href="{{ view_url }}">{{ view_url }}</a>
+  <br><br>
+  <p>
+    {% blocktrans with y=year %}Best regards,<br>
+    PyCon Africa {{ y }} Team{% endblocktrans %}
+  </p>
+  <p>
+    <a href="https://www.twitter.com/pyconafrica/">Twitter</a> |
+    <a href="https://www.instagram.com/pyconafrica/">Instagram</a><br>
+    <a href="https://africa.python.org/">Python Africa's website</a>
+  </p>
+</body>
+</html>

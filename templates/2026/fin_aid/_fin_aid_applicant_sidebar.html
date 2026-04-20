@@ -1,0 +1,19 @@
+{% load i18n static %}
+<aside class="w-full md:w-64 shrink-0 md:order-1 order-2">
+  <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden md:sticky md:top-24">
+    <div class="p-4 sm:p-5">
+      <div class="mb-4 flex justify-center">
+        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-gray-100 shadow-sm [&_img]:w-full [&_img]:h-full [&_img]:object-cover">
+          {% include 'profiles/profilepic_side.html' %}
+        </div>
+      </div>
+      {% if request.user.last_login %}
+        <div class="text-xs text-gray-500 mb-4 pb-4 border-b border-gray-100">
+          <span class="font-medium text-gray-400 uppercase tracking-wide">{% trans "Last login" %}</span><br>
+          <span class="text-gray-600">{{ request.user.last_login|date:"M. j, Y" }} · {{ request.user.last_login|time:"g:i a" }}</span>
+        </div>
+      {% endif %}
+      {% include '2026/account/_account_sidebar_nav.html' with account_nav_active=account_nav_active %}
+    </div>
+  </div>
+</aside>

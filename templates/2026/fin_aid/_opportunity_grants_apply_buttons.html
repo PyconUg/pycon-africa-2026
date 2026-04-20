@@ -1,0 +1,32 @@
+{% load i18n %}
+{% if user.is_authenticated %}
+  <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
+    {% if has_opportunity_grant_application %}
+      {% url 'pycon2026:fin_aid_my_application' as url_view %}
+      {% trans "View my application" as view_label %}
+      {% include '2026/fin_aid/_opportunity_grant_link_button.html' with href=url_view label=view_label btn_class='px-6 py-3 text-base font-semibold text-white bg-pycon-teal hover:bg-teal-700' %}
+      {% if can_edit_opportunity_grant_application %}
+        {% url 'pycon2026:fin_aid_application_edit' as url_edit %}
+        {% trans "Edit application" as edit_label %}
+        {% include '2026/fin_aid/_opportunity_grant_link_button.html' with href=url_edit label=edit_label btn_class='px-6 py-3 text-base font-semibold text-pycon-teal border-2 border-pycon-teal hover:bg-teal-50' %}
+      {% endif %}
+    {% else %}
+      {% url 'pycon2026:fin_aid_apply' as url_apply %}
+      {% trans "Apply for an opportunity grant" as apply_label %}
+      {% include '2026/fin_aid/_opportunity_grant_link_button.html' with href=url_apply label=apply_label btn_class='px-6 py-3 text-base font-semibold text-white bg-pycon-teal hover:bg-teal-700' %}
+    {% endif %}
+  </div>
+{% else %}
+  <a href="{% url 'auth_login' %}?next={% url 'pycon2026:fin_aid_apply' %}"
+     class="inline-flex items-center justify-center gap-2 px-6 py-3 text-base font-semibold text-white bg-pycon-teal hover:bg-teal-700 rounded-lg transition-colors"
+     x-data="{ loading: false }"
+     @click="loading = true"
+     :class="loading ? 'opacity-70 pointer-events-none cursor-wait' : ''">
+    <svg x-show="loading" width="20" height="20" class="h-5 w-5 flex-none animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+    </svg>
+    <span x-show="!loading">{% trans "Log in to apply" %}</span>
+    <span x-show="loading">{% trans "Loading…" %}</span>
+  </a>
+{% endif %}

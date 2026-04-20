@@ -1282,3 +1282,48 @@ header[class*="bg-black"] {
     margin-left: 0 !important;
   }
 }
+
+/*
+ * Crispy Tailwind renders select arrows with `absolute inset-y-0 right-0` (see
+ * crispy_tailwind/templates/tailwind/layout/select.html). The site Tailwind
+ * build in static/vendor/main.css does not include those utilities, so the
+ * chevron was absolutely positioned without insets and appeared below the field.
+ */
+.inset-y-0 {
+  top: 0;
+  bottom: 0;
+}
+
+.right-0 {
+  right: 0;
+}
+
+/* Profile / reviewer sidebar (shared with 2026 talks account pages; Tailwind-only). */
+.profile-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  color: #374151;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+}
+@media (max-width: 640px) {
+  .profile-nav-link {
+    padding: 0.75rem;
+    font-size: 0.875rem;
+  }
+}
+.profile-nav-link:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+.profile-nav-link.active {
+  background: #0d9488;
+  color: #fff;
+}
+.profile-nav-link.active:hover {
+  background: #0f766e;
+  color: #fff;
+}

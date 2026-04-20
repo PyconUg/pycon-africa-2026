@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load i18n static fin_aid_review_urls %}
+{% block meta_title %}{% trans "My opportunity grant application | PyCon Africa 2026" %}{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<div class="auth-page-content min-h-screen bg-gray-50">
+  <section class="max-w-6xl mx-auto px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row gap-6 lg:gap-10">
+      {% include '2026/fin_aid/_fin_aid_applicant_sidebar.html' with account_nav_active='submitted_opportunity_grant' %}
+
+      <div class="flex-1 min-w-0 md:order-2 order-1">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-4 sm:p-6 lg:px-8">
+          <div class="mb-6">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{% trans "My opportunity grant application" %}</h1>
+            <nav class="mt-2 text-sm text-gray-600 flex flex-wrap items-center gap-x-2 gap-y-1" aria-label="{% trans 'Breadcrumb' %}">
+              <a href="/{{ year }}/" class="text-pycon-teal font-medium hover:underline">{% trans "Home" %}</a>
+              <span class="text-gray-400">/</span>
+              <a href="{% url 'profiles:profile_home' %}" class="text-pycon-teal font-medium hover:underline">{% trans "Profile" %}</a>
+              <span class="text-gray-400">/</span>
+              <a href="{% fin_aid_public_url %}" class="text-pycon-teal font-medium hover:underline">{% trans "Opportunity grants" %}</a>
+              <span class="text-gray-400">/</span>
+              <span class="text-gray-900 font-medium">{% trans "My application" %}</span>
+            </nav>
+          </div>
+
+          {% if messages %}
+            {% for message in messages %}
+              <div class="mb-6 rounded-lg px-4 py-3 {% if message.tags == 'success' %}bg-green-50 border border-green-200 text-green-900{% elif message.tags == 'warning' %}bg-amber-50 border border-amber-200 text-amber-900{% elif message.tags == 'info' %}bg-sky-50 border border-sky-200 text-sky-900{% else %}bg-gray-50 border border-gray-200{% endif %}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          <div class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div>
+                <h2 class="text-xl font-semibold text-gray-900">{{ application.legal_name }}</h2>
+                <p class="text-sm text-gray-600 mt-1">
+                  {% trans "Submitted" %} {{ application.submitted_at|date:"j F Y, H:i" }}
+                  {% if application.updated_at > application.submitted_at %}
+                    · {% trans "Updated" %} {{ application.updated_at|date:"j F Y, H:i" }}
+                  {% endif %}
+                </p>
+              </div>
+              <div class="shrink-0">
+                <span class="inline-flex rounded-full px-3 py-1 text-sm font-medium bg-gray-100 text-gray-800">
+                  {{ application.get_status_display }}
+                </span>
+              </div>
+            </div>
+
+            <dl class="space-y-4 text-sm sm:text-base">
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Support requested" %}</dt>
+                <dd class="mt-1 text-gray-900">{{ application.get_support_type_display }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Country" %}</dt>
+                <dd class="mt-1 text-gray-900">{{ application.country.name }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Budget / use of funds" %}</dt>
+                <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{{ application.budget_narrative }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Why you need support" %}</dt>
+                <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{{ application.why_need_support }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Community contribution" %}</dt>
+                <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{{ application.community_contribution }}</dd>
+              </div>
+              {% if application.additional_notes %}
+                <div>
+                  <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Additional notes" %}</dt>
+                  <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{{ application.additional_notes }}</dd>
+                </div>
+              {% endif %}
+            </dl>
+
+            <div class="pt-6 border-t border-gray-200 flex flex-col sm:flex-row gap-3">
+              {% if can_edit %}
+                {% fin_aid_application_edit_url as url_edit %}
+                {% trans "Edit application" as edit_label %}
+                {% include '2026/fin_aid/_opportunity_grant_link_button.html' with href=url_edit label=edit_label btn_class='px-5 py-2.5 text-sm font-semibold text-white bg-pycon-teal hover:bg-teal-700' %}
+                <p class="text-sm text-gray-600 sm:self-center">
+                  {% trans "You can edit until the application deadline." %}
+                </p>
+              {% else %}
+                <p class="text-sm text-gray-600">
+                  {% if locked_by_review %}
+                    {% trans "A reviewer has recorded feedback on your application, so it can no longer be edited. This is a read-only copy of what you submitted." %}
+                  {% else %}
+                    {% trans "The application period has ended. This is a read-only copy of what you submitted." %}
+                  {% endif %}
+                </p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+{% endblock %}

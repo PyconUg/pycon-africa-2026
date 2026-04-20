@@ -1,0 +1,1 @@
+[PyCon Africa {{ year }}] Opportunity grant status update — {{ round_title }}

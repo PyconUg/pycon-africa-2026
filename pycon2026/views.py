@@ -1,6 +1,4 @@
 from django.shortcuts import render, get_object_or_404
-from fin_aid.models import Fin_aid
-from home.models import EventYear
 
 # Create your views here.
 
@@ -149,17 +147,6 @@ def visa_flying(request):
     context = {}
     return render(request, '2026/visa/flying.html', context)
 
-def fin_aid(request):
-    event_year = get_object_or_404(EventYear, year=2026)
-    fin_aids = Fin_aid.objects.filter(event_year=event_year).order_by('-date_created')
-    for fa in fin_aids:
-        fa.is_open = fa.is_form_open()
-        fa.is_closed = fa.is_form_closed()
-        fa.not_open_yet = fa.is_form_not_open_yet()
-        fa.form_status_message = fa.get_form_status_message()
-    context = {'fin_aids': fin_aids, 'year': 2026}
-    template = '2026/fin_aid/fin_aid.html'
-    return render(request, template, context)
 def team(request):
     context = {}
     template = '2026/team/team.html'

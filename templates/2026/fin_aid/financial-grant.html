@@ -1,15 +1,12 @@
-<!-- financial-grant.html — Opportunity Grant teaser, included on the home page -->
 {% if fin_aid_status %}
 <section class="py-16 bg-white border-t border-gray-100">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="bg-white rounded-lg shadow-md border border-gray-200 p-8 flex flex-col md:flex-row items-center gap-8">
 
-      <!-- Icon -->
       <div class="flex-shrink-0 flex items-center justify-center w-20 h-20 rounded-full g-bg-primary-opacity-0_1">
         <i class="fa-solid fa-hands-holding-heart g-color-primary" style="font-size: 2.5rem;"></i>
       </div>
 
-      <!-- Text -->
       <div class="flex-grow text-center md:text-left">
         {% for status in fin_aid_status %}
           {% if status.is_open %}
@@ -41,11 +38,10 @@
         {% endfor %}
       </div>
 
-      <!-- Button -->
       <div class="flex-shrink-0">
         {% for status in fin_aid_status %}
           {% if not status.is_closed %}
-            <a href="/2026/fin-aid/" class="btn btn-block u-shadow-v33 g-color-white g-bg-primary g-bg-main--hover g-rounded-30 g-px-25 g-py-13">
+            <a href="{% url 'pycon2026:fin_aid' %}" class="btn btn-block u-shadow-v33 g-color-white g-bg-primary g-bg-main--hover g-rounded-30 g-px-25 g-py-13">
               Learn more
             </a>
           {% endif %}

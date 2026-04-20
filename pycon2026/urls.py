@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from fin_aid import views as fin_aid_views
 
 from django.views.generic import TemplateView, RedirectView
 
@@ -36,7 +37,63 @@ urlpatterns = [
     path('visa/letter/', view=views.visa_letter, name='visa_letter'),
     path('visa/bus/', view=views.visa_bus, name='visa_bus'),
     path('visa/flying/', view=views.visa_flying, name='visa_flying'),
-    path('fin-aid/', view=views.fin_aid, name='fin_aid'),
+    path('opportunity-grants/', fin_aid_views.fin_aid, {'year': 2026}, name='fin_aid'),
+    path('opportunity-grants/apply/', fin_aid_views.fin_aid_apply, {'year': 2026}, name='fin_aid_apply'),
+    path(
+        'opportunity-grants/my-application/',
+        fin_aid_views.fin_aid_my_application,
+        {'year': 2026},
+        name='fin_aid_my_application',
+    ),
+    path(
+        'opportunity-grants/my-application/edit/',
+        fin_aid_views.fin_aid_application_edit,
+        {'year': 2026},
+        name='fin_aid_application_edit',
+    ),
+    path(
+        'opportunity-grants/reviews/',
+        fin_aid_views.fin_aid_reviews_list,
+        {'year': 2026},
+        name='fin_aid_reviews',
+    ),
+    path(
+        'opportunity-grants/reviews/success/',
+        fin_aid_views.fin_aid_review_success,
+        {'year': 2026},
+        name='fin_aid_review_success',
+    ),
+    path(
+        'opportunity-grants/reviews/<int:pk>/',
+        fin_aid_views.fin_aid_review_detail,
+        {'year': 2026},
+        name='fin_aid_review_detail',
+    ),
+    path('fin-aid/', RedirectView.as_view(pattern_name='pycon2026:fin_aid', permanent=True)),
+    path(
+        'fin-aid/apply/',
+        RedirectView.as_view(pattern_name='pycon2026:fin_aid_apply', permanent=True),
+    ),
+    path(
+        'fin-aid/my-application/',
+        RedirectView.as_view(pattern_name='pycon2026:fin_aid_my_application', permanent=True),
+    ),
+    path(
+        'fin-aid/my-application/edit/',
+        RedirectView.as_view(pattern_name='pycon2026:fin_aid_application_edit', permanent=True),
+    ),
+    path(
+        'fin-aid/reviews/',
+        RedirectView.as_view(pattern_name='pycon2026:fin_aid_reviews', permanent=True),
+    ),
+    path(
+        'fin-aid/reviews/success/',
+        RedirectView.as_view(pattern_name='pycon2026:fin_aid_review_success', permanent=True),
+    ),
+    path(
+        'fin-aid/reviews/<int:pk>/',
+        RedirectView.as_view(pattern_name='pycon2026:fin_aid_review_detail', permanent=True),
+    ),
     path('team/', view=views.team, name='team'),
     path('report/', view=views.report, name='report'),
     path('platform/', view=views.hopin, name='hopin'), 

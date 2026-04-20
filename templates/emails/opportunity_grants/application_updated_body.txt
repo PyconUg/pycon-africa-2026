@@ -1,0 +1,8 @@
+Hello {{ applicant_name }},
+
+Your opportunity grant application for "{{ round_title }}" for PyCon Africa {{ year }} has been updated successfully.
+
+View your submission:
+{{ view_url }}
+
+— PyCon Africa {{ year }} Team

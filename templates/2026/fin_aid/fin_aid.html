@@ -1,60 +1,78 @@
 {% extends "base.html" %}
-{% load i18n static markdown_extras permissions %}
+{% load i18n static permissions %}
 {% block meta_title %}{% trans "Opportunity Grants | PyCon Africa 2026" %}{% endblock %}
 
 {% block content %}
 {% include '2026/navbar.html' %}
 
-  <!-- Header -->
   <div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
-    <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 text-center">Opportunity Grants</h1>
+    <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 text-center">{% trans "Opportunity Grants" %}</h1>
   </div>
 
-  <!-- Body -->
   <div class="max-w-7xl mx-auto px-4 pb-16">
     <div class="max-w-4xl mx-auto text-gray-900">
 
-      {% for fin_aid in fin_aids %}
-
-        <!-- Main content -->
-        <div class="text-lg leading-relaxed mb-10">
-          {{ fin_aid.financial_assistance | markdown | safe }}
-        </div>
-        <!-- End main content -->
-
-        <!-- Form section -->
-        {% if fin_aid.is_open %}
-        <div class="text-center mb-10" style="border: 1px solid #e5e7eb; border-radius: 0.5rem; padding: 2.5rem;">
-          <h2 class="text-xl font-normal text-gray-700 mb-6">Apply for an Opportunity Grant</h2>
-          {% if fin_aid.google_form_formfacade_code %}
-            <a href="{{ fin_aid.google_form_formfacade_code }}" target="_blank" rel="noopener noreferrer"
-               class="btn u-shadow-v33 g-color-white g-bg-primary g-bg-main--hover g-rounded-30 g-px-25 g-py-13">
-              Apply Now
-            </a>
-          {% else %}
-            <p class="text-gray-500">No application link is available yet. Please check back soon.</p>
-          {% endif %}
-        </div>
-
-        {% elif fin_aid.is_closed %}
-        <div class="rounded-lg bg-red-50 border border-red-200 px-6 py-6 mb-10">
-          <h2 class="text-xl font-bold text-gray-900 mb-2">Applications Closed</h2>
-          <p class="text-gray-700">The Opportunity Grant application form is now closed. Thank you to everyone who applied.</p>
-        </div>
-
-        {% elif fin_aid.not_open_yet %}
-        <div class="rounded-lg bg-amber-50 border border-amber-200 px-6 py-6 mb-10">
-          <h2 class="text-xl font-bold text-gray-900 mb-2">Applications Opening Soon</h2>
-          <p class="text-gray-700">{{ fin_aid.form_status_message }}</p>
-        </div>
-        {% endif %}
-        <!-- End form section -->
-
-      {% empty %}
-        <p class="text-center text-gray-500 py-16">
-          Opportunity Grant information will be available soon. Please check back later.
+      {% if not fin_aids %}
+        <p class="text-center text-gray-500 text-lg py-16">
+          {% trans "Opportunity grant information will be available soon. Please check back later." %}
         </p>
-      {% endfor %}
+      {% else %}
+        {% with fin_aid=fin_aids.0 %}
+          {% if fin_aid.is_closed %}
+            <p class="text-center text-gray-500 text-lg py-16">
+              {% trans "Opportunity grant information will be available soon. Please check back later." %}
+            </p>
+          {% else %}
+
+            <div class="rounded-lg bg-amber-50 border border-amber-200 px-4 py-4 mb-10">
+              <h2 class="text-xl font-bold text-gray-900 mb-3">{% trans "Important dates" %}</h2>
+              <ul class="list-disc list-inside space-y-2 text-lg leading-relaxed">
+                <li><strong>{% trans "Applications open:" %}</strong> {{ fin_aid.fin_open_date|date:"j F Y, H:i" }} (EAT)</li>
+                <li><strong>{% trans "Applications close:" %}</strong> {{ fin_aid.fin_close_date|date:"j F Y, H:i" }} (EAT)</li>
+              </ul>
+            </div>
+
+            {% if fin_aid.is_open %}
+            <div class="mb-10 flex flex-col items-center sm:items-start">
+              {% include '2026/fin_aid/_opportunity_grants_apply_buttons.html' %}
+            </div>
+            {% endif %}
+
+            {% include '2026/fin_aid/_opportunity_grants_programme.html' with fin_aid=fin_aid only %}
+
+            {% if fin_aid.is_open %}
+            <div class="mt-12 mb-10 pt-10 border-t border-gray-200">
+              <h2 class="text-2xl font-bold text-gray-900 mb-4">{% trans "Apply" %}</h2>
+              <p class="text-lg leading-relaxed mb-6">
+                {% trans "Use our online form to submit your opportunity grant application. You must be logged in." %}
+              </p>
+              {% include '2026/fin_aid/_opportunity_grants_apply_buttons.html' %}
+              {% if user.is_authenticated %}
+                {% if has_opportunity_grant_application and can_edit_opportunity_grant_application %}
+                  <p class="text-sm text-gray-600 mt-4">{% trans "You can edit your application until the deadline, as long as a reviewer has not yet recorded feedback." %}</p>
+                {% elif has_opportunity_grant_application %}
+                  <p class="text-sm text-gray-600 mt-4">{% trans "You can view your application; editing is not available after the deadline or once review has begun." %}</p>
+                {% endif %}
+              {% endif %}
+            </div>
+            {% elif fin_aid.not_open_yet %}
+            <div class="rounded-lg bg-amber-50 border border-amber-200 px-6 py-6 mt-10">
+              <h2 class="text-xl font-bold text-gray-900 mb-2">{% trans "Applications opening soon" %}</h2>
+              <p class="text-gray-700">{{ fin_aid.form_status_message }}</p>
+            </div>
+            {% endif %}
+
+          {% endif %}
+        {% endwith %}
+      {% endif %}
+
+      {% if is_fin_aid_reviewer %}
+        <div class="mt-12 pt-8 border-t border-gray-200">
+          <a href="{% url 'pycon2026:fin_aid_reviews' %}" class="text-pycon-teal font-semibold hover:underline">
+            {% trans "Opportunity grant reviewer dashboard" %}
+          </a>
+        </div>
+      {% endif %}
 
     </div>
   </div>

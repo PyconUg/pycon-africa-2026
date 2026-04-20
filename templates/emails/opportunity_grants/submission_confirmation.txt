@@ -1,0 +1,12 @@
+{% load i18n %}
+{% blocktrans %}Greetings{% endblocktrans %} {% if user.get_full_name %}{{ user.get_full_name }}{% else %}{{ user.get_username }}{% endif %},
+
+{% blocktrans with title=application.fin_aid.title year=year %}Thank you for submitting your opportunity grant application for "{{ title }}" for PyCon Africa {{ year }}.{% endblocktrans %}
+
+{% blocktrans %}We have received your responses and will be in touch if we need anything further. You can review what you submitted at any time using the link below.{% endblocktrans %}
+
+{% trans "View your application:" %}
+{{ view_url }}
+
+{% blocktrans with y=year %}Best regards,
+PyCon Africa {{ y }} Team{% endblocktrans %}

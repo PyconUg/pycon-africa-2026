@@ -119,7 +119,7 @@
           <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
         </button>
         <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
-          <a class="nav-item" href="/2026/fin-aid/">Opportunity Grants</a>
+          <a class="nav-item" href="{% url 'pycon2026:fin_aid' %}">Opportunity Grants</a>
         </div>
       </div>
       <a class="nav-item" href="{% url 'pycon2026:venue_hotels' %}">VENUE + HOTELS</a>

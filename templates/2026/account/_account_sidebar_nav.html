@@ -1,0 +1,63 @@
+{% load i18n fin_aid_permissions fin_aid_review_urls %}
+{% firstof year 2026 as y %}
+<nav class="flex flex-col gap-0.5" aria-label="{% trans 'Account menu' %}">
+  <a href="{% url 'profiles:profile_home' %}" class="profile-nav-link{% if account_nav_active == 'profile_home' %} active{% endif %}">
+    <i class="fa-solid fa-house w-4 text-center" aria-hidden="true"></i>
+    <span>{% trans "My Profile" %}</span>
+  </a>
+  {% if request.user.user_profile %}
+  <a href="{% url 'profiles:profile_update' pk=request.user.user_profile.profile_id.hashid %}" class="profile-nav-link{% if account_nav_active == 'profile_update' %} active{% endif %}">
+    <i class="fa-solid fa-id-card w-4 text-center" aria-hidden="true"></i>
+    <span>{% trans "Update my Profile" %}</span>
+  </a>
+  {% endif %}
+  <a href="/accounts/password/change/" class="profile-nav-link{% if account_nav_active == 'password' %} active{% endif %}">
+    <i class="fa-solid fa-lock w-4 text-center" aria-hidden="true"></i>
+    <span>{% trans "Change Password" %}</span>
+  </a>
+  <a href="{% url 'talks:talk_list' year=y %}" class="profile-nav-link{% if account_nav_active == 'talks' %} active{% endif %}">
+    <i class="fa-solid fa-microphone w-4 text-center" aria-hidden="true"></i>
+    <span>{% trans "My Submitted Talks" %}</span>
+  </a>
+  <a href="{% url 'talks:submit_talk' year=y %}" class="profile-nav-link{% if account_nav_active == 'submit_talk' %} active{% endif %}">
+    <i class="fa-solid fa-podium w-4 text-center" aria-hidden="true"></i>
+    <span>{% trans "Submit a new Talk" %}</span>
+  </a>
+  {% if perms.reviews.add_review or request.user.reviewer_profile or request.user.is_superuser %}
+  <a href="{% url 'talks:talks_to_review' year=y %}" class="profile-nav-link{% if account_nav_active == 'review_proposals' %} active{% endif %}">
+    <i class="fa-solid fa-list-check w-4 text-center" aria-hidden="true"></i>
+    <span>{% trans "Review Proposals" %}</span>
+  </a>
+  {% endif %}
+  {% fin_aid_submitted_application_url as fin_aid_submitted_url %}
+  {% if fin_aid_submitted_url %}
+  <a href="{{ fin_aid_submitted_url }}" class="profile-nav-link{% if account_nav_active == 'submitted_opportunity_grant' %} active{% endif %}">
+    <i class="fa-solid fa-file-lines w-4 text-center" aria-hidden="true"></i>
+    <span>{% trans "View submitted opportunity grant" %}</span>
+  </a>
+  {% endif %}
+  {% if request.user|is_fin_aid_reviewer %}
+  <a href="{% fin_aid_reviews_url %}" class="profile-nav-link{% if account_nav_active == 'review_grants' %} active{% endif %}">
+    <i class="fa-solid fa-hand-holding-heart w-4 text-center" aria-hidden="true"></i>
+    <span>{% trans "Review opportunity grants" %}</span>
+  </a>
+  {% endif %}
+  {% if request.user.is_superuser or request.user.reviewer_profile %}
+  <a href="{% url 'talks:reviewed_talks_by_category' year=y %}" class="profile-nav-link{% if account_nav_active == 'proposals_category' %} active{% endif %}">
+    <i class="fa-solid fa-clipboard-list w-4 text-center" aria-hidden="true"></i>
+    <span>{% trans "Proposals by Category" %}</span>
+  </a>
+  <a href="{% url 'talks:reviewed_talks_by_type' year=y %}" class="profile-nav-link{% if account_nav_active == 'proposals_type' %} active{% endif %}">
+    <i class="fa-solid fa-list w-4 text-center" aria-hidden="true"></i>
+    <span>{% trans "Proposals by Type" %}</span>
+  </a>
+  {% endif %}
+  {% if show_schedule_link %}
+    {% if perms.schedule.add_talkschedule or perms.schedule.change_talkschedule %}
+  <a href="/organizers/conference_schedule/" target="_blank" rel="noopener noreferrer" class="profile-nav-link">
+    <i class="fa-solid fa-calendar-days w-4 text-center" aria-hidden="true"></i>
+    <span>{% trans "Create/Add to the Schedule" %}</span>
+  </a>
+    {% endif %}
+  {% endif %}
+</nav>

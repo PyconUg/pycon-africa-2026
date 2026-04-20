@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n static crispy_forms_tags %}
+{% block meta_title %}{% trans "Apply for an opportunity grant | PyCon Africa 2026" %}{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
+  <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 text-center">{% trans "Opportunity grant application" %}</h1>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 pb-16">
+  <div class="max-w-3xl mx-auto text-gray-900">
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="mb-6 rounded-lg px-4 py-3 {% if message.tags == 'success' %}bg-green-50 border border-green-200 text-green-900{% else %}bg-gray-50 border border-gray-200{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    {% if no_program %}
+      <p class="text-lg mb-6">{% trans "There is no active opportunity grant program for this event year yet." %}</p>
+      <a href="{% url 'profiles:profile_home' %}" class="text-pycon-teal font-semibold hover:underline">{% trans "Go to profile" %}</a>
+
+    {% elif applications_closed %}
+      <p class="text-lg mb-6">{% trans "Applications are not open at this time." %}</p>
+      {% if fin_aid_obj %}
+        <p class="text-gray-600 mb-6">{{ fin_aid_obj.get_form_status_message }}</p>
+      {% endif %}
+      <a href="{% url 'profiles:profile_home' %}" class="text-pycon-teal font-semibold hover:underline">{% trans "Go to profile" %}</a>
+
+    {% else %}
+      <p class="text-lg leading-relaxed mb-8">
+        {% trans "Please complete all fields below. You can submit only one application for the opportunity grant." %}
+      </p>
+      <form method="post" action="" class="space-y-4" x-data="{ loading: false }" @submit="loading = true">
+        {% csrf_token %}
+        {% crispy form %}
+        {% trans "Submit application" as idle_label %}
+        {% trans "Submitting…" as busy_label %}
+        {% include '2026/fin_aid/_opportunity_grant_form_submit.html' %}
+      </form>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
