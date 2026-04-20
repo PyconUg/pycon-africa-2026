@@ -20,7 +20,8 @@ urlpatterns = [
     path('region/kenya-region/', view=views.about_kenya_region, name='about_kenya_region'),
     path('region/rwanda-region/', view=views.about_rwanda_region, name='about_rwanda_region'),
     path('region/tanzania-region/', view=views.about_tanzania_region, name='about_tanzania_region'),
-    path('region/south-sudan-region/', view=views.about_south_sudan_region, name='about_south_sudan_region'), 
+    path('region/south-sudan-region/', view=views.about_south_sudan_region, name='about_south_sudan_region'),
+    path('venue-hotels/', view=views.venue_hotels, name='venue_hotels'),
     path('conduct/', view=views.conduct, name='conduct'),
     path('coc/', view=views.coc, name='coc'),
     path('coc/eporting-guidelines/', TemplateView.as_view(template_name='conduct/eporting-guidelines/eporting-guidelines.html')),
@@ -46,6 +47,13 @@ urlpatterns = [
     # path('community/refugee_persons_of_concern/', views.refugee_persons_of_concern, name='refugee_persons_of_concern'),
     # path('community/women_in_data_science/', views.women_in_data_science, name='women_in_data_science'),
     # path('community/ngombor/', view=views.ngombor, name='ngombor')
+    path('co-events/pyladies/', view=views.pyladies, name='pyladies'),
+    path('co-events/django-girls/', view=views.django_girls, name='django_girls'),
+    # path('co-events/pyladies-wksp/', view=views.pyladies_wksp, name='pyladies_wksp'),   
+    # path('co-events/pyladies_con_africa/', views.pyladies_con_africa, name='pyladies_con_africa'),
+    path('co-events/persons_of_concern/', views.persons_of_concern, name='persons_of_concern'),
+    # path('co-events/women_in_data_science/', views.women_in_data_science, name='women_in_data_science'),   
+    # path('co-events/ngombor/', view=views.ngombor, name='ngombor')
     path('past-events/', view=views.past_events, name='past_events'),
 
 ]

@@ -43,6 +43,12 @@ def about_south_sudan_region(request):
     context = {}
     return render(request, '2026/about/south_sudan_region.html', context)
 
+
+def venue_hotels(request):
+    context = {}
+    return render(request, '2026/venue-hotels/venue-hotels.html', context)
+
+
 def privacy_policy(request):
     context = {}
     return render(request, '2026/about/privacy_policy.html', context)
@@ -165,28 +171,24 @@ def report(request):
     return render(request, template, context)
 
 def pyladies(request):
-    context = {}
-    template = '2026/community/pyladies.html'
-    return render(request, template, context)
+    context = {
+        'title': 'PyLadiesCon Africa @ PyCon Africa 2026',
+        'description': 'PyLadiesCon Africa is a dedicated program within PyCon Africa 2026 designed to empower and support women in the Python ecosystem across the continent.',
+    }
+    return render(request, '2026/co-events/pyladies.html', context)
     
 def django_girls(request):
     context = {}
-    template = '2026/community/django_girls.html'
+    template = '2026/co-events/django_girls.html'
     return render(request, template, context)
 
-def pyladies_wksp(request):
+def persons_of_concern(request):
     context = {
-        'title': "Pyladies Open Source Summit",
-        'description': "Pyladies Kampala Open Source Summit that will bring together Python enthusiasts and open-source advocates, both new and experienced, for a one-day event aimed at building community and promoting contributions to open source.",
+        'title': 'Refugee Persons of Concern @ PyCon Africa 2026',
+        'description': 'Refugee Persons of Concern is a program within PyCon Africa 2026 that supports refugees and migrants in the Python ecosystem across the continent.',
     }
-    template = '2026/community/pyladies_wksp.html'
-    return render(request, template, context)
-def ngombor(request):
-    context = {
-        'title': 'Pyladies Kampala Open Source Workshop',
-        'description': 'PyLadies Uganda is a group of women developers who love the Python programming language.',
-    }
-    return render(request, '2026/community/ngombor.html', context)
+    template = '2026/co-events/persons_of_concern.html'
+    return render(request, template, context)  
 
 # def pyladies_con_africa(request):
 #     context = {
@@ -208,5 +210,9 @@ def ngombor(request):
 #         'description': 'We are a group of women who are passionate about data science and want to see more women involved in the field.',
 #     }
 #     return render(request, '2026/community/women_in_data_science.html', context)
+def venue_hotels(request):
+    context = {}
+    return render(request, '2026/venue/venue_hotels.html', context)
+
 def past_events(request):
     return render(request, '2026/past_events/past_events.html')

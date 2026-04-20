@@ -51,6 +51,21 @@
         </div>
       </div>
 
+      {% comment %}Co-events (hidden)
+      <div class="nav-dropdown-wrapper" x-data="{open:false}">
+        <button class="nav-item" @click="open=!open">
+          Co-events
+          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
+          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
+        </button>
+        <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
+          <a class="nav-item" href="/2026/co-events/pyladies/">PyLadiesCon Africa</a>
+          <a class="nav-item" href="/2026/co-events/django-girls/">Django Girls</a>
+          <a class="nav-item" href="/2026/co-events/persons_of_concern/">Persons of Concern</a>
+        </div>
+      </div>
+      {% endcomment %}
+
       <!-- Sponsors Dropdown -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open">
@@ -107,6 +122,7 @@
           <a class="nav-item" href="/2026/fin-aid/">Opportunity Grants</a>
         </div>
       </div>
+      <a class="nav-item" href="{% url 'pycon2026:venue_hotels' %}">VENUE + HOTELS</a>
 
       <!-- Venue -->
       <!-- <div class="nav-dropdown-wrapper" x-data="{open:false}">
@@ -275,6 +291,8 @@
             <a class="nav-item nav-item-indent" href="/2026/region/south-sudan-region/">PYCON AFRICA 2026 – SOUTH SUDAN REGION</a>
           </div>
         </div>
+
+        <a class="nav-item" href="{% url 'pycon2026:venue_hotels' %}">VENUE + HOTELS</a>
 
         <!-- Uganda (dropdown) -->
         <div x-data="{ openSection: false }">
