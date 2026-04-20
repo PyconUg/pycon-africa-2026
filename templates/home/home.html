@@ -59,9 +59,11 @@
 
     <!-- Action Buttons -->
     <div class="flex flex-wrap items-center justify-center hero-action-buttons gap-3 md:gap-3 mt-8 lg:mt-16 md:mt-10 px-4 w-full max-w-2xl mx-auto">
+      <!--
       <a href="/2026/talks/submit/" class="hero-action-btn text-white font-medium whitespace-nowrap flex items-center justify-center font-sans text-decoration-none rounded shadow-sm" style="min-width: 140px; height: 50px; padding: 14px 24px; border-radius: 5px; background-color: #F59E0B; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
         Submit a Talk
       </a>
+      -->
       <a href="https://www.quicket.co.ug/events/361146-pycon-africa-2026/" target="_blank" rel="noopener noreferrer" class="hero-action-btn text-white font-medium whitespace-nowrap flex items-center justify-center font-sans text-decoration-none rounded shadow-sm" style="min-width: 140px; height: 50px; padding: 14px 24px; border-radius: 5px; background-color: #2196F3; font-size: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.2);">
         Buy a Ticket
       </a>
@@ -82,22 +84,23 @@
     </h2>
     
     <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-      <!-- CFP is Live Card -->
+      <!-- Opportunity Grants Card -->
       <div class="bg-white rounded-lg shadow-lg p-8 flex flex-col justify-between min-w-0 min-h-[280px]">
         <div class="flex-grow flex flex-col justify-start">
           <div class="text-center mb-2">
-            <div class="text-5xl mb-2">🎉</div>
+            <div class="text-5xl mb-2">💰</div>
           </div>
           <h3 class="text-2xl font-bold mb-2 text-center" style="color: #1f2937;">
-            CFP is Live!
+            Opportunity Grants — Coming Soon
           </h3>
           <p class="text-center" style="color: #4b5563; font-size: 18px; line-height: 1.6;">
-            Our Call for Proposals is now open! Share your knowledge, experience, and passion with the Python community in Africa.
+            Our Opportunity Grant programme is not open yet. Check back soon for information on how to apply.
+            <br><span class="text-sm text-gray-500 mt-1 inline-block">The financial aid application form will open on 2026-04-20 18:27:10</span>
           </p>
         </div>
         <div class="text-center mt-4">
-          <a href="/2026/talks/submit/" class="inline-block px-5 py-3 rounded-lg text-white font-semibold" style="background-color: #F59E0B; font-size: 18px; text-decoration: none;">
-            Submit a Talk
+          <a href="{% url 'pycon2026:fin_aid' %}" class="inline-block px-5 py-3 rounded-lg text-white font-semibold" style="background-color: #D99A00; font-size: 18px; text-decoration: none;">
+            Learn more
           </a>
         </div>
       </div>
@@ -145,7 +148,7 @@
   </div>
 </section>
 
-{% include '2026/fin_aid/financial-grant.html' %}
+{# Opportunity grants strip removed; details are now in Latest Updates card. #}
 
 <section class="bg-gray-50 py-16">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
