@@ -197,9 +197,5 @@ def persons_of_concern(request):
 #         'description': 'We are a group of women who are passionate about data science and want to see more women involved in the field.',
 #     }
 #     return render(request, '2026/community/women_in_data_science.html', context)
-def venue_hotels(request):
-    context = {}
-    return render(request, '2026/venue/venue_hotels.html', context)
-
 def past_events(request):
     return render(request, '2026/past_events/past_events.html')
