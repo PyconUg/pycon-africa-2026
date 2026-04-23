@@ -27,6 +27,12 @@ def sponsors(request, year):
                     "website": "https://www.python.org/psf/",
                     "description": "The Python Software Foundation is the non-profit organization behind the Python programming language, supporting and promoting Python development worldwide.",
                 },
+                {
+                    "name": "JetBrains",
+                    "logo": "2026/img/sponsors/jetbrains.png",
+                    "website": "https://www.jetbrains.com/",
+                    "description": "JetBrains creates intelligent developer tools used by software teams around the world.",
+                },
             ],
         },
     ]
