@@ -11,6 +11,59 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static '2026/css/custom.css' %}">
+<style>
+  .home-bottom-sponsors {
+    background: #ffffff;
+    padding: 56px 16px 44px;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+  }
+
+  .home-bottom-sponsors-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .home-bottom-sponsors-title {
+    color: #9ca3af;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 28px;
+  }
+
+  .home-bottom-sponsors-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px 28px;
+  }
+
+  .home-bottom-sponsor-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+
+  .home-bottom-sponsor-link:hover {
+    transform: translateY(-2px);
+  }
+
+  .home-bottom-sponsor-logo {
+    height: 72px;
+    width: auto;
+    max-width: 240px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .home-bottom-sponsors-cta {
+    margin-top: 24px;
+  }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -217,12 +270,11 @@
   </div>
 </section>
 
-<!-- Programme section -->
 
 <section class="py-16">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-12">
         <div class="space-y-4">
-            <h2>Our Programme</h2>
+            <h2>Africa's Premier Python Conference</h2>
             <p class="text-gray-600 text-lg max-w-3xl mx-auto">
                 Five days of learning, networking, and collaboration designed for Python enthusiasts at every level
             </p>
@@ -299,14 +351,23 @@
     </div>
 </section>
 
-<!-- Thank you section -->
-<section class="py-16 bg-pycon-blue/5">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2>Thanks for stopping by!</h2>
-        <p class="text-gray-600">
-            We're excited to have you join our community of Python enthusiasts. Stay tuned for more updates and information about Pycon Africa.
-        </p>
+
+<section class="home-bottom-sponsors">
+  <div class="home-bottom-sponsors-inner">
+    <h2 class="home-bottom-sponsors-title">Our Sponsors</h2>
+
+    <div class="home-bottom-sponsors-grid">
+      <a href="https://www.jetbrains.com/" target="_blank" rel="noopener noreferrer" class="home-bottom-sponsor-link">
+        <img src="{% static '2026/img/sponsors/jetbrains.png' %}" alt="JetBrains" class="home-bottom-sponsor-logo" />
+      </a>
     </div>
+
+    {% comment %}
+    <div class="home-bottom-sponsors-cta">
+      <a href="/2026/our-sponsors/" class="btn btn-success">View all sponsors</a>
+    </div>
+    {% endcomment %}
+  </div>
 </section>
 
 <!-- Commented out sections: About, Tickets, and Sponsors -->
@@ -545,66 +606,3 @@
 <!-- End Team Blocks -->
 
 {% endblock %}
-
-<style>
-  /* Mobile responsiveness for sponsor section */
-  @media (max-width: 768px) {
-    .current-sponsors {
-      flex-direction: column !important;
-      gap: 20px !important;
-    }
-
-    .sponsor-cta,
-    .sponsor-showcase {
-      flex: 1 1 100% !important;
-      text-align: center;
-    }
-
-    .sponsor-logo-container {
-      margin: 0 auto;
-    }
-
-    .sponsor-title {
-      font-size: 1.5rem !important;
-    }
-
-    .current-sponsors-title {
-      font-size: 1.25rem !important;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .current-sponsors {
-      gap: 15px !important;
-    }
-
-    .sponsor-logo-container {
-      padding: 15px !important;
-    }
-
-    .sponsor-logo-container img {
-      max-height: 100px !important;
-      max-width: 150px !important;
-    }
-
-    .sponsor-title {
-      font-size: 1.25rem !important;
-    }
-
-    .sponsor-description {
-      font-size: 0.9rem !important;
-    }
-  }
-
-  /* Ensure sponsor section has proper spacing */
-  .sponsor-section {
-    margin: 60px 0;
-    padding: 40px 0;
-  }
-
-  .sponsor-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-  }
-</style>
