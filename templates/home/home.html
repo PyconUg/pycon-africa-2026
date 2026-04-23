@@ -357,16 +357,27 @@
     <h2 class="home-bottom-sponsors-title">Our Sponsors</h2>
 
     <div class="home-bottom-sponsors-grid">
-      <a href="https://www.jetbrains.com/" target="_blank" rel="noopener noreferrer" class="home-bottom-sponsor-link">
-        <img src="{% static '2026/img/sponsors/jetbrains.png' %}" alt="JetBrains" class="home-bottom-sponsor-logo" />
-      </a>
+      {% for tier in sponsors_data %}
+        {% for sponsor in tier.sponsors %}
+          <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer" class="home-bottom-sponsor-link">
+            <img src="{% static sponsor.logo %}" alt="{{ sponsor.name }}" class="home-bottom-sponsor-logo" />
+          </a>
+        {% endfor %}
+      {% endfor %}
     </div>
 
-    {% comment %}
-    <div class="home-bottom-sponsors-cta">
-      <a href="/2026/our-sponsors/" class="btn btn-success">View all sponsors</a>
-    </div>
-    {% endcomment %}
+  </div>
+</section>
+
+<section class="py-10">
+  <div class="max-w-3xl mx-auto px-4 text-center">
+    <p class="text-gray-700 text-lg mb-2 font-medium">Interested in sponsoring PyCon Africa 2026?</p>
+    <a href="/2026/sponsor-us/"
+       class="inline-flex items-center gap-2 font-semibold py-3 px-8 rounded-lg text-white hover:shadow-md transition-shadow"
+       style="background-color: #177e89; text-decoration: none;">
+      <i class="fa fa-handshake" aria-hidden="true"></i>
+      Become a Sponsor
+    </a>
   </div>
 </section>
 

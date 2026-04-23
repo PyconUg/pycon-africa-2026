@@ -11,6 +11,7 @@ from django.utils.timezone import now
 from .models import *  
 from .models import EventYear
 from fin_aid.models import Fin_aid
+from pycon2026.views import SPONSORS_2026
 
 def get_fin_aid_status(year):
     try:
@@ -43,6 +44,8 @@ def homepage(request):
         'pycon_africa_this_year': pycon_africa_this_year,
         'current_year': current_year,
         'fin_aid_status': fin_aid_status,
+        'sponsors_data': SPONSORS_2026,
+        'has_sponsors': any(tier["sponsors"] for tier in SPONSORS_2026),
     }
     
     return render(request, 'home/home.html', context)

@@ -1,69 +1,58 @@
 {% extends "base.html" %}
-{% load i18n static markdown_extras %}
+{% load i18n static %}
 
-{% block meta_title %}{% if page %}{{ page.meta_title }}{% else %}{% trans "Sponsors || PyCon Africa" %}{% endif %}{% endblock %}
+{% block meta_title %}{% trans "Our Sponsors | PyCon Africa 2026" %}{% endblock %}
 
 {% block content %}
+{% include '2026/navbar.html' %}
 
-<!-- ========== HEADER ========== --> 
-{% include '2026/navbar.html' %} 
-<!-- ========== END HEADER ========== -->
+<div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
+  <h1 class="text-5xl font-bold text-gray-900 text-center">Our Sponsors</h1>
+</div>
 
-    <!-- Breadcrumbs -->
-    <section class="g-bg-gray-light-v5 g-py-80 g-pt-150">
-        <div class="max-w-7xl mx-auto px-4 text-center">
-          <h2 class="h2 g-color-black g-font-weight-600">Our Sponsors</h2>
-          <ul class="u-list-inline">
-            <li class="list-inline-item g-mr-5">
-              <a class="u-link-v5 g-color-gray-dark-v1 g-color-primary--hover" href="#">Home</a>
-                <i class="g-color-gray-light-v1 g-ml-5">/</i>
-            </li> 
-            <li class="list-inline-item g-color-primary">
-                <span>Sponsors</span>
-            </li>
-        </ul>
-        </div>
-      </section>
-      <!-- End Breadcrumbs --> 
-   
-<!-- Sponsors Section -->
-<section class="g-py-80">
-    <div class="max-w-7xl mx-auto px-4">
-        {% if has_sponsors %}
-            {% for tier in sponsors_data %}
-                {% if tier.sponsors %}
-                    <div class="g-mb-60">
-                        <h3 class="h3 g-color-black g-font-weight-600 text-center g-mb-50">
-                            {% if tier.id == "gold" %}
-                                <i class="fa-duotone fa-medal g-color-warning g-mr-10"></i>
-                            {% endif %}
-                            {{ tier.label }}
-                        </h3>
-                        <div class="row justify-content-center">
-                            {% for sponsor in tier.sponsors %}
-                                <div class="col-lg-3 col-md-4 col-sm-6 g-mb-30">
-                                    <div class="text-center">
-                                        <a href="{{ sponsor.website }}" target="_blank" class="d-block">
-                                            <img src="{% static sponsor.logo %}" alt="{{ sponsor.name }}" class="img-fluid" style="max-height: 150px; max-width: 250px;">
-                                        </a>
-                                    </div>
-                                    </div>
-                                    {% endfor %}
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% else %}
-            <div class="text-center">
-                <h3 class="h4 g-color-gray-dark-v3 g-font-weight-400">No sponsors yet</h3>
-                <p class="g-color-gray-dark-v4">We're working on securing sponsors for PyCon Africa 2026.</p>
-                <a href="{% url 'sponsor_us' year %}" class="btn u-btn-primary g-font-size-16 g-py-12 g-px-25 g-mt-20">
-                    Become a Sponsor
+<div class="max-w-7xl mx-auto px-4 pb-16">
+  <div class="max-w-4xl mx-auto">
+
+    {% if has_sponsors %}
+      {% for tier in sponsors_data %}
+        {% if tier.sponsors %}
+          <div class="mb-16">
+            <h2 class="text-2xl font-bold text-gray-900 text-center mb-8">{{ tier.label }}</h2>
+            <div class="flex flex-wrap justify-center gap-8">
+              {% for sponsor in tier.sponsors %}
+                <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer"
+                   class="flex items-center justify-center bg-white border border-gray-200 rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow"
+                   style="min-width: 200px; max-width: 280px;">
+                  <img src="{% static sponsor.logo %}" alt="{{ sponsor.name }}"
+                       class="max-h-24 w-auto object-contain" />
                 </a>
+              {% endfor %}
             </div>
+          </div>
         {% endif %}
-        </div>
-    </section>
-<!-- End Sponsors Section -->
-   
+      {% endfor %}
+
+      <div class="text-center border-t border-gray-200 pt-12 mt-4">
+        <p class="text-gray-600 text-base mb-6">
+          Interested in sponsoring PyCon Africa 2026? Get in touch at
+          <a href="mailto:sponsorship@pycon.africa" class="text-pycon-teal hover:underline font-medium">sponsorship@pycon.africa</a>
+        </p>
+        <a href="{% url 'pycon2026:sponsor_us' %}" class="inline-flex items-center justify-center font-semibold py-3 px-8 rounded-lg text-white hover:shadow-md transition-shadow" style="background-color: #177e89;">
+          View Sponsorship Packages
+        </a>
+      </div>
+
+    {% else %}
+      <div class="text-center py-16">
+        <h3 class="text-xl text-gray-500 font-normal mb-3">No sponsors yet</h3>
+        <p class="text-gray-400 mb-8">We're working on securing sponsors for PyCon Africa 2026.</p>
+        <a href="{% url 'pycon2026:sponsor_us' %}" class="inline-flex items-center justify-center font-semibold py-3 px-8 rounded-lg text-white" style="background-color: #177e89;">
+          Become a Sponsor
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
 {% endblock %}

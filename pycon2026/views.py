@@ -1,11 +1,27 @@
 from django.shortcuts import render, get_object_or_404
 
-# Create your views here.
+SPONSORS_2026 = [
+    {
+        "id": "gold",
+        "label": "Gold Sponsors",
+        "sponsors": [
+            {
+                "name": "JetBrains",
+                "logo": "2026/img/sponsors/jetbrains.png",
+                "website": "https://www.jetbrains.com/",
+                "description": "JetBrains creates intelligent developer tools used by software teams around the world.",
+            },
+        ],
+    },
+]
+
 
 def home2026(request):
-    context = {}
-    template = 'home.html'
-    return render(request, template, context)
+    context = {
+        "sponsors_data": SPONSORS_2026,
+        "has_sponsors": any(tier["sponsors"] for tier in SPONSORS_2026),
+    }
+    return render(request, 'home.html', context)
   
 def hopin(request):
     context = {"about": "active"}
@@ -117,9 +133,12 @@ def sponsor_us(request):
     return render(request, template, context)
 
 def sponsors(request):
-    context = {}
-    template = '2026/sponsors/sponsors.html'
-    return render(request, template, context)
+    context = {
+        "sponsors_data": SPONSORS_2026,
+        "has_sponsors": any(tier["sponsors"] for tier in SPONSORS_2026),
+        "year": 2026,
+    }
+    return render(request, '2026/sponsors/sponsors.html', context)
 
 def register(request):
     context = {}
