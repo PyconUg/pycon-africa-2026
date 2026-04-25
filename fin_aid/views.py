@@ -375,49 +375,67 @@ def fin_aid_reviews_list(request, year):
         )
 
     fin_aids = Fin_aid.objects.filter(event_year=event_year)
-    applications = OpportunityGrantApplication.objects.filter(
+    all_applications = OpportunityGrantApplication.objects.filter(
         fin_aid__in=fin_aids,
-    ).select_related('user', 'fin_aid')
+        status__in=[
+            OpportunityGrantApplication.STATUS_SUBMITTED,
+            OpportunityGrantApplication.STATUS_IN_REVIEW,
+        ]
+    ).select_related('user', 'fin_aid').prefetch_related('reviews')
 
-    reviewed_ids = set(
+    # Get applications this reviewer has already reviewed
+    reviewed_by_me_ids = set(
         FinAidApplicationReview.objects.filter(reviewer=reviewer).values_list(
             'application_id',
             flat=True,
         )
     )
-    awaiting = [a for a in applications if a.pk not in reviewed_ids]
-    reviewed = [a for a in applications if a.pk in reviewed_ids]
-    awaiting.sort(key=lambda a: a.submitted_at, reverse=True)
-    reviewed.sort(key=lambda a: a.submitted_at, reverse=True)
 
-    applications_by_support_type = OrderedDict()
-    for _code, label in OpportunityGrantApplication.SUPPORT_TYPE_CHOICES:
-        applications_by_support_type[label] = []
-    for app in awaiting:
-        applications_by_support_type[app.get_support_type_display()].append(app)
-    applications_by_support_type = OrderedDict(
-        (k, v) for k, v in applications_by_support_type.items() if v
-    )
+    # Filter out applications this reviewer has already reviewed
+    available_applications = [a for a in all_applications if a.pk not in reviewed_by_me_ids]
+
+    # SECTION 1: Unreviewed applications (NO ONE has reviewed them yet)
+    unreviewed_applications = []
+    # SECTION 2: Previously reviewed applications (OTHERS have reviewed them)
+    previously_reviewed_applications = []
+
+    for app in available_applications:
+        review_count = app.reviews.count()
+        if review_count == 0:
+            # No one has reviewed this yet - goes to main section
+            unreviewed_applications.append(app)
+        else:
+            # Others have reviewed this - goes to secondary section
+            previously_reviewed_applications.append(app)
+
+    # Sort applications
+    unreviewed_applications.sort(key=lambda a: a.submitted_at)
+    previously_reviewed_applications.sort(key=lambda a: a.reviews.count(), reverse=True)
+
+    # Get applications this reviewer has already completed
+    my_completed_reviews = OpportunityGrantApplication.objects.filter(
+        fin_aid__in=fin_aids,
+        pk__in=reviewed_by_me_ids
+    ).select_related('user', 'fin_aid')
 
     review_by_app_id = {
         r.application_id: r
         for r in FinAidApplicationReview.objects.filter(
             reviewer=reviewer,
-            application__in=applications,
+            application__in=my_completed_reviews,
         ).select_related('application')
     }
-    reviewed_with_reviews = [(app, review_by_app_id[app.pk]) for app in reviewed]
+    my_completed_with_reviews = [(app, review_by_app_id[app.pk]) for app in my_completed_reviews]
 
     return render(
         request,
         template,
         {
             'year': year,
-            'awaiting': awaiting,
-            'reviewed': reviewed,
-            'reviewed_ids': reviewed_ids,
-            'applications_by_support_type': applications_by_support_type,
-            'reviewed_with_reviews': reviewed_with_reviews,
+            'unreviewed_applications': unreviewed_applications,
+            'previously_reviewed_applications': previously_reviewed_applications,
+            'my_completed_reviews': my_completed_with_reviews,
+            'reviewer': reviewer,
         },
     )
 
