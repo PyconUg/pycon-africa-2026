@@ -33,7 +33,7 @@
   {% if fin_aid_submitted_url %}
   <a href="{{ fin_aid_submitted_url }}" class="profile-nav-link{% if account_nav_active == 'submitted_opportunity_grant' %} active{% endif %}">
     <i class="fa-solid fa-file-lines w-4 text-center" aria-hidden="true"></i>
-    <span>{% trans "View submitted opportunity grant" %}</span>
+    <span>{% trans "My opportunity grant application" %}</span>
   </a>
   {% endif %}
   {% if request.user|is_fin_aid_reviewer %}
