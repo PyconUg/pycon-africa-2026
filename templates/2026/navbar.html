@@ -84,6 +84,18 @@
         </div>
       </div>
 
+      <div class="nav-dropdown-wrapper" x-data="{open:false}">
+        <button class="nav-item" @click="open=!open">
+          TICKETS
+          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
+          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
+        </button>
+        <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
+          <a class="nav-item" href="{% url 'pycon2026:tickets' %}">Buy Tickets</a>
+          <a class="nav-item" href="#">Buy Merch</a>
+        </div>
+      </div>
+
        <!-- Regions -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open">
@@ -305,6 +317,19 @@
         </div>
 
         <a class="nav-item" href="{% url 'pycon2026:venue_hotels' %}">VENUE + HOTELS</a>
+
+        <!-- Tickets (dropdown) -->
+        <div x-data="{ openSection: false }">
+          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
+            TICKETS
+            <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
+            <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
+          </button>
+          <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
+            <a class="nav-item nav-item-indent" href="{% url 'pycon2026:tickets' %}">Buy Tickets</a>
+            <a class="nav-item nav-item-indent" href="#">Buy Merch</a>
+          </div>
+        </div>
 
         <!-- Uganda (dropdown) -->
         <div x-data="{ openSection: false }">
