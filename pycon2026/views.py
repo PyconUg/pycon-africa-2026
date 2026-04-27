@@ -218,3 +218,11 @@ def persons_of_concern(request):
 #     return render(request, '2026/community/women_in_data_science.html', context)
 def past_events(request):
     return render(request, '2026/past_events/past_events.html')
+
+def tickets(request):
+    context = {}
+    return render(request, '2026/tickets/tickets.html', context)
+
+def merch(request):
+    context = {}
+    return render(request, '2026/merch/merch.html', context)
