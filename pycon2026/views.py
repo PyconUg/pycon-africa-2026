@@ -222,3 +222,7 @@ def past_events(request):
 def tickets(request):
     context = {}
     return render(request, '2026/tickets/tickets.html', context)
+
+def merch(request):
+    context = {}
+    return render(request, '2026/merch/merch.html', context)

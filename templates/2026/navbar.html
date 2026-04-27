@@ -92,7 +92,7 @@
         </button>
         <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
           <a class="nav-item" href="{% url 'pycon2026:tickets' %}">Buy Tickets</a>
-          <a class="nav-item" href="#">Buy Merch</a>
+          <a class="nav-item" href="{% url 'pycon2026:merch' %}">Buy Merch</a>
         </div>
       </div>
 
@@ -327,7 +327,7 @@
           </button>
           <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
             <a class="nav-item nav-item-indent" href="{% url 'pycon2026:tickets' %}">Buy Tickets</a>
-            <a class="nav-item nav-item-indent" href="#">Buy Merch</a>
+            <a class="nav-item nav-item-indent" href="{% url 'pycon2026:merch' %}">Buy Merch</a>
           </div>
         </div>
 

@@ -113,6 +113,7 @@ urlpatterns = [
     # path('co-events/ngombor/', view=views.ngombor, name='ngombor')
     path('past-events/', view=views.past_events, name='past_events'),
     path('tickets/', view=views.tickets, name='tickets'),
+    path('merch/', view=views.merch, name='merch'),
 ]
 
 
