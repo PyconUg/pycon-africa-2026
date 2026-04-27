@@ -72,6 +72,7 @@
             role="region"
             aria-labelledby="accordion-venue-heading"
             x-show="openId === 'venue'"
+            x-cloak
             x-transition:enter="transition ease-out duration-200"
             x-transition:enter-start="opacity-0 -translate-y-1"
             x-transition:enter-end="opacity-100 translate-y-0"
@@ -99,11 +100,11 @@
                 <h3 class="text-lg font-bold text-gray-900 mb-2">{% trans "Venue address" %}</h3>
                 <p class="text-base leading-relaxed">
                   <a
-                    href="https://www.google.com/maps/search/?api=1&query=Speke+Resort+Munyonyo+Kampala+Uganda"
+                    href="https://www.google.com/maps/search/?api=1&query=Plot+94,+411+%26+412,+Wavamunno+Road,+Mulungu+Village"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="text-pycon-teal font-medium underline decoration-1 underline-offset-2 hover:text-teal-800"
-                  >{% trans "Speke Resort Munyonyo, Munyonyo, Kampala, Uganda" %}</a>
+                  >{% trans "Plot 94, 411 & 412, Wavamunno Road, Mulungu Village" %}</a>
                 </p>
               </div>
               <p class="text-base leading-relaxed text-gray-700">
@@ -149,61 +150,68 @@
             x-transition:leave-end="opacity-0"
             class="pt-4 sm:pt-5 mt-2"
           >
-            <div class="space-y-4 text-gray-900">
-              <p class="text-base leading-relaxed">
-                {% blocktrans trimmed %}
-                Information about recommended hotels, partner rates, and booking options will be published here.
-                {% endblocktrans %}
-              </p>
-              <p class="text-base leading-relaxed">
-                {% trans "For travel and visa support, see the" %}
-                <a href="/2026/visa/apply/" class="text-pycon-teal font-medium underline decoration-1 underline-offset-2 hover:text-teal-800">{% trans "Uganda" %}</a>
-                {% trans "pages in the site navigation." %}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+            <div class="space-y-6 text-gray-900">
+              <div class="rounded-lg border border-gray-200 overflow-x-auto">
+                <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
+                  <h3 class="text-lg font-bold text-gray-900 mb-0">
+                    <a href="https://www.spekehotel.com/" target="_blank" rel="noopener noreferrer" class="text-pycon-teal underline decoration-1 underline-offset-2 hover:text-teal-800">Speke Hotel (1996) Ltd.</a>
+                  </h3>
+                </div>
+                <table class="min-w-full text-sm sm:text-base">
+                  <thead class="bg-gray-100">
+                    <tr>
+                      <th class="text-left px-4 py-2 font-semibold border-b border-gray-200">ROOM TYPE</th>
+                      <th class="text-left px-4 py-2 font-semibold border-b border-gray-200">RATE PER ROOM PER NIGHT, BB (TAXES INCLUSIVE)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="px-4 py-2 border-b border-gray-100">Single Deluxe Room</td>
+                      <td class="px-4 py-2 border-b border-gray-100">USD 65.00</td>
+                    </tr>
+                    <tr>
+                      <td class="px-4 py-2">Double/Twin Room</td>
+                      <td class="px-4 py-2">USD 75.00</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 text-sm text-gray-700">
+                  To access discounted conference rates, guests should email
+                  <a href="mailto:reservations@spekeresort.com" class="text-pycon-teal font-medium underline decoration-1 underline-offset-2 hover:text-teal-800">reservations@spekeresort.com</a>
+                  and mention code <span class="font-semibold">PYCONAFRICA2026</span>. The reservations team will share the payment link directly.
+                </div>
+              </div>
 
-      <!-- Hotel Discount -->
-      <div class="border-b border-gray-200 -mx-6 px-6 sm:-mx-10 sm:px-10">
-        <div
-          :class="openId === 'hotel-discount'
-            ? 'bg-white rounded-xl px-5 sm:px-6 py-5 sm:py-6 mt-0 mb-3 venue-accordion-card--expanded transition-all duration-200'
-            : 'transition-all duration-200'"
-        >
-          <button
-            type="button"
-            id="accordion-hotel-discount-heading"
-            class="flex w-full items-center justify-between gap-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-pycon-teal focus-visible:ring-offset-2 rounded-md transition-colors cursor-pointer"
-            :class="openId === 'hotel-discount' ? '' : 'py-6 sm:py-7 hover:bg-gray-100/70'"
-            @click="openId = openId === 'hotel-discount' ? null : 'hotel-discount'"
-            :aria-expanded="openId === 'hotel-discount'"
-            aria-controls="accordion-hotel-discount-panel"
-          >
-            <span class="venue-accordion-heading font-semibold">{% trans "Hotel Discount" %}</span>
-            {% include '2026/venue-hotels/_accordion_toggle_icon.html' with section_key='hotel-discount' %}
-          </button>
-          <div
-            id="accordion-hotel-discount-panel"
-            role="region"
-            aria-labelledby="accordion-hotel-discount-heading"
-            x-show="openId === 'hotel-discount'"
-            x-cloak
-            x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="opacity-0 -translate-y-1"
-            x-transition:enter-end="opacity-100 translate-y-0"
-            x-transition:leave="transition ease-in duration-150"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-            class="pt-4 sm:pt-5 mt-2"
-          >
-            <div class="space-y-4 text-gray-900">
-              <p class="text-base leading-relaxed">
-                {% blocktrans trimmed %}
-                Information about hotel discounts and partner rates will be published here closer to the event.
-                {% endblocktrans %}
-              </p>
+              <div class="rounded-lg border border-gray-200 overflow-x-auto">
+                <div class="px-4 py-3 border-b border-gray-200 bg-gray-50">
+                  <h3 class="text-lg font-bold text-gray-900 mb-0">
+                    <a href="https://www.spekeresort.com/" target="_blank" rel="noopener noreferrer" class="text-pycon-teal underline decoration-1 underline-offset-2 hover:text-teal-800">Speke Resort Munyonyo</a>
+                  </h3>
+                </div>
+                <table class="min-w-full text-sm sm:text-base">
+                  <thead class="bg-gray-100">
+                    <tr>
+                      <th class="text-left px-4 py-2 font-semibold border-b border-gray-200">ROOM TYPE</th>
+                      <th class="text-left px-4 py-2 font-semibold border-b border-gray-200">RATE PER ROOM PER NIGHT, BB (TAXES INCLUSIVE)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="px-4 py-2 border-b border-gray-100">Single Deluxe Room</td>
+                      <td class="px-4 py-2 border-b border-gray-100">USD 150.00</td>
+                    </tr>
+                    <tr>
+                      <td class="px-4 py-2">Double/Twin Room</td>
+                      <td class="px-4 py-2">USD 150.00</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="px-4 py-3 bg-gray-50 border-t border-gray-200 text-sm text-gray-700">
+                  For the conference group offer, ask guests to contact
+                  <a href="mailto:reservations@spekeresort.com" class="text-pycon-teal font-medium underline decoration-1 underline-offset-2 hover:text-teal-800">reservations@spekeresort.com</a>
+                  and include code <span class="font-semibold">PYCONAFRICA2026</span> in the message.
+                </div>
+              </div>
             </div>
           </div>
         </div>
