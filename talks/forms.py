@@ -70,20 +70,19 @@ class ReviewForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ReviewForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.form_method = 'post'
+        self.helper.form_tag = False
         self.helper.layout = Layout(
             Row(
-                Column('speaker_expertise', css_class='form-control form-control-md form-control-lg rounded-0 g-mb-25'),
-                Column('depth_of_topic', css_class='form-control form-control-md form-control-lg rounded-0 g-mb-25'),
-                Column('relevancy', css_class='form-control form-control-md form-control-lg rounded-0 g-mb-25'),
-                Column('value_or_impact', css_class='form-control form-control-md form-control-lg rounded-0 g-mb-25'),
+                Column('speaker_expertise', css_class='col-sm-6 col-md-3'),
+                Column('depth_of_topic', css_class='col-sm-6 col-md-3'),
+                Column('relevancy', css_class='col-sm-6 col-md-3'),
+                Column('value_or_impact', css_class='col-sm-6 col-md-3'),
                 css_class='form-row'
             ),
             Row(
-                Column('comments', css_class='form-group col-md-12 mb-0'),
+                Column('comments', css_class='col-12'),
                 css_class='form-row'
             ),
-            Submit('submit', 'Submit Review')
         )
 
     def save(self, commit=True):
