@@ -2,6 +2,36 @@
 Middleware to redirect all requests to africa.pycon.org
 """
 from django.http import HttpResponsePermanentRedirect
+from django.conf import settings
+
+
+class AppendSlashMiddleware:
+    """
+    Eagerly redirects any path that lacks a trailing slash to the same path
+    with a trailing slash (301)
+
+    This complements Django's APPEND_SLASH / CommonMiddleware behaviour, which
+    only redirects when the slash-appended URL resolves to a known pattern.
+    Because several routes (e.g. /merch, /tickets) live under the /2026/
+    prefix in Django's urlconf but are served without that prefix by the
+    web-server layer, CommonMiddleware alone cannot detect the match and
+    skips the redirect.  This middleware handles that gap.
+    """
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        path = request.path
+        # Only act when APPEND_SLASH is enabled (respects project settings)
+        if getattr(settings, 'APPEND_SLASH', True):
+            last_segment = path.rstrip('/').rsplit('/', 1)[-1]
+            if path != '/' and not path.endswith('/') and '.' not in last_segment:
+                redirect_url = path + '/'
+                if request.GET:
+                    redirect_url = f"{redirect_url}?{request.GET.urlencode()}"
+                return HttpResponsePermanentRedirect(redirect_url)
+        return self.get_response(request)
 
 
 class RedirectToAfricaMiddleware:
