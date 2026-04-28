@@ -114,6 +114,7 @@ MIDDLEWARE = [
     # It will redirect /2024/, /2020/, and /2019/ to pyconafrica.pythonanywhere.com
     "pyconafrica.middleware.RedirectFromAfricaMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "pyconafrica.middleware.AppendSlashMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
