@@ -1,184 +1,247 @@
 {% extends "base.html" %}
 {% load i18n static avatar_tags crispy_forms_tags markdown_extras embed_video_tags %}
-{% block meta_title %}{% if page %}{{ page.meta_title }}{% else %}{% trans "Review Talk || PyCon Uganda" %}{% endif %}{% endblock %}
-{% trans 'cur_time' as datetime.datetime.now(tz=pytz.timezone(str(settings.TIME_ZONE))) %}
+{% block meta_title %}{% trans "Review Proposal | PyCon Africa 2026" %}{% endblock %}
 
-{% block content %}
-
-<!-- ========== HEADER ========== -->
-{% include '2025/navbar.html' %}
-<!-- ========== END HEADER ========== -->
- 
-
-    <!-- Breadcrumbs -->
-    <section class="g-bg-gray-light-v5 g-py-80 g-pt-150">
-      <div class="max-w-7xl mx-auto px-4 text-center"> 
-        <h1 class="h2 g-color-black g-font-weight-600">Proposal Review: {{ talk.title|truncatewords:7 }}</h1> 
-        <ul class="u-list-inline">
-          <li class="list-inline-item g-mr-5">
-            <a class="u-link-v5 g-color-gray-dark-v1 g-color-primary--hover" href="/2025/">Home</a>
-            <i class="g-color-gray-light-v2 g-ml-5">/</i>
-          </li> 
-          <li class="list-inline-item g-mr-5">
-            <a class="u-link-v5 g-color-gray-dark-v1 g-color-primary--hover" href="/accounts/profile/">Profile</a>
-            <i class="g-color-gray-light-v2 g-ml-5">/</i>
-          </li> 
-          <li class="list-inline-item g-mr-5">
-            <a class="u-link-v5 g-color-gray-dark-v1 g-color-primary--hover" href="/2025/talks/talk_list/">Proposal(s)</a>
-            <i class="g-color-gray-light-v2 g-ml-5">/</i>
-          </li> 
-          <li class="list-inline-item g-color-primary">
-            <span>Review: {{ talk.title|truncatewords:7 }}</span>
-          </li>
-        </ul><br>
-        <i class="fa-sharp fa-solid fa-file-pen" style="font-size:41px;"></i> 
-      </div>
-      
-    </section>
-    <!-- End Breadcrumbs --> 
-   
-  
-    
-    <section class="g-mb-100 g-pt-50">
-      <div class="max-w-7xl mx-auto px-4"> 
-          <div class="u-shadow-v1-5 g-line-height-2 g-pa-40 g-mb-30" > 
-              <div class="flex flex-wrap gap-4">
-                
-                  <!-- Profile Sidebar -->
-                  <div class="col-lg-3 g-mb-50 g-mb-0--lg"> 
-                    <!-- Profile Pic --> 
-                      {% include 'profiles/profilepic_side.html' %}
-                    <!-- End Profile Pic  -->   
-        
-                    <!-- Sidebar Navigation -->
-                    <div class="list-group list-group-border-0 g-mb-40">
-                      <div class="media"> 
-                        <div class="media-body">
-                          <div><b><small class="text-danger">LAST LOGIN</small></b></div>
-                          <div class="g-font-size-12 g-color-gray-dark-v2"><b><small>Date:</small></b>  {{ request.user.last_login.date }}</div>
-                          <div class="g-font-size-12  g-color-gray-dark-v2"><b><small>Time:</small></b>  {{ request.user.last_login.time }}</div> 
-                        </div>
-                      </div>
-                    </div> 
-                      
-                      <!-- Overall -->
-                      <a href="/accounts/profile/" class="list-group-item list-group-item-action justify-content-between">
-                        <span><i class="fa-thin fa-house-user  g-pos-rel g-top-1 g-mr-8"></i> My Profile</span> 
-                      </a>
-                      <!-- End Overall -->
-                      
-                      <!-- Overall -->
-                      <a href="{% url 'profiles:profile_update' pk=request.user.user_profile.profile_id.hashid  %}" class="list-group-item list-group-item-action justify-content-between">
-                        <span><i class="fa-light fa-id-card g-pos-rel g-top-1 g-mr-8"></i>  Update my Profile</span> 
-                      </a>
-                      <!-- End Overall -->
-        
-                      <!-- Profile -->
-                      <a href="/accounts/password/change/" class="list-group-item list-group-item-action justify-content-between">
-                        <span><i class="fa-light fa-lock g-pos-rel g-top-1 g-mr-8"></i>  Change Password</span>
-                      </a>
-                      <!-- End Profile -->
-        
-                      <!-- Profile -->
-                      <a href="{% url 'talks:talk_list' year=year %}" class="list-group-item list-group-item-action justify-content-between">
-                        <span><i class="fa-light fa-podium-star g-pos-rel g-top-1 g-mr-8"></i>  My Submitted Talks</span>
-                      </a>
-                      <!-- End Profile -->
-  
-                      <!-- My Submitted Talks -->
-                      <a href="{% url 'talks:submit_talk' year=year %}" class="list-group-item list-group-item-action justify-content-between">
-                          <span><i class="fa-solid fa-podium g-pos-rel g-top-1 g-mr-8"></i>  Submit a new Talk</span>
-                        </a>
-                        <!-- End Profile -->
-          
-        
-        
-                        {% if perms.reviews.add_review or request.user.reviewer_profile or request.user.is_superuser %} 
-                        <!-- Review Talks -->
-                        <a href="{% url 'talks:talks_to_review' year=year %}" class="list-group-item list-group-item-action justify-content-between active">
-                          <span><i class="fa-solid fa-ballot-check g-pos-rel g-top-1 g-mr-8"></i> Review Proposals</span>
-                        </a>
-                        <!-- End Profile --> 
-                      {% endif %}
-                    </div>
-                    <!-- End Sidebar Navigation -->  
-                  <!-- End Profile Sidebar -->   
-                <!-- End Profile Sidebar -->  
-      
-                   
-              {% if already_reviewed %}
-              <p>You have already reviewed this proposal.</p>
-
-              {% else %}
-                 
-              <div class="col-lg-9">
-                <section class="g-brd-around g-brd-gray-light-v4">
-                  <div class="max-w-7xl mx-auto px-4 g-py-50--md g-py-20">
-                    
-   
-                    <h2>{{ talk.title }}</h2>
-                    <div>
-                      <p class="g-color-black"><strong>Presenter:</strong> {% if talk.user.user_profile.name %}{{ talk.user.user_profile.name }} {{ talk.user.user_profile.surname }}{% else %}{{ talk.user.username }}{% endif %}</p>
-                      <p class="g-color-black"><strong>Proposal Category:</strong> {{ talk.talk_category }}</p>
-                      <p class="g-color-black"><strong>Proposal Type:</strong> {{ talk.talk_type }}</p>
-                      <p class="g-color-black"><strong>Intended Audience:</strong> {{ talk.intended_audience }}</p>
-                      <hr class="u-divider-db-solid g-brd-gray-light-v3"> 
-                      <p class="g-color-black"><strong>Elevator Pitch</strong>: {{ talk.elevator_pitch  | markdown | safe  }} </p> 
-                        
-                      <p class="g-color-black"><strong>Abstract</strong>: {{ talk.talk_abstract | markdown | safe  }}</p>
-                      <p class="g-color-black"><strong>Something the Applicant wants you to know</strong>: {% if talk.anything_else_you_want_to_tell_us %} {{ talk.anything_else_you_want_to_tell_us  | markdown | safe  }} {% else %}<br> Applicant had nothing to say here {% endif %}</p>
-                          
-                        <p class="g-color-black"><strong>Talk Preview</strong>: </p>
-                        {% if talk.link_to_preview_video_url %}
-
-                           <!-- Youtube Iframe --> 
-                            <div class="embed-responsive  u-shadow-v36 g-brd-around g-brd-7 g-brd-white g-rounded-5 mb-4 embed-responsive-16by9 g-mb-30">
-                                {% video talk.link_to_preview_video_url 'tiny' %}
-                            </div> 
-                            <!-- End Youtube Iframe -->
-                            
-                         {% else %} 
-                         <div class="mad-entity-media">
-                            <p class="mad-entity-link-element mad-ln--independent g-color-black" style="background-position: 0% 129px;">
-                                <i class="icon licon-play">
-                                </i> 
-                              Yet to submit any preview video of this talk.
-                            </p>
-                          </div>
-                            
-                        {% endif %}<br>
-                        <p><strong>Submission Date:</strong> {{ talk.created_date|date:"Y-m-d" }}</p>
-                    </div>
-                    
-                    <hr class="u-divider-db-solid g-brd-gray-light-v3">  
-  
-                                  
-                    <form action="" enctype='multipart/form-data' method='Post'>{% csrf_token %}  
-                 
-  
-                        {{ form | crispy }} 
-                     {{ form.media }}
-                        <br> 
-                        <div class="d-grid gap-5">
-                            <button class="btn primaryAction btn-big  btn-primary" style="background-position: 0px 59px;" type="submit" >Review Talk<i class="licon-chevron-right-circle"></i></button>
-                                               
-                        </div> 
-                     </form>
- 
-  
-                </div>
-                </section> 
-              </div> 
-              {% endif %}
-
-
-              </div>
-          </div>
-        </div>
-      </section>  
-    <!-- end section.speakers -->
- 
-    
+{% block extra_css %}
+<style>
+  .profile-nav-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 0.75rem; color: #374151; text-decoration: none; border-radius: 0.5rem; font-size: 0.9375rem; }
+  .profile-nav-link:hover { background: #f3f4f6; color: #111827; }
+  .profile-nav-link.active { background: #0d9488; color: #fff; }
+  .profile-nav-link.active:hover { background: #0f766e; color: #fff; }
+  .review-form select,
+  .review-form textarea {
+    display: block; width: 100%; padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db; border-radius: 0.5rem;
+    font-size: 0.875rem; color: #111827; background: #fff;
+    outline: none;
+  }
+  .review-form select:focus,
+  .review-form textarea:focus { border-color: #0d9488; box-shadow: 0 0 0 2px rgba(13,148,136,.15); }
+  .review-form textarea { min-height: 6rem; resize: vertical; }
+</style>
 {% endblock %}
 
+{% block content %}
+{% include '2026/navbar.html' %}
 
+<div class="auth-page-content min-h-screen bg-gray-50">
+  <section class="max-w-6xl mx-auto px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row gap-6 lg:gap-10">
+
+      <!-- Sidebar -->
+      <aside class="w-full md:w-64 shrink-0 md:order-1 order-2">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden md:sticky md:top-24">
+          <div class="p-4 sm:p-5">
+            <div class="mb-4 flex justify-center">
+              <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden shrink-0 border-2 border-gray-100 shadow-sm [&_img]:w-full [&_img]:h-full [&_img]:object-cover">
+                {% include 'profiles/profilepic_side.html' %}
+              </div>
+            </div>
+            {% if request.user.last_login %}
+            <div class="text-xs text-gray-500 mb-4 pb-4 border-b border-gray-100">
+              <span class="font-medium text-gray-400 uppercase tracking-wide">{% trans "Last login" %}</span><br>
+              <span class="text-gray-600">{{ request.user.last_login|date:"M. j, Y" }} · {{ request.user.last_login|time:"g:i a" }}</span>
+            </div>
+            {% endif %}
+            {% include '2026/account/_account_sidebar_nav.html' with account_nav_active='review_proposals' year=year %}
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <div class="flex-1 min-w-0 md:order-2 order-1">
+
+        {% if already_reviewed %}
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6 lg:p-8">
+          <div class="rounded-xl border border-amber-200 bg-amber-50 p-4 flex gap-3">
+            <div class="shrink-0 text-amber-500 text-xl mt-0.5">
+              <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-amber-800">{% trans "Already Reviewed" %}</p>
+              <p class="text-sm text-amber-700 mt-1">{% trans "You have already submitted a review for this proposal." %}</p>
+            </div>
+          </div>
+          <div class="mt-4">
+            <a href="{% url 'talks:talks_to_review' year=year %}" class="text-sm text-teal-600 hover:underline font-medium">
+              ← {% trans "Back to proposals list" %}
+            </a>
+          </div>
+        </div>
+
+        {% else %}
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-4 sm:p-6 lg:p-8">
+
+          <div class="flex items-start gap-3 mb-2">
+            <i class="fa-solid fa-file-pen text-2xl text-teal-600 mt-0.5 shrink-0" aria-hidden="true"></i>
+            <div>
+              <h1 class="text-xl sm:text-2xl font-bold text-gray-900 leading-snug">{{ talk.title }}</h1>
+              <p class="text-sm text-gray-500 mt-1">{% trans "Review this proposal and submit your scores." %}</p>
+            </div>
+          </div>
+          <hr class="border-gray-200 my-5">
+
+          <!-- Talk metadata chips -->
+          <div class="flex flex-wrap gap-3 mb-6">
+
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.75rem;padding:0.625rem 1rem;display:flex;align-items:center;gap:0.625rem;min-width:0;">
+              <span style="background:#e6f7f5;color:#0d9488;width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fa-solid fa-user" style="font-size:0.75rem;"></i>
+              </span>
+              <div style="min-width:0;">
+                <p style="font-size:0.6875rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin:0;">{% trans "Presenter" %}</p>
+                <p style="font-size:0.875rem;font-weight:600;color:#1e293b;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                  {% if talk.user.user_profile.name %}{{ talk.user.user_profile.name }} {{ talk.user.user_profile.surname }}{% else %}{{ talk.user.username }}{% endif %}
+                </p>
+              </div>
+            </div>
+
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.75rem;padding:0.625rem 1rem;display:flex;align-items:center;gap:0.625rem;">
+              <span style="background:#eff6ff;color:#3b82f6;width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fa-solid fa-tag" style="font-size:0.75rem;"></i>
+              </span>
+              <div>
+                <p style="font-size:0.6875rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin:0;">{% trans "Category" %}</p>
+                <p style="font-size:0.875rem;font-weight:600;color:#1e293b;margin:0;">{{ talk.talk_category }}</p>
+              </div>
+            </div>
+
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.75rem;padding:0.625rem 1rem;display:flex;align-items:center;gap:0.625rem;">
+              <span style="background:#fdf4ff;color:#a855f7;width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fa-solid fa-microphone-lines" style="font-size:0.75rem;"></i>
+              </span>
+              <div>
+                <p style="font-size:0.6875rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin:0;">{% trans "Type" %}</p>
+                <p style="font-size:0.875rem;font-weight:600;color:#1e293b;margin:0;">{{ talk.talk_type }}</p>
+              </div>
+            </div>
+
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.75rem;padding:0.625rem 1rem;display:flex;align-items:center;gap:0.625rem;">
+              <span style="background:#fff7ed;color:#f97316;width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fa-solid fa-users" style="font-size:0.75rem;"></i>
+              </span>
+              <div>
+                <p style="font-size:0.6875rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin:0;">{% trans "Audience" %}</p>
+                <p style="font-size:0.875rem;font-weight:600;color:#1e293b;margin:0;">{{ talk.intended_audience }}</p>
+              </div>
+            </div>
+
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:0.75rem;padding:0.625rem 1rem;display:flex;align-items:center;gap:0.625rem;">
+              <span style="background:#f0fdf4;color:#22c55e;width:2rem;height:2rem;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <i class="fa-solid fa-calendar-check" style="font-size:0.75rem;"></i>
+              </span>
+              <div>
+                <p style="font-size:0.6875rem;font-weight:600;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin:0;">{% trans "Submitted" %}</p>
+                <p style="font-size:0.875rem;font-weight:600;color:#1e293b;margin:0;">{{ talk.created_date|date:"M j, Y" }}</p>
+              </div>
+            </div>
+
+          </div>
+
+          <hr class="border-gray-100 my-5">
+
+          <div class="space-y-5 text-sm mb-6">
+            <div>
+              <h3 class="font-semibold text-gray-800 mb-1.5">{% trans "Elevator Pitch" %}</h3>
+              <div class="text-gray-600 leading-relaxed">{{ talk.elevator_pitch | markdown | safe }}</div>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-800 mb-1.5">{% trans "Abstract" %}</h3>
+              <div class="text-gray-600 leading-relaxed">{{ talk.talk_abstract | markdown | safe }}</div>
+            </div>
+            {% if talk.anything_else_you_want_to_tell_us %}
+            <div>
+              <h3 class="font-semibold text-gray-800 mb-1.5">{% trans "Additional Notes from Applicant" %}</h3>
+              <div class="text-gray-600 leading-relaxed">{{ talk.anything_else_you_want_to_tell_us | markdown | safe }}</div>
+            </div>
+            {% endif %}
+          </div>
+
+          {% if talk.link_to_preview_video_url %}
+          <div class="mb-6">
+            <h3 class="text-sm font-semibold text-gray-800 mb-2">{% trans "Preview Video" %}</h3>
+            <div class="aspect-video w-full rounded-xl overflow-hidden border border-gray-200 shadow-sm">
+              {% video talk.link_to_preview_video_url 'tiny' %}
+            </div>
+          </div>
+          {% else %}
+          <p class="text-sm text-gray-400 italic mb-6">{% trans "No preview video submitted." %}</p>
+          {% endif %}
+
+          <hr class="border-gray-200 my-6">
+
+          <h2 class="text-base font-semibold text-gray-800 mb-4">{% trans "Your Scores" %}</h2>
+          <form action="" method="post" class="space-y-5 review-form" id="review-form">
+            {% csrf_token %}
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {% for field in form %}
+                {% if field.name != 'comments' %}
+                <div>
+                  <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                    {{ field.label }}{% if field.field.required %} <span class="text-red-500">*</span>{% endif %}
+                  </label>
+                  {{ field }}
+                  {% if field.errors %}
+                    {% for error in field.errors %}
+                    <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+
+            <div>
+              <label for="{{ form.comments.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                {{ form.comments.label }}
+              </label>
+              {{ form.comments }}
+              {% if form.comments.errors %}
+                {% for error in form.comments.errors %}
+                <p class="mt-1 text-xs text-red-600">{{ error }}</p>
+                {% endfor %}
+              {% endif %}
+            </div>
+
+            <div class="pt-4 border-t border-gray-100">
+              <button
+                id="review-submit-btn"
+                type="submit"
+                style="background-color:#0d9488;color:#fff;padding:0.75rem 1.75rem;border-radius:0.75rem;font-weight:600;font-size:0.875rem;display:inline-flex;align-items:center;gap:0.5rem;border:none;cursor:pointer;transition:opacity .2s;">
+                <svg id="review-spinner" style="display:none;width:1rem;height:1rem;animation:spin .7s linear infinite;" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,.35)" stroke-width="3"/>
+                  <path d="M12 2a10 10 0 0 1 10 10" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+                <i id="review-icon" class="fa-solid fa-paper-plane"></i>
+                <span id="review-btn-label">{% trans "Submit Review" %}</span>
+              </button>
+            </div>
+          </form>
+
+          <style>
+            @keyframes spin { to { transform: rotate(360deg); } }
+          </style>
+          <script>
+            document.getElementById('review-form').addEventListener('submit', function() {
+              var btn    = document.getElementById('review-submit-btn');
+              var icon   = document.getElementById('review-icon');
+              var spin   = document.getElementById('review-spinner');
+              var label  = document.getElementById('review-btn-label');
+              btn.disabled  = true;
+              btn.style.opacity = '0.75';
+              btn.style.cursor  = 'not-allowed';
+              icon.style.display  = 'none';
+              spin.style.display  = 'block';
+              label.textContent   = '{% trans "Submitting…" %}';
+            });
+          </script>
+
+        </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </section>
+</div>
+{% endblock %}

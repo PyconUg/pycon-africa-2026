@@ -44,10 +44,10 @@ urlpatterns = [
     path('proposal/<str:pk>/respond/', respond_to_invitation, name='respond_to_invitation'),
 
 
-    path('submitted', login_required(views.SuccessView.as_view()), name='submitted'),
-    path('uploads', views.home, name='home'), 
-    path('uploads_simple', views.simple_upload, name='simple_upload'),
-    path('uploads_form', views.model_form_upload, name='model_form_upload'),
+    path('submitted/', login_required(views.SuccessView.as_view()), name='submitted'),
+    path('uploads/', views.home, name='home'),
+    path('uploads_simple/', views.simple_upload, name='simple_upload'),
+    path('uploads_form/', views.model_form_upload, name='model_form_upload'),
 
     #Added Speaker(s) invitation  
     path('<str:pk>/invite-speaker/', views.send_speaker_invitation, name='send_speaker_invitation'),

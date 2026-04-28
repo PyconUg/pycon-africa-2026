@@ -1,292 +1,181 @@
 {% extends "base.html" %}
-{% load i18n static avatar_tags crispy_forms_tags %}
-{% block meta_title %}{% if page %}{{ page.meta_title }}{% else %}{% trans "Review Talk || PyCon Uganda" %}{% endif %}{% endblock %}
-{% trans 'cur_time' as datetime.datetime.now(tz=pytz.timezone(str(settings.TIME_ZONE))) %}
+{% load i18n static avatar_tags %}
+{% block meta_title %}{% trans "Review Proposals | PyCon Africa 2026" %}{% endblock %}
 
-{% block content %}
-
-<!-- ========== HEADER ========== -->
-{% include '2025/navbar.html' %}
-<!-- ========== END HEADER ========== -->
- 
-
-    <!-- Breadcrumbs -->
-    <section class="g-bg-gray-light-v5 g-py-80 g-pt-150">
-      <div class="max-w-7xl mx-auto px-4 text-center"> 
-        <h1 class="h2 g-color-black g-font-weight-600">Proposal Review</h1> 
-        <ul class="u-list-inline">
-          <li class="list-inline-item g-mr-5">
-            <a class="u-link-v5 g-color-gray-dark-v1 g-color-primary--hover" href="/2025/">Home</a>
-            <i class="g-color-gray-light-v2 g-ml-5">/</i>
-          </li> 
-          <li class="list-inline-item g-mr-5">
-            <a class="u-link-v5 g-color-gray-dark-v1 g-color-primary--hover" href="/accounts/profile/">Profile</a>
-            <i class="g-color-gray-light-v2 g-ml-5">/</i>
-          </li> 
-          <li class="list-inline-item g-mr-5">
-            <a class="u-link-v5 g-color-gray-dark-v1 g-color-primary--hover" href="/2025/talks/talk_list/">Proposal(s)</a>
-            <i class="g-color-gray-light-v2 g-ml-5">/</i>
-          </li> 
-          <li class="list-inline-item g-color-primary">
-            <span>Proposal Review</span>
-          </li>
-        </ul><br>
-        <i class="fa-sharp fa-solid fa-ballot-check" style="font-size:41px;"></i> 
-      </div>
-      
-    </section>
-    <!-- End Breadcrumbs --> 
-   
-  
-    
-    <section class="g-mb-100 g-pt-50">
-      <div class="max-w-7xl mx-auto px-4"> 
-          <div class="u-shadow-v1-5 g-line-height-2 g-pa-40 g-mb-30" > 
-              <div class="flex flex-wrap gap-4">
-                
-                  <!-- Profile Sidebar -->
-                  <div class="col-lg-3 g-mb-50 g-mb-0--lg"> 
-                    <!-- Profile Pic --> 
-                      {% include 'profiles/profilepic_side.html' %}
-                    <!-- End Profile Pic  -->   
-        
-                    <!-- Sidebar Navigation -->
-                    <div class="list-group list-group-border-0 g-mb-40">
-                      <div class="media"> 
-                        <div class="media-body">
-                          <div><b><small class="text-danger">LAST LOGIN</small></b></div>
-                          <div class="g-font-size-12 g-color-gray-dark-v2"><b><small>Date:</small></b>  {{ request.user.last_login.date }}</div>
-                          <div class="g-font-size-12  g-color-gray-dark-v2"><b><small>Time:</small></b>  {{ request.user.last_login.time }}</div> 
-                        </div>
-                      </div>
-                    </div> 
-                      
-                      <!-- Overall -->
-                      <a href="/accounts/profile/" class="list-group-item list-group-item-action justify-content-between">
-                        <span><i class="fa-thin fa-house-user  g-pos-rel g-top-1 g-mr-8"></i> My Profile</span> 
-                      </a>
-                      <!-- End Overall -->
-                      
-                      <!-- Overall -->
-                      <a href="{% url 'profiles:profile_update' pk=request.user.user_profile.profile_id.hashid  %}" class="list-group-item list-group-item-action justify-content-between">
-                        <span><i class="fa-light fa-id-card g-pos-rel g-top-1 g-mr-8"></i>  Update my Profile</span> 
-                      </a>
-                      <!-- End Overall -->
-        
-                      <!-- Profile -->
-                      <a href="/accounts/password/change/" class="list-group-item list-group-item-action justify-content-between">
-                        <span><i class="fa-light fa-lock g-pos-rel g-top-1 g-mr-8"></i>  Change Password</span>
-                      </a>
-                      <!-- End Profile -->
-        
-                      <!-- Profile -->
-                      <a href="{% url 'talks:talk_list' year=year %}" class="list-group-item list-group-item-action justify-content-between ">
-                        <span><i class="fa-light fa-podium-star g-pos-rel g-top-1 g-mr-8"></i>  My Submitted Talks</span>
-                      </a>
-                      <!-- End Profile -->
-  
-                      <!-- My Submitted Talks -->
-                      <a href="{% url 'talks:submit_talk' year=year %}" class="list-group-item list-group-item-action justify-content-between">
-                          <span><i class="fa-thin fa-podium g-pos-rel g-top-1 g-mr-8"></i>  Submit a new Talk</span>
-                        </a>
-                        <!-- End Profile --> 
-                        {% if perms.reviews.add_review or request.user.reviewer_profile or request.user.is_superuser %} 
-                        <!-- Review Talks -->
-                        <a href="{% url 'talks:talks_to_review' year=year %}" class="list-group-item list-group-item-action justify-content-between active">
-                          <span><i class="fa-solid fa-fade fa-ballot-check g-pos-rel g-top-1 g-mr-8"></i> Review Proposals</span>
-                        </a>
-                        <!-- End Profile --> 
-                      {% endif %}
-
-                      
-                      
-                      {% if request.user.is_superuser or request.user.reviewer_profile %}
-                     <!-- Review Talks List-->
-                      <a href="{% url 'talks:reviewed_talks_by_category' year=2025 %}" class="list-group-item list-group-item-action justify-content-between ">
-                      <span><i class="fa-thin fa-list-check g-pos-rel g-top-1 g-mr-8"></i> Proposals by Category</span>
-                    </a>
-                    <a href="{% url 'talks:reviewed_talks_by_type' year=year %}" class="list-group-item list-group-item-action justify-content-between ">
-                     <span><i class="fa-thin  fa-list-check g-pos-rel g-top-1 g-mr-8"></i> Proposals by Type</span>
-                   </a>
-                    <!-- End Review Talks List --> 
-                          {% endif %}
-                    </div>
-                    <!-- End Sidebar Navigation -->  
-                  <!-- End Profile Sidebar -->   
-                <!-- End Profile Sidebar -->  
-      
-                
-              <div class="col-lg-9">
-                <section class="g-brd-around g-brd-gray-light-v4">
-                  <div class="max-w-7xl mx-auto px-4 g-py-50--md g-py-20">
-                    
-                    <h2>Review Proposals</h2>  
-                    
-                    <hr class="u-divider-db-solid g-brd-gray-light-v3">  
-
-                    {% if messages %}
-                    {% for message in messages %}
-                        <p>{{ message }}</p>
-                    {% endfor %}
-                {% endif %}
-                
-             
-                {% if not no_reviewer_rights %}
-                <h4 class="g-mb-20">Proposals Awaiting Review</h4>  
-                
-              
-<!-- Nav tabs -->
-<ul class="nav u-nav-v1-2 u-nav-primary u-nav-rounded-5 g-brd-bottom--md g-brd-primary g-mb-20" role="tablist">
-  {% for talk_type, talks in talks_by_type.items %}
-  <li class="nav-item">
-      <a class="nav-link{% if forloop.first %} active{% endif %} g-rounded-bottom-0 g-brd-bottom-none" data-toggle="tab" href="#type-{{ forloop.counter }}" role="tab"><b>{{ talk_type }}</b></a>
-  </li>
-  {% endfor %}
-</ul>
-<!-- End Nav tabs -->
-
-<div class="tab-content">
-  {% for talk_type, talks in talks_by_type.items %}
-  <div class="tab-pane fade{% if forloop.first %} show active{% endif %}" id="type-{{ forloop.counter }}" role="tabpanel">
-      <div class="table-responsive">
-          <table class="table table-hover u-table--v1 mb-0">
-              {% if talks %}
-              <thead>
-                  <tr>
-                      <th style="color: #161515;"><p>Title</p></th>
-                      <th style="color: #161515;"><p>Session</p></th>
-                      <th style="color: #161515;"><p>Audience</p></th>
-                      <th style="color: #161515;"><p>Author</p></th>
-                      <th style="color: #161515;"><p>Actions</p></th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {% for talk in talks %}
-                  <tr>
-                      <td>
-                          <a href="{% url 'talks:review_talk' year=year pk=talk.pk %}"><small>{{ talk.title }}</small></a>
-                      </td>
-                      <td>
-                          <small>{{ talk.talk_type }}</small>
-                      </td>
-                      <td class="hidden-sm">
-                          <small>{{ talk.intended_audience }}</small>
-                      </td>
-                      <td>
-                          <small>{% if talk.user.user_profile.name %}{{ talk.user.user_profile.name }} {{ talk.user.user_profile.surname }}{% else %}{{ talk.user.username }}{% endif %}</small>
-                      </td>
-                      <td>
-                          <a href="{% url 'talks:review_talk' year=year pk=talk.pk %}" style="font-size:12px" class="btn btn-xs u-btn-outline-purple">Review <i class="fa fa-edit"></i></a>
-                      </td>
-                  </tr>
-                  {% endfor %}
-              </tbody>
-              {% else %}
-              <p>&nbsp;&nbsp; There are no proposals pending review.</p>
-              {% endif %}
-          </table>
-      </div>
-  </div>
-  {% endfor %}
-</div>
-
-                
-
-
-
-                
-                    <hr class="u-divider-db-solid g-brd-gray-light-v3"> 
-                <h4 class="g-mb-20">Proposals Reviewed<br><small style="font-size:14px;">This list of proposals includes the average score from all reviewers' ratings.</small></h4>  
-                
-                <div class="shortcode-html">
-                    <!-- Hover Rows -->
-                    <div class="card g-brd-teal rounded-0 g-mb-30">
-                    <h3 class="card-header g-bg-teal g-brd-transparent g-color-white g-font-size-16 rounded-0 mb-0">
-                        <i class="fa-light fa-ballot-check g-mr-5"></i>
-                        
-                    </h3>
-                    
-
-
-
-                    <div class="table-responsive">
-                        <table class="table table-hover u-table--v1 mb-0">
-                            {% if talks_reviewed_with_scores %}
-                        <thead>
-                            <tr>
-                            <th  style="color: #161515;"><p >Title
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                            </p></th>
-                            <th style="color: #161515;"><p >Session</p></th>
-                            <th style="color: #161515;"><p >Audience</p></th> 
-                            <th style="color: #161515;"><p >Current Average Score</p></th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            {% for talk, avg_score in talks_reviewed_with_scores %}
-                            <tr>
-                            <td>
-                                 <small>{{ talk.title }}</small>  
-                            </td>
-                            <td> 
-                                <small>{{ talk.talk_type }}</small>
-                            </td>
-                            <td class="hidden-sm">
-                                <small>{{ talk.intended_audience }}</small>
-                            </td> 
-                            <td>  
-                                {{ avg_score|floatformat:2 }}
-                                
-                            </td>
-                            </tr>  
-                            {% empty %}
-                            <p>&nbsp;&nbsp; You are yet to review a proposal.</p>
-                            {% endfor %} 
-                        </tbody>
-                        {% else %}
-                        <p>&nbsp;&nbsp; You are yet to review a proposal.</p>
-                        {% endif %}
-                        </table>
-                    </div>
-                    </div>
-                    <!-- End Hover Rows -->
-                </div>
-
-                {% else %}
-                <br><br>
-    <!-- Red Alert -->
-    <div class="alert alert-dismissible fade show g-bg-red g-color-white rounded-0" role="alert">
-        <button type="button" class="close u-alert-close--light" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-  
-        <div class="media">
-          <span class="d-flex g-mr-10 g-mt-5">
-            <i class="icon-ban g-font-size-25"></i>
-          </span>
-          <span class="media-body align-self-center">
-            <strong>Oh snap!</strong>  <p>You do not have permission to view this page. Please contact the administrator if you believe this is an error.</p>
-          </span>
-        </div>
-      </div>
-      <!-- End Red Alert -->
-               
-                {% endif %}
-
-                 
-                </div>
-                </section> 
-              </div>    
-      
-              </div>
-          </div>
-        </div>
-      </section>  
-    <!-- end section.speakers -->
- 
-    
+{% block extra_css %}
+<style>
+  .profile-nav-link { display: flex; align-items: center; gap: 0.5rem; padding: 0.625rem 0.75rem; color: #374151; text-decoration: none; border-radius: 0.5rem; font-size: 0.9375rem; }
+  .profile-nav-link:hover { background: #f3f4f6; color: #111827; }
+  .profile-nav-link.active { background: #0d9488; color: #fff; }
+  .profile-nav-link.active:hover { background: #0f766e; color: #fff; }
+  [x-cloak] { display: none !important; }
+</style>
 {% endblock %}
 
+{% block content %}
+{% include '2026/navbar.html' %}
 
+<div class="auth-page-content min-h-screen bg-gray-50">
+  <section class="max-w-6xl mx-auto px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row gap-6 lg:gap-10">
+
+      <!-- Sidebar -->
+      <aside class="w-full md:w-64 shrink-0 md:order-1 order-2">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden md:sticky md:top-24">
+          <div class="p-4 sm:p-5">
+            <div class="mb-4 flex justify-center">
+              <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden shrink-0 border-2 border-gray-100 shadow-sm [&_img]:w-full [&_img]:h-full [&_img]:object-cover">
+                {% include 'profiles/profilepic_side.html' %}
+              </div>
+            </div>
+            {% if request.user.last_login %}
+            <div class="text-xs text-gray-500 mb-4 pb-4 border-b border-gray-100">
+              <span class="font-medium text-gray-400 uppercase tracking-wide">{% trans "Last login" %}</span><br>
+              <span class="text-gray-600">{{ request.user.last_login|date:"M. j, Y" }} · {{ request.user.last_login|time:"g:i a" }}</span>
+            </div>
+            {% endif %}
+            {% include '2026/account/_account_sidebar_nav.html' with account_nav_active='review_proposals' year=year %}
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <div class="flex-1 min-w-0 md:order-2 order-1">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-4 sm:p-6 lg:p-8">
+
+          <div class="flex items-center gap-3 mb-2">
+            <i class="fa-solid fa-list-check text-2xl text-teal-600" aria-hidden="true"></i>
+            <h1 class="text-xl sm:text-2xl font-bold text-gray-900">{% trans "Review Proposals" %}</h1>
+          </div>
+          <hr class="border-gray-200 my-4">
+
+          {% if messages %}
+            {% for message in messages %}
+              <div class="mb-4 rounded-lg px-4 py-3 {% if message.tags == 'success' %}bg-green-50 border border-green-200 text-green-900{% elif message.tags == 'error' %}bg-red-50 border border-red-200 text-red-900{% else %}bg-amber-50 border border-amber-200 text-amber-900{% endif %} text-sm">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+
+          {% if not no_reviewer_rights %}
+
+            <h2 class="text-base font-semibold text-gray-800 mb-4">{% trans "Proposals Awaiting Review" %}</h2>
+
+            {% if talks_by_type %}
+            <div x-data="{ activeTab: 0 }">
+              <div class="flex flex-wrap gap-1 mb-0 border-b border-gray-200">
+                {% for talk_type, talks in talks_by_type.items %}
+                <button
+                  @click="activeTab = {{ forloop.counter0 }}"
+                  :class="activeTab === {{ forloop.counter0 }} ? 'border-teal-600 text-teal-700 font-semibold bg-teal-50' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                  class="px-3 py-2 text-sm border-b-2 -mb-px transition-colors rounded-t">
+                  {{ talk_type }}
+                </button>
+                {% endfor %}
+              </div>
+
+              {% for talk_type, talks in talks_by_type.items %}
+              <div x-show="activeTab === {{ forloop.counter0 }}" x-cloak class="pt-4">
+                {% if talks %}
+                <div class="overflow-x-auto rounded-lg border border-gray-100">
+                  <table class="min-w-full text-sm">
+                    <thead class="bg-gray-50 border-b border-gray-200">
+                      <tr>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-600">{% trans "Title" %}</th>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-600">{% trans "Session" %}</th>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-600 hidden sm:table-cell">{% trans "Audience" %}</th>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-600">{% trans "Author" %}</th>
+                        <th class="text-left px-4 py-3 font-semibold text-gray-600">{% trans "Actions" %}</th>
+                      </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                      {% for talk in talks %}
+                      <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-4 py-3">
+                          <a href="{% url 'talks:review_talk' year=year pk=talk.pk %}" class="text-teal-700 hover:underline font-medium">{{ talk.title }}</a>
+                        </td>
+                        <td class="px-4 py-3 text-gray-600">{{ talk.talk_type }}</td>
+                        <td class="px-4 py-3 text-gray-600 hidden sm:table-cell">{{ talk.intended_audience }}</td>
+                        <td class="px-4 py-3 text-gray-600">
+                          {% if talk.user.user_profile.name %}{{ talk.user.user_profile.name }} {{ talk.user.user_profile.surname }}{% else %}{{ talk.user.username }}{% endif %}
+                        </td>
+                        <td class="px-4 py-3">
+                          <a href="{% url 'talks:review_talk' year=year pk=talk.pk %}"
+                             class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg bg-teal-600 text-white hover:bg-teal-700 transition-colors">
+                            <i class="fa-solid fa-pen" aria-hidden="true"></i> {% trans "Review" %}
+                          </a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                {% else %}
+                <p class="text-gray-500 text-sm py-4">{% trans "No proposals pending review in this category." %}</p>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-gray-500 text-sm py-4">{% trans "There are no proposals pending review." %}</p>
+            {% endif %}
+
+            <hr class="border-gray-200 my-6">
+
+            <h2 class="text-base font-semibold text-gray-800 mb-1">{% trans "Proposals Reviewed" %}</h2>
+            <p class="text-gray-500 text-sm mb-4">{% trans "Includes the average score from all reviewers' ratings." %}</p>
+
+            {% if talks_reviewed_with_scores %}
+            <div class="overflow-x-auto rounded-lg border border-gray-100">
+              <table class="min-w-full text-sm">
+                <thead class="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th class="text-left px-4 py-3 font-semibold text-gray-600">{% trans "Title" %}</th>
+                    <th class="text-left px-4 py-3 font-semibold text-gray-600">{% trans "Session" %}</th>
+                    <th class="text-left px-4 py-3 font-semibold text-gray-600 hidden sm:table-cell">{% trans "Audience" %}</th>
+                    <th class="text-left px-4 py-3 font-semibold text-gray-600">{% trans "Avg. Score" %}</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100">
+                  {% for talk, avg_score in talks_reviewed_with_scores %}
+                  <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="px-4 py-3 text-gray-800 font-medium">{{ talk.title }}</td>
+                    <td class="px-4 py-3 text-gray-600">{{ talk.talk_type }}</td>
+                    <td class="px-4 py-3 text-gray-600 hidden sm:table-cell">{{ talk.intended_audience }}</td>
+                    <td class="px-4 py-3">
+                      <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-teal-50 text-teal-800 border border-teal-100">
+                        {{ avg_score|floatformat:2 }} / 5
+                      </span>
+                    </td>
+                  </tr>
+                  {% empty %}
+                  <tr>
+                    <td colspan="4" class="px-4 py-6 text-center text-gray-500">{% trans "You are yet to review a proposal." %}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% else %}
+            <p class="text-gray-500 text-sm py-2">{% trans "You are yet to review a proposal." %}</p>
+            {% endif %}
+
+          {% else %}
+          <div class="rounded-xl border border-red-200 bg-red-50 p-4 flex gap-3">
+            <div class="shrink-0 text-red-500 text-xl mt-0.5">
+              <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-red-800">{% trans "Access Restricted" %}</p>
+              <p class="text-sm text-red-700 mt-1">{% trans "You don't yet have rights to review proposals. Please contact the admin to grant you the necessary permissions." %}</p>
+            </div>
+          </div>
+          {% endif %}
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+{% endblock %}
