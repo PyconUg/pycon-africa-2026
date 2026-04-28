@@ -17,6 +17,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path, re_path
+from django.views.generic import RedirectView
 from django.conf.urls import handler404, handler500  
 from django_robohash.views import robohash 
 from django.views.static import serve  
@@ -50,6 +51,7 @@ urlpatterns = [
     ])),
     path('organizers/', admin.site.urls),  
     path('2025/', include('pycon2025.urls')),
+    path('merch/', RedirectView.as_view(url='/2026/merch/', permanent=True), name='merch_redirect'),
 
 #Thrid party Apps 
     path('summernote/', include('django_summernote.urls')),
