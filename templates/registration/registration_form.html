@@ -2,6 +2,36 @@
 {% load i18n static crispy_forms_tags %}
 {% block meta_title %}{% trans "Sign up | PyCon Africa 2026" %}{% endblock %}
 
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('input[type="password"]').forEach(function (input) {
+    var wrapper = document.createElement('div');
+    wrapper.style.cssText = 'position:relative;';
+    input.parentNode.insertBefore(wrapper, input);
+    wrapper.appendChild(input);
+    input.style.paddingRight = '2.5rem';
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.setAttribute('aria-label', 'Toggle password visibility');
+    btn.style.cssText = 'position:absolute;right:0.625rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6b7280;padding:0;display:flex;align-items:center;';
+    btn.innerHTML = '<i class="fa-regular fa-eye" aria-hidden="true"></i>';
+
+    btn.addEventListener('click', function () {
+      var isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+      btn.innerHTML = isPassword
+        ? '<i class="fa-regular fa-eye-slash" aria-hidden="true"></i>'
+        : '<i class="fa-regular fa-eye" aria-hidden="true"></i>';
+    });
+
+    wrapper.appendChild(btn);
+  });
+});
+</script>
+{% endblock %}
+
 {% block content %}
 {% include '2026/navbar.html' %}
 
