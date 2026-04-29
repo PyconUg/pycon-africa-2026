@@ -2,14 +2,26 @@ from django.shortcuts import render, get_object_or_404
 
 SPONSORS_2026 = [
     {
-        "id": "gold",
-        "label": "Gold Sponsors",
+        "id": "bronze",
+        "label": "Bronze Sponsors",
         "sponsors": [
             {
                 "name": "JetBrains",
                 "logo": "2026/img/sponsors/jetbrains.png",
                 "website": "https://www.jetbrains.com/",
                 "description": "JetBrains creates intelligent developer tools used by software teams around the world.",
+            },
+        ],
+    },
+    {
+        "id": "inkind",
+        "label": "In-Kind Sponsors",
+        "sponsors": [
+            {
+                "name": "O'Reilly",
+                "logo": "2026/img/sponsors/oreilly.jpg",
+                "website": "https://www.oreilly.com/",
+                "description": "O'Reilly provides technology and business training through books, videos, and online courses.",
             },
         ],
     },
