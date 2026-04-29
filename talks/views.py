@@ -28,6 +28,7 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView 
 from django.views.generic import TemplateView, UpdateView, ListView  
 from django.contrib.auth.decorators import login_required, permission_required
+from talks.decorators import reviewer_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from hitcount.views import HitCountDetailView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -456,8 +457,7 @@ def reject_invitation(request, year, pk):
 
 
 
-@login_required
-@permission_required('talks.view_talk', raise_exception=True)
+@reviewer_required
 def list_talks_to_review(request, year):
     try:
         event_year = EventYear.objects.get(year=year)
@@ -511,17 +511,12 @@ def list_talks_to_review(request, year):
 
     return render(request, '2025/talks/reviews/talk_list.html', context)
  
-@login_required
-@permission_required('reviews.add_review', raise_exception=True)
+@reviewer_required
 def review_talk(request, year, pk):
     event_year = get_object_or_404(EventYear, year=year)
     talk = get_object_or_404(Proposal, pk=pk, event_year=event_year)
     
-    try:
-        reviewer = Reviewer.objects.get(user=request.user)
-    except Reviewer.DoesNotExist:
-        return HttpResponse("You are not registered as a reviewer.", status=401)
-
+    reviewer = Reviewer.objects.get(user=request.user)
     already_reviewed = Review.objects.filter(talk=talk, reviewer=reviewer).exists()
 
     if request.method == 'POST' and not already_reviewed:
@@ -562,8 +557,7 @@ def review_success(request, year):
      
 
  
-@login_required
-@permission_required('talks.view_talk', raise_exception=True)
+@reviewer_required
 def reviewed_talks_by_category(request, year):
     try:
         event_year = EventYear.objects.get(year=year)
@@ -606,8 +600,7 @@ def reviewed_talks_by_category(request, year):
     })
 
 
-@login_required
-@permission_required('talks.view_talk', raise_exception=True)
+@reviewer_required
 def reviewed_talks_by_type(request, year):
     try:
         event_year = EventYear.objects.get(year=year)
@@ -691,8 +684,7 @@ class ReviewTalkView(UpdateView):
         return reverse_lazy('reviews:review_list')  # Redirect to the list of talks after submitting a review
 '''
 
-@login_required
-@permission_required('reviews.add_review', raise_exception=True)
+@reviewer_required
 class TalkReviewDetailView(DetailView):
     model = Proposal
     template_name = '2025/talks/reviews/talk_review_detail.html'
