@@ -4,6 +4,7 @@
 
 {% block extra_css %}
 <style>
+  .auth-field { position: relative; }
   .auth-field input {
     display: block; width: 100%; padding: 0.625rem 0.75rem;
     border: 1px solid #d1d5db; border-radius: 0.5rem;
@@ -20,6 +21,36 @@
     box-shadow: 0 0 0 3px rgba(239,68,68,.10);
   }
 </style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('input[type="password"]').forEach(function (input) {
+    var wrapper = document.createElement('div');
+    wrapper.style.cssText = 'position:relative;';
+    input.parentNode.insertBefore(wrapper, input);
+    wrapper.appendChild(input);
+    input.style.paddingRight = '2.5rem';
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.setAttribute('aria-label', 'Toggle password visibility');
+    btn.style.cssText = 'position:absolute;right:0.625rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#6b7280;padding:0;display:flex;align-items:center;';
+    btn.innerHTML = '<i class="fa-regular fa-eye" aria-hidden="true"></i>';
+
+    btn.addEventListener('click', function () {
+      var isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+      btn.innerHTML = isPassword
+        ? '<i class="fa-regular fa-eye-slash" aria-hidden="true"></i>'
+        : '<i class="fa-regular fa-eye" aria-hidden="true"></i>';
+    });
+
+    wrapper.appendChild(btn);
+  });
+});
+</script>
 {% endblock %}
 
 {% block content %}
@@ -40,115 +71,117 @@
           </p>
         </div>
 
+        <!-- Non-field errors -->
         {% if form.non_field_errors %}
         <div class="rounded-xl border border-red-200 bg-red-50 p-4 mb-5 flex gap-3" role="alert">
           <span class="text-red-500 text-lg shrink-0 mt-0.5"><i class="fa-solid fa-circle-exclamation"></i></span>
           <ul class="text-sm text-red-700 space-y-1 list-none m-0 p-0">
-            {% for error in form.non_field_errors %}
-            <li>{{ error }}</li>
-            {% endfor %}
+            {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
           </ul>
         </div>
         {% endif %}
 
-        <form method="post" action="" id="signup-form" novalidate>
+        <form method="post" action="" class="space-y-4" x-data="{ loading: false }" @submit="loading = true" novalidate>
           {% csrf_token %}
 
-          <div class="space-y-4">
-
-            <div class="auth-field {% if form.username.errors %}has-error{% endif %}">
-              <label for="{{ form.username.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-1.5">
-                {% trans "Username" %} <span class="text-red-500">*</span>
-              </label>
-              {{ form.username }}
-              {% if form.username.errors %}
-              <div class="mt-1.5 flex items-start gap-1.5">
-                <i class="fa-solid fa-circle-exclamation text-red-500 text-xs mt-0.5 shrink-0"></i>
-                <ul class="text-xs text-red-600 space-y-0.5 list-none m-0 p-0">
-                  {% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}
-                </ul>
-              </div>
-              {% else %}
-              <p class="mt-1 text-xs text-gray-400">{% trans "Letters, digits, and @/./+/-/_ only." %}</p>
-              {% endif %}
+          <!-- Username -->
+          <div class="auth-field {% if form.username.errors %}has-error{% endif %}">
+            <label for="{{ form.username.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-1.5">
+              {% trans "Username" %} <span class="text-red-500">*</span>
+            </label>
+            {{ form.username }}
+            {% if form.username.errors %}
+            <div class="mt-1.5 flex items-start gap-1.5">
+              <i class="fa-solid fa-circle-exclamation text-red-500 text-xs mt-0.5 shrink-0"></i>
+              <ul class="text-xs text-red-600 space-y-0.5 list-none m-0 p-0">
+                {% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}
+              </ul>
             </div>
-
-            <div class="auth-field {% if form.email.errors %}has-error{% endif %}">
-              <label for="{{ form.email.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-1.5">
-                {% trans "Email address" %} <span class="text-red-500">*</span>
-              </label>
-              {{ form.email }}
-              {% if form.email.errors %}
-              <div class="mt-1.5 flex items-start gap-1.5">
-                <i class="fa-solid fa-circle-exclamation text-red-500 text-xs mt-0.5 shrink-0"></i>
-                <ul class="text-xs text-red-600 space-y-0.5 list-none m-0 p-0">
-                  {% for error in form.email.errors %}<li>{{ error }}</li>{% endfor %}
-                </ul>
-              </div>
-              {% endif %}
-            </div>
-
-            <div class="auth-field {% if form.password1.errors %}has-error{% endif %}">
-              <label for="{{ form.password1.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-1.5">
-                {% trans "Password" %} <span class="text-red-500">*</span>
-              </label>
-              {{ form.password1 }}
-              {% if form.password1.errors %}
-              <div class="mt-1.5 flex items-start gap-1.5">
-                <i class="fa-solid fa-circle-exclamation text-red-500 text-xs mt-0.5 shrink-0"></i>
-                <ul class="text-xs text-red-600 space-y-0.5 list-none m-0 p-0">
-                  {% for error in form.password1.errors %}<li>{{ error }}</li>{% endfor %}
-                </ul>
-              </div>
-              {% else %}
-              <p class="mt-1 text-xs text-gray-400">{% trans "At least 8 characters. Not entirely numeric." %}</p>
-              {% endif %}
-            </div>
-
-            <div class="auth-field {% if form.password2.errors %}has-error{% endif %}">
-              <label for="{{ form.password2.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-1.5">
-                {% trans "Confirm password" %} <span class="text-red-500">*</span>
-              </label>
-              {{ form.password2 }}
-              {% if form.password2.errors %}
-              <div class="mt-1.5 flex items-start gap-1.5">
-                <i class="fa-solid fa-circle-exclamation text-red-500 text-xs mt-0.5 shrink-0"></i>
-                <ul class="text-xs text-red-600 space-y-0.5 list-none m-0 p-0">
-                  {% for error in form.password2.errors %}<li>{{ error }}</li>{% endfor %}
-                </ul>
-              </div>
-              {% endif %}
-            </div>
-
-            {% if form.captcha %}
-            <div class="{% if form.captcha.errors %}has-error{% endif %}">
-              {{ form.captcha }}
-              {% if form.captcha.errors %}
-              <div class="mt-1.5 flex items-start gap-1.5">
-                <i class="fa-solid fa-circle-exclamation text-red-500 text-xs mt-0.5 shrink-0"></i>
-                <ul class="text-xs text-red-600 list-none m-0 p-0">
-                  {% for error in form.captcha.errors %}<li>{{ error }}</li>{% endfor %}
-                </ul>
-              </div>
-              {% endif %}
-            </div>
+            {% else %}
+            <p class="mt-1 text-xs text-gray-400">{% trans "Letters, digits, and @/./+/-/_ only." %}</p>
             {% endif %}
-
           </div>
 
-          <div class="pt-5 mt-2">
+          <!-- Email -->
+          <div class="auth-field {% if form.email.errors %}has-error{% endif %}">
+            <label for="{{ form.email.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-1.5">
+              {% trans "Email address" %} <span class="text-red-500">*</span>
+            </label>
+            {{ form.email }}
+            {% if form.email.errors %}
+            <div class="mt-1.5 flex items-start gap-1.5">
+              <i class="fa-solid fa-circle-exclamation text-red-500 text-xs mt-0.5 shrink-0"></i>
+              <ul class="text-xs text-red-600 space-y-0.5 list-none m-0 p-0">
+                {% for error in form.email.errors %}<li>{{ error }}</li>{% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+          </div>
+
+          <!-- Password -->
+          <div class="auth-field {% if form.password1.errors %}has-error{% endif %}">
+            <label for="{{ form.password1.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-1.5">
+              {% trans "Password" %} <span class="text-red-500">*</span>
+            </label>
+            {{ form.password1 }}
+            {% if form.password1.errors %}
+            <div class="mt-1.5 flex items-start gap-1.5">
+              <i class="fa-solid fa-circle-exclamation text-red-500 text-xs mt-0.5 shrink-0"></i>
+              <ul class="text-xs text-red-600 space-y-0.5 list-none m-0 p-0">
+                {% for error in form.password1.errors %}<li>{{ error }}</li>{% endfor %}
+              </ul>
+            </div>
+            {% else %}
+            <p class="mt-1 text-xs text-gray-400">{% trans "At least 8 characters. Not entirely numeric." %}</p>
+            {% endif %}
+          </div>
+
+          <!-- Confirm password -->
+          <div class="auth-field {% if form.password2.errors %}has-error{% endif %}">
+            <label for="{{ form.password2.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-1.5">
+              {% trans "Confirm password" %} <span class="text-red-500">*</span>
+            </label>
+            {{ form.password2 }}
+            {% if form.password2.errors %}
+            <div class="mt-1.5 flex items-start gap-1.5">
+              <i class="fa-solid fa-circle-exclamation text-red-500 text-xs mt-0.5 shrink-0"></i>
+              <ul class="text-xs text-red-600 space-y-0.5 list-none m-0 p-0">
+                {% for error in form.password2.errors %}<li>{{ error }}</li>{% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+          </div>
+
+          <!-- reCAPTCHA -->
+          {% if form.captcha %}
+          <div class="{% if form.captcha.errors %}has-error{% endif %}">
+            {{ form.captcha }}
+            {% if form.captcha.errors %}
+            <div class="mt-1.5 flex items-start gap-1.5">
+              <i class="fa-solid fa-circle-exclamation text-red-500 text-xs mt-0.5 shrink-0"></i>
+              <ul class="text-xs text-red-600 list-none m-0 p-0">
+                {% for error in form.captcha.errors %}<li>{{ error }}</li>{% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+          </div>
+          {% endif %}
+
+          <div class="pt-2">
             <button
-              id="signup-btn"
               type="submit"
-              class="w-full inline-flex items-center justify-center gap-2 text-white font-semibold py-3 px-4 rounded-xl transition disabled:opacity-70 disabled:cursor-not-allowed"
+              class="w-full inline-flex items-center justify-center gap-2 text-center text-white font-semibold py-3 px-4 rounded-xl transition disabled:opacity-70 disabled:cursor-not-allowed"
               style="background-color:#d97706;box-shadow:0 4px 6px rgba(0,0,0,.1);"
               onmouseover="if(!this.disabled)this.style.backgroundColor='#b45309';"
-              onmouseout="if(!this.disabled)this.style.backgroundColor='#d97706';">
-              <svg id="signup-spinner" style="display:none;width:1.25rem;height:1.25rem;animation:spin .7s linear infinite;flex-shrink:0;" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,.35)" stroke-width="3"/>
-                <path d="M12 2a10 10 0 0 1 10 10" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+              onmouseout="if(!this.disabled)this.style.backgroundColor='#d97706';"
+              :disabled="loading"
+              :aria-busy="loading.toString()">
+              <svg x-show="loading" width="20" height="20" class="h-5 w-5 flex-none animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
               </svg>
-              <span id="signup-btn-label">{% trans "Create account" %}</span>
+              <span x-show="!loading">{% trans "Sign up" %}</span>
+              <span x-show="loading">{% trans "Creating account…" %}</span>
             </button>
           </div>
         </form>
@@ -162,16 +195,4 @@
     </div>
   </div>
 </section>
-
-<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
-<script>
-  document.getElementById('signup-form').addEventListener('submit', function () {
-    var btn    = document.getElementById('signup-btn');
-    var spin   = document.getElementById('signup-spinner');
-    var label  = document.getElementById('signup-btn-label');
-    btn.disabled        = true;
-    spin.style.display  = 'block';
-    label.textContent   = '{% trans "Creating account…" %}';
-  });
-</script>
 {% endblock %}
