@@ -44,8 +44,8 @@
         <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-4 sm:p-6 lg:p-8">
 
           <div class="flex items-center gap-3 mb-2">
-            <i class="fa-solid fa-list-check text-2xl text-teal-600" aria-hidden="true"></i>
-            <h1 class="text-xl sm:text-2xl font-bold text-gray-900">{% trans "Review Proposals" %}</h1>
+            <i class="fa-solid fa-list-check text-2xl text-teal-600" style="line-height:1;display:flex;align-items:center;" aria-hidden="true"></i>
+            <h1 class="text-xl sm:text-2xl font-bold text-gray-900" style="margin:0;line-height:1;">{% trans "Review Proposals" %}</h1>
           </div>
           <hr class="border-gray-200 my-4">
 
@@ -101,7 +101,7 @@
                         </td>
                         <td class="px-4 py-3">
                           <a href="{% url 'talks:review_talk' year=year pk=talk.pk %}"
-                             class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg bg-teal-600 text-white hover:bg-teal-700 transition-colors">
+                             class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg bg-pycon-teal text-white hover:bg-teal-700 transition-colors">
                             <i class="fa-solid fa-pen" aria-hidden="true"></i> {% trans "Review" %}
                           </a>
                         </td>

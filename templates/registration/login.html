@@ -1,6 +1,27 @@
 {% extends "base.html" %}
-{% load i18n static crispy_forms_tags %}
+{% load i18n static %}
 {% block meta_title %}{% trans "Login | PyCon Africa 2026" %}{% endblock %}
+
+{% block extra_css %}
+<style>
+  .auth-field { position: relative; }
+  .auth-field input {
+    display: block; width: 100%; padding: 0.625rem 0.75rem;
+    border: 1px solid #d1d5db; border-radius: 0.5rem;
+    font-size: 0.9375rem; color: #111827; background: #fff;
+    outline: none; transition: border-color .15s, box-shadow .15s;
+    box-sizing: border-box;
+  }
+  .auth-field input:focus {
+    border-color: #0d9488;
+    box-shadow: 0 0 0 3px rgba(13,148,136,.12);
+  }
+  .auth-field.has-error input {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239,68,68,.10);
+  }
+</style>
+{% endblock %}
 
 {% block extra_js %}
 <script>
@@ -36,49 +57,94 @@ document.addEventListener('DOMContentLoaded', function () {
 {% include '2026/navbar.html' %}
 
 <div class="auth-page-content">
-<section class="bg-gray-100 py-20 pb-20">
+<section class="bg-gray-100 py-20 pb-20 min-h-screen">
   <div class="max-w-7xl mx-auto px-4">
     <div class="max-w-md mx-auto">
-      <div class="shadow-lg bg-white rounded-lg p-8 md:p-10">
-        <h1 class="text-2xl font-bold text-gray-900 text-center mb-8">Login</h1>
+      <div class="shadow-lg bg-white rounded-2xl p-8 md:p-10">
 
-        <div class="bg-blue-50 rounded-lg p-5 mb-8" role="alert">
-          <p class="text-gray-900 text-sm leading-relaxed m-0">
-            Accounts from the previous years are not carried over year-to-year.
+        <h1 class="text-2xl font-bold text-gray-900 text-center mb-6">{% trans "Login" %}</h1>
+
+        <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6" role="note">
+          <p class="text-gray-800 text-sm leading-relaxed m-0">
+            {% trans "Accounts from the previous years are not carried over year-to-year." %}
           </p>
         </div>
 
-        <form method="post" action="" class="space-y-5" x-data="{ loading: false }" @submit="loading = true">
+        <!-- Non-field errors: wrong credentials, inactive account, etc. -->
+        {% if form.non_field_errors %}
+        <div class="rounded-xl border border-red-200 bg-red-50 p-4 mb-5 flex gap-3" role="alert">
+          <span class="text-red-500 text-lg shrink-0 mt-0.5"><i class="fa-solid fa-circle-exclamation"></i></span>
+          <ul class="text-sm text-red-700 space-y-1 list-none m-0 p-0">
+            {% for error in form.non_field_errors %}<li>{{ error }}</li>{% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        <form method="post" action="" class="space-y-4" x-data="{ loading: false }" @submit="loading = true" novalidate>
           {% csrf_token %}
-          <div class="form-group">
-            {{ form | crispy }}
+
+          <!-- Username -->
+          <div class="auth-field {% if form.username.errors %}has-error{% endif %}">
+            <label for="{{ form.username.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-1.5">
+              {% trans "Username" %}
+            </label>
+            {{ form.username }}
+            {% if form.username.errors %}
+            <div class="mt-1.5 flex items-start gap-1.5">
+              <i class="fa-solid fa-circle-exclamation text-red-500 text-xs mt-0.5 shrink-0"></i>
+              <ul class="text-xs text-red-600 space-y-0.5 list-none m-0 p-0">
+                {% for error in form.username.errors %}<li>{{ error }}</li>{% endfor %}
+              </ul>
+            </div>
+            {% endif %}
           </div>
-          <div class="flex justify-end pt-1">
-            <a href="{% url 'auth_password_reset' %}" class="text-sm text-teal-600 hover:underline font-medium">Forgot Password?</a>
+
+          <!-- Password -->
+          <div class="auth-field {% if form.password.errors %}has-error{% endif %}">
+            <label for="{{ form.password.id_for_label }}" class="block text-sm font-semibold text-gray-700 mb-1.5">
+              {% trans "Password" %}
+            </label>
+            {{ form.password }}
+            {% if form.password.errors %}
+            <div class="mt-1.5 flex items-start gap-1.5">
+              <i class="fa-solid fa-circle-exclamation text-red-500 text-xs mt-0.5 shrink-0"></i>
+              <ul class="text-xs text-red-600 space-y-0.5 list-none m-0 p-0">
+                {% for error in form.password.errors %}<li>{{ error }}</li>{% endfor %}
+              </ul>
+            </div>
+            {% endif %}
           </div>
-          <div class="pt-4">
+
+          <div class="flex justify-end">
+            <a href="{% url 'auth_password_reset' %}" class="text-sm text-teal-600 hover:underline font-medium">
+              {% trans "Forgot password?" %}
+            </a>
+          </div>
+
+          <div class="pt-2">
             <button
               type="submit"
-              class="w-full inline-flex items-center justify-center gap-2 text-center text-white font-semibold py-3.5 px-4 rounded-lg transition disabled:opacity-70 disabled:cursor-not-allowed"
-              style="background-color: #d97706; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"
-              onmouseover="this.style.backgroundColor='#b45309';"
-              onmouseout="this.style.backgroundColor='#d97706';"
+              class="w-full inline-flex items-center justify-center gap-2 text-center text-white font-semibold py-3.5 px-4 rounded-xl transition disabled:opacity-70 disabled:cursor-not-allowed"
+              style="background-color:#d97706;box-shadow:0 4px 6px rgba(0,0,0,.1);"
+              onmouseover="if(!this.disabled)this.style.backgroundColor='#b45309';"
+              onmouseout="if(!this.disabled)this.style.backgroundColor='#d97706';"
               :disabled="loading"
-              :aria-busy="loading.toString()"
-            >
+              :aria-busy="loading.toString()">
               <svg x-show="loading" width="20" height="20" class="h-5 w-5 flex-none animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
               </svg>
-              <span x-show="!loading">Login</span>
-              <span x-show="loading">Logging in…</span>
+              <span x-show="!loading">{% trans "Login" %}</span>
+              <span x-show="loading">{% trans "Logging in…" %}</span>
             </button>
           </div>
         </form>
 
-        <p class="text-center text-gray-600 text-sm mt-8 mb-0">
-          Don't have an account? <a href="{% url 'registration_register' %}" class="text-teal-600 hover:underline font-semibold">Sign up here</a>
+        <p class="text-center text-gray-500 text-sm mt-6 mb-0">
+          {% trans "Don't have an account?" %}
+          <a href="{% url 'registration_register' %}" class="text-teal-600 hover:underline font-semibold">{% trans "Sign up here" %}</a>
         </p>
+
       </div>
     </div>
   </div>

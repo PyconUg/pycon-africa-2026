@@ -601,6 +601,10 @@
 }
 
 @layer utilities {
+    .bg-teal-600 {
+        background-color: var(--color-teal-600);
+    }
+
     .text-pycon-yellow {
         color: var(--color-pycon-yellow);
     }
