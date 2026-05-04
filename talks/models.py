@@ -14,12 +14,18 @@ from home.models import EventYear
  
  
 class CFPSubmissionPeriod(models.Model):
+    SUBMISSION_TYPES = (
+        ('talks', 'Talks & Workshops'),
+        ('posters', 'Posters'),
+    )
+
     event_year = models.ForeignKey(EventYear, on_delete=models.CASCADE, default="2025", related_name='submission_periods', help_text="The event year this submission period is for")
     start_date = models.DateTimeField(help_text="Date and time when proposal submissions start")
     end_date = models.DateTimeField(help_text="Date and time when proposal submissions end")
+    submission_type = models.CharField(max_length=20, choices=SUBMISSION_TYPES, default='talks', help_text="Type of submission this period covers")
 
     def __str__(self):
-        return f"Submission Period for {self.event_year.year}"
+        return f"{self.get_submission_type_display()} Submission Period for {self.event_year.year}"
 
     def is_active(self):
         """Check if the submission period is currently active."""
@@ -86,6 +92,7 @@ class Proposal(models.Model):
         ('Short Talk', "Short Talk - 30 mins"),
         ('Long Talk', "Long Talk - 45 mins"),
         ('Tutorial', "Tutorial - 2 hours"),
+        ('Poster', "Poster"),
         ('Sponsored Talk', "Sponsored Talk"),
         ('Keynote Speaker', "Keynote Speaker"),
     )
@@ -133,6 +140,7 @@ class Proposal(models.Model):
     anything_else_you_want_to_tell_us = MarkdownxField(blank=True, null=True, help_text="Kindly add anything else you want to tell us?")
     special_requirements = MarkdownxField(blank=True, null=True, help_text="If you have any special requirements such as needing travel assistance, accessibility needs, or anything else please let us know here so that we may plan accordingly. (This is not made public nor will the review committee have access to view it.)")
     recording_release = models.BooleanField(default=True, help_text="By submitting your talk proposal, you agree to give permission to the conference organizers to record, edit, and release audio and/or video of your presentation. If you do not agree to this, please uncheck this box.")
+    poster_attachment = models.FileField(upload_to='poster_attachments/', blank=True, null=True, help_text="Upload a PDF, PPT, or image of your poster (optional but recommended).")
     youtube_video_url = models.URLField(blank=True, help_text='Link to Talk on youtube Video')
     youtube_iframe_url = models.URLField(max_length=300, blank=True, help_text='Link to Youtube Iframe')
     speakers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='speaking_proposals', blank=True)

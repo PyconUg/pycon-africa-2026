@@ -1,15 +1,15 @@
-<!-- templates/emails/email_submission_confirmation.html -->
+<!-- templates/emails/talks/email_submission_confirmation.html -->
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Talk Submission Confirmation</title>
+    <title>Submission Confirmation - PyCon Africa {{ proposal.event_year.year }}</title>
 </head>
 <body>
     <h1>Thank you for Your Submission!</h1>
     <p>Dear {{ user.name }},</p>
-    
-    <p>We have received your talk proposal titled "<strong>{{ proposal.title }}</strong>" for the event year {{ proposal.event_year.year }}. Our team will review it and get back to you soon.</p>
-    
+
+    <p>We have received your {% if proposal.talk_type == 'Poster' %}poster{% else %}proposal{% endif %} titled "<strong>{{ proposal.title }}</strong>" for PyCon Africa {{ proposal.event_year.year }}. Our team will review it and get back to you soon.</p>
+
     <br><p>Best Regards,<br>The PyCon Africa Team</p>
 </body>
 </html>

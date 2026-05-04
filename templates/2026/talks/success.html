@@ -18,7 +18,9 @@
           <li class="text-gray-700" aria-current="page">{% trans "Submission Successful" %}</li>
         </ol>
       </nav>
-      <h1 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">{% trans "Proposal Submission Successful" %}</h1>
+      <h1 class="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
+        {% if submission_type == 'poster' %}{% trans "Poster Submission Successful" %}{% else %}{% trans "Proposal Submission Successful" %}{% endif %}
+      </h1>
     </div>
   </header>
 
@@ -48,9 +50,6 @@
       <div class="flex-1 min-w-0 md:order-2 order-1">
         <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-4 sm:p-6 lg:p-8">
           <div class="flex items-start gap-3 sm:gap-4 mb-4 sm:mb-6">
-            <div class="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-              <i class="fa-solid fa-circle-check text-xl" aria-hidden="true"></i>
-            </div>
             <div>
               <h2 class="text-base sm:text-lg font-semibold text-gray-900">
                 {% if request.user.user_profile %}
@@ -60,7 +59,11 @@
                 {% endif %}
               </h2>
               <p class="mt-1 text-sm sm:text-base text-gray-700 leading-relaxed">
-                {% trans "Your talk proposal has been submitted successfully. Our organising team will review it and get back to you via email." %}
+                {% if submission_type == 'poster' %}
+                  {% trans "Your poster has been submitted successfully. Our organising team will review it and get back to you via email." %}
+                {% else %}
+                  {% trans "Your talk proposal has been submitted successfully. Our organising team will review it and get back to you via email." %}
+                {% endif %}
               </p>
             </div>
           </div>
@@ -73,18 +76,26 @@
               <a href="{% url 'talks:talk_list' year=year %}"
                  class="inline-flex items-center justify-center px-4 sm:px-5 py-2.5 text-sm font-semibold rounded-lg shadow-sm bg-pycon-teal text-white hover:bg-teal-700">
                 <i class="fa-solid fa-table-list w-4 text-center mr-2" aria-hidden="true"></i>
-                <span>{% trans "View submitted talk(s)" %}</span>
+                <span>{% trans "View my submissions" %}</span>
               </a>
+              {% if submission_type == 'poster' %}
+              <a href="{% url 'talks:submit_poster' year=year %}"
+                 class="inline-flex items-center justify-center px-4 sm:px-5 py-2.5 text-sm font-semibold rounded-lg border border-gray-300 text-pycon-teal bg-white hover:bg-gray-50">
+                <i class="fa-solid fa-plus w-4 text-center mr-2" aria-hidden="true"></i>
+                <span>{% trans "Submit another poster" %}</span>
+              </a>
+              {% else %}
               <a href="{% url 'talks:submit_talk' year=year %}"
                  class="inline-flex items-center justify-center px-4 sm:px-5 py-2.5 text-sm font-semibold rounded-lg border border-gray-300 text-pycon-teal bg-white hover:bg-gray-50">
                 <i class="fa-solid fa-plus w-4 text-center mr-2" aria-hidden="true"></i>
                 <span>{% trans "Submit another talk" %}</span>
               </a>
+              {% endif %}
             </div>
           </div>
 
           <p class="mt-6 text-xs sm:text-sm text-gray-400">
-            {% trans "You can always return to your profile dashboard to review or update your proposals from the “My Submitted Talks” section." %}
+            {% trans "You can always return to your profile dashboard to review your submissions from the \"My Submitted Talks\" section." %}
           </p>
         </div>
       </div>

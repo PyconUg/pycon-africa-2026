@@ -67,9 +67,9 @@
         <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-4 sm:p-6 lg:px-8">
           {% if submitted_talks %}
           <div class="mb-4 sm:mb-6">
-            <h2 class="text-lg sm:text-xl font-semibold text-gray-900">{% trans "Your submitted talks" %}</h2>
+            <h2 class="text-lg sm:text-xl font-semibold text-gray-900">{% trans "Your submitted proposals" %}</h2>
             <p class="mt-1 text-sm text-gray-600">
-              {% trans "Here you can review the status of your proposals and edit them when editing is allowed." %}
+              {% trans "Here you can review the status of your talk and poster proposals and edit them when editing is allowed." %}
             </p>
           </div>
 
@@ -139,18 +139,34 @@
                         <i class="fa-solid fa-eye w-4 text-center mr-1.5" aria-hidden="true"></i>
                         <span>{% trans "View" %}</span>
                       </a>
-                      {% if active_period or talk.user_response == 'A' %}
-                      <a href="{% url 'talks:edit_talk' year=year pk=talk.pk %}"
-                         class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700">
-                        <i class="fa-solid fa-pen w-4 text-center mr-1.5" aria-hidden="true"></i>
-                        <span>{% trans "Edit" %}</span>
-                      </a>
+                      {% if talk.talk_type == 'Poster' %}
+                        {% if active_poster_period or talk.user_response == 'A' %}
+                        <a href="{% url 'talks:edit_talk' year=year pk=talk.pk %}"
+                           class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700">
+                          <i class="fa-solid fa-pen w-4 text-center mr-1.5" aria-hidden="true"></i>
+                          <span>{% trans "Edit" %}</span>
+                        </a>
+                        {% else %}
+                        <span class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed"
+                              title="{% trans 'Poster CFP is now closed' %}">
+                          <i class="fa-solid fa-pen w-4 text-center mr-1.5" aria-hidden="true"></i>
+                          <span>{% trans "Edit" %}</span>
+                        </span>
+                        {% endif %}
                       {% else %}
-                      <span class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed"
-                            title="{% trans 'You cannot edit the talk because the CFP period is over' %}">
-                        <i class="fa-solid fa-pen w-4 text-center mr-1.5" aria-hidden="true"></i>
-                        <span>{% trans "Edit" %}</span>
-                      </span>
+                        {% if active_period or talk.user_response == 'A' %}
+                        <a href="{% url 'talks:edit_talk' year=year pk=talk.pk %}"
+                           class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700">
+                          <i class="fa-solid fa-pen w-4 text-center mr-1.5" aria-hidden="true"></i>
+                          <span>{% trans "Edit" %}</span>
+                        </a>
+                        {% else %}
+                        <span class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed"
+                              title="{% trans 'CFP is now closed' %}">
+                          <i class="fa-solid fa-pen w-4 text-center mr-1.5" aria-hidden="true"></i>
+                          <span>{% trans "Edit" %}</span>
+                        </span>
+                        {% endif %}
                       {% endif %}
                     </div>
                   </td>
@@ -163,16 +179,27 @@
           {% else %}
           <div class="flex flex-col items-center text-center">
             <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
-              {% trans "You have not submitted any talks yet" %}
+              {% trans "You have not submitted any proposals yet" %}
             </h2>
             <p class="text-sm sm:text-base text-gray-600 mb-4">
-              {% trans "When you submit proposals, they will appear here. Start by creating your first talk proposal." %}
+              {% trans "When you submit proposals, they will appear here." %}
             </p>
-            <a href="{% url 'talks:submit_talk' year=year %}"
-               class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm hover:shadow">
-              <i class="fa-solid fa-podium w-4 text-center mr-2" aria-hidden="true"></i>
-              <span>{% trans "Submit a new Talk" %}</span>
-            </a>
+            <div class="flex flex-col sm:flex-row gap-3">
+              {% if active_poster_period %}
+              <a href="{% url 'talks:submit_poster' year=year %}"
+                 class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm hover:shadow">
+                <i class="fa-solid fa-image w-4 text-center mr-2" aria-hidden="true"></i>
+                <span>{% trans "Submit a Poster" %}</span>
+              </a>
+              {% endif %}
+              {% if active_period %}
+              <a href="{% url 'talks:submit_talk' year=year %}"
+                 class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 shadow-sm">
+                <i class="fa-solid fa-podium w-4 text-center mr-2" aria-hidden="true"></i>
+                <span>{% trans "Submit a Talk" %}</span>
+              </a>
+              {% endif %}
+            </div>
           </div>
           {% endif %}
         </div>

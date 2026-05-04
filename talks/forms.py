@@ -32,6 +32,41 @@ class ProposalForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Submit'))
  
 
+class PosterProposalForm(forms.ModelForm):
+    captcha = ReCaptchaField()
+
+    class Meta:
+        model = Proposal
+        fields = ('title', 'talk_category', 'intended_audience', 'elevator_pitch', 'talk_abstract', 'anything_else_you_want_to_tell_us', 'special_requirements', 'poster_attachment', 'recording_release')
+        widgets = {
+            'elevator_pitch': forms.Textarea(attrs={'class': 'w-full', 'rows': 5}),
+            'talk_abstract': forms.Textarea(attrs={'class': 'w-full', 'rows': 6}),
+            'anything_else_you_want_to_tell_us': forms.Textarea(attrs={'class': 'w-full', 'rows': 4}),
+            'special_requirements': forms.Textarea(attrs={'class': 'w-full', 'rows': 4}),
+            'poster_attachment': forms.ClearableFileInput(attrs={
+                'class': 'block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-l-lg file:border-0 file:text-sm file:font-semibold file:bg-pycon-teal file:text-white hover:file:bg-teal-700 p-2',
+            }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        self.fields['talk_category'].label = 'Category'
+        self.fields['talk_abstract'].label = 'Poster Abstract'
+        self.fields['elevator_pitch'].label = 'Elevator Pitch'
+        self.fields['elevator_pitch'].help_text = 'Describe your poster to your targeted audience.'
+        self.fields['recording_release'].help_text = (
+            'By submitting your poster proposal, you agree to give permission to the conference organizers '
+            'to record, edit, and release audio and/or video of your presentation. '
+            'If you do not agree to this, please uncheck this box.'
+        )
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-Crispy_PosterProposalForm'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.form_enctype = 'multipart/form-data'
+        self.helper.add_input(Submit('submit', 'Submit Poster'))
+
+
 class ProposalResponseForm(forms.ModelForm):
     class Meta:
         model = Proposal

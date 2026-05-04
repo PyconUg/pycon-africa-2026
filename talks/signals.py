@@ -18,11 +18,13 @@ def send_status_change_email(sender, instance, **kwargs):
         try:
             original = sender.objects.get(pk=instance.pk)
             if original.status != instance.status:
+                is_poster = instance.talk_type == 'Poster'
+                submission_label = 'Poster' if is_poster else 'Proposal'
                 subject_templates = {
-                    'A': 'PyCon Africa 2026 - Congratulations, Your Proposal Has Been Accepted',
-                    'W': 'PyCon Africa 2026 - Your Proposal Is On The Waiting List',
-                    'R': 'PyCon Africa 2026 - Your Proposal Has Been Rejected',
-                    'S': 'PyCon Africa 2026 - Your Proposal Has Been Submitted'
+                    'A': f'PyCon Africa 2026 - Congratulations, Your {submission_label} Has Been Accepted',
+                    'W': f'PyCon Africa 2026 - Your {submission_label} Is On The Waiting List',
+                    'R': f'PyCon Africa 2026 - Your {submission_label} Has Not Been Selected',
+                    'S': f'PyCon Africa 2026 - Your {submission_label} Has Been Submitted'
                 }
                 template_names = {
                     'A': 'emails/talks/proposal_accepted.html',

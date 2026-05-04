@@ -19,9 +19,9 @@
     <i class="fa-solid fa-microphone w-4 text-center" aria-hidden="true"></i>
     <span>{% trans "My Submitted Talks" %}</span>
   </a>
-  <a href="{% url 'talks:submit_talk' year=y %}" class="profile-nav-link{% if account_nav_active == 'submit_talk' %} active{% endif %}">
-    <i class="fa-solid fa-podium w-4 text-center" aria-hidden="true"></i>
-    <span>{% trans "Submit a new Talk" %}</span>
+  <a href="{% url 'talks:submit_poster' year=y %}" class="profile-nav-link{% if account_nav_active == 'submit_talk' %} active{% endif %}">
+    <i class="fa-solid fa-image w-4 text-center" aria-hidden="true"></i>
+    <span>{% trans "Submit a Poster" %}</span>
   </a>
   {% if perms.reviews.add_review or request.user.reviewer_profile or request.user.is_superuser %}
   <a href="{% url 'talks:talks_to_review' year=y %}" class="profile-nav-link{% if account_nav_active == 'review_proposals' %} active{% endif %}">

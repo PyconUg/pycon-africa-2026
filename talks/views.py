@@ -60,7 +60,7 @@ def submit_talk(request, year):
 
     try:
         event_year = EventYear.objects.get(year=year)
-        submission_periods = CFPSubmissionPeriod.objects.filter(event_year=event_year).order_by('start_date')
+        submission_periods = CFPSubmissionPeriod.objects.filter(event_year=event_year, submission_type='talks').order_by('start_date')
         active_period = None
         upcoming_period = None
 
@@ -96,7 +96,7 @@ def submit_talk(request, year):
                     email.attach_alternative(html_content, "text/html")
                     email.send()
 
-                    return redirect('talks:submitted', year=event_year.year)
+                    return redirect(reverse('talks:submitted', kwargs={'year': event_year.year}) + '?type=talk')
                 else:
                     logger.debug(f"Form errors: {form.errors}")
                     context['form'] = form
@@ -114,6 +114,66 @@ def submit_talk(request, year):
     return render(request, template_path, context)
 
 
+
+
+@login_required
+def submit_poster(request, year):
+    try:
+        profile = Profile.objects.get(user=request.user)
+    except Profile.DoesNotExist:
+        return redirect(reverse('profiles:create_profile'))
+
+    try:
+        event_year = EventYear.objects.get(year=year)
+        poster_periods = CFPSubmissionPeriod.objects.filter(event_year=event_year, submission_type='posters').order_by('start_date')
+        active_period = None
+        upcoming_period = None
+
+        for period in poster_periods:
+            if period.start_date <= timezone.now() <= period.end_date:
+                active_period = period
+                break
+            elif timezone.now() < period.start_date and not upcoming_period:
+                upcoming_period = period
+
+        context = {
+            'title': 'Submit a Poster',
+            'year': year,
+            'active_period': active_period,
+            'upcoming_period': upcoming_period,
+            'is_sponsor_or_keynote': profile.is_a_sponsor_or_keynote_speaker,
+        }
+
+        if request.method == 'POST':
+            if active_period:
+                form = PosterProposalForm(request.POST, request.FILES, user=request.user)
+                if form.is_valid():
+                    proposal = form.save(commit=False)
+                    proposal.user = request.user
+                    proposal.event_year = event_year
+                    proposal.talk_type = 'Poster'
+                    proposal.save()
+
+                    subject = 'Poster Submission Confirmation'
+                    html_content = render_to_string('emails/talks/submission_confirmation.html', {'user': request.user, 'proposal': proposal})
+                    text_content = strip_tags(html_content)
+                    email = EmailMultiAlternatives(subject, text_content, to=[request.user.email])
+                    email.attach_alternative(html_content, "text/html")
+                    email.send()
+
+                    return redirect(reverse('talks:submitted', kwargs={'year': event_year.year}) + '?type=poster')
+                else:
+                    logger.debug(f"Poster form errors: {form.errors}")
+                    context['form'] = form
+            else:
+                context['form'] = PosterProposalForm(user=request.user)
+        else:
+            context['form'] = PosterProposalForm(user=request.user)
+
+    except EventYear.DoesNotExist:
+        return redirect(reverse_lazy('talks:no_event_year_error'))
+
+    return render(request, f"{year}/talks/poster_form.html", context)
 
 
 @login_required
@@ -148,12 +208,19 @@ class TalkList(TemplateView):
         context['year'] = year
 
         event_year = get_object_or_404(EventYear, year=year)
-        submission_periods = CFPSubmissionPeriod.objects.filter(event_year=event_year).order_by('start_date')
+        submission_periods = CFPSubmissionPeriod.objects.filter(event_year=event_year, submission_type='talks').order_by('start_date')
+        poster_periods = CFPSubmissionPeriod.objects.filter(event_year=event_year, submission_type='posters').order_by('start_date')
 
         active_period = None
         for period in submission_periods:
             if period.start_date <= timezone.now() <= period.end_date:
                 active_period = period
+                break
+
+        active_poster_period = None
+        for period in poster_periods:
+            if period.start_date <= timezone.now() <= period.end_date:
+                active_poster_period = period
                 break
 
         # Get the user's profile to check if they are a sponsor or keynote speaker
@@ -163,7 +230,8 @@ class TalkList(TemplateView):
             'submitted_talks': Proposal.objects.filter(user=self.request.user, event_year__year=year),
             'submission_periods': submission_periods,
             'active_period': active_period,
-            'is_editable': active_period is not None or profile.is_a_sponsor_or_keynote_speaker,
+            'active_poster_period': active_poster_period,
+            'is_editable': active_period is not None or active_poster_period is not None or profile.is_a_sponsor_or_keynote_speaker,
             'is_sponsor_or_keynote': profile.is_a_sponsor_or_keynote_speaker
         })
 
@@ -211,12 +279,19 @@ class TalkDetailView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         proposal = get_object_or_404(Proposal, proposal_id=self.kwargs.get('pk'))
-        submission_periods = CFPSubmissionPeriod.objects.filter(event_year=proposal.event_year).order_by('start_date')
+        submission_periods = CFPSubmissionPeriod.objects.filter(event_year=proposal.event_year, submission_type='talks').order_by('start_date')
+        poster_periods = CFPSubmissionPeriod.objects.filter(event_year=proposal.event_year, submission_type='posters').order_by('start_date')
 
         active_period = None
         for period in submission_periods:
             if period.start_date <= timezone.now() <= period.end_date:
                 active_period = period
+                break
+
+        active_poster_period = None
+        for period in poster_periods:
+            if period.start_date <= timezone.now() <= period.end_date:
+                active_poster_period = period
                 break
 
         # Determine if the user can upload documents
@@ -238,7 +313,8 @@ class TalkDetailView(TemplateView):
             'speakers': proposal.speakers.all(),
             'submission_periods': submission_periods,
             'active_period': active_period,
-            'is_editable': active_period is not None,
+            'active_poster_period': active_poster_period,
+            'is_editable': active_period is not None or (proposal.talk_type == 'Poster' and active_poster_period is not None),
             'can_upload': can_upload,
             'has_uploaded_slide': has_uploaded_slide,
             'latest_slide': latest_slide,
@@ -312,10 +388,11 @@ class SuccessView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Assuming 'year' is passed as a URL parameter, otherwise default to the current year
         year = self.kwargs.get('year', timezone.now().year)
-        context['title'] = 'Talk Submission Successful'
+        submission_type = self.request.GET.get('type', 'talk')
+        context['title'] = 'Submission Successful'
         context['year'] = year
+        context['submission_type'] = submission_type
         return context
 
 

@@ -1,9 +1,9 @@
-<!-- Template located at templates/emails/proposal_submitted.html -->
+<!-- Template located at templates/emails/talks/submission_confirmation.html -->
 <html>
 <body>
     <p>Dear {{ proposal.user.username }},</p>
-    <p>Thank you for submitting your proposal titled "{{ proposal.title }}" for PyCon Africa {{ year }}.</p>
-    <p>We will review it and get back to you with any updates.</p>
+    <p>Thank you for submitting your {% if proposal.talk_type == 'Poster' %}poster{% else %}proposal{% endif %} titled "<strong>{{ proposal.title }}</strong>" for PyCon Africa 2026.</p>
+    <p>{% if proposal.talk_type == 'Poster' %}Our team will review your poster and get back to you via email.{% else %}We will review it and get back to you with any updates.{% endif %}</p>
     <br>
     <p>PyCon Africa Programme Team</p>
 </body>

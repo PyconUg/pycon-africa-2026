@@ -17,7 +17,11 @@
             <h2>Thank You, {{ full_name }}!</h2>
         </div>
         <div class="details">
+            {% if proposal.talk_type == 'Poster' %}
+            <p>We appreciate your submission to PyCon Africa {{ proposal.event_year.year }}. After careful consideration, we regret to inform you that your poster titled "<strong>{{ proposal.title }}</strong>" was not selected for this year's conference.</p>
+            {% else %}
             <p>We appreciate your submission to PyCon Africa {{ proposal.event_year.year }}. After careful consideration, we regret to inform you that your proposal titled "<strong>{{ proposal.title }}</strong>" was not selected for this year's conference.</p>
+            {% endif %}
         </div>
         
         <div class="next-steps">

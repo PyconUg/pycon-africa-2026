@@ -18,7 +18,11 @@
         </div>
         <div class="details">
             <p>Dear {{ full_name }},</p>
+            {% if proposal.talk_type == 'Poster' %}
+            <p>Thank you for submitting your poster titled "<strong>{{ proposal.title }}</strong>" for PyCon Africa {{ proposal.event_year.year }}. After careful consideration, we would like to inform you that your poster has been placed on our waiting list.</p>
+            {% else %}
             <p>Thank you for submitting your proposal titled "<strong>{{ proposal.title }}</strong>" for PyCon Africa {{ proposal.event_year.year }}. After careful consideration, we would like to inform you that your proposal has been placed on our waiting list.</p>
+            {% endif %}
         </div>
         
         <div class="next-steps">

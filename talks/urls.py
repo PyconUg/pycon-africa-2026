@@ -18,7 +18,8 @@ urlpatterns = [
     path('accepted_talks/', login_required(views.AcceptedTalksView.as_view()), name='accepted_talks'),
     
     # Submission for a specific year
-    path('submit_talk/', login_required(views.submit_talk), name='submit_talk'), 
+    path('submit_talk/', login_required(views.submit_talk), name='submit_talk'),
+    path('submit_poster/', login_required(views.submit_poster), name='submit_poster'), 
 
     # Editing a talk, assuming pk is sufficient for identifying the talk  
     path('<str:pk>/edit_talk/', login_required(views.edit_talk), name='edit_talk'),
