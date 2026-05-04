@@ -7,7 +7,6 @@ local_settings.py
 secrets.py
 #static/
 media/
-migrations/
 migrations/__pycache__/
 
 # Byte-compiled / optimized / DLL files
