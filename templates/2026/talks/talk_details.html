@@ -275,17 +275,17 @@
             </a>
 
             {% if request.user.username == talk.user.username %}
-              {% if active_period or talk.user_response == "A" or is_sponsor_or_keynote %}
+              {% if is_editable or talk.user_response == "A" %}
               <a href="{% url 'talks:edit_talk' year=year pk=talk.pk %}"
                  class="inline-flex items-center px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm">
                 <i class="fa-solid fa-pen w-4 text-center mr-1.5" aria-hidden="true"></i>
-                <span>{% trans "Edit talk" %}</span>
+                <span>{% if talk.talk_type == 'Poster' %}{% trans "Edit poster" %}{% else %}{% trans "Edit talk" %}{% endif %}</span>
               </a>
               {% else %}
               <span class="inline-flex items-center px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed"
-                    title="{% trans 'You cannot edit the talk because the CFP period is over' %}">
+                    title="{% if talk.talk_type == 'Poster' %}{% trans 'Poster CFP is now closed' %}{% else %}{% trans 'CFP is now closed' %}{% endif %}">
                 <i class="fa-solid fa-pen w-4 text-center mr-1.5" aria-hidden="true"></i>
-                <span>{% trans "Edit talk" %}</span>
+                <span>{% if talk.talk_type == 'Poster' %}{% trans "Edit poster" %}{% else %}{% trans "Edit talk" %}{% endif %}</span>
               </span>
               {% endif %}
             {% endif %}
