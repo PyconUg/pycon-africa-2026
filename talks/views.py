@@ -7,7 +7,7 @@ from django.core.mail import send_mail, BadHeaderError
 
 from django.shortcuts import render, redirect
 from django.conf import settings
-from django.core.files.storage import FileSystemStorage
+from django.core.files.storage import FileSystemStorage, default_storage
 from django.shortcuts import render, redirect, HttpResponse
 from django.template import loader
 
@@ -181,22 +181,35 @@ def edit_talk(request, year, pk):
     proposal = get_object_or_404(Proposal, pk=pk)
     if str(proposal.event_year.year) != str(year):
         raise Http404("Proposal does not exist for the given year.")
-    
+
+    is_poster = proposal.talk_type == 'Poster'
+    FormClass = PosterProposalForm if is_poster else ProposalForm
+    template_name = 'edit_poster.html' if is_poster else 'edit_talk.html'
+
     if request.method == "POST":
-        form = ProposalForm(request.POST, instance=proposal)
+        form = FormClass(request.POST, request.FILES, instance=proposal, user=request.user)
         if form.is_valid():
-            form.save()
+            saved = form.save(commit=False)
+            if is_poster:
+                saved.talk_type = 'Poster'
+                new_file = request.FILES.get('poster_attachment')
+                if new_file and proposal.poster_attachment:
+                    old_file = proposal.poster_attachment
+                    if old_file and default_storage.exists(old_file.name):
+                        default_storage.delete(old_file.name)
+            saved.save()
             return redirect('talks:talk_list', year=proposal.event_year.year)
     else:
-        form = ProposalForm(instance=proposal)
-    
+        form = FormClass(instance=proposal, user=request.user)
+
     template_prefix = f"{proposal.event_year.year}/talks/"
     context = {
         'form': form,
         'year': year,
-        'proposal': proposal,  # Add the proposal to the context
+        'proposal': proposal,
+        'is_poster': is_poster,
     }
-    return render(request, template_prefix + 'edit_talk.html', context)
+    return render(request, template_prefix + template_name, context)
 
 
 

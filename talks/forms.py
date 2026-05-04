@@ -7,6 +7,9 @@ from django_recaptcha.fields import ReCaptchaField
 from django_recaptcha.widgets import ReCaptchaV2Invisible  
 from .models import * 
 
+POSTER_ALLOWED_EXTENSIONS = {'pdf', 'ppt', 'pptx', 'png', 'jpg', 'jpeg', 'gif', 'webp'}
+POSTER_ALLOWED_EXTENSIONS_DISPLAY = 'PDF, PPT, PPTX, PNG, JPG, JPEG, GIF, WEBP'
+
 class ProposalForm(forms.ModelForm):
     captcha = ReCaptchaField()
 
@@ -43,8 +46,9 @@ class PosterProposalForm(forms.ModelForm):
             'talk_abstract': forms.Textarea(attrs={'class': 'w-full', 'rows': 6}),
             'anything_else_you_want_to_tell_us': forms.Textarea(attrs={'class': 'w-full', 'rows': 4}),
             'special_requirements': forms.Textarea(attrs={'class': 'w-full', 'rows': 4}),
-            'poster_attachment': forms.ClearableFileInput(attrs={
+            'poster_attachment': forms.FileInput(attrs={
                 'class': 'block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-l-lg file:border-0 file:text-sm file:font-semibold file:bg-pycon-teal file:text-white hover:file:bg-teal-700 p-2',
+                'accept': '.pdf,.ppt,.pptx,.png,.jpg,.jpeg,.gif,.webp',
             }),
         }
 
@@ -55,6 +59,10 @@ class PosterProposalForm(forms.ModelForm):
         self.fields['talk_abstract'].label = 'Poster Abstract'
         self.fields['elevator_pitch'].label = 'Elevator Pitch'
         self.fields['elevator_pitch'].help_text = 'Describe your poster to your targeted audience.'
+        self.fields['poster_attachment'].help_text = (
+            f'Upload your poster file. Accepted formats: {POSTER_ALLOWED_EXTENSIONS_DISPLAY}. '
+            'Uploading a new file will replace the previous one.'
+        )
         self.fields['recording_release'].help_text = (
             'By submitting your poster proposal, you agree to give permission to the conference organizers '
             'to record, edit, and release audio and/or video of your presentation. '
@@ -65,6 +73,17 @@ class PosterProposalForm(forms.ModelForm):
         self.helper.form_class = 'form-horizontal'
         self.helper.form_enctype = 'multipart/form-data'
         self.helper.add_input(Submit('submit', 'Submit Poster'))
+
+    def clean_poster_attachment(self):
+        attachment = self.cleaned_data.get('poster_attachment')
+        if attachment and hasattr(attachment, 'name'):
+            ext = attachment.name.rsplit('.', 1)[-1].lower() if '.' in attachment.name else ''
+            if ext not in POSTER_ALLOWED_EXTENSIONS:
+                raise forms.ValidationError(
+                    f'Unsupported file type ".{ext}". '
+                    f'Please upload one of: {POSTER_ALLOWED_EXTENSIONS_DISPLAY}.'
+                )
+        return attachment
 
 
 class ProposalResponseForm(forms.ModelForm):

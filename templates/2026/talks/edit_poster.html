@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+{% load i18n static avatar_tags crispy_forms_tags %}
+{% block meta_title %}{% trans "Edit your Poster | PyCon Africa 2026" %}{% endblock %}
+
+{% block extra_css %}
+<style>
+  .profile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    color: #374151;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-size: 0.9375rem;
+  }
+  @media (max-width: 640px) {
+    .profile-nav-link {
+      padding: 0.75rem;
+      font-size: 0.875rem;
+    }
+  }
+  .profile-nav-link:hover {
+    background: #f3f4f6;
+    color: #111827;
+  }
+  .profile-nav-link.active {
+    background: #0d9488;
+    color: #fff;
+  }
+  .profile-nav-link.active:hover {
+    background: #0f766e;
+    color: #fff;
+  }
+
+  #id_elevator_pitch,
+  #id_talk_abstract,
+  #id_anything_else_you_want_to_tell_us,
+  #id_special_requirements {
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    min-height: 7rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #id-Crispy_PosterProposalForm input[type="text"],
+  #id-Crispy_PosterProposalForm input[type="url"],
+  #id-Crispy_PosterProposalForm select,
+  #id-Crispy_PosterProposalForm textarea {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #id_poster_attachment {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.5rem 0.75rem;
+  }
+
+  #div_id_poster_attachment,
+  #div_id_recording_release,
+  #div_id_captcha {
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<div class="auth-page-content min-h-screen bg-gray-50">
+
+  <section class="max-w-6xl mx-auto px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row gap-6 lg:gap-10">
+      <!-- Sidebar -->
+      <aside class="w-full md:w-64 shrink-0 md:order-1 order-2">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden md:sticky md:top-24">
+          <div class="p-4 sm:p-5">
+            <div class="mb-4 flex justify-center">
+              <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-gray-100 shadow-sm [&_img]:w-full [&_img]:h-full [&_img]:object-cover">
+                {% include 'profiles/profilepic_side.html' %}
+              </div>
+            </div>
+            {% if request.user.last_login %}
+            <div class="text-xs text-gray-500 mb-4 pb-4 border-b border-gray-100">
+              <span class="font-medium text-gray-400 uppercase tracking-wide">{% trans "Last login" %}</span><br>
+              <span class="text-gray-600">{{ request.user.last_login|date:"M. j, Y" }} · {{ request.user.last_login|time:"g:i a" }}</span>
+            </div>
+            {% endif %}
+            {% include '2026/account/_account_sidebar_nav.html' with account_nav_active='talks' %}
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main content -->
+      <div class="flex-1 min-w-0 md:order-2 order-1">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-4 sm:p-6 lg:p-8">
+          <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-1">
+            {% trans "Update your poster" %}
+          </h2>
+          <p class="text-sm text-gray-500 mb-4">
+            {% trans "You can update your poster details and replace the attachment below." %}
+          </p>
+
+          {% if proposal.poster_attachment %}
+          <div class="mb-4 flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm">
+            <i class="fa-solid fa-file text-gray-400" aria-hidden="true"></i>
+            <span class="text-gray-700 font-medium truncate">{{ proposal.poster_attachment.name|cut:"poster_attachments/" }}</span>
+            <a href="{{ proposal.poster_attachment.url }}" target="_blank" rel="noopener noreferrer"
+               class="ml-auto shrink-0 text-pycon-teal hover:underline text-xs font-semibold">
+              {% trans "View current file" %}
+            </a>
+          </div>
+          {% endif %}
+
+          <!-- Display Form Errors -->
+          {% if form.non_field_errors %}
+          <div class="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+            <ul class="list-disc list-inside space-y-1">
+              {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+          {% for field in form %}
+            {% if field.errors %}
+            <div class="mb-3 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-800">
+              <strong>{{ field.label }}:</strong> {{ field.errors|striptags }}
+            </div>
+            {% endif %}
+          {% endfor %}
+
+          <form method="post" enctype="multipart/form-data" class="space-y-4" id="poster-edit-form">
+            {% csrf_token %}
+            {{ form|crispy }}
+            {{ form.media }}
+            <button type="submit" id="poster-edit-btn"
+                    class="inline-flex items-center gap-2 justify-center px-5 py-2.5 text-sm font-semibold text-white bg-pycon-teal hover:bg-teal-700 rounded-lg shadow-sm hover:shadow disabled:opacity-60 disabled:cursor-not-allowed transition-all">
+              <span id="poster-edit-btn-label">{% trans "Save changes" %}</span>
+              <svg id="poster-edit-spinner" class="hidden animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+              </svg>
+            </button>
+          </form>
+
+          <script>
+            document.getElementById('poster-edit-form').addEventListener('submit', function () {
+              const btn = document.getElementById('poster-edit-btn');
+              const label = document.getElementById('poster-edit-btn-label');
+              const spinner = document.getElementById('poster-edit-spinner');
+              btn.disabled = true;
+              label.textContent = 'Saving…';
+              spinner.classList.remove('hidden');
+            });
+          </script>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+{% endblock %}
