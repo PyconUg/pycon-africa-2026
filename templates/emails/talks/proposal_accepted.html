@@ -17,16 +17,24 @@
             <h2>Congratulations {{ full_name }}!</h2>
         </div>
         <div class="details">
+            {% if proposal.talk_type == 'Poster' %}
+            <p>We are pleased to inform you that your poster titled "<a href="{{ talk_url }}"><strong>{{ proposal.title }}</strong></a>" has been accepted for PyCon Africa {{ proposal.event_year.year }}.</p>
+            {% else %}
             <p>We are pleased to inform you that your proposal titled "<a href="{{ talk_url }}"><strong>{{ proposal.title }}</strong></a>" has been accepted for PyCon Africa {{ proposal.event_year.year }}.</p>
-        </div>
-        
-        <div class="next-steps">
-            <h3>Next Steps</h3> 
-            <p>We are excited to have you present at our conference. Please let us know if you accept this invitation to speak by clicking the link below:</p>
-            <p><a href="{{ response_url }}"><b>Accept or Reject</b></a> to present.</p>
+            {% endif %}
         </div>
 
-         <p>For any further information or queries, please feel free to reach out to us.</p>
+        <div class="next-steps">
+            <h3>Next Steps</h3>
+            {% if proposal.talk_type == 'Poster' %}
+            <p>We are excited to have your poster at our conference. Please let us know if you accept this invitation by clicking the link below:</p>
+            {% else %}
+            <p>We are excited to have you present at our conference. Please let us know if you accept this invitation to speak by clicking the link below:</p>
+            {% endif %}
+            <p><a href="{{ response_url }}"><b>Accept or Reject</b></a></p>
+        </div>
+
+        <p>For any further information or queries, please feel free to reach out to us.</p>
         <br>
         <p>Best regards,<br>The PyCon Africa Program Team</p>
     </div>

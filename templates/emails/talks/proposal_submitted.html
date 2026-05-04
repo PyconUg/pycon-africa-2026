@@ -14,16 +14,24 @@
 <body>
     <div class="content">
         <div class="header">
-            <h2>Proposal Submission Confirmation</h2>
+            <h2>{% if proposal.talk_type == 'Poster' %}Poster Submission Confirmation{% else %}Proposal Submission Confirmation{% endif %}</h2>
         </div>
         <div class="details">
             <p>Dear {{ full_name }},</p>
+            {% if proposal.talk_type == 'Poster' %}
+            <p>Thank you for submitting your poster titled "<strong>{{ proposal.title }}</strong>" for PyCon Africa {{ proposal.event_year.year }}. We have successfully received your submission.</p>
+            {% else %}
             <p>Thank you for submitting your proposal titled "<strong>{{ proposal.title }}</strong>" for PyCon Africa {{ proposal.event_year.year }}. We have successfully received your submission.</p>
+            {% endif %}
         </div>
-        
+
         <div class="next-steps">
             <h3>What Happens Next?</h3>
-            <p>Our review committee will evaluate all submissions, and you will receive a notification about the status of your proposal by soon. In the meantime, here are a few ways to stay involved:</p>
+            {% if proposal.talk_type == 'Poster' %}
+            <p>Our review committee will evaluate all poster submissions and you will receive a notification about the status of your poster. In the meantime, here are a few ways to stay involved:</p>
+            {% else %}
+            <p>Our review committee will evaluate all submissions and you will receive a notification about the status of your proposal. In the meantime, here are a few ways to stay involved:</p>
+            {% endif %}
             <table>
                 <tr>
                     <th>Join the Community:</th>
@@ -35,12 +43,12 @@
                 </tr>
                 <tr>
                     <th>Important Information:</th>
-                    <td>Ensure you have reviewed our <a href="https://africa.pycon.org/2026/speaker-guidelines/">Speaker Guidelines</a> for important information about preparing your presentation.</td>
+                    <td>Ensure you have reviewed our <a href="https://africa.pycon.org/2026/coc/">Code of Conduct</a> for important information about participating at PyCon Africa.</td>
                 </tr>
             </table>
         </div>
 
-        <p>We appreciate your effort in submitting a proposal and your interest in contributing to PyCon Africa {{ proposal.event_year.year }}. We look forward to the possibility of including your presentation in our program.</p>
+        <p>We appreciate your effort and your interest in contributing to PyCon Africa {{ proposal.event_year.year }}. We look forward to the possibility of including your {% if proposal.talk_type == 'Poster' %}poster{% else %}presentation{% endif %} in our program.</p>
         <p>If you have any questions or need further assistance, please do not hesitate to contact us.</p>
         <br>
         <p>Best regards,<br>The PyCon Africa Program Team</p>

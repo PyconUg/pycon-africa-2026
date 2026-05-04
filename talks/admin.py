@@ -44,9 +44,9 @@ class ProposalResource(resources.ModelResource):
 
 class TalkAdmin(ImportExportModelAdmin):
     resource_class = ProposalResource
-    list_display = ("title", "user", 'list_speakers', "talk_type", "intended_audience", "status",  "user_response", 'created_date', 'date_updated')
-    list_editable = ["status",  "user_response"]
-    list_filter = ("talk_type",  'created_date', "status",  "user_response")
+    list_display = ("title", "user", 'list_speakers', "talk_type", "intended_audience", "status", "user_response", 'has_poster_attachment', 'created_date', 'date_updated')
+    list_editable = ["status", "user_response"]
+    list_filter = ("talk_type", 'created_date', "status", "user_response")
     actions = ['export_selected_action']
 
     def get_urls(self):
@@ -107,6 +107,11 @@ class TalkAdmin(ImportExportModelAdmin):
 
     export_selected_action.short_description = "Export selected proposals"
 
+    def has_poster_attachment(self, obj):
+        return bool(obj.poster_attachment)
+    has_poster_attachment.boolean = True
+    has_poster_attachment.short_description = 'Poster file?'
+
     def list_speakers(self, obj):
         return ", ".join([speaker.username for speaker in obj.speakers.all()])
     list_speakers.short_description = 'Speakers'
@@ -120,8 +125,8 @@ admin.site.register(Proposal, TalkAdmin)
 
 
 class CFPSubmissionPeriodAdmin(admin.ModelAdmin):
-    list_display = ('event_year', 'start_date', 'end_date', 'is_active_period')
-    list_filter = ('event_year',)
+    list_display = ('event_year', 'submission_type', 'start_date', 'end_date', 'is_active_period')
+    list_filter = ('event_year', 'submission_type')
     search_fields = ('event_year__year',)
 
     def is_active_period(self, obj):
