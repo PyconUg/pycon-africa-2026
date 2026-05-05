@@ -50,6 +50,11 @@
             <a class="nav-item" href="{% url 'auth_login' %}?next={% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
           {% endif %}
           {% endcomment %}
+          {% if user.is_authenticated %}
+            <a class="nav-item" href="{% url 'talks:submit_poster' year=2026 %}">Submit a Poster</a>
+          {% else %}
+            <a class="nav-item" href="{% url 'auth_login' %}?next={% url 'talks:submit_poster' year=2026 %}">Submit a Poster</a>
+          {% endif %}
           <a class="nav-item" href="/2026/talks/recording-release/">Recording Release</a>
           {% comment %}<a class="nav-item" href="/2026/talks/mentorship/">SPEAKER MENTORSHIP</a>{% endcomment %}
         </div>
@@ -284,6 +289,11 @@
               <a class="nav-item nav-item-indent" href="{% url 'auth_login' %}?next={% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
             {% endif %}
             {% endcomment %}
+            {% if user.is_authenticated %}
+              <a class="nav-item nav-item-indent" href="{% url 'talks:submit_poster' year=2026 %}">Submit a Poster</a>
+            {% else %}
+              <a class="nav-item nav-item-indent" href="{% url 'auth_login' %}?next={% url 'talks:submit_poster' year=2026 %}">Submit a Poster</a>
+            {% endif %}
             <a class="nav-item nav-item-indent" href="/2026/talks/recording-release/">Recording Release</a>
           </div>
         </div>
