@@ -1,10 +1,11 @@
 # admin.py
-from django.contrib import admin
+from django.contrib import admin, messages
 from import_export import resources, fields, formats
 from import_export.admin import ExportActionMixin, ImportExportModelAdmin
 from .models import *
 from registration.models import Profile
 from .forms import ExportFieldsForm 
+from .services import assign_proposals
 from django.shortcuts import render
 from django.urls import path
 from django.utils.html import format_html
@@ -47,7 +48,55 @@ class TalkAdmin(ImportExportModelAdmin):
     list_display = ("title", "user", 'list_speakers', "talk_type", "intended_audience", "status", "user_response", 'has_poster_attachment', 'created_date', 'date_updated')
     list_editable = ["status", "user_response"]
     list_filter = ("talk_type", 'created_date', "status", "user_response")
-    actions = ['export_selected_action']
+    search_fields = ('title', 'user__username', 'user__email')
+    actions = ['export_selected_action', 'assign_to_reviewers_action']
+
+    def assign_to_reviewers_action(self, request, queryset):
+        """Run the assignment algorithm scoped to the selected proposals.
+
+        Reviewers are taken from the active reviewers in the system.
+        Each event year present in the queryset is processed independently.
+        """
+        event_years = {p.event_year for p in queryset.select_related('event_year')}
+        if not event_years:
+            self.message_user(request, "No proposals selected.", level=messages.WARNING)
+            return
+
+        total_created = 0
+        all_unassignable = []
+        for event_year in event_years:
+            scoped = queryset.filter(event_year=event_year)
+            result = assign_proposals(
+                event_year,
+                proposals=scoped,
+                assigned_by=request.user,
+            )
+            total_created += result['created']
+            all_unassignable.extend(result['unassignable'])
+
+        if total_created:
+            self.message_user(
+                request,
+                f"Created {total_created} new review assignment(s).",
+                level=messages.SUCCESS,
+            )
+        else:
+            self.message_user(
+                request,
+                "No new assignments were created (everything is already assigned).",
+                level=messages.INFO,
+            )
+
+        if all_unassignable:
+            self.message_user(
+                request,
+                f"{len(all_unassignable)} proposal(s) could not be assigned to any reviewer "
+                f"(every eligible reviewer is the author or a co-speaker). "
+                f"Proposal IDs: {', '.join(str(pid) for pid in all_unassignable)}",
+                level=messages.WARNING,
+            )
+
+    assign_to_reviewers_action.short_description = "Assign selected proposals to reviewers"
 
     def get_urls(self):
         urls = super().get_urls()
@@ -155,15 +204,85 @@ class ProposingTalkAdmin(admin.ModelAdmin):
 admin.site.register(Proposing_talk, ProposingTalkAdmin)
 
 class ReviewerAdmin(admin.ModelAdmin):
-    list_display = ['user', 'get_email']
+    list_display = ['user', 'get_email', 'review_load', 'is_active', 'assignment_count']
+    list_editable = ['review_load', 'is_active']
+    list_filter = ['review_load', 'is_active']
     search_fields = ['user__username', 'user__email']
+    actions = ['run_assignment_for_latest_year_action']
 
     def get_email(self, obj):
         return obj.user.email
-    get_email.admin_order_field = 'user__email'  # Allows column order sorting
-    get_email.short_description = 'Email Address'  # Renames column head
+    get_email.admin_order_field = 'user__email'
+    get_email.short_description = 'Email Address'
+
+    def assignment_count(self, obj):
+        return obj.assignments.count()
+    assignment_count.short_description = 'Current assignments'
+
+    def run_assignment_for_latest_year_action(self, request, queryset):
+        """Run assignment for the most recent event year using the selected reviewers."""
+        from home.models import EventYear
+        latest_year = EventYear.objects.order_by('-year').first()
+        if not latest_year:
+            self.message_user(request, "No event year configured.", level=messages.ERROR)
+            return
+
+        result = assign_proposals(
+            latest_year,
+            reviewers=queryset,
+            assigned_by=request.user,
+        )
+
+        if result['created']:
+            self.message_user(
+                request,
+                f"Created {result['created']} new review assignment(s) for {latest_year.year}.",
+                level=messages.SUCCESS,
+            )
+        else:
+            self.message_user(
+                request,
+                "No new assignments created (everything is already assigned).",
+                level=messages.INFO,
+            )
+
+        if result['unassignable']:
+            self.message_user(
+                request,
+                f"{len(result['unassignable'])} proposal(s) could not be assigned. "
+                f"IDs: {', '.join(str(pid) for pid in result['unassignable'])}",
+                level=messages.WARNING,
+            )
+
+    run_assignment_for_latest_year_action.short_description = (
+        "Run assignment for the latest event year (using selected reviewers)"
+    )
 
 admin.site.register(Reviewer, ReviewerAdmin)
+
+
+class ReviewAssignmentAdmin(admin.ModelAdmin):
+    list_display = ['reviewer', 'proposal', 'event_year', 'assigned_at', 'assigned_by', 'has_review']
+    list_filter = ['proposal__event_year', 'reviewer__review_load', 'assigned_at']
+    search_fields = [
+        'reviewer__user__username',
+        'reviewer__user__email',
+        'proposal__title',
+    ]
+    autocomplete_fields = ['reviewer', 'proposal']
+    readonly_fields = ['assigned_at']
+
+    def event_year(self, obj):
+        return obj.proposal.event_year
+    event_year.admin_order_field = 'proposal__event_year__year'
+    event_year.short_description = 'Event year'
+
+    def has_review(self, obj):
+        return Review.objects.filter(reviewer=obj.reviewer, talk=obj.proposal).exists()
+    has_review.boolean = True
+    has_review.short_description = 'Reviewed?'
+
+admin.site.register(ReviewAssignment, ReviewAssignmentAdmin)
 
 class SubScoreInline(admin.TabularInline):
     model = SubScore

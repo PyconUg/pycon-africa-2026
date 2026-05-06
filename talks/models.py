@@ -184,7 +184,45 @@ class SpeakerInvitation(models.Model):
  
 
 class Reviewer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='reviewer_profile') 
+    LOAD_MODES = (
+        ('all', 'Review all proposals'),
+        ('equal', 'Review an equal share'),
+    )
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='reviewer_profile')
+    review_load = models.CharField(
+        max_length=10,
+        choices=LOAD_MODES,
+        default='equal',
+        help_text="'all' = assigned every eligible proposal. 'equal' = receives a fair share alongside other equal-share reviewers.",
+    )
+    is_active = models.BooleanField(
+        default=True,
+        help_text="Inactive reviewers are skipped during assignment.",
+    )
+
+    def __str__(self):
+        return f"{self.user.get_full_name() or self.user.username} ({self.get_review_load_display()})"
+
+
+class ReviewAssignment(models.Model):
+    reviewer = models.ForeignKey(Reviewer, on_delete=models.CASCADE, related_name='assignments')
+    proposal = models.ForeignKey('Proposal', on_delete=models.CASCADE, related_name='review_assignments')
+    assigned_at = models.DateTimeField(auto_now_add=True)
+    assigned_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='assignments_created',
+    )
+
+    class Meta:
+        unique_together = ('reviewer', 'proposal')
+        ordering = ['-assigned_at']
+
+    def __str__(self):
+        return f"{self.reviewer.user.username} -> {self.proposal.title}"
 
 
 class SubScore(models.Model):

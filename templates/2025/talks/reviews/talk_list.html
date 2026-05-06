@@ -59,7 +59,21 @@
 
           {% if not no_reviewer_rights %}
 
-            <h2 class="text-base font-semibold text-gray-800 mb-4">{% trans "Proposals Awaiting Review" %}</h2>
+            <div class="flex items-center gap-2 mb-2">
+              <h2 class="text-base font-semibold text-gray-800" style="margin:0;">
+                {% if has_assignments %}{% trans "My Assigned Proposals" %}{% else %}{% trans "Proposals Awaiting Review" %}{% endif %}
+              </h2>
+              {% if has_assignments %}
+              <span class="text-xs text-teal-700 bg-teal-50 border border-teal-200 rounded-full px-2 py-0.5">
+                {% trans "Assigned to you" %}
+              </span>
+              {% endif %}
+            </div>
+            {% if has_assignments %}
+            <p class="text-xs text-gray-500 mb-4">{% trans "These are the proposals an organiser has assigned to you for review." %}</p>
+            {% else %}
+            <p class="text-xs text-gray-500 mb-4">{% trans "An organiser has not yet assigned proposals to you. The full submitted list is shown below." %}</p>
+            {% endif %}
 
             {% if talks_by_type %}
             <div x-data="{ activeTab: 0 }">
