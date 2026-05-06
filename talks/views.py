@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect, HttpRequest, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.mail import send_mail, BadHeaderError
+from django.core.exceptions import PermissionDenied
 
 from django.shortcuts import render, redirect
 from django.conf import settings
@@ -556,17 +557,36 @@ def list_talks_to_review(request, year):
 
     try:
         reviewer = Reviewer.objects.get(user=request.user)
-        # Fetch all reviews by this reviewer for talks in this event year
-        reviewed_talk_ids = Review.objects.filter(reviewer=reviewer, talk__event_year=event_year).values_list('talk__proposal_id', flat=True)
-        # Filter out talks that have been reviewed by this reviewer
-        talks_awaiting_review = Proposal.objects.filter(event_year=event_year, status='S').exclude(proposal_id__in=reviewed_talk_ids).order_by('talk_type')
+        reviewed_talk_ids = list(
+            Review.objects.filter(reviewer=reviewer, talk__event_year=event_year)
+                          .values_list('talk__proposal_id', flat=True)
+        )
 
-        # Group talks by talk type
+        has_any_assignments = reviewer.assignments.filter(proposal__event_year=event_year).exists()
+
+        if has_any_assignments:
+            # Show ONLY proposals assigned to this reviewer (excluding ones already reviewed)
+            assigned_proposal_ids = list(
+                reviewer.assignments
+                        .filter(proposal__event_year=event_year)
+                        .exclude(proposal__proposal_id__in=reviewed_talk_ids)
+                        .values_list('proposal__proposal_id', flat=True)
+            )
+            talks_awaiting_review = (
+                Proposal.objects.filter(proposal_id__in=assigned_proposal_ids)
+                                .order_by('talk_type', 'title')
+            )
+        else:
+            # Legacy fallback: reviewer has no assignments yet -> show all unreviewed
+            talks_awaiting_review = (
+                Proposal.objects.filter(event_year=event_year, status='S')
+                                .exclude(proposal_id__in=reviewed_talk_ids)
+                                .order_by('talk_type')
+            )
+
         talks_by_type = {}
         for talk in talks_awaiting_review:
-            if talk.talk_type not in talks_by_type:
-                talks_by_type[talk.talk_type] = []
-            talks_by_type[talk.talk_type].append(talk)
+            talks_by_type.setdefault(talk.talk_type, []).append(talk)
 
         # Fetch reviewed talks with their scores
         talks_reviewed_with_scores = []
@@ -588,6 +608,7 @@ def list_talks_to_review(request, year):
         context = {
             'talks_by_type': talks_by_type,
             'talks_reviewed_with_scores': talks_reviewed_with_scores,
+            'has_assignments': has_any_assignments,
             'year': year
         }
 
@@ -605,8 +626,23 @@ def list_talks_to_review(request, year):
 def review_talk(request, year, pk):
     event_year = get_object_or_404(EventYear, year=year)
     talk = get_object_or_404(Proposal, pk=pk, event_year=event_year)
-    
+
     reviewer = Reviewer.objects.get(user=request.user)
+
+    # Block reviewers from reviewing proposals they authored or co-speak on.
+    if reviewer.user_id == talk.user_id or talk.speakers.filter(id=reviewer.user_id).exists():
+        raise PermissionDenied("You cannot review your own proposal.")
+
+    # If assignments exist for this reviewer in this year, restrict review to assigned proposals only.
+    # Reviewers without any assignments retain legacy access (back-compat).
+    has_assignments = ReviewAssignment.objects.filter(
+        reviewer=reviewer, proposal__event_year=event_year
+    ).exists()
+    if has_assignments:
+        is_assigned = ReviewAssignment.objects.filter(reviewer=reviewer, proposal=talk).exists()
+        if not is_assigned:
+            raise PermissionDenied("This proposal was not assigned to you.")
+
     already_reviewed = Review.objects.filter(talk=talk, reviewer=reviewer).exists()
 
     if request.method == 'POST' and not already_reviewed:
