@@ -1,0 +1,161 @@
+{% load i18n static avatar_tags crispy_forms_tags %}
+<style>
+  .profile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    color: #374151;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-size: 0.9375rem;
+  }
+  .profile-nav-link:hover {
+    background: #f3f4f6;
+    color: #111827;
+  }
+  .profile-nav-link.active {
+    background: #0d9488;
+    color: #fff;
+  }
+  .profile-nav-link.active:hover {
+    background: #0f766e;
+    color: #fff;
+  }
+  .proposal-response-radios ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .proposal-response-radios li label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9375rem;
+    color: #374151;
+  }
+  #proposal-invitation-submit.is-loading {
+    pointer-events: none;
+    opacity: 0.85;
+  }
+</style>
+
+<div class="auth-page-content min-h-screen bg-gray-50">
+  <section class="max-w-6xl mx-auto px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
+    <div class="mb-6">
+      <nav class="text-sm text-gray-500 flex flex-wrap gap-2 items-center" aria-label="{% trans 'Breadcrumb' %}">
+        <a href="{% url 'profiles:profile_home' %}" class="hover:text-pycon-teal">{% trans "Profile" %}</a>
+        <span class="text-gray-300" aria-hidden="true">/</span>
+        <a href="{% url 'talks:talk_list' year=proposal.event_year.year %}" class="hover:text-pycon-teal">{% trans "My talks" %}</a>
+        <span class="text-gray-300" aria-hidden="true">/</span>
+        <span class="text-gray-900 font-medium">{% trans "Invitation response" %}</span>
+      </nav>
+      <h1 class="mt-2 text-xl sm:text-2xl font-bold text-gray-900 break-words">{{ proposal.title }}</h1>
+      <p class="mt-1 text-sm text-gray-500">PyCon Africa {{ proposal.event_year.year }}</p>
+    </div>
+
+    <div class="flex flex-col md:flex-row gap-6 lg:gap-10">
+      <aside class="w-full md:w-64 shrink-0 md:order-1 order-2">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden md:sticky md:top-24">
+          <div class="p-4 sm:p-5">
+            <div class="mb-4 flex justify-center">
+              <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-gray-100 shadow-sm [&_img]:w-full [&_img]:h-full [&_img]:object-cover">
+                {% include "profiles/profilepic_side.html" %}
+              </div>
+            </div>
+            {% if request.user.last_login %}
+            <div class="text-xs text-gray-500 mb-4 pb-4 border-b border-gray-100">
+              <span class="font-medium text-gray-400 uppercase tracking-wide">{% trans "Last login" %}</span><br>
+              <span class="text-gray-600">{{ request.user.last_login|date:"M. j, Y" }} · {{ request.user.last_login|time:"g:i a" }}</span>
+            </div>
+            {% endif %}
+            {% include "2026/account/_account_sidebar_nav.html" with account_nav_active="talks" year=proposal.event_year.year %}
+          </div>
+        </div>
+      </aside>
+
+      <div class="flex-1 min-w-0 md:order-2 order-1">
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-4 sm:p-6 lg:p-8">
+          <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+            {% trans "Respond to your proposal invitation" %}
+          </h2>
+          <p class="text-sm text-gray-600 mb-6 leading-relaxed">
+            {% trans "Please confirm whether you can present this session at the conference. If you accept, you will receive follow-up details. If you decline, we thank you for your time." %}
+          </p>
+
+          {% if proposal.status == "A" and proposal.user_response == "P" %}
+            {% trans "Submitting…" as proposal_submit_loading %}
+            {% if form.non_field_errors %}
+            <div class="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+              <ul class="list-disc list-inside space-y-1">
+                {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+            {% for field in form %}
+              {% if field.errors %}
+              <div class="mb-3 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-800">
+                <strong>{{ field.label }}:</strong> {{ field.errors|striptags }}
+              </div>
+              {% endif %}
+            {% endfor %}
+
+            <form method="post" action="{% url 'talks:respond_to_invitation' year=proposal.event_year.year pk=proposal.pk %}" class="proposal-invitation-form space-y-6">
+              {% csrf_token %}
+              <div class="proposal-response-radios">
+                {{ form.user_response|as_crispy_field }}
+              </div>
+              <button
+                type="submit"
+                id="proposal-invitation-submit"
+                class="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm hover:shadow disabled:opacity-70 disabled:cursor-wait"
+                data-loading-text="{{ proposal_submit_loading|escape }}"
+              >
+                <span class="proposal-invitation-submit__label">{% trans "Submit response" %}</span>
+              </button>
+            </form>
+          {% else %}
+            <div class="rounded-lg border border-gray-100 bg-gray-50 px-4 py-3 text-sm text-gray-700">
+              <p class="font-medium text-gray-900 mb-1">{% trans "Your response" %}</p>
+              <p>{{ proposal.get_user_response_display }}</p>
+              {% if proposal.user_response == "A" %}
+              <p class="mt-3 text-gray-600">
+                <a href="{% url 'talks:talk_details' year=proposal.event_year.year pk=proposal.pk %}" class="text-pycon-teal font-medium hover:underline">
+                  {% trans "View your talk details" %}
+                </a>
+              </p>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<script>
+(function () {
+  var form = document.querySelector("form.proposal-invitation-form");
+  if (!form) return;
+  var btn = document.getElementById("proposal-invitation-submit");
+  if (!btn) return;
+  form.addEventListener("submit", function () {
+    if (btn.disabled) return;
+    btn.disabled = true;
+    btn.classList.add("is-loading");
+    btn.setAttribute("aria-busy", "true");
+    var radios = form.querySelectorAll('input[type="radio"]');
+    for (var i = 0; i < radios.length; i++) radios[i].disabled = true;
+    var loadingText = btn.getAttribute("data-loading-text") || "Submitting…";
+    btn.innerHTML =
+      '<span class="inline-flex items-center justify-center gap-2">' +
+      '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>' +
+      "<span>" + loadingText + "</span></span>";
+  });
+})();
+</script>

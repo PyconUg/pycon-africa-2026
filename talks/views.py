@@ -861,57 +861,82 @@ def respond_to_invitation(request, year, pk):
     event_year = get_object_or_404(EventYear, year=year)
     proposal = get_object_or_404(Proposal, pk=pk, event_year=event_year)
 
+    if proposal.user_id != request.user.id:
+        raise Http404()
+
     if request.method == 'POST':
         form = ProposalResponseForm(request.POST, instance=proposal)
         if form.is_valid():
-            # Determine the user's response
             user_response = form.cleaned_data.get('user_response', '')
 
-            # Update the proposal's status and user_response based on the user's response
             if user_response == 'A':
                 proposal.user_response = 'A'
-                proposal.status = 'A'  # Set status to 'Accepted' if it wasn't set before
+                proposal.status = 'A'
             elif user_response == 'R':
                 proposal.user_response = 'R'
-                proposal.status = 'RS'  # Set status to 'Rejected by Speaker'
-            
-            proposal.save()  # Save the updated proposal
+                proposal.status = 'RS'
 
-            # Get the current site domain
+            proposal.save()
+
             site = Site.objects.get_current()
             domain = site.domain
-
-            # Generate the URL to the talk detail page
             talk_url = f"https://{domain}{reverse('talks:talk_details', kwargs={'year': year, 'pk': proposal.proposal_id.hashid})}"
 
-            # Send appropriate email based on user response
+            try:
+                user_profile = Profile.objects.get(user=proposal.user)
+                full_name = user_profile.get_full_name()
+            except Profile.DoesNotExist:
+                full_name = (
+                    proposal.user.get_full_name() or proposal.user.get_username()
+                )
+
             subject = ""
             html_template = ""
-            
             if proposal.user_response == 'A':
                 subject = "Thank You for Accepting to Speak at PyCon Africa 2026"
                 html_template = 'emails/talks/accepted_response.html'
             elif proposal.user_response == 'R':
                 subject = "Thank You for Your Response"
                 html_template = 'emails/talks/rejected_response.html'
-            
-            html_content = render_to_string(html_template, {
-                'proposal': proposal,
-                'full_name': Profile.objects.get(user=proposal.user).get_full_name(),
-                'talk_url': talk_url,  # Include talk_url in context
-            })
-            text_content = strip_tags(html_content)
-            email = EmailMultiAlternatives(
-                subject,
-                text_content,
-                'PyCon Africa 2026 Programme Team <program@pycon.ug>',
-                [proposal.user.email]
-            )
-            email.attach_alternative(html_content, "text/html")
-            email.send()
+
+            if html_template:
+                html_content = render_to_string(html_template, {
+                    'proposal': proposal,
+                    'full_name': full_name,
+                    'talk_url': talk_url,
+                })
+                text_content = strip_tags(html_content)
+                from_addr = (
+                    f"PyCon Africa 2026 Programme Team <{settings.DEFAULT_FROM_EMAIL}>"
+                    if settings.DEFAULT_FROM_EMAIL
+                    else None
+                )
+                if from_addr and proposal.user.email:
+                    email = EmailMultiAlternatives(
+                        subject,
+                        text_content,
+                        from_addr,
+                        [proposal.user.email],
+                    )
+                    email.attach_alternative(html_content, "text/html")
+                    try:
+                        email.send(fail_silently=False)
+                    except Exception:
+                        logger.exception(
+                            "respond_to_invitation: failed to send email to %s",
+                            proposal.user.email,
+                        )
+                        messages.warning(
+                            request,
+                            "Your response was saved, but we could not send the confirmation "
+                            "email. If this keeps happening, contact the programme team.",
+                        )
+                elif not from_addr:
+                    logger.warning(
+                        "respond_to_invitation: DEFAULT_FROM_EMAIL not set; skipping email"
+                    )
 
             messages.success(request, 'Your response has been recorded.')
-            # Redirect to the talk details page with the correct year
             return redirect('talks:talk_details', year=event_year.year, pk=proposal.pk)
     else:
         form = ProposalResponseForm(instance=proposal)

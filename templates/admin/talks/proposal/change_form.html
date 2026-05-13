@@ -1,0 +1,20 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+{% block object-tools-items %}
+  {{ block.super }}
+  {% if original.status != 'A' %}
+    <li>
+      <form
+        method="post"
+        action="{% url 'admin:talks_proposal_accept_programme' original.pk|admin_urlquote %}"
+        style="display: inline; margin: 0; padding: 0;"
+      >
+        {% csrf_token %}
+        <button type="submit" class="grp-button grp-default" style="margin-left: 0.25rem;">
+          {% trans "Accept & email speaker" %}
+        </button>
+      </form>
+    </li>
+  {% endif %}
+{% endblock %}

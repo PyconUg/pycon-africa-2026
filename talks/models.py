@@ -153,6 +153,11 @@ class Proposal(models.Model):
     )
     created_date = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(auto_now=True)
+    last_program_status_email_sent_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When the last programme status notification email was sent (accepted/waiting/rejected/submitted).",
+    )
 
     def __str__(self):
         return self.title
