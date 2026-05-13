@@ -1,25 +1,37 @@
+{% load i18n %}
 {% if invitations %}
-
-<li class="media g-brd-around g-brd-gray-light-v4 g-brd-left-3 g-brd-black-left rounded g-pa-20 g-mb-10">
-    <div class="d-flex g-mt-2 g-mr-15">
-        <i class="fa-solid fa-presentation-screen g-color-black" style="font-size:21px;"></i> 
-    </div> 
-    <div class="media-body">
-      <div class="d-flex justify-content-between">
-        <h5 class="h6 g-font-weight-600 g-color-black">You've been invited to join the following session</h5>
-        <span class="small text-nowrap g-color-blue"> </span>
-      </div> 
-        {% for invitation in invitations %} 
-                <div class="card-header d-flex align-items-center justify-content-between g-bg-gray-light-v5 border-0 g-mb-15">
-                    <h3 class="h6 mb-0">
-                        {{ invitation.talk.user.user_profile.name }} {{ invitation.talk.user.user_profile.surname }} has invited you to join the session - {{ invitation.talk.title }} 
-                        <br><br><span class="small text-nowrap  g-pt-15"> <a href="{% url 'talks:accept_invitation' year=invitation.talk.event_year.year pk=invitation.talk.pk %}" class="btn btn-xs u-btn-teal g-mr-10 g-mb-15">Accept</a> <a href="{% url 'talks:reject_invitation' year=invitation.talk.event_year.year pk=invitation.talk.pk %}" class="btn btn-xs u-btn-darkred g-mr-10 g-mb-15">Reject</a></span> 
-                      </h3>  
-
-                  </div>  
-        {% endfor %} 
+<div class="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+  <h3 class="text-sm sm:text-base font-semibold text-gray-900 flex items-center gap-2">
+    <i class="fa-solid fa-user-group text-pycon-teal shrink-0" aria-hidden="true"></i>
+    <span>{% trans "Session invitations" %}</span>
+  </h3>
+  {% for invitation in invitations %}
+    <div class="rounded-lg border border-gray-200 bg-gray-50 p-4 sm:p-5">
+      <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+        {% trans "Pending" %}
+      </p>
+      <p class="text-sm text-gray-700 leading-relaxed">
+        {% with inv=invitation.talk.user %}
+          {% if inv.user_profile.name %}
+            <span class="font-medium text-gray-900">{{ inv.user_profile.name }} {{ inv.user_profile.surname }}</span>
+          {% else %}
+            <span class="font-medium text-gray-900">@{{ inv.username|capfirst }}</span>
+          {% endif %}
+        {% endwith %}
+        {% trans "has invited you to join the session" %}
+        <span class="font-medium text-gray-900">— {{ invitation.talk.title }}</span>
+      </p>
+      <div class="flex flex-wrap gap-2 mt-3">
+        <a href="{% url 'talks:accept_invitation' year=invitation.talk.event_year.year pk=invitation.talk.pk %}"
+           class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm">
+          {% trans "Accept" %}
+        </a>
+        <a href="{% url 'talks:reject_invitation' year=invitation.talk.event_year.year pk=invitation.talk.pk %}"
+           class="inline-flex items-center justify-center px-3 py-1.5 text-xs font-semibold rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
+          {% trans "Reject" %}
+        </a>
+      </div>
     </div>
-  </li> 
-    <hr class="u-divider-linear-gradient u-divider-linear-gradient--gray-light-v2 g-my-50">
-{% else %} 
+  {% endfor %}
+</div>
 {% endif %}

@@ -139,35 +139,6 @@
                         <i class="fa-solid fa-eye w-4 text-center mr-1.5" aria-hidden="true"></i>
                         <span>{% trans "View" %}</span>
                       </a>
-                      {% if talk.talk_type == 'Poster' %}
-                        {% if active_poster_period or talk.user_response == 'A' %}
-                        <a href="{% url 'talks:edit_talk' year=year pk=talk.pk %}"
-                           class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700">
-                          <i class="fa-solid fa-pen w-4 text-center mr-1.5" aria-hidden="true"></i>
-                          <span>{% trans "Edit" %}</span>
-                        </a>
-                        {% else %}
-                        <span class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed"
-                              title="{% trans 'Poster CFP is now closed' %}">
-                          <i class="fa-solid fa-pen w-4 text-center mr-1.5" aria-hidden="true"></i>
-                          <span>{% trans "Edit" %}</span>
-                        </span>
-                        {% endif %}
-                      {% else %}
-                        {% if active_period or talk.user_response == 'A' %}
-                        <a href="{% url 'talks:edit_talk' year=year pk=talk.pk %}"
-                           class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700">
-                          <i class="fa-solid fa-pen w-4 text-center mr-1.5" aria-hidden="true"></i>
-                          <span>{% trans "Edit" %}</span>
-                        </a>
-                        {% else %}
-                        <span class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed"
-                              title="{% trans 'CFP is now closed' %}">
-                          <i class="fa-solid fa-pen w-4 text-center mr-1.5" aria-hidden="true"></i>
-                          <span>{% trans "Edit" %}</span>
-                        </span>
-                        {% endif %}
-                      {% endif %}
                     </div>
                   </td>
                 </tr>

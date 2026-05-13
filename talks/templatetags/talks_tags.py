@@ -32,7 +32,7 @@ def user_talks_summary(user):
 
  
 
-@register.inclusion_tag('2025/talks/invitation_list.html', takes_context=True)
+@register.inclusion_tag('2026/talks/invitation_list.html', takes_context=True)
 def invitation_list(context):
     request = context['request']
     invitations = SpeakerInvitation.objects.filter(invitee=request.user, status='Pending')
