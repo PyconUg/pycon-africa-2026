@@ -89,8 +89,22 @@ class PosterProposalForm(forms.ModelForm):
 class ProposalResponseForm(forms.ModelForm):
     class Meta:
         model = Proposal
-        fields = ['user_response']
-        
+        fields = ["user_response"]
+
+    def __init__(self, *args, **kwargs):
+        from django.utils.translation import gettext_lazy as _
+
+        super().__init__(*args, **kwargs)
+        self.fields["user_response"].widget = forms.RadioSelect()
+        self.fields["user_response"].choices = [
+            ("A", _("I accept — I will present at the conference.")),
+            ("R", _("I decline — I cannot present.")),
+        ]
+        self.fields["user_response"].label = _("Your answer")
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+        self.helper.layout = Layout(Field("user_response"))
 
 class UpdateForm(forms.ModelForm):
     captcha = ReCaptchaField()

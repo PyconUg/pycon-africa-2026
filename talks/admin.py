@@ -1,5 +1,6 @@
 # admin.py
 from django.contrib import admin, messages
+from django.core.exceptions import PermissionDenied
 from import_export import resources, fields, formats
 from import_export.admin import ExportActionMixin, ImportExportModelAdmin
 from .models import *
@@ -13,7 +14,8 @@ from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, reverse
 from django.http import HttpResponseRedirect, HttpResponse       
 from django.urls import path, reverse 
-from django.contrib.admin.helpers import ACTION_CHECKBOX_NAME 
+from django.contrib.admin.helpers import ACTION_CHECKBOX_NAME
+from django.contrib.admin.utils import unquote 
 from django.db.models import Avg, F, Q, Count 
   
 
@@ -44,12 +46,155 @@ class ProposalResource(resources.ModelResource):
         return user_talk_count > 1
 
 class TalkAdmin(ImportExportModelAdmin):
+    change_form_template = "admin/talks/proposal/change_form.html"
     resource_class = ProposalResource
-    list_display = ("title", "user", 'list_speakers', "talk_type", "intended_audience", "status", "user_response", 'has_poster_attachment', 'created_date', 'date_updated')
-    list_editable = ["status", "user_response"]
-    list_filter = ("talk_type", 'created_date', "status", "user_response")
-    search_fields = ('title', 'user__username', 'user__email')
-    actions = ['export_selected_action', 'assign_to_reviewers_action']
+    list_display = (
+        "title",
+        "user",
+        "list_speakers",
+        "talk_type",
+        "intended_audience",
+        "status",
+        "status_email_sent_display",
+        "user_response",
+        "has_poster_attachment",
+        "created_date",
+        "date_updated",
+    )
+    list_editable = ["user_response"]
+    list_filter = ("talk_type", "created_date", "status", "user_response")
+    search_fields = ("title", "user__username", "user__email")
+    readonly_fields = ("last_program_status_email_sent_at",)
+    actions = [
+        "accept_and_notify_speaker_action",
+        "resend_programme_notification_action",
+        "export_selected_action",
+        "assign_to_reviewers_action",
+    ]
+
+    @admin.display(
+        description="Status email",
+        ordering="last_program_status_email_sent_at",
+        boolean=False,
+    )
+    def status_email_sent_display(self, obj):
+        ts = obj.last_program_status_email_sent_at
+        if not ts:
+            return format_html('<span style="color:#999">—</span>')
+        return format_html(
+            '<span title="{}">Sent</span>',
+            ts.strftime("%Y-%m-%d %H:%M %Z"),
+        )
+
+    def save_model(self, request, obj, form, change):
+        prev_status = None
+        if change and obj.pk:
+            prev_status = (
+                Proposal.objects.filter(pk=obj.pk)
+                .values_list("status", flat=True)
+                .first()
+            )
+        super().save_model(request, obj, form, change)
+        if change and prev_status is not None and prev_status != obj.status:
+            self.message_user(
+                request,
+                "Status saved. If SMTP is working, the speaker notification is sent after "
+                "this save completes (see the Status email column).",
+                messages.SUCCESS,
+            )
+
+    def accept_and_notify_speaker_action(self, request, queryset):
+        """Set status to Accepted and trigger the programme notification email."""
+        accepted = 0
+        already = 0
+        for proposal in queryset:
+            if proposal.status == "A":
+                already += 1
+                continue
+            proposal.status = "A"
+            proposal.save()
+            accepted += 1
+        if accepted:
+            self.message_user(
+                request,
+                f"Accepted {accepted} proposal(s). Notifications send when SMTP succeeds "
+                "(see the Status email column).",
+                messages.SUCCESS,
+            )
+        if already:
+            self.message_user(
+                request,
+                f"{already} proposal(s) were already accepted (skipped). "
+                "Use “Resend programme notification email” to email them without changing status.",
+                messages.INFO,
+            )
+        if not accepted and not already:
+            self.message_user(request, "No proposals to update.", messages.WARNING)
+
+    accept_and_notify_speaker_action.short_description = (
+        "Accept & email speaker (selected proposals)"
+    )
+
+    def resend_programme_notification_action(self, request, queryset):
+        """Send the programme email matching each proposal's current status (including resends)."""
+        from talks.signals import send_programme_status_notification
+
+        sent = 0
+        failed = 0
+        for proposal in queryset:
+            if send_programme_status_notification(proposal.pk):
+                sent += 1
+            else:
+                failed += 1
+        if sent:
+            self.message_user(
+                request,
+                f"Sent programme notification for {sent} proposal(s). "
+                "See the Status email column for the last sent time.",
+                messages.SUCCESS,
+            )
+        if failed:
+            self.message_user(
+                request,
+                f"{failed} proposal(s) could not be emailed "
+                "(missing user email, SMTP error, or missing DEFAULT_FROM_EMAIL). See server logs.",
+                messages.WARNING,
+            )
+
+    resend_programme_notification_action.short_description = (
+        "Resend programme notification email (selected)"
+    )
+
+    def accept_programme_view(self, request, object_id):
+        """POST from proposal change page — set Accepted and queue notification email."""
+        if not self.has_change_permission(request):
+            raise PermissionDenied
+        opts = self.model._meta
+        object_id = unquote(object_id)
+        proposal = get_object_or_404(self.model, pk=object_id)
+        change_url = reverse(
+            f"admin:{opts.app_label}_{opts.model_name}_change",
+            args=[proposal.pk],
+        )
+        if request.method != "POST":
+            self.message_user(
+                request,
+                "Use the Accept & email speaker button to confirm.",
+                messages.WARNING,
+            )
+            return HttpResponseRedirect(change_url)
+        if proposal.status == "A":
+            self.message_user(request, "This proposal is already accepted.", messages.INFO)
+        else:
+            proposal.status = "A"
+            proposal.save()
+            self.message_user(
+                request,
+                "Marked as Accepted. Notification sends when SMTP succeeds "
+                "(see the Status email column).",
+                messages.SUCCESS,
+            )
+        return HttpResponseRedirect(change_url)
 
     def assign_to_reviewers_action(self, request, queryset):
         """Run the assignment algorithm scoped to the selected proposals.
@@ -99,9 +244,19 @@ class TalkAdmin(ImportExportModelAdmin):
     assign_to_reviewers_action.short_description = "Assign selected proposals to reviewers"
 
     def get_urls(self):
+        info = self.model._meta.app_label, self.model._meta.model_name
         urls = super().get_urls()
         custom_urls = [
-            path('export_selected/', self.admin_site.admin_view(self.export_selected), name='export_selected'),
+            path(
+                "<path:object_id>/accept-programme/",
+                self.admin_site.admin_view(self.accept_programme_view),
+                name="%s_%s_accept_programme" % info,
+            ),
+            path(
+                "export_selected/",
+                self.admin_site.admin_view(self.export_selected),
+                name="export_selected",
+            ),
         ]
         return custom_urls + urls
 
