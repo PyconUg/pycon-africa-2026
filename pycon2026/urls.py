@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 from . import views
 from fin_aid import views as fin_aid_views
 
@@ -18,6 +18,7 @@ urlpatterns = [
     path('talks/proposing_a_talk/', view=views.proposing_a_talk, name='proposing_a_talk'),
     path('talks/recording-release/', view=views.recording_release, name='recording_release'),
     path('talks/mentorship/', view=views.mentorship, name='mentorship'),
+    path('talks/', include('talks.urls', namespace='talks')),
     path('region/kenya-region/', view=views.about_kenya_region, name='about_kenya_region'),
     path('region/rwanda-region/', view=views.about_rwanda_region, name='about_rwanda_region'),
     path('region/tanzania-region/', view=views.about_tanzania_region, name='about_tanzania_region'),
