@@ -856,13 +856,27 @@ def model_form_upload(request):
 
  
 @login_required
-def respond_to_invitation(request, year, pk):
-    # Get the event year and proposal based on the provided year and proposal ID
-    event_year = get_object_or_404(EventYear, year=year)
-    proposal = get_object_or_404(Proposal, pk=pk, event_year=event_year)
+def respond_to_invitation(request, pk, year=None):
+    """Accept/decline invitation.
+
+    ``year`` is present when this view is mounted under ``<int:year>/talks/`` (generic
+    year routes). It is omitted under ``pycon2026`` URLs (``/2026/talks/...``), where the
+    parent URLconf does not pass captured kwargs into the included ``talks`` patterns.
+    """
+    proposal = get_object_or_404(
+        Proposal.objects.select_related("event_year"),
+        pk=pk,
+    )
+    event_year = proposal.event_year
+    if year is not None and event_year.year != year:
+        raise Http404()
 
     if proposal.user_id != request.user.id:
-        raise Http404()
+        raise PermissionDenied(
+            "This invitation link is tied to the account that submitted the proposal. "
+            "Sign in with the same account the acceptance email was sent to (do not forward the link). "
+            "If you are unsure which account to use, contact program@pycon.ug."
+        )
 
     if request.method == 'POST':
         form = ProposalResponseForm(request.POST, instance=proposal)
@@ -937,7 +951,7 @@ def respond_to_invitation(request, year, pk):
                     )
 
             messages.success(request, 'Your response has been recorded.')
-            return redirect('talks:talk_details', year=event_year.year, pk=proposal.pk)
+            return redirect('talks:talk_details', year=event_year.year, pk=proposal.proposal_id.hashid)
     else:
         form = ProposalResponseForm(instance=proposal)
 
