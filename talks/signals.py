@@ -47,6 +47,13 @@ def _send_proposal_program_email(proposal_pk, old_status: str, new_status: str) 
         logger.warning("Proposal %s missing for status email", proposal_pk)
         return False
 
+    logger.info(
+        "Programme status email: proposal_pk=%s title=%.80s to=%s",
+        proposal_pk,
+        proposal.title,
+        getattr(proposal.user, "email", "") or "",
+    )
+
     if not getattr(proposal.user, "email", None):
         logger.warning("Proposal %s user has no email address", proposal_pk)
         return False
@@ -153,10 +160,11 @@ def proposal_queue_status_change_email(sender, instance, created, **kwargs):
     if old is None or old == instance.status:
         return
 
-    pk = instance.pk
     old_status = old
     new_status = instance.status
-
+    # Freeze lookup key as a plain str so each on_commit callback is independent of
+    # Hashid instance identity across multiple saves in one admin transaction.
+    proposal_pk_arg = str(instance.pk)
     transaction.on_commit(
-        partial(_send_proposal_program_email, pk, old_status, new_status)
+        partial(_send_proposal_program_email, proposal_pk_arg, old_status, new_status)
     )

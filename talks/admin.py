@@ -107,7 +107,8 @@ class TalkAdmin(ImportExportModelAdmin):
         """Set status to Accepted and trigger the programme notification email."""
         accepted = 0
         already = 0
-        for proposal in queryset:
+        for proposal_pk in queryset.values_list("pk", flat=True):
+            proposal = Proposal.objects.get(pk=proposal_pk)
             if proposal.status == "A":
                 already += 1
                 continue
@@ -141,8 +142,8 @@ class TalkAdmin(ImportExportModelAdmin):
 
         sent = 0
         failed = 0
-        for proposal in queryset:
-            if send_programme_status_notification(proposal.pk):
+        for proposal_pk in queryset.values_list("pk", flat=True):
+            if send_programme_status_notification(proposal_pk):
                 sent += 1
             else:
                 failed += 1
