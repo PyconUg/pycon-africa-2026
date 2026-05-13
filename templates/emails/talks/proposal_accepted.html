@@ -7,39 +7,58 @@
         .content { max-width: 600px; margin: auto; }
         .header { background-color: #ecc8a4; padding: 10px; text-align: center; }
         .details, .next-steps { margin: 20px 0; }
-        .details th, .details td, .next-steps th, .next-steps td { text-align: left; padding: 8px; }
+        .details th, .details td, .next-steps th, .next-steps td { text-align: left; padding: 8px; vertical-align: top; }
         .footer { margin-top: 20px; text-align: center; font-size: 0.9em; color: #777; }
     </style>
 </head>
 <body>
     <div class="content">
         <div class="header">
-            <h2>Congratulations {{ full_name }}!</h2>
+            <h2>Your {% if proposal.talk_type == 'Poster' %}poster{% else %}proposal{% endif %} has been accepted</h2>
         </div>
         <div class="details">
+            <p>Dear {{ full_name }},</p>
             {% if proposal.talk_type == 'Poster' %}
-            <p>We are pleased to inform you that your poster titled "<a href="{{ talk_url }}"><strong>{{ proposal.title }}</strong></a>" has been accepted for PyCon Africa {{ proposal.event_year.year }}.</p>
+            <p>Thank you for submitting your poster titled &ldquo;<a href="{{ talk_url }}"><strong>{{ proposal.title }}</strong></a>&rdquo; for PyCon Africa {{ proposal.event_year.year }}. After careful consideration, we would like to inform you that your poster has been accepted.</p>
             {% else %}
-            <p>We are pleased to inform you that your proposal titled "<a href="{{ talk_url }}"><strong>{{ proposal.title }}</strong></a>" has been accepted for PyCon Africa {{ proposal.event_year.year }}.</p>
+            <p>Thank you for submitting your proposal titled &ldquo;<a href="{{ talk_url }}"><strong>{{ proposal.title }}</strong></a>&rdquo; for PyCon Africa {{ proposal.event_year.year }}. After careful consideration, we would like to inform you that your proposal has been accepted.</p>
             {% endif %}
         </div>
 
         <div class="next-steps">
-            <h3>Next Steps</h3>
+            <h3>Next steps</h3>
+            <p>You will need to confirm your availability by <strong>22 May {{ proposal.event_year.year }}</strong>.</p>
             {% if proposal.talk_type == 'Poster' %}
-            <p>We are excited to have your poster at our conference. Please let us know if you accept this invitation by clicking the link below:</p>
+            <p>Please let us know if you accept this invitation by using the link below:</p>
             {% else %}
-            <p>We are excited to have you present at our conference. Please let us know if you accept this invitation to speak by clicking the link below:</p>
+            <p>Please let us know if you accept this invitation to speak by using the link below:</p>
             {% endif %}
-            <p><a href="{{ response_url }}"><b>Accept or Reject</b></a></p>
+            <p><a href="{{ response_url }}"><b>Accept or reject</b></a></p>
         </div>
 
-        <p>For any further information or queries, please feel free to reach out to us.</p>
-        <br>
-        <p>Best regards,<br>The PyCon Africa Program Team</p>
+        <table class="next-steps">
+            <tr>
+                <th>Stay engaged:</th>
+                <td>We encourage you to stay connected with our community through our <a href="https://discord.gg/Z9gXvGVcrB">Discord server</a> and follow us on <a href="https://twitter.com/PyConAfrica">Twitter</a> and <a href="https://www.linkedin.com/company/pyconafrica">LinkedIn</a> for the latest updates.</td>
+            </tr>
+            <tr>
+                <th>Speaker guidelines:</th>
+                <td>Please review the <a href="https://africa.pycon.org/{{ proposal.event_year.year }}/speaker-guidelines/">Speaker Guidelines</a> to ensure you are ready.</td>
+            </tr>
+            <tr>
+                <th>Contact us:</th>
+                <td>If you have any questions or need more information, feel free to reach out to us at <a href="mailto:program@pycon.ug">program@pycon.ug</a>.</td>
+            </tr>
+        </table>
+
+        <p>We appreciate your contribution and your enthusiasm for PyCon Africa {{ proposal.event_year.year }}. We hope to see you at the conference, whether as a speaker or an attendee.</p>
+
+        <p>Our next review session is tomorrow, as we agreed and calendar invitations have already been sent to everyone.</p>
+
+        <p>Best regards,<br>Program Team Pycon Africa 2026</p>
     </div>
     <div class="footer">
-        <p>© {{ proposal.event_year.year }} PyCon Africa. All rights reserved.</p>
+        <p>&copy; {{ proposal.event_year.year }} PyCon Africa. All rights reserved.</p>
         <p>Contact us: <a href="mailto:program@pycon.ug">program@pycon.ug</a></p>
     </div>
 </body>
