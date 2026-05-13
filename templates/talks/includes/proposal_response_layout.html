@@ -149,8 +149,6 @@
     btn.disabled = true;
     btn.classList.add("is-loading");
     btn.setAttribute("aria-busy", "true");
-    var radios = form.querySelectorAll('input[type="radio"]');
-    for (var i = 0; i < radios.length; i++) radios[i].disabled = true;
     var loadingText = btn.getAttribute("data-loading-text") || "Submitting…";
     btn.innerHTML =
       '<span class="inline-flex items-center justify-center gap-2">' +
