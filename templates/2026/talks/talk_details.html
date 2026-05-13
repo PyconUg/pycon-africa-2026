@@ -268,7 +268,10 @@
                 </a>
               </div>
               {% elif form %}
-              <form method="post" enctype="multipart/form-data" class="rounded-xl border border-dashed border-gray-300 bg-gray-50 p-4 sm:p-5 space-y-4">
+              <form id="slide-upload-form"
+                    method="post"
+                    enctype="multipart/form-data"
+                    class="rounded-xl border border-dashed border-gray-300 bg-gray-50 p-4 sm:p-5 space-y-4">
                 {% csrf_token %}
                 {% if form.non_field_errors %}
                   <div class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800" role="alert">
@@ -301,9 +304,12 @@
 
                 <div class="flex justify-end border-t border-gray-200/90 pt-4">
                   <button type="submit"
-                          class="inline-flex w-full items-center justify-center gap-1.5 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm sm:w-auto">
-                    <i class="fa-solid fa-upload w-4 text-center" aria-hidden="true"></i>
-                    <span>{% trans "Upload file" %}</span>
+                          id="slide-upload-submit"
+                          data-default-label="{% trans "Upload file" %}"
+                          data-loading-label="{% trans "Uploading…" %}"
+                          class="inline-flex w-full items-center justify-center gap-1.5 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm sm:w-auto disabled:pointer-events-none disabled:opacity-80">
+                    <i class="fa-solid fa-upload w-4 text-center shrink-0 upload-btn-icon" aria-hidden="true"></i>
+                    <span class="upload-btn-label">{% trans "Upload file" %}</span>
                   </button>
                 </div>
               </form>
@@ -326,4 +332,28 @@
   </section>
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  var form = document.getElementById('slide-upload-form');
+  var btn = document.getElementById('slide-upload-submit');
+  if (!form || !btn) return;
+
+  form.addEventListener('submit', function () {
+    if (btn.disabled || btn.getAttribute('aria-busy') === 'true') return;
+    btn.disabled = true;
+    btn.setAttribute('aria-busy', 'true');
+    var icon = btn.querySelector('.upload-btn-icon');
+    var label = btn.querySelector('.upload-btn-label');
+    if (icon) {
+      icon.className = 'fa-solid fa-spinner fa-spin w-4 text-center shrink-0 upload-btn-icon';
+    }
+    if (label) {
+      label.textContent = btn.getAttribute('data-loading-label') || '…';
+    }
+  });
+})();
+</script>
 {% endblock %}

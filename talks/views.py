@@ -52,8 +52,17 @@ from django.utils.text import Truncator
 
 logger = logging.getLogger(__name__)
 
+
+def _cfp_year_from_talks_url(year):
+    """Return event year when ``talks`` URLs omit ``year`` (e.g. ``/2026/talks/...`` via pycon2026)."""
+    if year is not None:
+        return int(year)
+    latest = EventYear.objects.order_by('-year').first()
+    return int(latest.year) if latest else None
+
+
 @login_required
-def submit_talk(request, year):
+def submit_talk(request, year=None):
     # Check if the user has a profile
     try:
         profile = Profile.objects.get(user=request.user)
@@ -61,6 +70,9 @@ def submit_talk(request, year):
         return redirect(reverse('profiles:create_profile'))
 
     try:
+        year = _cfp_year_from_talks_url(year)
+        if year is None:
+            return redirect(reverse_lazy('talks:no_event_year_error'))
         event_year = EventYear.objects.get(year=year)
         submission_periods = CFPSubmissionPeriod.objects.filter(event_year=event_year, submission_type='talks').order_by('start_date')
         active_period = None
@@ -119,13 +131,16 @@ def submit_talk(request, year):
 
 
 @login_required
-def submit_poster(request, year):
+def submit_poster(request, year=None):
     try:
         profile = Profile.objects.get(user=request.user)
     except Profile.DoesNotExist:
         return redirect(reverse('profiles:create_profile'))
 
     try:
+        year = _cfp_year_from_talks_url(year)
+        if year is None:
+            return redirect(reverse_lazy('talks:no_event_year_error'))
         event_year = EventYear.objects.get(year=year)
         poster_periods = CFPSubmissionPeriod.objects.filter(event_year=event_year, submission_type='posters').order_by('start_date')
         active_period = None
@@ -584,7 +599,10 @@ def reject_invitation(request, pk, year=None):
 
 
 @reviewer_required
-def list_talks_to_review(request, year):
+def list_talks_to_review(request, year=None):
+    year = _cfp_year_from_talks_url(year)
+    if year is None:
+        raise Http404("Event year does not exist.")
     try:
         event_year = EventYear.objects.get(year=year)
     except EventYear.DoesNotExist:
@@ -711,7 +729,10 @@ def review_talk(request, pk, year=None):
     })
 
 @login_required
-def review_success(request, year):
+def review_success(request, year=None):
+    year = _cfp_year_from_talks_url(year)
+    if year is None:
+        return HttpResponse("The specified event year does not exist.", status=404)
     try:
         event_year = EventYear.objects.get(year=year) 
         return render(request, '2025/talks/reviews/review_success.html', {'year': year})
@@ -722,7 +743,10 @@ def review_success(request, year):
 
  
 @reviewer_required
-def reviewed_talks_by_category(request, year):
+def reviewed_talks_by_category(request, year=None):
+    year = _cfp_year_from_talks_url(year)
+    if year is None:
+        raise Http404("Event year does not exist.")
     try:
         event_year = EventYear.objects.get(year=year)
     except EventYear.DoesNotExist:
@@ -765,7 +789,10 @@ def reviewed_talks_by_category(request, year):
 
 
 @reviewer_required
-def reviewed_talks_by_type(request, year):
+def reviewed_talks_by_type(request, year=None):
+    year = _cfp_year_from_talks_url(year)
+    if year is None:
+        raise Http404("Event year does not exist.")
     try:
         event_year = EventYear.objects.get(year=year)
     except EventYear.DoesNotExist:
