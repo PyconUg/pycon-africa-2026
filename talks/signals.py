@@ -1,4 +1,5 @@
 import logging
+from functools import partial
 
 from django.conf import settings
 from django.contrib.sites.models import Site
@@ -156,7 +157,6 @@ def proposal_queue_status_change_email(sender, instance, created, **kwargs):
     old_status = old
     new_status = instance.status
 
-    def _run():
-        _send_proposal_program_email(pk, old_status, new_status)
-
-    transaction.on_commit(_run)
+    transaction.on_commit(
+        partial(_send_proposal_program_email, pk, old_status, new_status)
+    )
