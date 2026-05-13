@@ -894,7 +894,7 @@ def respond_to_invitation(request, pk, year=None):
 
             site = Site.objects.get_current()
             domain = site.domain
-            talk_url = f"https://{domain}{reverse('talks:talk_details', kwargs={'year': year, 'pk': proposal.proposal_id.hashid})}"
+            talk_url = f"https://{domain}{reverse('talks:talk_details', kwargs={'year': event_year.year, 'pk': proposal.proposal_id.hashid})}"
 
             try:
                 user_profile = Profile.objects.get(user=proposal.user)
