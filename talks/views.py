@@ -15,6 +15,7 @@ from django.template import loader
 from datetime import datetime
 
 from django.utils import timezone
+from django.utils.translation import gettext as gettext_fn
 from rest_framework import viewsets
 
 from .serializers import TalkSerializer
@@ -178,10 +179,20 @@ def submit_poster(request, year):
 
 
 @login_required
-def edit_talk(request, year, pk):
+def edit_talk(request, pk, year=None):
     proposal = get_object_or_404(Proposal, pk=pk)
-    if str(proposal.event_year.year) != str(year):
+    if year is not None and str(proposal.event_year.year) != str(year):
         raise Http404("Proposal does not exist for the given year.")
+    if proposal.user_id != request.user.id and not request.user.is_staff:
+        raise Http404("Proposal does not exist.")
+
+    # Authors cannot edit after programme decision or once any review exists.
+    if not request.user.is_staff:
+        if proposal.status in ('A', 'W', 'R', 'RS') or proposal.reviews.exists():
+            raise PermissionDenied(
+                "This proposal can no longer be edited once it has reviewer feedback "
+                "or a programme decision (accepted, waitlist, or rejected)."
+            )
 
     is_poster = proposal.talk_type == 'Poster'
     FormClass = PosterProposalForm if is_poster else ProposalForm
@@ -284,6 +295,21 @@ class TalkView(UpdateView):
 
 
 
+def _program_slides_change_mailto(proposal):
+    """mailto: link for requesting a materials change after the one allowed self-serve upload."""
+    from urllib.parse import quote
+
+    # Programme inbox for slide/material change requests (talk details page).
+    program_email = "program@pycon.ug"
+    subject = f"Slide update request: {proposal.title}"[:200]
+    body = (
+        f"Session: {proposal.title}\n"
+        f"Proposal ID: {proposal.proposal_id}\n\n"
+        "I need the following change to my uploaded materials:\n\n"
+    )
+    return f"mailto:{program_email}?subject={quote(subject)}&body={quote(body)}"
+
+
 class TalkDetailView(TemplateView):
     def get_template_names(self):
         proposal = get_object_or_404(Proposal, proposal_id=self.kwargs.get('pk'))
@@ -291,6 +317,7 @@ class TalkDetailView(TemplateView):
         return [f"{event_year}/talks/talk_details.html"]
 
     def get_context_data(self, **kwargs):
+        bound_form = kwargs.pop('form', None)
         context = super().get_context_data(**kwargs)
         proposal = get_object_or_404(Proposal, proposal_id=self.kwargs.get('pk'))
         submission_periods = CFPSubmissionPeriod.objects.filter(event_year=proposal.event_year, submission_type='talks').order_by('start_date')
@@ -314,12 +341,18 @@ class TalkDetailView(TemplateView):
         is_invited_speaker = self.request.user in proposal.speakers.all()
         can_upload = can_upload and (is_primary_speaker or is_invited_speaker)
 
-        # Check if a slide has already been uploaded
-        uploaded_documents = Document.objects.filter(proposal=proposal, document_type='Slide')
-        has_uploaded_slide = uploaded_documents.exists()
-        latest_slide = uploaded_documents.latest('uploaded_at') if has_uploaded_slide else None
+        # Slide uploads for this proposal (newest first). Only the latest is shown on 2026 talk details.
+        all_slides = list(
+            Document.objects.filter(proposal=proposal, document_type='Slide').order_by('-uploaded_at')[:25]
+        )
+        has_uploaded_slide = bool(all_slides)
+        latest_slide = all_slides[0] if all_slides else None
+        slide_documents = all_slides[:1]
 
-        # Add the form to the context
+        doc_form = bound_form
+        if doc_form is None:
+            doc_form = None if slide_documents else TalkSlideUploadForm(proposal=proposal)
+
         context.update({
             'title': "Accepted Talks",
             'year': proposal.event_year.year,
@@ -332,16 +365,35 @@ class TalkDetailView(TemplateView):
             'can_upload': can_upload,
             'has_uploaded_slide': has_uploaded_slide,
             'latest_slide': latest_slide,
-            'form': DocumentForm(proposal=proposal),  # Pass the proposal instance
+            'slide_documents': slide_documents,
+            'form': doc_form,
+            'program_slides_mailto': _program_slides_change_mailto(proposal),
         })
         return context
 
     def post(self, request, *args, **kwargs):
         proposal = get_object_or_404(Proposal, proposal_id=self.kwargs.get('pk'))
-        form = DocumentForm(request.POST, request.FILES, proposal=proposal)
+        if Document.objects.filter(proposal=proposal, document_type='Slide').exists():
+            messages.warning(
+                request,
+                gettext_fn(
+                    'Materials have already been uploaded for this session. '
+                    'To request a change, please contact the program team using the link on this page.'
+                ),
+            )
+            return redirect(
+                reverse(
+                    'talks:talk_details',
+                    kwargs={'year': proposal.event_year.year, 'pk': proposal.proposal_id.hashid},
+                )
+            )
+        form = TalkSlideUploadForm(request.POST, request.FILES, proposal=proposal)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your slides have been uploaded successfully.')
+            messages.success(
+                request,
+                gettext_fn('Your slides have been uploaded successfully.'),
+            )
             return redirect(reverse('talks:talk_details', kwargs={'year': proposal.event_year.year, 'pk': proposal.proposal_id.hashid}))
         # If the form is not valid, re-render the page with form errors
         context = self.get_context_data(form=form)
@@ -501,48 +553,31 @@ def proposing(request, year=None):
  
  
 @login_required
-def send_speaker_invitation(request, year, pk):
-    if request.method == 'POST':
-        user_email = request.POST.get('user_email')
-        event_year = get_object_or_404(EventYear, year=year)
-        proposal = get_object_or_404(Proposal, pk=pk, event_year=event_year)
-        user = get_object_or_404(User, email=user_email)
-        sender_name = request.user.get_full_name() or request.user.username  
-        invitation, created = SpeakerInvitation.objects.get_or_create(talk=proposal, invitee=user)
-
-        if created:
-            email_body = f"Dear Speaker,\n\nYou have been invited by {sender_name} to join a session titled '{proposal.title}' during PyCon Africa 2026.\n\nPlease visit our site (https://africa.pycon.org/) to respond to this invitation.\n\nBest,\nPyCon Africa 2026 Team"
-            send_mail(
-                f'Invitation to Speak at PyCon Africa 2026 - {proposal.title}',
-                email_body,
-                'noreply@pycon.ug',
-                [user_email],
-                fail_silently=False,
-            ) 
-        return redirect('talks:talk_details', year=year, pk=pk)
-    else:
-        # Handle the case for GET request or show an error message
-        return render(request, '2025/talks/speaker_invite_error.html', {'error': 'This action requires a POST request.'})
+def send_speaker_invitation(request, pk, year=None):
+    raise Http404("Co-speaker invitations are no longer available.")
  
 
 @login_required
-def accept_invitation(request, year, pk): 
-    proposal = get_object_or_404(Proposal, pk=pk) 
+def accept_invitation(request, pk, year=None):
+    proposal = get_object_or_404(Proposal, pk=pk)
     invitation = get_object_or_404(SpeakerInvitation, talk=proposal, invitee=request.user)
     if invitation.status == 'Pending':
         invitation.status = 'Accepted'
         invitation.save()
-        proposal.speakers.add(request.user) 
+        proposal.speakers.add(request.user)
         return redirect('profiles:profile_home')
+    return redirect('profiles:profile_home')
+
 
 @login_required
-def reject_invitation(request, year, pk):
+def reject_invitation(request, pk, year=None):
     proposal = get_object_or_404(Proposal, pk=pk)
     invitation = get_object_or_404(SpeakerInvitation, talk=proposal, invitee=request.user)
     if invitation.status == 'Pending':
         invitation.status = 'Rejected'
         invitation.save()
         return redirect('profiles:profile_home')
+    return redirect('profiles:profile_home')
 
 
 
@@ -623,9 +658,12 @@ def list_talks_to_review(request, year):
     return render(request, '2025/talks/reviews/talk_list.html', context)
  
 @reviewer_required
-def review_talk(request, year, pk):
-    event_year = get_object_or_404(EventYear, year=year)
-    talk = get_object_or_404(Proposal, pk=pk, event_year=event_year)
+def review_talk(request, pk, year=None):
+    talk = get_object_or_404(Proposal.objects.select_related('event_year'), pk=pk)
+    event_year = talk.event_year
+    if year is not None and str(event_year.year) != str(year):
+        raise Http404("Proposal does not exist for the given year.")
+    year = event_year.year
 
     reviewer = Reviewer.objects.get(user=request.user)
 

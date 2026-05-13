@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n static avatar_tags crispy_forms_tags markdown_extras embed_video_tags %}
+{% load i18n static avatar_tags markdown_extras embed_video_tags %}
 
 {% block meta_title %}{% if page %}{{ page.meta_title }}{% else %}{% trans "Talk Detail || PyCon Africa 2026" %}{% endif %}{% endblock %}
 
@@ -66,6 +66,20 @@
       <!-- Main content -->
       <div class="flex-1 min-w-0 md:order-2 order-1">
         <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-4 sm:p-6 lg:p-8 space-y-6">
+          {% if messages %}
+            {% for message in messages %}
+              {% if 'success' in message.tags %}
+              <div role="status" class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">{{ message }}</div>
+              {% elif 'error' in message.tags %}
+              <div role="alert" class="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900">{{ message }}</div>
+              {% elif 'warning' in message.tags %}
+              <div role="status" class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">{{ message }}</div>
+              {% else %}
+              <div role="status" class="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-800">{{ message }}</div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+
           <!-- Header + meta -->
           <div class="flex flex-col gap-3 sm:gap-4">
             <div>
@@ -93,15 +107,6 @@
                 <span class="font-semibold mr-1">{% trans "Audience" %}:</span> {{ talk.intended_audience }}
               </span>
             </div>
-
-            {% if speakers %}
-            <div class="text-sm text-gray-700">
-              <span class="font-semibold">{% trans "Additional speakers" %}:</span>
-              {% for speaker in speakers %}
-                {{ speaker.user_profile.name }} {{ speaker.user_profile.surname }}{% if not forloop.last %},{% endif %}
-              {% endfor %}
-            </div>
-            {% endif %}
 
             <!-- Status badges -->
             <div class="flex flex-wrap gap-2 items-center text-xs sm:text-sm">
@@ -202,67 +207,108 @@
             </div>
           </div>
 
-          <!-- Owner-only actions: speakers & slides -->
-          {% if request.user.username == talk.user.username %}
-          <div class="border-t border-gray-100 pt-4 sm:pt-5 space-y-6">
-            <!-- Add speakers -->
-            <div class="space-y-2">
-              <h3 class="text-sm sm:text-base font-semibold text-gray-900">
-                {% trans "Add additional speakers" %}
-              </h3>
-              <p class="text-xs sm:text-sm text-gray-600">
-                {% trans "Invite co-speakers by email. Make sure they already have an account on this website." %}
-              </p>
-              <form action="{% url 'talks:send_speaker_invitation' year=talk.event_year.year pk=talk.pk %}"
-                    method="post"
-                    class="flex flex-col sm:flex-row gap-2 sm:items-center">
-                {% csrf_token %}
-                <label for="user_email" class="sr-only">{% trans "Speaker's email" %}</label>
-                <input id="user_email"
-                       name="user_email"
-                       type="email"
-                       required
-                       class="w-full sm:flex-1 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pycon-teal focus:border-pycon-teal"
-                       placeholder="{% trans "speaker@example.com" %}">
-                <button type="submit"
-                        class="inline-flex items-center justify-center px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm">
-                  {% trans "Send invitation" %}
-                </button>
-              </form>
-            </div>
-
-            <!-- Slides upload -->
-            {% if can_upload %}
-            <div class="space-y-3">
-              <div class="flex items-center justify-between gap-2">
+          <!-- Owner-only actions: slides -->
+          {% if request.user.username == talk.user.username and can_upload %}
+          <div class="border-t border-gray-100 pt-4 sm:pt-5">
+            <div class="space-y-4">
+              <div>
                 <h3 class="text-sm sm:text-base font-semibold text-gray-900">
                   {% trans "Slides and supporting material" %}
                 </h3>
-                {% if has_uploaded_slide and latest_slide %}
-                  <a href="{{ latest_slide.document.url }}"
-                     target="_blank"
-                     class="inline-flex items-center px-3 py-1.5 text-xs font-semibold rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50">
-                    <i class="fa-solid fa-file-arrow-down w-4 text-center mr-1.5" aria-hidden="true"></i>
-                    <span>{% trans "View latest slide" %}</span>
-                  </a>
+                {% if slide_documents %}
+                <p class="mt-1 text-xs sm:text-sm text-gray-600 max-w-2xl">
+                  {% trans "We have one file on record for this session. To replace it or send a revision, please email the program team." %}
+                </p>
+                {% else %}
+                <p class="mt-1 text-xs sm:text-sm text-gray-600 max-w-2xl">
+                  {% trans "Upload PDF, PowerPoint, or other materials once. After that, changes go through the program team." %}
+                </p>
                 {% endif %}
               </div>
-              <p class="text-xs sm:text-sm text-gray-600">
-                {% trans "Upload or replace your slides and related documents. Accepted formats and limits may apply." %}
-              </p>
-              <form method="post" enctype="multipart/form-data" class="space-y-3">
-                {% csrf_token %}
-                <div class="bg-gray-50 rounded-xl border border-dashed border-gray-300 p-4 sm:p-5">
-                  {{ form|crispy }}
+
+              {% if slide_documents %}
+              <div class="rounded-xl border border-gray-200 bg-white overflow-hidden">
+                <div class="px-4 py-3 bg-gray-50 border-b border-gray-100">
+                  <h4 class="text-xs font-semibold uppercase tracking-wide text-gray-600">
+                    {% trans "Your uploaded file" %}
+                  </h4>
                 </div>
-                <button type="submit"
-                        class="inline-flex items-center px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm">
-                  <i class="fa-solid fa-upload w-4 text-center mr-1.5" aria-hidden="true"></i>
-                  <span>{% trans "Upload document" %}</span>
-                </button>
+                <ul class="divide-y divide-gray-100 list-none m-0 p-0">
+                  {% for doc in slide_documents %}
+                  <li class="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+                    <div class="min-w-0 flex-1">
+                      <p class="text-sm font-medium text-gray-900 truncate">{{ doc.name }}</p>
+                      <p class="text-xs text-gray-500 truncate">
+                        {{ doc.document.name|cut:"documents/" }} · {{ doc.uploaded_at|date:"M j, Y" }} · {{ doc.uploaded_at|time:"g:i a" }}
+                      </p>
+                    </div>
+                    <a href="{{ doc.document.url }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="inline-flex shrink-0 items-center justify-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 self-start sm:self-center">
+                      <i class="fa-solid fa-file-arrow-down w-4 text-center" aria-hidden="true"></i>
+                      <span>{% trans "Open file" %}</span>
+                    </a>
+                  </li>
+                  {% endfor %}
+                </ul>
+              </div>
+
+              <div class="rounded-xl border border-gray-200 bg-gray-50 p-4 sm:p-5">
+                <p class="text-sm font-medium text-gray-900 mb-2">
+                  {% trans "Need a different file?" %}
+                </p>
+                <p class="text-xs sm:text-sm text-gray-600 mb-3">
+                  {% trans "Tell us what to change (e.g. updated deck). We will update your materials on our side." %}
+                </p>
+                <a href="{{ program_slides_mailto }}"
+                   class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm">
+                  <i class="fa-solid fa-envelope w-4 text-center" aria-hidden="true"></i>
+                  <span>{% trans "Email program team" %}</span>
+                </a>
+              </div>
+              {% elif form %}
+              <form method="post" enctype="multipart/form-data" class="rounded-xl border border-dashed border-gray-300 bg-gray-50 p-4 sm:p-5 space-y-4">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                  <div class="rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-800" role="alert">
+                    {{ form.non_field_errors }}
+                  </div>
+                {% endif %}
+
+                <div class="space-y-1.5">
+                  <label for="{{ form.name.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    {{ form.name.label }}
+                  </label>
+                  {{ form.name }}
+                  {% if form.name.errors %}
+                    <div class="text-xs text-rose-600">{{ form.name.errors }}</div>
+                  {% endif %}
+                </div>
+
+                <div class="space-y-1.5">
+                  <label for="{{ form.document.id_for_label }}" class="block text-xs font-semibold uppercase tracking-wide text-gray-500">
+                    {{ form.document.label }}
+                  </label>
+                  {{ form.document }}
+                  {% if form.document.help_text %}
+                    <p class="text-xs text-gray-500">{{ form.document.help_text }}</p>
+                  {% endif %}
+                  {% if form.document.errors %}
+                    <div class="text-xs text-rose-600">{{ form.document.errors }}</div>
+                  {% endif %}
+                </div>
+
+                <div class="flex justify-end border-t border-gray-200/90 pt-4">
+                  <button type="submit"
+                          class="inline-flex w-full items-center justify-center gap-1.5 px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm sm:w-auto">
+                    <i class="fa-solid fa-upload w-4 text-center" aria-hidden="true"></i>
+                    <span>{% trans "Upload file" %}</span>
+                  </button>
+                </div>
               </form>
+              {% endif %}
             </div>
-            {% endif %}
           </div>
           {% endif %}
 
@@ -273,22 +319,6 @@
               <i class="fa-solid fa-arrow-left w-4 text-center mr-1.5" aria-hidden="true"></i>
               <span>{% trans "Back to my talks" %}</span>
             </a>
-
-            {% if request.user.username == talk.user.username %}
-              {% if is_editable or talk.user_response == "A" %}
-              <a href="{% url 'talks:edit_talk' year=year pk=talk.pk %}"
-                 class="inline-flex items-center px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm">
-                <i class="fa-solid fa-pen w-4 text-center mr-1.5" aria-hidden="true"></i>
-                <span>{% if talk.talk_type == 'Poster' %}{% trans "Edit poster" %}{% else %}{% trans "Edit talk" %}{% endif %}</span>
-              </a>
-              {% else %}
-              <span class="inline-flex items-center px-4 py-2 text-xs sm:text-sm font-semibold rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed"
-                    title="{% if talk.talk_type == 'Poster' %}{% trans 'Poster CFP is now closed' %}{% else %}{% trans 'CFP is now closed' %}{% endif %}">
-                <i class="fa-solid fa-pen w-4 text-center mr-1.5" aria-hidden="true"></i>
-                <span>{% if talk.talk_type == 'Poster' %}{% trans "Edit poster" %}{% else %}{% trans "Edit talk" %}{% endif %}</span>
-              </span>
-              {% endif %}
-            {% endif %}
           </div>
         </div>
       </div>

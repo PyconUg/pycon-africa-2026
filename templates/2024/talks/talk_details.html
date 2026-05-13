@@ -134,13 +134,6 @@
                                             <strong>Talk Type:</strong> {{ talk.talk_type }}
                                             <br><strong>Talk Category</strong>: {{ talk.talk_category }}
                                             <br><strong>Intended Audience</strong>: {{ talk.intended_audience }}
-                                            {% if speakers %} 
-                                            <br><strong>Added Speaker(s)</strong>:
-                                            {% for speaker in speakers %}
-                                              {{ speaker.user_profile.name }} {{ speaker.user_profile.surname }} | 
-                                            {% endfor %}
-                                            {% else %} 
-                                            {% endif %} 
                                             {% if talk.status == "S" %}
                                             <li class="btn btn-small u-btn-yellow g-color-black"><b>Status:</b> Currently under Review</li>
                                             {% elif talk.status == "A" %} 
@@ -175,28 +168,6 @@
                                                 <a class="btn u-btn-red g-color-white">Rejected to Present</a> 
                                             {% endif %}
                                         
-
-                                        <!-- Trigger/Open The Modal -->
-                                        <a class="btn u-btn-primary" href="#modal1" data-modal-target="#modal1" data-modal-effect="fadein">Add Speakers to This Talk
-                                        </a>
-                                        
-                                        <!-- Demo modal window -->
-                                        <div id="modal1" class="text-left g-max-width-600 g-bg-white g-overflow-y-auto g-pa-20" style="display: none;">
-                                          <button type="button" class="close" onclick="Custombox.modal.close();">
-                                            <i class="hs-icon hs-icon-close"></i>
-                                          </button>
-                                          <h4 class="g-mb-20">Enter the speaker's email address:</h4>
-                                          (Make sure the person you are inviting already have an account on this website.)
-                                          <form action="{% url 'talks:send_speaker_invitation' year=talk.event_year.year pk=talk.pk %}" method="post">
-                                            {% csrf_token %}
-                                            <label for="user_email">Speaker's Email:</label>
-                                            <input type="email" name="user_email" id="user_email" required>
-                                            <button type="submit">Send Invitation</button>
-                                        </form>
-                                        
-                                        </div>
-                                        <!-- End Demo modal window -->
-                                         
 
                                          <br><br>
                                     {% if can_upload %}

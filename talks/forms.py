@@ -1,8 +1,8 @@
-from talks.models import Proposal
+from talks.models import Proposal, Document
 from django import forms
+from django.utils.translation import gettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, Field
-from .models import Document  
 from django_recaptcha.fields import ReCaptchaField 
 from django_recaptcha.widgets import ReCaptchaV2Invisible  
 from .models import * 
@@ -196,7 +196,52 @@ class DocumentForm(forms.ModelForm):
             Field('proposal', css_class='form-control'),
             Submit('submit', 'Upload', css_class='btn btn-primary')
         )
- 
+
+
+class TalkSlideUploadForm(forms.ModelForm):
+    """Minimal upload form for accepted talks (no captcha, no internal proposal/type fields)."""
+
+    class Meta:
+        model = Document
+        fields = ('name', 'document')
+        labels = {
+            'name': _('Label (optional)'),
+            'document': _('Slides or handout file'),
+        }
+
+    def __init__(self, *args, proposal=None, **kwargs):
+        self._proposal = proposal
+        super().__init__(*args, **kwargs)
+        self.fields['name'].required = False
+        input_classes = (
+            'block w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm '
+            'text-gray-900 shadow-sm placeholder:text-gray-400 '
+            'focus:border-teal-500 focus:outline-none focus:ring-1 focus:ring-teal-500'
+        )
+        file_classes = (
+            'block w-full cursor-pointer rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm '
+            'text-gray-700 file:mr-4 file:inline-flex file:items-center file:rounded-lg '
+            'file:border-0 file:bg-pycon-teal file:px-4 file:py-2 file:text-sm file:font-semibold '
+            'file:text-white hover:file:bg-teal-700'
+        )
+        self.fields['name'].widget.attrs.update(
+            {'class': input_classes, 'placeholder': str(_('e.g. Main deck, speaker notes')), 'autocomplete': 'off'}
+        )
+        self.fields['document'].widget.attrs.update({'class': file_classes})
+
+    def save(self, commit=True):
+        from django.utils.translation import gettext
+
+        instance = super().save(commit=False)
+        if self._proposal is None:
+            raise ValueError('TalkSlideUploadForm requires proposal=…')
+        instance.proposal = self._proposal
+        instance.document_type = 'Slide'
+        name = (instance.name or '').strip()
+        instance.name = name if name else gettext('Slides')
+        if commit:
+            instance.save()
+        return instance
 
 
 class ExportFieldsForm(forms.Form):
