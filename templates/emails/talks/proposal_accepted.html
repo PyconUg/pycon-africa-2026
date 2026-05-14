@@ -8,7 +8,10 @@
         .header { background-color: #ecc8a4; padding: 10px; text-align: center; }
         .details, .next-steps { margin: 20px 0; }
         .details th, .details td, .next-steps th, .next-steps td { text-align: left; padding: 8px; vertical-align: top; }
-        .footer { margin-top: 20px; text-align: center; font-size: 0.9em; color: #777; }
+        .signature { margin-top: 28px; padding-top: 20px; border-top: 1px solid #e5e5e5; text-align: left; line-height: 1.5; }
+        .signature p { margin: 0 0 6px 0; }
+        .footer { max-width: 600px; margin-left: auto; margin-right: auto; margin-top: 28px; padding-top: 16px; border-top: 1px solid #e5e5e5; text-align: center; font-size: 0.9em; color: #555; line-height: 1.6; }
+        .footer p { margin: 6px 0; }
     </style>
 </head>
 <body>
@@ -27,7 +30,7 @@
 
         <div class="next-steps">
             <h3>Next steps</h3>
-            <p>You will need to confirm your availability by <strong>22 May {{ proposal.event_year.year }}</strong>.</p>
+            <p>You will need to confirm your availability by <strong>30th May {{ proposal.event_year.year }}</strong>.</p>
             {% if proposal.talk_type == 'Poster' %}
             <p>Please let us know if you accept this invitation by using the link below:</p>
             {% else %}
@@ -56,10 +59,13 @@
 
         <p>Our next review session is tomorrow, as we agreed and calendar invitations have already been sent to everyone.</p>
 
-        <p>Best regards,<br>Program Team Pycon Africa 2026</p>
+        <div class="signature">
+            <p>Best regards,</p>
+            <p><strong>Program Team,</strong><br>PyCon Africa {{ proposal.event_year.year }}</p>
+        </div>
     </div>
     <div class="footer">
-        <p>&copy; {{ proposal.event_year.year }} PyCon Africa. All rights reserved.</p>
+        <p>&copy; PyCon Africa {{ proposal.event_year.year }}. All rights reserved.</p>
         <p>Contact us: <a href="mailto:program@pycon.ug">program@pycon.ug</a></p>
     </div>
 </body>
