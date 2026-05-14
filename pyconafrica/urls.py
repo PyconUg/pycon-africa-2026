@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.generic import RedirectView
 from django.conf.urls import handler404, handler500  
-from django_robohash.views import robohash 
-from django.views.static import serve  
+from django_robohash.views import robohash
 
 urlpatterns = [
 
@@ -68,8 +68,10 @@ urlpatterns = [
 ] 
 if settings.DEBUG:
     from debug_toolbar.toolbar import debug_toolbar_urls
+
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    # Serve from STATICFILES_DIRS and app static/ — not STATIC_ROOT (collectstatic output only).
+    urlpatterns += staticfiles_urlpatterns()
     urlpatterns += debug_toolbar_urls()
 
 

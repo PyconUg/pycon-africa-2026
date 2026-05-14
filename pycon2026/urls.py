@@ -17,6 +17,7 @@ urlpatterns = [
     path('talks/guide/', RedirectView.as_view(pattern_name='pycon2026:proposing_a_talk', permanent=True)),
     path('talks/proposing_a_talk/', view=views.proposing_a_talk, name='proposing_a_talk'),
     path('talks/recording-release/', view=views.recording_release, name='recording_release'),
+    path('speaker-guidelines/', view=views.speaker_guidelines, name='speaker_guidelines'),
     path('talks/mentorship/', view=views.mentorship, name='mentorship'),
     path('talks/', include('talks.urls', namespace='talks')),
     path('region/kenya-region/', view=views.about_kenya_region, name='about_kenya_region'),

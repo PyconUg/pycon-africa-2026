@@ -138,7 +138,7 @@ if DEBUG:
     INSTALLED_APPS += ["debug_toolbar"]
     MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
     INTERNAL_IPS = [
-    "127.0.0.1",
+        "127.0.0.1",
     ]
     _use_smtp = os.getenv("USE_SMTP_EMAIL", "").strip().lower() in ("true", "1", "yes")
     if not _use_smtp:
@@ -247,7 +247,20 @@ STATICFILES_FINDERS = (
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-   
+
+
+def _collected_tailwind_css_present():
+    """True when collectstatic has put main CSS in STATIC_ROOT (typical production)."""
+    try:
+        return os.path.isfile(os.path.join(STATIC_ROOT, "vendor", "main.css"))
+    except OSError:
+        return False
+
+
+# When DEBUG is off but STATIC_ROOT is not populated (local .env with DEBUG_STATE=False),
+# WhiteNoise must use finders or /static/* is handled by URL routing and returns HTML (broken UI).
+WHITENOISE_USE_FINDERS = DEBUG or not _collected_tailwind_css_present()
+
 # if not os.environ.get("DEBUG"):
 #STATICFILES_STORAGE = 'gamma_cloudinary.storage.StaticCloudinaryStorage'
 # DEFAULT_FILE_STORAGE = 'gamma_cloudinary.storage.CloudinaryStorage' 

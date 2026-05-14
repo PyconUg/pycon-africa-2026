@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% block meta_title %}{% trans "Speaker Guidelines | PyCon Africa 2026" %}{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
+  <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 text-center">Speaker Guidelines</h1>
+  <p class="text-center text-lg text-gray-600 mt-2">PyCon Africa 2026</p>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 pb-16">
+  <div class="max-w-4xl mx-auto text-gray-900">
+    <p class="text-lg leading-relaxed mb-6">
+      We are glad that you made it to the list of speakers at PyCon Africa 2026.
+      Don’t panic! Whether this is your first talk or your fiftieth, this guide covers everything you need to know about presenting.
+    </p>
+
+    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Quick checklist — before your talk</h2>
+    <ul class="list-disc list-inside text-lg leading-relaxed mb-8 space-y-2">
+      <li><strong>Upload slides:</strong> Upload your presentation before the deadline.</li>
+      <li><strong>Backup your work:</strong> Bring a backup of your presentation on a USB drive in PDF format (HTML is also acceptable if tested).</li>
+      <li><strong>Pack adapters:</strong> Uganda uses Type G (three-pin UK style) power outlets. Ensure your laptop charger and power cables are compatible.</li>
+      <li><strong>Video/audio:</strong> If your talk includes clips, email <a href="mailto:program@pycon.ug" class="text-pycon-teal hover:underline font-medium">program@pycon.ug</a> in advance.</li>
+      <li><strong>HDMI connectivity:</strong> All rooms use HDMI projectors. Please bring your own HDMI adapter or USB-C hub.</li>
+    </ul>
+
+    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Presenting at the conference</h2>
+    <p class="text-lg leading-relaxed mb-4">
+      All slots include 5–10 minutes for Q&amp;A. Please do not exceed your allocated time.
+    </p>
+    <ul class="list-disc list-inside text-lg leading-relaxed mb-8 space-y-2">
+      <li><strong>Short talks:</strong> 30 minutes.</li>
+      <li><strong>Regular talks:</strong> 45 minutes.</li>
+      <li><strong>Lightning talks:</strong> 5 minutes.</li>
+      <li><strong>Tutorials:</strong> 2 hours.</li>
+    </ul>
+    <p class="text-lg leading-relaxed mb-8">
+      Session chairs will be provided for each talk and your session chair will moderate questions to ensure they are captured clearly for the recording.
+    </p>
+
+    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Room support</h2>
+    <p class="text-lg leading-relaxed mb-8">
+      In each room, a session chair from the organizing committee will support you. They will assist with setting up the projector, helping with laptop testing, and giving signals to keep you on schedule.
+    </p>
+
+    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Tech set-up &amp; testing</h2>
+    <p class="text-lg leading-relaxed mb-4">
+      Slides must be in 16:9 format for our HDMI projectors. Please use the slide deck that will be provided.
+    </p>
+    <p class="text-lg leading-relaxed mb-4">
+      We encourage following the
+      <a href="https://www.w3.org/WAI/teach-advocacy/accessible-presentations/" class="text-pycon-teal hover:underline font-medium" target="_blank" rel="noopener noreferrer">W3C guidance on accessible presentations</a>
+      to reach all attendees.
+    </p>
+    <p class="text-lg leading-relaxed mb-4">
+      To ensure compatibility, please test your laptop with the session chair during these specific windows:
+    </p>
+    <ul class="list-disc list-inside text-lg leading-relaxed mb-8 space-y-2">
+      <li><strong>First day morning:</strong> 15 minutes before the very first session.</li>
+      <li><strong>Other morning talks:</strong> The evening before at 7:00 PM or immediately after the final session in that room.</li>
+      <li><strong>Afternoon talks:</strong> During the lunch break (around 1:00 PM or 1:15 PM).</li>
+    </ul>
+
+    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Beginners’ section: tips for success</h2>
+    <p class="text-lg leading-relaxed mb-4">
+      If you are new to public speaking, these general guidelines can help you prepare:
+    </p>
+    <ul class="list-disc list-inside text-lg leading-relaxed mb-8 space-y-2">
+      <li><strong>Slide quantity:</strong> Aim for approximately 15 slides for a 30-minute talk or 20 slides for a 45-minute talk.</li>
+      <li><strong>Engagement:</strong> Use keywords and phrases rather than reading directly from your slides.</li>
+      <li><strong>Rehearsals:</strong> Practice your talk multiple times with friends or colleagues to gauge your timing.</li>
+      <li><strong>Voice:</strong> Speak significantly louder than you would in normal conversation to ensure clarity for everyone in the room.</li>
+    </ul>
+
+    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Language and conduct</h2>
+    <ul class="list-disc list-inside text-lg leading-relaxed mb-8 space-y-2">
+      <li><strong>Language:</strong> The official conference language is English only.</li>
+      <li><strong>Inclusivity:</strong> We encourage all speakers to use gender-neutral and inclusive language.</li>
+      <li>
+        <strong>Code of conduct:</strong> All presenters must adhere to the PyCon Africa and PyCon Uganda code of conduct —
+        see <a href="{% url 'pycon2026:conduct' %}" class="text-pycon-teal hover:underline font-medium">Conduct</a>
+        and <a href="{% url 'pycon2026:coc' %}" class="text-pycon-teal hover:underline font-medium">Code of Conduct</a>.
+      </li>
+    </ul>
+
+    <h2 class="text-2xl font-bold text-gray-900 mt-10 mb-4">Contact us</h2>
+    <p class="text-lg leading-relaxed">
+      For any questions, please reach out to the speaker coordination team at
+      <a href="mailto:program@pycon.ug" class="text-pycon-teal hover:underline font-medium">program@pycon.ug</a>.
+    </p>
+  </div>
+</div>
+{% endblock %}

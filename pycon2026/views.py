@@ -99,6 +99,10 @@ def recording_release(request):
     context = {}
     return render(request, '2026/talks/recording_release.html', context)
 
+
+def speaker_guidelines(request):
+    return render(request, '2026/talks/speaker_guidelines.html', {})
+
 def proposals(request):
     context = {}
     return render(request, '2026/talks/proposals.html', context)
