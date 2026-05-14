@@ -991,11 +991,19 @@ def respond_to_invitation(request, pk, year=None):
                     else None
                 )
                 if from_addr and proposal.user.email:
+                    program_email = "program@pycon.ug"
+                    extra = {}
+                    if (
+                        proposal.user_response == "A"
+                        and proposal.user.email.lower() != program_email
+                    ):
+                        extra["cc"] = [program_email]
                     email = EmailMultiAlternatives(
                         subject,
                         text_content,
                         from_addr,
                         [proposal.user.email],
+                        **extra,
                     )
                     email.attach_alternative(html_content, "text/html")
                     try:
