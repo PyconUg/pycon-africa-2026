@@ -7,7 +7,17 @@
         .content { max-width: 600px; margin: auto; }
         .header { background-color: #ecc8a4; padding: 10px; text-align: center; }
         .details, .next-steps { margin: 20px 0; }
-        .details th, .details td, .next-steps th, .next-steps td { text-align: left; padding: 8px; }
+        .details th, .details td { text-align: left; padding: 8px; vertical-align: top; }
+        .steps-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+        .steps-table td { vertical-align: top; text-align: left; padding: 10px 0 14px 0; line-height: 1.45; }
+        .steps-table td.step-label {
+            width: 92px;
+            max-width: 92px;
+            white-space: nowrap;
+            font-weight: bold;
+            padding-right: 14px;
+            color: #333;
+        }
         .footer { margin-top: 20px; text-align: center; font-size: 0.9em; color: #777; }
     </style>
 </head>
@@ -23,26 +33,26 @@
         <div class="next-steps">
             <h3>What's Next</h3>
             <p>To ensure a smooth experience, please follow these steps:</p>
-            <table>
+            <table class="steps-table" role="presentation">
                 <tr>
-                    <th>Step 1:</th>
-                    <td>Review the <a href="https://africa.pycon.org/2026/speaker-guidelines/">Speaker Guidelines</a> to align your presentation with our standards.</td>
+                    <td class="step-label">Step 1:</td>
+                    <td>Review the <a href="https://africa.pycon.org/{{ proposal.event_year.year }}/speaker-guidelines/">Speaker Guidelines</a> to align your presentation with our standards.</td>
                 </tr>
                 <tr>
-                    <th>Step 2:</th>
+                    <td class="step-label">Step 2:</td>
                     <td>Join our <a href="https://discord.gg/MKcMmJawJX">speakers' community on Discord</a> to interact with other speakers and organizers.</td>
                 </tr>
                 <tr>
-                    <th>Step 3:</th>
+                    <td class="step-label">Step 3:</td>
                     <td>Ensure your profile, photo, and social media links are updated on your <a href="https://africa.pycon.org/accounts/profile/">Profile</a>. This information is crucial for our announcements. Please complete this within <b>two</b> weeks. <strong>Missing information may result in your talk not being announced.</strong></td>
                 </tr>
                 <tr>
-                    <th>Step 4:</th>
+                    <td class="step-label">Step 4:</td>
                     <td>Submit your final presentation slides/materials at least two weeks before the conference <a href="{{ talk_url }}"><b>here</b></a>. Simply use the upload button to submit.</td>
                 </tr>
                 <tr>
-                    <th>Step 5:</th>
-                    <td>Get your speaker's ticket using the provided link and coupon code. <a href="https://africa.pycon.org/2026/tickets/">Get Ticket</a>. Use the coupon code <strong>PA24-Speakers-1a4</strong> at checkout.</td>
+                    <td class="step-label">Step 5:</td>
+                    <td>Get your speaker's ticket using the provided link and coupon code. <a href="https://africa.pycon.org/{{ proposal.event_year.year }}/tickets/">Get Ticket</a>. Use the coupon code <strong>PA24-Speakers-1a4</strong> at checkout.</td>
                 </tr>
             </table>
         </div>
