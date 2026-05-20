@@ -17,4 +17,44 @@
       </form>
     </li>
   {% endif %}
+  {% if original.status != 'W' %}
+    <li>
+      <form
+        method="post"
+        action="{% url 'admin:talks_proposal_waitlist_programme' original.pk|admin_urlquote %}"
+        style="display: inline; margin: 0; padding: 0;"
+      >
+        {% csrf_token %}
+        <button type="submit" class="grp-button grp-default" style="margin-left: 0.25rem;">
+          {% trans "Waitlist & email speaker" %}
+        </button>
+      </form>
+    </li>
+  {% endif %}
+  {% if original.status != 'R' %}
+    <li>
+      <form
+        method="post"
+        action="{% url 'admin:talks_proposal_reject_programme' original.pk|admin_urlquote %}"
+        style="display: inline; margin: 0; padding: 0;"
+      >
+        {% csrf_token %}
+        <button type="submit" class="grp-button grp-default" style="margin-left: 0.25rem;">
+          {% trans "Reject & email speaker" %}
+        </button>
+      </form>
+    </li>
+  {% endif %}
+  <li>
+    <form
+      method="post"
+      action="{% url 'admin:talks_proposal_resend_programme' original.pk|admin_urlquote %}"
+      style="display: inline; margin: 0; padding: 0;"
+    >
+      {% csrf_token %}
+      <button type="submit" class="grp-button grp-default" style="margin-left: 0.25rem;">
+        {% trans "Resend programme notification" %}
+      </button>
+    </form>
+  </li>
 {% endblock %}

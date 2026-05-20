@@ -67,6 +67,8 @@ class TalkAdmin(ImportExportModelAdmin):
     readonly_fields = ("last_program_status_email_sent_at",)
     actions = [
         "accept_and_notify_speaker_action",
+        "waitlist_and_notify_speaker_action",
+        "reject_and_notify_speaker_action",
         "resend_programme_notification_action",
         "export_selected_action",
         "assign_to_reviewers_action",
@@ -136,6 +138,72 @@ class TalkAdmin(ImportExportModelAdmin):
         "Accept & email speaker (selected proposals)"
     )
 
+    def waitlist_and_notify_speaker_action(self, request, queryset):
+        """Set status to Waiting List and trigger the programme notification email."""
+        waitlisted = 0
+        already = 0
+        for proposal_pk in queryset.values_list("pk", flat=True):
+            proposal = Proposal.objects.get(pk=proposal_pk)
+            if proposal.status == "W":
+                already += 1
+                continue
+            proposal.status = "W"
+            proposal.save()
+            waitlisted += 1
+        if waitlisted:
+            self.message_user(
+                request,
+                f"Waitlisted {waitlisted} proposal(s). Notifications send when SMTP succeeds "
+                "(see the Status email column).",
+                messages.SUCCESS,
+            )
+        if already:
+            self.message_user(
+                request,
+                f"{already} proposal(s) were already on the waiting list (skipped). "
+                "Use “Resend programme notification email” to email them without changing status.",
+                messages.INFO,
+            )
+        if not waitlisted and not already:
+            self.message_user(request, "No proposals to update.", messages.WARNING)
+
+    waitlist_and_notify_speaker_action.short_description = (
+        "Waitlist & email speaker (selected proposals)"
+    )
+
+    def reject_and_notify_speaker_action(self, request, queryset):
+        """Set status to Rejected and trigger the programme notification email."""
+        rejected = 0
+        already = 0
+        for proposal_pk in queryset.values_list("pk", flat=True):
+            proposal = Proposal.objects.get(pk=proposal_pk)
+            if proposal.status == "R":
+                already += 1
+                continue
+            proposal.status = "R"
+            proposal.save()
+            rejected += 1
+        if rejected:
+            self.message_user(
+                request,
+                f"Rejected {rejected} proposal(s). Notifications send when SMTP succeeds "
+                "(see the Status email column).",
+                messages.SUCCESS,
+            )
+        if already:
+            self.message_user(
+                request,
+                f"{already} proposal(s) were already rejected (skipped). "
+                "Use “Resend programme notification email” to email them without changing status.",
+                messages.INFO,
+            )
+        if not rejected and not already:
+            self.message_user(request, "No proposals to update.", messages.WARNING)
+
+    reject_and_notify_speaker_action.short_description = (
+        "Reject & email speaker (selected proposals)"
+    )
+
     def resend_programme_notification_action(self, request, queryset):
         """Send the programme email matching each proposal's current status (including resends)."""
         from talks.signals import send_programme_status_notification
@@ -197,6 +265,105 @@ class TalkAdmin(ImportExportModelAdmin):
             )
         return HttpResponseRedirect(change_url)
 
+    def waitlist_programme_view(self, request, object_id):
+        """POST from proposal change page — set Waiting List and queue notification email."""
+        if not self.has_change_permission(request):
+            raise PermissionDenied
+        opts = self.model._meta
+        object_id = unquote(object_id)
+        proposal = get_object_or_404(self.model, pk=object_id)
+        change_url = reverse(
+            f"admin:{opts.app_label}_{opts.model_name}_change",
+            args=[proposal.pk],
+        )
+        if request.method != "POST":
+            self.message_user(
+                request,
+                "Use the Waitlist & email speaker button to confirm.",
+                messages.WARNING,
+            )
+            return HttpResponseRedirect(change_url)
+        if proposal.status == "W":
+            self.message_user(
+                request, "This proposal is already on the waiting list.", messages.INFO
+            )
+        else:
+            proposal.status = "W"
+            proposal.save()
+            self.message_user(
+                request,
+                "Marked as Waiting List. Notification sends when SMTP succeeds "
+                "(see the Status email column).",
+                messages.SUCCESS,
+            )
+        return HttpResponseRedirect(change_url)
+
+    def reject_programme_view(self, request, object_id):
+        """POST from proposal change page — set Rejected and queue notification email."""
+        if not self.has_change_permission(request):
+            raise PermissionDenied
+        opts = self.model._meta
+        object_id = unquote(object_id)
+        proposal = get_object_or_404(self.model, pk=object_id)
+        change_url = reverse(
+            f"admin:{opts.app_label}_{opts.model_name}_change",
+            args=[proposal.pk],
+        )
+        if request.method != "POST":
+            self.message_user(
+                request,
+                "Use the Reject & email speaker button to confirm.",
+                messages.WARNING,
+            )
+            return HttpResponseRedirect(change_url)
+        if proposal.status == "R":
+            self.message_user(request, "This proposal is already rejected.", messages.INFO)
+        else:
+            proposal.status = "R"
+            proposal.save()
+            self.message_user(
+                request,
+                "Marked as Rejected. Notification sends when SMTP succeeds "
+                "(see the Status email column).",
+                messages.SUCCESS,
+            )
+        return HttpResponseRedirect(change_url)
+
+    def resend_programme_view(self, request, object_id):
+        """POST from proposal change page — resend programme email for current status."""
+        if not self.has_change_permission(request):
+            raise PermissionDenied
+        from talks.signals import send_programme_status_notification
+
+        opts = self.model._meta
+        object_id = unquote(object_id)
+        proposal = get_object_or_404(self.model, pk=object_id)
+        change_url = reverse(
+            f"admin:{opts.app_label}_{opts.model_name}_change",
+            args=[proposal.pk],
+        )
+        if request.method != "POST":
+            self.message_user(
+                request,
+                "Use the Resend programme notification button to confirm.",
+                messages.WARNING,
+            )
+            return HttpResponseRedirect(change_url)
+        if send_programme_status_notification(proposal.pk):
+            self.message_user(
+                request,
+                "Programme notification resent (see the Status email column).",
+                messages.SUCCESS,
+            )
+        else:
+            self.message_user(
+                request,
+                "Could not send email (missing user email, SMTP error, or "
+                "missing DEFAULT_FROM_EMAIL). See server logs.",
+                messages.WARNING,
+            )
+        return HttpResponseRedirect(change_url)
+
     def assign_to_reviewers_action(self, request, queryset):
         """Run the assignment algorithm scoped to the selected proposals.
 
@@ -252,6 +419,21 @@ class TalkAdmin(ImportExportModelAdmin):
                 "<path:object_id>/accept-programme/",
                 self.admin_site.admin_view(self.accept_programme_view),
                 name="%s_%s_accept_programme" % info,
+            ),
+            path(
+                "<path:object_id>/waitlist-programme/",
+                self.admin_site.admin_view(self.waitlist_programme_view),
+                name="%s_%s_waitlist_programme" % info,
+            ),
+            path(
+                "<path:object_id>/reject-programme/",
+                self.admin_site.admin_view(self.reject_programme_view),
+                name="%s_%s_reject_programme" % info,
+            ),
+            path(
+                "<path:object_id>/resend-programme/",
+                self.admin_site.admin_view(self.resend_programme_view),
+                name="%s_%s_resend_programme" % info,
             ),
             path(
                 "export_selected/",
