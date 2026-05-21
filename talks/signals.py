@@ -18,7 +18,7 @@ from .models import Proposal
 
 logger = logging.getLogger(__name__)
 
-PROGRAMME_ACCEPTANCE_EMAIL_CC = [
+PROGRAMME_EMAIL_CC = [
     "program@pycon.ug",
 ]
 
@@ -108,7 +108,11 @@ def _send_proposal_program_email(proposal_pk, old_status: str, new_status: str) 
     from_email = f"PyCon Africa 2026 Programme Team <{settings.DEFAULT_FROM_EMAIL}>"
 
     to = [proposal.user.email]
-    cc = list(PROGRAMME_ACCEPTANCE_EMAIL_CC) if new_status == "A" else []
+    cc = (
+        list(PROGRAMME_EMAIL_CC)
+        if new_status in ("A", "W", "R")
+        else []
+    )
     email = EmailMultiAlternatives(
         subject,
         text_content,
