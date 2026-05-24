@@ -18,8 +18,9 @@ from .models import Proposal
 
 logger = logging.getLogger(__name__)
 
-PROGRAMME_EMAIL_CC = [
+EMAIL_CC = [
     "program@pycon.ug",
+    "team@pycon.africa",
 ]
 
 @receiver(pre_save, sender=Proposal)
@@ -109,7 +110,7 @@ def _send_proposal_program_email(proposal_pk, old_status: str, new_status: str) 
 
     to = [proposal.user.email]
     cc = (
-        list(PROGRAMME_EMAIL_CC)
+        list(EMAIL_CC)
         if new_status in ("A", "W", "R")
         else []
     )
