@@ -9,8 +9,6 @@ from django.utils import timezone
 from django.apps import apps
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.core.exceptions import MultipleObjectsReturned
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMultiAlternatives
 from django.db import models
 from django.db import transaction
@@ -244,15 +242,22 @@ class RegistrationManager(models.Manager):
     def resend_activation_mail(self, email, site, request=None):
         """
         Resets activation key for the user and resends activation email.
-        """
-        try:
-            profile = self.get(user__email__iexact=email)
-        except ObjectDoesNotExist:
-            return False
-        except MultipleObjectsReturned:
-            return False
 
-        if profile.activated or profile.activation_key_expired():
+        If multiple inactive accounts share the email, resend to the most
+        recently registered account that still has a valid activation window.
+        """
+        profiles = (
+            self.filter(user__email__iexact=email, activated=False)
+            .select_related("user")
+            .order_by("-user__date_joined")
+        )
+        profile = None
+        for candidate in profiles:
+            if not candidate.activation_key_expired():
+                profile = candidate
+                break
+
+        if profile is None:
             return False
 
         profile.create_new_activation_key()

@@ -603,8 +603,8 @@ class RegistrationModelTests(TransactionTestCase):
 
     def test_resend_activation_email_nonunique_email(self):
         """
-        Test the scenario where user tries to resend activation code
-        to the expired user's email
+        When multiple inactive accounts share an email, resend targets the
+        most recently registered account with a valid activation window.
         """
         user1 = self.registration_profile.objects.create_inactive_user(
             site=Site.objects.get_current(), send_email=False, **self.user_info)
@@ -613,11 +613,16 @@ class RegistrationModelTests(TransactionTestCase):
         user2 = self.registration_profile.objects.create_inactive_user(
             site=Site.objects.get_current(), send_email=False, **user2_info)
         self.assertEqual(user1.email, user2.email)
-        self.assertFalse(self.registration_profile.objects.resend_activation_mail(
+
+        profile2 = self.registration_profile.objects.get(user=user2)
+        self.assertTrue(self.registration_profile.objects.resend_activation_mail(
             email=self.user_info['email'],
             site=Site.objects.get_current(),
         ))
-        self.assertEqual(len(mail.outbox), 0)
+        self.assertEqual(len(mail.outbox), 1)
+        profile2.refresh_from_db()
+        profile1 = self.registration_profile.objects.get(user=user1)
+        self.assertNotEqual(profile1.activation_key, profile2.activation_key)
 
     def test_activation_key_backwards_compatibility(self):
         """
