@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Proposal Is On The Waiting List - PyCon Africa {{ proposal.event_year.year }}</title>
+    <title>{% if proposal.talk_type == 'Poster' %}Your Poster Is On The Waiting List{% else %}Your Proposal Is On The Waiting List{% endif %} - PyCon Africa {{ proposal.event_year.year }}</title>
     <style>
         body { font-family: Arial, sans-serif; }
         .content { max-width: 600px; margin: auto; }
@@ -14,7 +14,7 @@
 <body>
     <div class="content">
         <div class="header">
-            <h2>Proposal Status Update</h2>
+            <h2>{% if proposal.talk_type == 'Poster' %}Your poster is on the waiting list{% else %}Proposal status update{% endif %}</h2>
         </div>
         <div class="details">
             <p>Dear {{ full_name }},</p>
@@ -27,7 +27,11 @@
         
         <div class="next-steps">
             <h3>What Does This Mean?</h3>
+            {% if proposal.talk_type == 'Poster' %}
+            <p>Being on the waiting list means that your poster is being considered as a potential addition to the conference schedule. Should an opportunity arise (due to cancellations or schedule adjustments), we will notify you promptly.</p>
+            {% else %}
             <p>Being on the waiting list means that your proposal is being considered as a potential addition to the conference schedule. Should an opportunity arise (due to cancellations or schedule adjustments), we will notify you promptly.</p>
+            {% endif %}
             <table>
                 <tr>
                     <th>Stay Engaged:</th>
@@ -35,7 +39,7 @@
                 </tr>
                 <tr>
                     <th>Prepare Ahead:</th>
-                    <td>We recommend preparing your presentation materials in case your proposal is accepted. Please review the <a href="https://africa.pycon.org/2026/speaker-guidelines/">Speaker Guidelines</a> to ensure you are ready.</td>
+                    <td>We recommend preparing your materials in case your {% if proposal.talk_type == 'Poster' %}poster{% else %}proposal{% endif %} is accepted. Please review the <a href="https://africa.pycon.org/{{ proposal.event_year.year }}/speaker-guidelines/">Speaker Guidelines</a> to ensure you are ready.</td>
                 </tr>
                 <tr>
                     <th>Contact Us:</th>
