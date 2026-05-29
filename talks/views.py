@@ -972,7 +972,16 @@ def respond_to_invitation(request, pk, year=None):
             subject = ""
             html_template = ""
             if proposal.user_response == 'A':
-                subject = "Thank You for Accepting to Speak at PyCon Africa 2026"
+                if proposal.talk_type == 'Poster':
+                    subject = (
+                        f"Thank You for Accepting to Present Your Poster at "
+                        f"PyCon Africa {event_year.year}"
+                    )
+                else:
+                    subject = (
+                        f"Thank You for Accepting to Speak at "
+                        f"PyCon Africa {event_year.year}"
+                    )
                 html_template = 'emails/talks/accepted_response.html'
             elif proposal.user_response == 'R':
                 subject = "Thank You for Your Response"

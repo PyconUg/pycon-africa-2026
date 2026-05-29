@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Thank You for Accepting to Speak at PyCon Africa {{ proposal.event_year.year }}</title>
+    <title>{% if proposal.talk_type == 'Poster' %}Thank You for Accepting to Present Your Poster at PyCon Africa {{ proposal.event_year.year }}{% else %}Thank You for Accepting to Speak at PyCon Africa {{ proposal.event_year.year }}{% endif %}</title>
     <style>
         body { font-family: Arial, sans-serif; }
         .content { max-width: 600px; margin: auto; }
         .header { background-color: #ecc8a4; padding: 10px; text-align: center; }
         .details, .next-steps { margin: 20px 0; }
-        .details th, .details td { text-align: left; padding: 8px; vertical-align: top; }
+        .details th, .details td, .next-steps th, .next-steps td { text-align: left; padding: 8px; vertical-align: top; }
         .steps-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         .steps-table td { vertical-align: top; text-align: left; padding: 10px 0 14px 0; line-height: 1.45; }
         .steps-table td.step-label {
@@ -27,7 +27,11 @@
             <h2>Thank You for Accepting, {{ full_name }}!</h2>
         </div>
         <div class="details">
-            <p>We are thrilled to confirm your acceptance to present your talk titled "<a href="{{ talk_url }}"><strong>{{ proposal.title }}</strong></a>" at PyCon Africa {{ proposal.event_year.year }}.</p>
+            {% if proposal.talk_type == 'Poster' %}
+            <p>We are thrilled to confirm your acceptance to present your poster titled &ldquo;<a href="{{ talk_url }}"><strong>{{ proposal.title }}</strong></a>&rdquo; at PyCon Africa {{ proposal.event_year.year }}.</p>
+            {% else %}
+            <p>We are thrilled to confirm your acceptance to present your talk titled &ldquo;<a href="{{ talk_url }}"><strong>{{ proposal.title }}</strong></a>&rdquo; at PyCon Africa {{ proposal.event_year.year }}.</p>
+            {% endif %}
         </div>
         
         <div class="next-steps">
@@ -36,7 +40,7 @@
             <table class="steps-table" role="presentation">
                 <tr>
                     <td class="step-label">Step 1:</td>
-                    <td>Review the <a href="https://africa.pycon.org/{{ proposal.event_year.year }}/speaker-guidelines/">Speaker Guidelines</a> to align your presentation with our standards.</td>
+                    <td>Review the <a href="https://africa.pycon.org/{{ proposal.event_year.year }}/speaker-guidelines/">Speaker Guidelines</a> to align your {% if proposal.talk_type == 'Poster' %}poster{% else %}presentation{% endif %} with our standards.</td>
                 </tr>
                 <tr>
                     <td class="step-label">Step 2:</td>
@@ -44,16 +48,24 @@
                 </tr>
                 <tr>
                     <td class="step-label">Step 3:</td>
-                    <td>Ensure your profile, photo, and social media links are updated on your <a href="https://africa.pycon.org/accounts/profile/">Profile</a>. This information is crucial for our announcements. Please complete this within <b>two</b> weeks. <strong>Missing information may result in your talk not being announced.</strong></td>
+                    <td>Ensure your profile, photo, and social media links are updated on your <a href="https://africa.pycon.org/accounts/profile/">Profile</a>. This information is crucial for our announcements. Please complete this within <b>two</b> weeks. <strong>Missing information may result in your {% if proposal.talk_type == 'Poster' %}poster{% else %}talk{% endif %} not being announced.</strong></td>
                 </tr>
                 <tr>
                     <td class="step-label">Step 4:</td>
+                    {% if proposal.talk_type == 'Poster' %}
+                    <td>Submit your final poster file at least two weeks before the conference <a href="{{ talk_url }}"><b>here</b></a>. Simply use the upload button to submit.</td>
+                    {% else %}
                     <td>Submit your final presentation slides/materials at least two weeks before the conference <a href="{{ talk_url }}"><b>here</b></a>. Simply use the upload button to submit.</td>
+                    {% endif %}
                 </tr>
             </table>
         </div>
 
+        {% if proposal.talk_type == 'Poster' %}
+        <p>We appreciate your contribution and look forward to your poster at the conference!</p>
+        {% else %}
         <p>We appreciate your contribution and look forward to an exciting presentation at the conference!</p>
+        {% endif %}
         <p>If you have any questions, please contact us at <a href="mailto:program@pycon.ug">program@pycon.ug</a>.</p>
         <br>
         <p>Best regards,<br>The PyCon Africa Program Team</p>
