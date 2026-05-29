@@ -27,7 +27,9 @@ from django_recaptcha.widgets import ReCaptchaV2Invisible
 User = UserModel()
 
 
+from .email_uniqueness import EMAIL_IN_USE_MESSAGE, email_address_in_use
 from .models import Profile
+
 
 class RegistrationForm(UserCreationForm):
     """
@@ -83,14 +85,10 @@ class RegistrationFormUniqueEmail(RegistrationForm):
 
     """
     def clean_email(self):
-        """
-        Validate that the supplied email address is unique for the
-        site.
-
-        """
-        if User.objects.filter(email__iexact=self.cleaned_data['email']):
-            raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
-        return self.cleaned_data['email']
+        email = self.cleaned_data["email"]
+        if email_address_in_use(email):
+            raise forms.ValidationError(EMAIL_IN_USE_MESSAGE)
+        return email
 
 
 class RegistrationFormNoFreeEmail(RegistrationForm):
@@ -145,6 +143,13 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email',)
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        exclude_user = self.instance if self.instance.pk else None
+        if email_address_in_use(email, exclude_user=exclude_user):
+            raise forms.ValidationError(EMAIL_IN_USE_MESSAGE)
+        return email
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)

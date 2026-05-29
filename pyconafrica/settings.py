@@ -286,6 +286,7 @@ CRISPY_TEMPLATE_PACK = "tailwind"
 
 # Registration App account settings
 ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_FORM = "registration.forms.RegistrationFormUniqueEmail"
 REGISTRATION_EMAIL_SUBJECT_PREFIX = "[PyCon Africa 2026]"
 SEND_ACTIVATION_EMAIL = True
 REGISTRATION_AUTO_LOGIN = False
