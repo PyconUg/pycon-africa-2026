@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Proposal Has Been Accepted for PyCon Africa {{ proposal.event_year.year }}</title>
+    <title>Your Poster Has Been Accepted for PyCon Africa {{ proposal.event_year.year }}</title>
     <style>
         body { font-family: Arial, sans-serif; }
         .content { max-width: 600px; margin: auto; }
@@ -17,20 +17,17 @@
 <body>
     <div class="content">
         <div class="header">
-            <h2>Your proposal has been accepted</h2>
+            <h2>Your poster has been accepted</h2>
         </div>
         <div class="details">
             <p>Dear {{ full_name }},</p>
-            <p>Thank you for submitting your proposal titled &ldquo;<a href="{{ talk_url }}"><strong>{{ proposal.title }}</strong></a>&rdquo; for PyCon Africa {{ proposal.event_year.year }}. After careful consideration, we would like to inform you that your proposal has been accepted.</p>
+            <p>Thank you for submitting your poster titled &ldquo;<strong>{{ proposal.title }}</strong>&rdquo; for PyCon Africa {{ proposal.event_year.year }}. After careful consideration, we would like to inform you that your poster has been accepted.</p>
         </div>
 
         <div class="next-steps">
             <h3>Next steps</h3>
-            <p>You will need to confirm your availability by <strong>30th May {{ proposal.event_year.year }}</strong>.</p>
-            <p>Please let us know if you accept this invitation to speak by using the link below.</p>
-            {% if proposal.talk_type == 'Lightning Talk' %}
-            <p>Please note that for lightning talk presenters, your session will be 5 minutes long.</p>
-            {% endif %}
+            <p>You will need to confirm your availability by <strong>4th June {{ proposal.event_year.year }}</strong>.</p>
+            <p>Please let us know if you accept this invitation by using the link below.</p>
             <p><small>This link is unique to your proposal and only works when you are signed in with the username <strong>{{ user.get_username }}</strong> (the account that submitted it). Do not forward.</small></p>
             <p><a href="{{ response_url }}"><b>Accept or reject</b></a></p>
         </div>
