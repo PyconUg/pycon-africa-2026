@@ -83,6 +83,8 @@ def _send_proposal_program_email(proposal_pk, old_status: str, new_status: str) 
     html_template = template_names.get(
         new_status, "emails/talks/proposal_status_changed.html"
     )
+    if new_status == "A" and is_poster:
+        html_template = "emails/talks/proposal_poster_accepted.html"
 
     try:
         user_profile = Profile.objects.get(user=proposal.user)

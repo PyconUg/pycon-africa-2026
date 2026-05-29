@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Your Proposal for PyCon Africa {{ proposal.event_year.year }}</title>
+    <title>{% if proposal.talk_type == 'Poster' %}Your Poster for PyCon Africa {{ proposal.event_year.year }}{% else %}Your Proposal for PyCon Africa {{ proposal.event_year.year }}{% endif %}</title>
     <style>
         body { font-family: Arial, sans-serif; }
         .content { max-width: 600px; margin: auto; }
@@ -14,19 +14,25 @@
 <body>
     <div class="content">
         <div class="header">
-            <h2>Thank You, {{ full_name }}!</h2>
+            <h2>{% if proposal.talk_type == 'Poster' %}Your poster was not selected{% else %}Thank you, {{ full_name }}!{% endif %}</h2>
         </div>
         <div class="details">
             {% if proposal.talk_type == 'Poster' %}
-            <p>We appreciate your submission to PyCon Africa {{ proposal.event_year.year }}. After careful consideration, we regret to inform you that your poster titled "<strong>{{ proposal.title }}</strong>" was not selected for this year's conference.</p>
+            <p>Dear {{ full_name }},</p>
+            <p>We appreciate your submission to PyCon Africa {{ proposal.event_year.year }}. After careful consideration, we regret to inform you that your poster titled &ldquo;<strong>{{ proposal.title }}</strong>&rdquo; was not selected for this year&rsquo;s conference.</p>
             {% else %}
-            <p>We appreciate your submission to PyCon Africa {{ proposal.event_year.year }}. After careful consideration, we regret to inform you that your proposal titled "<strong>{{ proposal.title }}</strong>" was not selected for this year's conference.</p>
+            <p>Dear {{ full_name }},</p>
+            <p>We appreciate your submission to PyCon Africa {{ proposal.event_year.year }}. After careful consideration, we regret to inform you that your proposal titled &ldquo;<strong>{{ proposal.title }}</strong>&rdquo; was not selected for this year&rsquo;s conference.</p>
             {% endif %}
         </div>
         
         <div class="next-steps">
             <h3>What's Next?</h3>
-            <p>We received many excellent proposals this year, and the selection process was incredibly competitive. While we couldn't accept all proposals, we encourage you to stay engaged with the PyCon community.</p>
+            {% if proposal.talk_type == 'Poster' %}
+            <p>We received many excellent submissions this year, and the selection process was incredibly competitive. While we couldn&rsquo;t accept all posters, we encourage you to stay engaged with the PyCon community.</p>
+            {% else %}
+            <p>We received many excellent proposals this year, and the selection process was incredibly competitive. While we couldn&rsquo;t accept all proposals, we encourage you to stay engaged with the PyCon community.</p>
+            {% endif %}
             <table>
                 <tr>
                     <th>Stay Connected:</th>
@@ -34,13 +40,13 @@
                 </tr>
                 <tr>
                     <th>Future Opportunities:</th>
-                    <td>We hope you consider submitting proposals for future events. Follow us on <a href="https://twitter.com/PyConAfrica">Twitter</a> and <a href="https://www.linkedin.com/company/pyconafrica">LinkedIn</a> for updates on upcoming call for proposals and events.</td>
+                    <td>We hope you consider submitting {% if proposal.talk_type == 'Poster' %}posters{% else %}proposals{% endif %} for future events. Follow us on <a href="https://twitter.com/PyConAfrica">Twitter</a> and <a href="https://www.linkedin.com/company/pyconafrica">LinkedIn</a> for updates on upcoming calls for {% if proposal.talk_type == 'Poster' %}posters{% else %}proposals{% endif %} and events.</td>
                 </tr>
             </table>
         </div>
 
         <p>Thank you again for your interest and contribution. We look forward to your participation in other ways at PyCon Africa {{ proposal.event_year.year }} and beyond.</p>
-        <p>If you have any questions or would like a complimentary 20% discount on your ticket, please feel free to reach out to <a href="mailto:team@pycon.ug">team@pycon.ug</a></p></p>
+        <p>If you have any questions or would like a complimentary 20% discount on your ticket, please feel free to reach out to <a href="mailto:team@pycon.ug">team@pycon.ug</a>.</p>
         <br>
         <p>Best regards,<br>The PyCon Africa Program Team</p>
     </div>
