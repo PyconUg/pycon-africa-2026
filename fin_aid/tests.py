@@ -21,13 +21,44 @@ class OpportunityGrantApplyTests(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user('applicant', 'a@example.com', 'testpass123')
-        self.event_year = EventYear.objects.create(year=2026, home_info='test')
+        self.event_year, _ = EventYear.objects.get_or_create(
+            year=2026,
+            defaults={'home_info': 'test'},
+        )
         self.fin = Fin_aid.objects.create(
             title='OG 2026',
             event_year=self.event_year,
             fin_open_date=timezone.now() - timedelta(days=1),
             fin_close_date=timezone.now() + timedelta(days=7),
         )
+
+    def test_public_page_shows_guidelines_and_closed_banner_after_deadline(self):
+        self.fin.fin_close_date = timezone.now() - timedelta(days=1)
+        self.fin.save()
+        response = self.client.get('/2026/opportunity-grants/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Applications closed')
+        self.assertContains(response, 'PyCon Africa 2026 Opportunity Grants Programme')
+        self.assertNotContains(
+            response,
+            'Opportunity grant information will be available soon',
+        )
+
+    def test_form_status_message_uses_local_timezone_not_utc(self):
+        from datetime import datetime
+        from zoneinfo import ZoneInfo
+
+        eat = ZoneInfo('Africa/Kampala')
+        close_at = datetime(2026, 6, 1, 23, 0, tzinfo=eat)
+        self.assertEqual(
+            self.fin.format_window_datetime(close_at),
+            '1 June 2026, 23:00 (EAT)',
+        )
+        self.fin.fin_close_date = timezone.now() - timedelta(hours=1)
+        self.fin.save()
+        msg = self.fin.get_form_status_message()
+        self.assertIn('(EAT)', msg)
+        self.assertNotIn('2026-06-01 20:00:00', msg)
 
     def test_legacy_fin_aid_path_redirects_permanently(self):
         response = self.client.get('/2026/fin-aid/apply/', follow=False)
@@ -120,7 +151,10 @@ class FinAidReviewerAccessTests(TestCase):
         self.client = Client()
         self.reviewer_user = User.objects.create_user('rev', 'r@example.com', 'testpass123')
         self.applicant = User.objects.create_user('app', 'app@example.com', 'testpass123')
-        self.event_year = EventYear.objects.create(year=2026, home_info='test')
+        self.event_year, _ = EventYear.objects.get_or_create(
+            year=2026,
+            defaults={'home_info': 'test'},
+        )
         self.fin = Fin_aid.objects.create(
             title='OG 2026',
             event_year=self.event_year,
@@ -156,7 +190,10 @@ class OpportunityGrantMyApplicationTests(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user('owner', 'o@example.com', 'testpass123')
-        self.event_year = EventYear.objects.create(year=2026, home_info='test')
+        self.event_year, _ = EventYear.objects.get_or_create(
+            year=2026,
+            defaults={'home_info': 'test'},
+        )
         self.fin = Fin_aid.objects.create(
             title='OG 2026',
             event_year=self.event_year,

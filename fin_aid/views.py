@@ -82,6 +82,16 @@ def _fin_aid_for_event_year(event_year):
     return Fin_aid.objects.filter(event_year=event_year).order_by('-date_created').first()
 
 
+def _annotate_fin_aid_form_status(fin_aid_obj):
+    if fin_aid_obj is None:
+        return None
+    fin_aid_obj.is_open = fin_aid_obj.is_form_open()
+    fin_aid_obj.is_closed = fin_aid_obj.is_form_closed()
+    fin_aid_obj.not_open_yet = fin_aid_obj.is_form_not_open_yet()
+    fin_aid_obj.form_status_message = fin_aid_obj.get_form_status_message()
+    return fin_aid_obj
+
+
 def _fin_aid_subpage_template(year, basename):
     path = f'{year}/fin_aid/{basename}'
     try:
@@ -94,16 +104,12 @@ def _fin_aid_subpage_template(year, basename):
 def fin_aid(request, year):
     event_year = get_object_or_404(EventYear, year=year)
     fin_aids = Fin_aid.objects.filter(event_year=event_year).order_by('-date_created')
-    for fin_aid in fin_aids:
-        fin_aid.is_open = fin_aid.is_form_open()
-        fin_aid.is_closed = fin_aid.is_form_closed()
-        fin_aid.not_open_yet = fin_aid.is_form_not_open_yet()
-        fin_aid.form_status_message = fin_aid.get_form_status_message()
+    fin_round = _annotate_fin_aid_form_status(_fin_aid_for_event_year(event_year))
+    show_opportunity_grant_programme = year == 2026 or fin_round is not None
     is_fin_aid_reviewer = (
         request.user.is_authenticated
         and FinAidReviewer.objects.filter(user=request.user).exists()
     )
-    fin_round = _fin_aid_for_event_year(event_year)
     user_og_application = None
     if request.user.is_authenticated and fin_round is not None:
         user_og_application = OpportunityGrantApplication.objects.filter(
@@ -121,8 +127,10 @@ def fin_aid(request, year):
         request,
         f'{year}/fin_aid/fin_aid.html',
         {
+            'fin_aid': fin_round,
             'fin_aids': fin_aids,
             'year': year,
+            'show_opportunity_grant_programme': show_opportunity_grant_programme,
             'is_fin_aid_reviewer': is_fin_aid_reviewer,
             'has_opportunity_grant_application': has_opportunity_grant_application,
             'can_edit_opportunity_grant_application': can_edit_opportunity_grant_application,

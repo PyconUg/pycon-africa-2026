@@ -12,44 +12,62 @@
   <div class="max-w-7xl mx-auto px-4 pb-16">
     <div class="max-w-4xl mx-auto text-gray-900">
 
-      {% if not fin_aids %}
+      {% if not show_opportunity_grant_programme %}
         <p class="text-center text-gray-500 text-lg py-8">
           {% trans "Opportunity grant information will be available soon. Please check back later." %}
         </p>
       {% else %}
-        {% with fin_aid=fin_aids.0 %}
-          {% if fin_aid.is_closed %}
-            <p class="text-center text-gray-500 text-lg py-8">
-              {% trans "Opportunity grant information will be available soon. Please check back later." %}
+
+        {% if fin_aid and fin_aid.is_closed %}
+          <div class="rounded-lg border border-red-200 bg-red-50 px-6 py-6 mb-10" role="alert">
+            <h2 class="text-xl font-bold text-gray-900 mb-2">{% trans "Applications closed" %}</h2>
+            <p class="text-lg leading-relaxed text-gray-700">
+              {% trans "Opportunity grant applications are now closed. Thank you for your interest." %}
             </p>
-          {% else %}
-
-            {% include '2026/fin_aid/_opportunity_grants_programme.html' with fin_aid=fin_aid %}
-
-            {% if fin_aid.is_open %}
-            <div class="mt-12 mb-10 pt-10 border-t border-gray-200">
-              <h2 class="text-2xl font-bold text-gray-900 mb-4">{% trans "Apply" %}</h2>
-              <p class="text-lg leading-relaxed mb-6">
-                {% trans "Use our online form to submit your opportunity grant application. You must be logged in." %}
-              </p>
-              {% include '2026/fin_aid/_opportunity_grants_apply_buttons.html' %}
-              {% if user.is_authenticated %}
-                {% if has_opportunity_grant_application and can_edit_opportunity_grant_application %}
-                  <p class="text-sm text-gray-600 mt-4">{% trans "You can edit your application until the deadline, as long as a reviewer has not yet recorded feedback." %}</p>
-                {% elif has_opportunity_grant_application %}
-                  <p class="text-sm text-gray-600 mt-4">{% trans "You can view your application; editing is not available after the deadline or once review has begun." %}</p>
-                {% endif %}
-              {% endif %}
-            </div>
-            {% elif fin_aid.not_open_yet %}
-            <div class="rounded-lg bg-amber-50 border border-amber-200 px-6 py-6 mt-10">
-              <h2 class="text-xl font-bold text-gray-900 mb-2">{% trans "Applications opening soon" %}</h2>
-              <p class="text-gray-700">{{ fin_aid.form_status_message }}</p>
-            </div>
+            {% if fin_aid.form_status_message %}
+              <p class="text-sm text-gray-600 mt-3">{{ fin_aid.form_status_message }}</p>
             {% endif %}
+            {% if user.is_authenticated and has_opportunity_grant_application %}
+              <div class="mt-4">
+                {% url 'pycon2026:fin_aid_my_application' as url_view %}
+                {% trans "View my application" as view_label %}
+                {% include '2026/fin_aid/_opportunity_grant_link_button.html' with href=url_view label=view_label btn_class='px-5 py-2.5 text-sm font-semibold text-white bg-pycon-teal hover:bg-teal-700' %}
+              </div>
+            {% endif %}
+          </div>
+        {% elif not fin_aid %}
+          <div class="rounded-lg border border-red-200 bg-red-50 px-6 py-6 mb-10" role="alert">
+            <h2 class="text-xl font-bold text-gray-900 mb-2">{% trans "Applications closed" %}</h2>
+            <p class="text-lg leading-relaxed text-gray-700">
+              {% trans "Opportunity grant applications are now closed. Thank you for your interest." %}
+            </p>
+          </div>
+        {% endif %}
 
-          {% endif %}
-        {% endwith %}
+        {% include '2026/fin_aid/_opportunity_grants_programme.html' with fin_aid=fin_aid %}
+
+        {% if fin_aid and fin_aid.is_open %}
+          <div class="mt-12 mb-10 pt-10 border-t border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">{% trans "Apply" %}</h2>
+            <p class="text-lg leading-relaxed mb-6">
+              {% trans "Use our online form to submit your opportunity grant application. You must be logged in." %}
+            </p>
+            {% include '2026/fin_aid/_opportunity_grants_apply_buttons.html' %}
+            {% if user.is_authenticated %}
+              {% if has_opportunity_grant_application and can_edit_opportunity_grant_application %}
+                <p class="text-sm text-gray-600 mt-4">{% trans "You can edit your application until the deadline, as long as a reviewer has not yet recorded feedback." %}</p>
+              {% elif has_opportunity_grant_application %}
+                <p class="text-sm text-gray-600 mt-4">{% trans "You can view your application; editing is not available after the deadline or once review has begun." %}</p>
+              {% endif %}
+            {% endif %}
+          </div>
+        {% elif fin_aid and fin_aid.not_open_yet %}
+          <div class="rounded-lg bg-amber-50 border border-amber-200 px-6 py-6 mt-10">
+            <h2 class="text-xl font-bold text-gray-900 mb-2">{% trans "Applications opening soon" %}</h2>
+            <p class="text-gray-700">{{ fin_aid.form_status_message }}</p>
+          </div>
+        {% endif %}
+
       {% endif %}
 
       {% if is_fin_aid_reviewer %}
