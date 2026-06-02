@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.conf import settings
 from django.utils import timezone
+from django.utils.formats import date_format
 from django_countries.fields import CountryField
 from home.models import EventYear
 
@@ -39,11 +40,19 @@ class Fin_aid(models.Model):
         now = timezone.now()
         return now < self.fin_open_date
 
+    def format_window_datetime(self, dt):
+        """Format an application window time in project local time (EAT)."""
+        return f"{date_format(timezone.localtime(dt), 'j F Y, H:i')} (EAT)"
+
     def get_form_status_message(self):
         if self.is_form_not_open_yet():
-            return "The financial aid application form will open on {}".format(self.fin_open_date.strftime("%Y-%m-%d %H:%M:%S"))
+            return "The financial aid application form will open on {}".format(
+                self.format_window_datetime(self.fin_open_date),
+            )
         elif self.is_form_closed():
-            return "The financial aid application form closed on {}".format(self.fin_close_date.strftime("%Y-%m-%d %H:%M:%S"))
+            return "The financial aid application form closed on {}".format(
+                self.format_window_datetime(self.fin_close_date),
+            )
         else:
             return "The financial aid application form is currently open."
 

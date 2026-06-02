@@ -20,8 +20,12 @@
     <div class="rounded-lg bg-amber-50 border border-amber-200 px-4 py-4 mt-6">
       <h3 class="text-lg font-bold text-gray-900 mb-3">{% trans "Important dates" %}</h3>
       <ul class="list-disc list-inside space-y-2 leading-relaxed">
-        <li><strong>{% trans "Applications open:" %}</strong> {{ fin_aid.fin_open_date|date:"j F Y" }} (EAT)</li>
-        <li><strong>{% trans "Applications close:" %}</strong> {{ fin_aid.fin_close_date|date:"j F Y, H:i" }} (EAT)</li>
+        {% if fin_aid %}
+          <li><strong>{% trans "Applications open:" %}</strong> {{ fin_aid.fin_open_date|date:"j F Y" }} (EAT)</li>
+          <li><strong>{% trans "Applications close:" %}</strong> {{ fin_aid.fin_close_date|date:"j F Y, H:i" }} (EAT)</li>
+        {% else %}
+          <li><strong>{% trans "Applications:" %}</strong> {% trans "Closed" %}</li>
+        {% endif %}
         <li><strong>{% trans "Notifications sent:" %}</strong> 20 July 2026</li>
       </ul>
     </div>
@@ -86,12 +90,16 @@
         <a href="{% url 'profiles:profile_home' %}" class="text-pycon-teal font-medium hover:underline">{% trans "your profile" %}</a>.
       </li>
       <li>
-        {% blocktrans trimmed %}
-          When applications are open, use the <strong>Apply for an opportunity grant</strong> button on this page to complete the
-          online form before the deadline:
-          <strong>{{ fin_aid.fin_close_date|date:"j F Y" }}, {{ fin_aid.fin_close_date|date:"H:i" }} (EAT)</strong>.
-          We will not accept applications after this date.
-        {% endblocktrans %}
+        {% if fin_aid %}
+          {% blocktrans trimmed %}
+            When applications are open, use the <strong>Apply for an opportunity grant</strong> button on this page to complete the
+            online form before the deadline:
+            <strong>{{ fin_aid.fin_close_date|date:"j F Y" }}, {{ fin_aid.fin_close_date|date:"H:i" }} (EAT)</strong>.
+            We will not accept applications after this date.
+          {% endblocktrans %}
+        {% else %}
+          {% trans "Applications are closed. We are no longer accepting new opportunity grant applications for PyCon Africa 2026." %}
+        {% endif %}
       </li>
       <li>{% trans "Read the questions on the form carefully and answer them as best you can." %}</li>
     </ol>
@@ -182,14 +190,16 @@
   <div>
     <h2 class="text-2xl font-bold text-gray-900 mb-4">{% trans "Timeline" %}</h2>
     <ul class="list-disc list-inside space-y-2">
-      <li>
-        <strong>{{ fin_aid.fin_open_date|date:"j F Y" }}:</strong>
-        {% trans "Opportunity grants applications open" %}
-      </li>
-      <li>
-        <strong>{{ fin_aid.fin_close_date|date:"j F Y" }}:</strong>
-        {% trans "Opportunity grants applications close" %}
-      </li>
+      {% if fin_aid %}
+        <li>
+          <strong>{{ fin_aid.fin_open_date|date:"j F Y" }}:</strong>
+          {% trans "Opportunity grants applications open" %}
+        </li>
+        <li>
+          <strong>{{ fin_aid.fin_close_date|date:"j F Y" }}:</strong>
+          {% trans "Opportunity grants applications close" %}
+        </li>
+      {% endif %}
       <li>
         <strong>{% trans "October 2026:" %}</strong>
         {% trans "PyCon Africa 2026 — Kampala, Uganda" %}

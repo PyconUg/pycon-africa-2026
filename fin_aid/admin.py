@@ -45,7 +45,7 @@ class Fin_aidAdmin(admin.ModelAdmin):
                     'The public apply form is open when: <strong>fin_open_date</strong> ≤ now ≤ '
                     '<strong>fin_close_date</strong>. '
                     'Times use the project timezone (Django TIME_ZONE). '
-                    'After close, the public opportunity-grants page shows the short “check back later” message until you change these dates.'
+                    'After close, the public opportunity-grants page shows a closed-applications banner and keeps the programme guidelines visible.'
                 ),
             },
         ),
