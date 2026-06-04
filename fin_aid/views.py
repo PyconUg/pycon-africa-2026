@@ -411,13 +411,14 @@ def fin_aid_reviews_list(request, year):
         )
     else:
         # Fallback: show all submitted/in-review applications (no assignments configured yet)
+        # Exclude the reviewer's own application and anything they've already reviewed.
         all_applications = OpportunityGrantApplication.objects.filter(
             fin_aid__in=fin_aids,
             status__in=[
                 OpportunityGrantApplication.STATUS_SUBMITTED,
                 OpportunityGrantApplication.STATUS_IN_REVIEW,
             ]
-        ).select_related('user', 'fin_aid').prefetch_related('reviews')
+        ).exclude(user=request.user).select_related('user', 'fin_aid').prefetch_related('reviews')
         all_applications = [a for a in all_applications if a.pk not in reviewed_by_me_ids]
 
     # SECTION 1: Unreviewed applications (NO ONE has reviewed them yet)
@@ -481,6 +482,11 @@ def fin_aid_review_detail(request, year, pk):
             template,
             {'year': year, 'no_reviewer_rights': True},
         )
+
+    # Block self-reviews unconditionally
+    if application.user_id == request.user.id:
+        messages.error(request, 'You cannot review your own application.')
+        return redirect(_fin_aid_reviews_list_url(year))
 
     # Enforce assignment if assignments exist for this reviewer in this event year
     fin_aids_for_year = Fin_aid.objects.filter(event_year=event_year)
