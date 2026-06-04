@@ -30,8 +30,9 @@ from django.urls import reverse
 from django.utils.translation import gettext as _
 from .models import (
     Fin_aid,
-    FinAidReviewer,
     FinAidApplicationReview,
+    FinAidReviewAssignment,
+    FinAidReviewer,
     OpportunityGrantApplication,
 )
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -383,47 +384,60 @@ def fin_aid_reviews_list(request, year):
         )
 
     fin_aids = Fin_aid.objects.filter(event_year=event_year)
-    all_applications = OpportunityGrantApplication.objects.filter(
-        fin_aid__in=fin_aids,
-        status__in=[
-            OpportunityGrantApplication.STATUS_SUBMITTED,
-            OpportunityGrantApplication.STATUS_IN_REVIEW,
-        ]
-    ).select_related('user', 'fin_aid').prefetch_related('reviews')
 
     # Get applications this reviewer has already reviewed
     reviewed_by_me_ids = set(
         FinAidApplicationReview.objects.filter(reviewer=reviewer).values_list(
-            'application_id',
-            flat=True,
+            'application_id', flat=True,
         )
     )
 
-    # Filter out applications this reviewer has already reviewed
-    available_applications = [a for a in all_applications if a.pk not in reviewed_by_me_ids]
+    # Check whether this reviewer has any assignments for this event year
+    assigned_ids = set(
+        FinAidReviewAssignment.objects.filter(
+            reviewer=reviewer,
+            application__fin_aid__in=fin_aids,
+        ).values_list('application_id', flat=True)
+    )
+    using_assignments = bool(assigned_ids)
+
+    if using_assignments:
+        # Only show applications explicitly assigned to this reviewer
+        candidate_ids = assigned_ids - reviewed_by_me_ids
+        all_applications = (
+            OpportunityGrantApplication.objects.filter(pk__in=candidate_ids)
+            .select_related('user', 'fin_aid')
+            .prefetch_related('reviews')
+        )
+    else:
+        # Fallback: show all submitted/in-review applications (no assignments configured yet)
+        all_applications = OpportunityGrantApplication.objects.filter(
+            fin_aid__in=fin_aids,
+            status__in=[
+                OpportunityGrantApplication.STATUS_SUBMITTED,
+                OpportunityGrantApplication.STATUS_IN_REVIEW,
+            ]
+        ).select_related('user', 'fin_aid').prefetch_related('reviews')
+        all_applications = [a for a in all_applications if a.pk not in reviewed_by_me_ids]
 
     # SECTION 1: Unreviewed applications (NO ONE has reviewed them yet)
     unreviewed_applications = []
-    # SECTION 2: Previously reviewed applications (OTHERS have reviewed them)
+    # SECTION 2: Previously reviewed by others (but not yet by this reviewer)
     previously_reviewed_applications = []
 
-    for app in available_applications:
-        review_count = app.reviews.count()
-        if review_count == 0:
-            # No one has reviewed this yet - goes to main section
+    for app in all_applications:
+        if app.reviews.count() == 0:
             unreviewed_applications.append(app)
         else:
-            # Others have reviewed this - goes to secondary section
             previously_reviewed_applications.append(app)
 
-    # Sort applications
     unreviewed_applications.sort(key=lambda a: a.submitted_at)
     previously_reviewed_applications.sort(key=lambda a: a.reviews.count(), reverse=True)
 
     # Get applications this reviewer has already completed
     my_completed_reviews = OpportunityGrantApplication.objects.filter(
         fin_aid__in=fin_aids,
-        pk__in=reviewed_by_me_ids
+        pk__in=reviewed_by_me_ids,
     ).select_related('user', 'fin_aid')
 
     review_by_app_id = {
@@ -444,6 +458,7 @@ def fin_aid_reviews_list(request, year):
             'previously_reviewed_applications': previously_reviewed_applications,
             'my_completed_reviews': my_completed_with_reviews,
             'reviewer': reviewer,
+            'using_assignments': using_assignments,
         },
     )
 
@@ -466,6 +481,23 @@ def fin_aid_review_detail(request, year, pk):
             template,
             {'year': year, 'no_reviewer_rights': True},
         )
+
+    # Enforce assignment if assignments exist for this reviewer in this event year
+    fin_aids_for_year = Fin_aid.objects.filter(event_year=event_year)
+    reviewer_has_assignments = FinAidReviewAssignment.objects.filter(
+        reviewer=reviewer,
+        application__fin_aid__in=fin_aids_for_year,
+    ).exists()
+    if reviewer_has_assignments:
+        is_assigned = FinAidReviewAssignment.objects.filter(
+            reviewer=reviewer, application=application
+        ).exists()
+        if not is_assigned:
+            messages.error(
+                request,
+                'This application is not assigned to you for review.',
+            )
+            return redirect(_fin_aid_reviews_list_url(year))
 
     existing_review = FinAidApplicationReview.objects.filter(
         application=application,
