@@ -1,11 +1,13 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 
 from .models import (
     Fin_aid,
-    FinAidReviewer,
     FinAidApplicationReview,
+    FinAidReviewAssignment,
+    FinAidReviewer,
     OpportunityGrantApplication,
 )
+from .services import assign_applications
 
 
 @admin.register(Fin_aid)
@@ -54,9 +56,87 @@ class Fin_aidAdmin(admin.ModelAdmin):
 
 @admin.register(FinAidReviewer)
 class FinAidReviewerAdmin(admin.ModelAdmin):
-    list_display = ('user',)
+    list_display = ('user', 'get_email', 'review_load', 'is_active', 'assignment_count')
+    list_editable = ('review_load', 'is_active')
+    list_filter = ('review_load', 'is_active')
     search_fields = ('user__username', 'user__email', 'user__first_name', 'user__last_name')
     autocomplete_fields = ('user',)
+    actions = ('run_assignment_for_latest_year_action',)
+
+    def get_email(self, obj):
+        return obj.user.email
+    get_email.admin_order_field = 'user__email'
+    get_email.short_description = 'Email address'
+
+    def assignment_count(self, obj):
+        return obj.assignments.count()
+    assignment_count.short_description = 'Current assignments'
+
+    def run_assignment_for_latest_year_action(self, request, queryset):
+        """Run application assignment for the most recent event year using the selected reviewers."""
+        from home.models import EventYear
+        latest_year = EventYear.objects.order_by('-year').first()
+        if not latest_year:
+            self.message_user(request, "No event year configured.", level=messages.ERROR)
+            return
+
+        result = assign_applications(
+            latest_year,
+            reviewers=queryset,
+            assigned_by=request.user,
+        )
+
+        if result['created']:
+            self.message_user(
+                request,
+                f"Created {result['created']} new review assignment(s) for {latest_year.year}.",
+                level=messages.SUCCESS,
+            )
+        else:
+            self.message_user(
+                request,
+                "No new assignments created (everything is already assigned).",
+                level=messages.INFO,
+            )
+
+        if result['unassignable']:
+            self.message_user(
+                request,
+                f"{len(result['unassignable'])} application(s) could not be assigned "
+                f"(every eligible reviewer is the applicant themselves). "
+                f"Application IDs: {', '.join(str(pk) for pk in result['unassignable'])}",
+                level=messages.WARNING,
+            )
+
+    run_assignment_for_latest_year_action.short_description = (
+        "Run assignment for the latest event year (using selected reviewers)"
+    )
+
+
+@admin.register(FinAidReviewAssignment)
+class FinAidReviewAssignmentAdmin(admin.ModelAdmin):
+    list_display = ('reviewer', 'application', 'event_year', 'assigned_at', 'assigned_by', 'has_review')
+    list_filter = ('application__fin_aid__event_year', 'reviewer__review_load', 'assigned_at')
+    search_fields = (
+        'reviewer__user__username',
+        'reviewer__user__email',
+        'application__legal_name',
+        'application__user__email',
+    )
+    autocomplete_fields = ('reviewer', 'application')
+    readonly_fields = ('assigned_at',)
+
+    def event_year(self, obj):
+        return obj.application.fin_aid.event_year
+    event_year.admin_order_field = 'application__fin_aid__event_year__year'
+    event_year.short_description = 'Event year'
+
+    def has_review(self, obj):
+        return FinAidApplicationReview.objects.filter(
+            reviewer=obj.reviewer, application=obj.application
+        ).exists()
+    has_review.boolean = True
+    has_review.short_description = 'Reviewed?'
 
 
 class FinAidApplicationReviewInline(admin.TabularInline):
@@ -85,6 +165,13 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
     readonly_fields = ('submitted_at', 'updated_at')
     inlines = (FinAidApplicationReviewInline,)
     autocomplete_fields = ('user', 'fin_aid')
+    actions = (
+        'accept_and_notify_action',
+        'reject_and_notify_action',
+        'waitlist_and_notify_action',
+        'resend_status_notification_action',
+        'assign_to_reviewers_action',
+    )
     fieldsets = (
         (
             'Round & account',
@@ -116,6 +203,188 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
             {'fields': ('submitted_at', 'updated_at')},
         ),
     )
+
+    # --- status + notify actions ---
+
+    def accept_and_notify_action(self, request, queryset):
+        """Set status to Accepted and trigger the applicant notification email."""
+        updated = 0
+        already = 0
+        for pk in queryset.values_list('pk', flat=True):
+            app = OpportunityGrantApplication.objects.get(pk=pk)
+            if app.status == OpportunityGrantApplication.STATUS_ACCEPTED:
+                already += 1
+                continue
+            app.status = OpportunityGrantApplication.STATUS_ACCEPTED
+            app.save()
+            updated += 1
+        if updated:
+            self.message_user(
+                request,
+                f"Accepted {updated} application(s). Notifications send when SMTP succeeds.",
+                messages.SUCCESS,
+            )
+        if already:
+            self.message_user(
+                request,
+                f"{already} application(s) were already accepted (skipped). "
+                "Use 'Resend status notification' to email them again without changing status.",
+                messages.INFO,
+            )
+        if not updated and not already:
+            self.message_user(request, "No applications to update.", messages.WARNING)
+
+    accept_and_notify_action.short_description = "Accept & notify applicant (selected)"
+
+    def reject_and_notify_action(self, request, queryset):
+        """Set status to Rejected and trigger the applicant notification email."""
+        updated = 0
+        already = 0
+        for pk in queryset.values_list('pk', flat=True):
+            app = OpportunityGrantApplication.objects.get(pk=pk)
+            if app.status == OpportunityGrantApplication.STATUS_REJECTED:
+                already += 1
+                continue
+            app.status = OpportunityGrantApplication.STATUS_REJECTED
+            app.save()
+            updated += 1
+        if updated:
+            self.message_user(
+                request,
+                f"Rejected {updated} application(s). Notifications send when SMTP succeeds.",
+                messages.SUCCESS,
+            )
+        if already:
+            self.message_user(
+                request,
+                f"{already} application(s) were already rejected (skipped). "
+                "Use 'Resend status notification' to email them again without changing status.",
+                messages.INFO,
+            )
+        if not updated and not already:
+            self.message_user(request, "No applications to update.", messages.WARNING)
+
+    reject_and_notify_action.short_description = "Reject & notify applicant (selected)"
+
+    def waitlist_and_notify_action(self, request, queryset):
+        """Set status to Waitlist and trigger the applicant notification email."""
+        updated = 0
+        already = 0
+        for pk in queryset.values_list('pk', flat=True):
+            app = OpportunityGrantApplication.objects.get(pk=pk)
+            if app.status == OpportunityGrantApplication.STATUS_WAITLIST:
+                already += 1
+                continue
+            app.status = OpportunityGrantApplication.STATUS_WAITLIST
+            app.save()
+            updated += 1
+        if updated:
+            self.message_user(
+                request,
+                f"Waitlisted {updated} application(s). Notifications send when SMTP succeeds.",
+                messages.SUCCESS,
+            )
+        if already:
+            self.message_user(
+                request,
+                f"{already} application(s) were already on the waitlist (skipped). "
+                "Use 'Resend status notification' to email them again without changing status.",
+                messages.INFO,
+            )
+        if not updated and not already:
+            self.message_user(request, "No applications to update.", messages.WARNING)
+
+    waitlist_and_notify_action.short_description = "Waitlist & notify applicant (selected)"
+
+    def resend_status_notification_action(self, request, queryset):
+        """Re-send the status email matching each application's current status."""
+        from .email_notifications import send_opportunity_grant_status_notification
+
+        NOTIFY_STATUSES = {
+            OpportunityGrantApplication.STATUS_ACCEPTED,
+            OpportunityGrantApplication.STATUS_REJECTED,
+            OpportunityGrantApplication.STATUS_WAITLIST,
+        }
+
+        sent = 0
+        skipped = 0
+        failed = 0
+        for pk, status in queryset.values_list('pk', 'status'):
+            if status not in NOTIFY_STATUSES:
+                skipped += 1
+                continue
+            if send_opportunity_grant_status_notification(pk, status):
+                sent += 1
+            else:
+                failed += 1
+
+        if sent:
+            self.message_user(
+                request,
+                f"Resent status notification for {sent} application(s).",
+                messages.SUCCESS,
+            )
+        if skipped:
+            self.message_user(
+                request,
+                f"{skipped} application(s) skipped — only accepted, rejected, and waitlisted "
+                "applications trigger a notification email.",
+                messages.INFO,
+            )
+        if failed:
+            self.message_user(
+                request,
+                f"{failed} application(s) could not be emailed "
+                "(missing user email, SMTP error, or missing DEFAULT_FROM_EMAIL). See server logs.",
+                messages.WARNING,
+            )
+
+    resend_status_notification_action.short_description = "Resend status notification email (selected)"
+
+    def assign_to_reviewers_action(self, request, queryset):
+        """Run the assignment algorithm scoped to the selected applications."""
+        event_years = set()
+        for app in queryset.select_related('fin_aid__event_year'):
+            event_years.add(app.fin_aid.event_year)
+
+        if not event_years:
+            self.message_user(request, "No applications selected.", level=messages.WARNING)
+            return
+
+        total_created = 0
+        all_unassignable = []
+        for event_year in event_years:
+            scoped = queryset.filter(fin_aid__event_year=event_year)
+            result = assign_applications(
+                event_year,
+                applications=scoped,
+                assigned_by=request.user,
+            )
+            total_created += result['created']
+            all_unassignable.extend(result['unassignable'])
+
+        if total_created:
+            self.message_user(
+                request,
+                f"Created {total_created} new review assignment(s).",
+                level=messages.SUCCESS,
+            )
+        else:
+            self.message_user(
+                request,
+                "No new assignments were created (everything is already assigned).",
+                level=messages.INFO,
+            )
+
+        if all_unassignable:
+            self.message_user(
+                request,
+                f"{len(all_unassignable)} application(s) could not be assigned to any reviewer. "
+                f"Application IDs: {', '.join(str(pk) for pk in all_unassignable)}",
+                level=messages.WARNING,
+            )
+
+    assign_to_reviewers_action.short_description = "Assign selected applications to reviewers"
 
 
 @admin.register(FinAidApplicationReview)

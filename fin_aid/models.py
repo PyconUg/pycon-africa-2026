@@ -58,11 +58,24 @@ class Fin_aid(models.Model):
 
 
 class FinAidReviewer(models.Model):
+    LOAD_ALL = 'all'
+    LOAD_EQUAL = 'equal'
+    REVIEW_LOAD_CHOICES = (
+        (LOAD_ALL, 'All — review every application'),
+        (LOAD_EQUAL, 'Equal — fair share via round-robin'),
+    )
+
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='fin_aid_reviewer_profile',
     )
+    review_load = models.CharField(
+        max_length=16,
+        choices=REVIEW_LOAD_CHOICES,
+        default=LOAD_EQUAL,
+    )
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = 'Opportunity grant reviewer'
@@ -70,6 +83,40 @@ class FinAidReviewer(models.Model):
 
     def __str__(self):
         return self.user.get_username()
+
+
+class FinAidReviewAssignment(models.Model):
+    reviewer = models.ForeignKey(
+        FinAidReviewer,
+        on_delete=models.CASCADE,
+        related_name='assignments',
+    )
+    application = models.ForeignKey(
+        'OpportunityGrantApplication',
+        on_delete=models.CASCADE,
+        related_name='review_assignments',
+    )
+    assigned_at = models.DateTimeField(auto_now_add=True)
+    assigned_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='fin_aid_assignments_made',
+    )
+
+    class Meta:
+        verbose_name = 'Opportunity grant review assignment'
+        verbose_name_plural = 'Opportunity grant review assignments'
+        constraints = [
+            models.UniqueConstraint(
+                fields=('reviewer', 'application'),
+                name='unique_fin_aid_review_assignment',
+            ),
+        ]
+
+    def __str__(self):
+        return f'{self.reviewer} → application {self.application_id}'
 
 
 class OpportunityGrantApplication(models.Model):
