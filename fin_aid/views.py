@@ -35,6 +35,8 @@ from .models import (
     FinAidReviewer,
     OpportunityGrantApplication,
 )
+from talks.models import Proposal
+from .flight_budgets import get_flight_budget, get_review_region
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from home.models import EventYear
 
@@ -511,16 +513,32 @@ def fin_aid_review_detail(request, year, pk):
     ).first()
     already_reviewed = existing_review is not None
 
+    flight_budget = get_flight_budget(str(application.country.code))
+
+    accepted_proposal = Proposal.objects.filter(
+        user=application.user,
+        status='A',
+        event_year=event_year,
+    ).first()
+
     if request.method == 'POST' and not already_reviewed:
         form = FinAidApplicationReviewForm(request.POST)
         if form.is_valid():
             review = form.save(commit=False)
             review.application = application
             review.reviewer = reviewer
+            if accepted_proposal:
+                review.is_speaker = True
             review.save()
             return redirect(_fin_aid_review_success_url(year))
     else:
-        form = FinAidApplicationReviewForm()
+        initial = {
+            'grant_type': application.support_type,
+            'region': get_review_region(str(application.country.code)),
+        }
+        if accepted_proposal:
+            initial['is_speaker'] = True
+        form = FinAidApplicationReviewForm(initial=initial)
 
     return render(
         request,
@@ -531,5 +549,7 @@ def fin_aid_review_detail(request, year, pk):
             'form': form,
             'already_reviewed': already_reviewed,
             'existing_review': existing_review,
+            'accepted_proposal': accepted_proposal,
+            'flight_budget': flight_budget,
         },
     )
