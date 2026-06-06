@@ -74,12 +74,50 @@ class OpportunityGrantApplicationForm(forms.ModelForm):
 class FinAidApplicationReviewForm(forms.ModelForm):
     class Meta:
         model = FinAidApplicationReview
-        fields = ('recommendation', 'comments')
+        fields = (
+            'is_speaker',
+            'is_organizer',
+            'is_local_contributor',
+            'region',
+            'is_woman',
+            'is_professional_cant_afford',
+            'has_disability',
+            'is_motivated_student',
+            'is_student',
+            'alignment_score',
+            'grant_type',
+            'amount_exceeded',
+            'recommendation',
+            'comments',
+        )
         widgets = {
-            'comments': forms.Textarea(attrs={'rows': 5}),
+            'comments': forms.Textarea(attrs={'rows': 5, 'class': 'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pycon-teal focus:border-transparent'}),
+            'recommendation': forms.Select(attrs={'class': 'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-pycon-teal focus:border-transparent'}),
+            'region': forms.Select(attrs={'class': 'w-full max-w-xs rounded-lg border border-gray-300 px-3 py-2'}),
+            'alignment_score': forms.Select(attrs={'class': 'w-full max-w-xs rounded-lg border border-gray-300 px-3 py-2'}),
+            'grant_type': forms.RadioSelect(),
+            'amount_exceeded': forms.NumberInput(attrs={
+                'class': 'w-full max-w-xs rounded-lg border border-gray-300 px-3 py-2 text-sm',
+                'placeholder': 'e.g. 150.00',
+                'min': '0',
+                'step': '0.01',
+            }),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.fields['region'].choices = [('', '--- Select region ---')] + list(
+            FinAidApplicationReview.REGION_CHOICES
+        )
+        self.fields['region'].required = True
+        self.fields['grant_type'].required = True
+
+    def clean(self):
+        cleaned = super().clean()
+        if cleaned.get('is_motivated_student') and cleaned.get('is_student'):
+            raise forms.ValidationError(
+                'Select either Motivated student or Student — not both.'
+            )
+        return cleaned

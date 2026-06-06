@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
@@ -202,14 +203,30 @@ class OpportunityGrantApplication(models.Model):
 
 class FinAidApplicationReview(models.Model):
     RECOMMEND_ACCEPT = 'accept'
+    RECOMMEND_PARTIAL = 'partial'
     RECOMMEND_REJECT = 'reject'
     RECOMMEND_UNSURE = 'unsure'
 
     RECOMMENDATION_CHOICES = (
         (RECOMMEND_ACCEPT, 'Accept / fund'),
+        (RECOMMEND_PARTIAL, 'Partial grant'),
         (RECOMMEND_REJECT, 'Reject'),
         (RECOMMEND_UNSURE, 'Unsure / needs discussion'),
     )
+
+    REGION_UGANDA = 'uganda'
+    REGION_EAST_AFRICA = 'east_africa'
+    REGION_OTHER_AFRICA = 'other_africa'
+    REGION_OUTSIDE_AFRICA = 'outside_africa'
+
+    REGION_CHOICES = (
+        (REGION_UGANDA, 'Uganda'),
+        (REGION_EAST_AFRICA, 'East Africa (not Uganda)'),
+        (REGION_OTHER_AFRICA, 'Other Africa'),
+        (REGION_OUTSIDE_AFRICA, 'Outside Africa'),
+    )
+
+    ALIGNMENT_CHOICES = [(i, str(i)) for i in range(6)]
 
     application = models.ForeignKey(
         OpportunityGrantApplication,
@@ -229,6 +246,59 @@ class FinAidApplicationReview(models.Model):
     comments = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # Scoring: Impactful contributors (raw 0-3, weight ×3)
+    is_speaker = models.BooleanField(default=False, verbose_name='Speaker')
+    is_organizer = models.BooleanField(default=False, verbose_name='Organizer')
+    is_local_contributor = models.BooleanField(default=False, verbose_name='Local contributor')
+
+    # Scoring: Regional attendee (raw 0-1, weight ×3)
+    region = models.CharField(
+        max_length=20,
+        choices=REGION_CHOICES,
+        blank=True,
+        default='',
+        verbose_name='Region',
+    )
+
+    # Scoring: Diversity (raw 0-4.5, weight ×5)
+    is_woman = models.BooleanField(default=False, verbose_name='Woman')
+    is_professional_cant_afford = models.BooleanField(
+        default=False, verbose_name='Professional who cannot afford to attend'
+    )
+    has_disability = models.BooleanField(default=False, verbose_name='Person with disability')
+    is_motivated_student = models.BooleanField(default=False, verbose_name='Motivated student')
+    is_student = models.BooleanField(default=False, verbose_name='Student')
+
+    # Scoring: Alignment (0–5)
+    alignment_score = models.IntegerField(
+        choices=ALIGNMENT_CHOICES,
+        default=0,
+        verbose_name='Alignment score (0–5)',
+    )
+
+    # Persisted total score — computed and stored on every save() (float due to 0.5 student score)
+    total_score = models.FloatField(default=0, editable=False)
+
+    # Amount by which the applicant's budget request exceeds the regional flight cap (USD)
+    amount_exceeded = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0)],
+        verbose_name='Amount exceeded (USD)',
+        help_text='How much the applicant\'s requested budget exceeds the regional flight cap, in USD.',
+    )
+
+    # Scoring: Grant type (reviewer-confirmed, pre-filled from application)
+    grant_type = models.CharField(
+        max_length=32,
+        choices=OpportunityGrantApplication.SUPPORT_TYPE_CHOICES,
+        blank=True,
+        default='',
+        verbose_name='Grant type',
+    )
+
     class Meta:
         verbose_name = 'Opportunity grant application review'
         verbose_name_plural = 'Opportunity grant application reviews'
@@ -241,3 +311,49 @@ class FinAidApplicationReview(models.Model):
 
     def __str__(self):
         return f'Review by {self.reviewer} on application {self.application_id}'
+
+    @property
+    def contributor_score(self):
+        return sum([self.is_speaker, self.is_organizer, self.is_local_contributor]) * 3
+
+    @property
+    def regional_score(self):
+        raw = 0 if self.region == self.REGION_OUTSIDE_AFRICA else (1 if self.region else 0)
+        return raw * 3
+
+    @property
+    def diversity_score(self):
+        if self.is_motivated_student:
+            student_raw = 1
+        elif self.is_student:
+            student_raw = 0.5
+        else:
+            student_raw = 0
+        raw = (
+            (1 if self.is_woman else 0)
+            + (1 if self.is_professional_cant_afford else 0)
+            + (1 if self.has_disability else 0)
+            + student_raw
+        )
+        return raw * 5
+
+    @property
+    def grant_type_score(self):
+        mapping = {
+            OpportunityGrantApplication.SUPPORT_TICKET: 3,
+            OpportunityGrantApplication.SUPPORT_ACCOMMODATION: 2,
+            OpportunityGrantApplication.SUPPORT_TRAVEL: 1,
+            OpportunityGrantApplication.SUPPORT_OTHER: 0,
+        }
+        source = self.grant_type if self.grant_type else self.application.support_type
+        return mapping.get(source, 0)
+
+    def save(self, *args, **kwargs):
+        self.total_score = (
+            self.contributor_score
+            + self.regional_score
+            + self.diversity_score
+            + self.alignment_score
+            + self.grant_type_score
+        )
+        super().save(*args, **kwargs)

@@ -142,7 +142,8 @@ class FinAidReviewAssignmentAdmin(admin.ModelAdmin):
 class FinAidApplicationReviewInline(admin.TabularInline):
     model = FinAidApplicationReview
     extra = 0
-    readonly_fields = ('reviewer', 'recommendation', 'comments', 'created_at')
+    fields = ('reviewer', 'recommendation', 'total_score', 'comments', 'created_at')
+    readonly_fields = ('reviewer', 'recommendation', 'total_score', 'comments', 'created_at')
 
 
 @admin.register(OpportunityGrantApplication)

@@ -6,108 +6,540 @@
 {% include '2026/navbar.html' %}
 
 <div class="auth-page-content min-h-screen bg-gray-50">
-  <section class="max-w-6xl mx-auto px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
+  <section class="max-w-7xl mx-auto px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
     <div class="flex flex-col md:flex-row gap-6 lg:gap-10">
       {% include '2026/fin_aid/reviews/_reviewer_sidebar.html' %}
 
       <div class="flex-1 min-w-0 md:order-2 order-1">
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-4 sm:p-6 lg:px-8">
-          <div class="mb-6">
-            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">
-              {% if application %}
-                {% trans "Opportunity grant review" %}: {{ application.legal_name|truncatewords:10 }}
-              {% else %}
-                {% trans "Opportunity grant review" %}
-              {% endif %}
-            </h1>
-            <nav class="mt-2 text-sm text-gray-600 flex flex-wrap items-center gap-x-2 gap-y-1" aria-label="{% trans 'Breadcrumb' %}">
-              <a href="/{{ year }}/" class="text-pycon-teal font-medium hover:underline">{% trans "Home" %}</a>
-              <span class="text-gray-400">/</span>
-              <a href="/accounts/profile/" class="text-pycon-teal font-medium hover:underline">{% trans "Profile" %}</a>
-              <span class="text-gray-400">/</span>
-              <a href="{% fin_aid_reviews_url %}" class="text-pycon-teal font-medium hover:underline">{% trans "Grant reviews" %}</a>
-              {% if application %}
-                <span class="text-gray-400">/</span>
-                <span class="text-gray-900 font-medium">{{ application.legal_name|truncatewords:10 }}</span>
-              {% endif %}
-            </nav>
-          </div>
 
-          {% if no_reviewer_rights %}
+        {# ── Page header ─────────────────────────────────────────────────── #}
+        <div class="mb-6">
+          <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{% trans "Opportunity grant review" %}</h1>
+          <nav class="mt-2 text-sm text-gray-600 flex flex-wrap items-center gap-x-2 gap-y-1" aria-label="{% trans 'Breadcrumb' %}">
+            <a href="/{{ year }}/" class="text-pycon-teal font-medium hover:underline">{% trans "Home" %}</a>
+            <span class="text-gray-400">/</span>
+            <a href="/accounts/profile/" class="text-pycon-teal font-medium hover:underline">{% trans "Profile" %}</a>
+            <span class="text-gray-400">/</span>
+            <a href="{% fin_aid_reviews_url %}" class="text-pycon-teal font-medium hover:underline">{% trans "Grant reviews" %}</a>
+            {% if application %}
+              <span class="text-gray-400">/</span>
+              <span class="text-gray-900 font-medium">{% trans "Application" %}</span>
+            {% endif %}
+          </nav>
+        </div>
+
+        {% if no_reviewer_rights %}
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
             <p class="text-lg text-gray-900">{% trans "You do not have access to review applications." %}</p>
             <a href="{% fin_aid_reviews_url %}" class="mt-4 inline-block text-pycon-teal font-semibold hover:underline">{% trans "Back to review list" %}</a>
-          {% else %}
+          </div>
+        {% else %}
 
-            {% if messages %}
-              {% for message in messages %}
-                <div class="mb-4 rounded-lg px-4 py-3 bg-green-50 border border-green-200 text-sm">{{ message }}</div>
-              {% endfor %}
-            {% endif %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="mb-4 rounded-lg px-4 py-3 bg-green-50 border border-green-200 text-sm">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
 
-            <p class="mb-6">
-              <a href="{% fin_aid_reviews_url %}" class="text-sm font-semibold text-pycon-teal hover:underline">{% trans "← Back to review list" %}</a>
-            </p>
+          <p class="mb-4">
+            <a href="{% fin_aid_reviews_url %}" class="text-sm font-semibold text-pycon-teal hover:underline">{% trans "← Back to review list" %}</a>
+          </p>
 
-            <h2 class="text-xl font-semibold text-gray-900">{{ application.legal_name }}</h2>
-            <div class="mt-4 space-y-2 text-gray-800 text-sm sm:text-base">
-              <p><strong class="text-gray-900">{% trans "Account email" %}:</strong> {{ application.user.email }}</p>
-              <p><strong class="text-gray-900">{% trans "Country" %}:</strong> {{ application.country.name }}</p>
-              <p><strong class="text-gray-900">{% trans "Support requested" %}:</strong> {{ application.get_support_type_display }}</p>
-              <p><strong class="text-gray-900">{% trans "Committee status" %}:</strong> {{ application.get_status_display }}</p>
+          {# ── Applicant header card ────────────────────────────────────── #}
+          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6 mb-4">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h2 class="text-xl font-semibold text-gray-900">{{ application.legal_name }}</h2>
+                <p class="text-sm text-gray-500 mt-0.5">{{ application.user.email }}</p>
+              </div>
+              <span class="text-xs font-medium px-2.5 py-1 rounded-full
+                {% if application.status == 'submitted' %}bg-blue-50 text-blue-700
+                {% elif application.status == 'in_review' %}bg-yellow-50 text-yellow-700
+                {% elif application.status == 'accepted' %}bg-green-50 text-green-700
+                {% elif application.status == 'rejected' %}bg-red-50 text-red-700
+                {% else %}bg-gray-100 text-gray-600{% endif %}">
+                {{ application.get_status_display }}
+              </span>
             </div>
 
-            <div class="mt-6 pt-6 border-t border-gray-200 space-y-4 text-gray-800 text-sm sm:text-base">
+            {# Badges #}
+            <div class="flex flex-wrap items-center gap-2 mt-3">
+              {% if application.country.code == "CD" %}
+                <span
+                  class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold"
+                  style="background-color:#fee2e2; color:#991b1b;"
+                  title="{% trans 'Applicants from DRC are not eligible for opportunity grants — recommend rejection.' %}"
+                >
+                  ⚠ {% trans "DRC — recommend reject" %}
+                </span>
+              {% endif %}
+
+              {% if flight_budget %}
+                <span
+                  class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold"
+                  style="background-color:#ede9fe; color:#5b21b6;"
+                  title="{% trans 'Maximum expected flight reimbursement based on applicant country' %}"
+                >
+                  ✈ {% trans "Flight budget" %}: {{ flight_budget.0 }} ({{ application.country.name }}) — max ${{ flight_budget.1 }}
+                </span>
+              {% endif %}
+
+              {% if accepted_proposal %}
+                <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold" style="background-color:#dcfce7; color:#166534;">
+                  {% trans "Accepted speaker" %}
+                </span>
+                {% if accepted_proposal.user_response == "A" %}
+                  <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold" style="background-color:#dbeafe; color:#1e40af;">
+                    {% trans "Speaker confirmed" %}
+                  </span>
+                {% elif accepted_proposal.user_response == "R" %}
+                  <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold" style="background-color:#fee2e2; color:#991b1b;">
+                    {% trans "Speaker declined" %}
+                  </span>
+                {% else %}
+                  <span
+                    class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold"
+                    style="background-color:#fef9c3; color:#854d0e;"
+                    title="{% trans 'Talk is accepted but the speaker has not yet confirmed their availability — consider holding the grant decision until they confirm.' %}"
+                  >
+                    ⏳ {% trans "Talk accepted — awaiting speaker confirmation" %}
+                  </span>
+                {% endif %}
+              {% endif %}
+            </div>
+
+            {# Key meta grid #}
+            <dl class="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-3 text-sm border-t border-gray-100 pt-4">
               <div>
-                <h3 class="text-sm font-semibold text-gray-900 mb-1">{% trans "Budget / use of funds" %}</h3>
-                <p class="whitespace-pre-wrap">{{ application.budget_narrative }}</p>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-400">{% trans "Country" %}</dt>
+                <dd class="mt-0.5 text-gray-800">{{ application.country.name }}</dd>
               </div>
               <div>
-                <h3 class="text-sm font-semibold text-gray-900 mb-1">{% trans "Why they need support" %}</h3>
-                <p class="whitespace-pre-wrap">{{ application.why_need_support }}</p>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-400">{% trans "Support requested" %}</dt>
+                <dd class="mt-0.5 text-gray-800">{{ application.get_support_type_display }}</dd>
               </div>
               <div>
-                <h3 class="text-sm font-semibold text-gray-900 mb-1">{% trans "Community contribution" %}</h3>
-                <p class="whitespace-pre-wrap">{{ application.community_contribution }}</p>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-400">{% trans "Submitted" %}</dt>
+                <dd class="mt-0.5 text-gray-800">{{ application.submitted_at|date:"j M Y" }}</dd>
               </div>
+            </dl>
+          </div>
+
+          {# ── Two-column: narratives (left) + review (right) ───────────── #}
+          <div class="flex flex-col lg:flex-row gap-4 items-start">
+
+            {# Left — application narratives #}
+            <div class="w-full lg:w-3/5 bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6 space-y-5 text-sm text-gray-800">
+              <h3 class="text-base font-semibold text-gray-900">{% trans "Application" %}</h3>
+
+              <div>
+                <h4 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">{% trans "Budget / use of funds" %}</h4>
+                <p class="whitespace-pre-wrap leading-relaxed">{{ application.budget_narrative }}</p>
+              </div>
+
+              <div class="pt-4 border-t border-gray-100">
+                <h4 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">{% trans "Why they need support" %}</h4>
+                <p class="whitespace-pre-wrap leading-relaxed">{{ application.why_need_support }}</p>
+              </div>
+
+              <div class="pt-4 border-t border-gray-100">
+                <h4 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">{% trans "Community contribution" %}</h4>
+                <p class="whitespace-pre-wrap leading-relaxed">{{ application.community_contribution }}</p>
+              </div>
+
               {% if application.additional_notes %}
-                <div>
-                  <h3 class="text-sm font-semibold text-gray-900 mb-1">{% trans "Additional notes" %}</h3>
-                  <p class="whitespace-pre-wrap">{{ application.additional_notes }}</p>
+                <div class="pt-4 border-t border-gray-100">
+                  <h4 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-1">{% trans "Additional notes" %}</h4>
+                  <p class="whitespace-pre-wrap leading-relaxed">{{ application.additional_notes }}</p>
                 </div>
               {% endif %}
-              <p class="text-gray-600"><strong class="text-gray-900">{% trans "Submitted" %}:</strong> {{ application.submitted_at|date:"Y-m-d H:i" }}</p>
             </div>
 
-            <div class="mt-8 pt-8 border-t border-gray-200">
-              <h3 class="text-lg font-semibold text-gray-900 mb-4">{% trans "Your review" %}</h3>
+            {# Right — review panel #}
+            <div class="w-full lg:w-2/5 lg:sticky lg:top-6">
+              <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6">
+                <h3 class="text-base font-semibold text-gray-900 mb-4">{% trans "Your review" %}</h3>
 
-              {% if already_reviewed %}
-                <p class="text-gray-600 text-sm mb-4">{% trans "You have already submitted a review for this application." %}</p>
-                <dl class="space-y-3 text-sm sm:text-base">
-                  <div>
-                    <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Recommendation" %}</dt>
-                    <dd class="mt-1 text-gray-900">{{ existing_review.get_recommendation_display }}</dd>
-                  </div>
-                  {% if existing_review.comments %}
-                    <div>
-                      <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Comments" %}</dt>
-                      <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{{ existing_review.comments }}</dd>
+                {% if already_reviewed %}
+                  <p class="text-gray-500 text-xs mb-4">{% trans "You have already submitted a review for this application." %}</p>
+
+                  {# Scores summary #}
+                  <div class="mb-5 rounded-xl border border-gray-200 bg-gray-50 p-4 space-y-3 text-sm">
+                    <p class="font-semibold text-gray-800 text-xs uppercase tracking-wide">{% trans "Scores" %}</p>
+
+                    <div class="space-y-2">
+                      <div>
+                        <p class="text-xs text-gray-500 mb-0.5">{% trans "Impactful contributors" %}</p>
+                        <p class="text-xs text-gray-600">
+                          {% if existing_review.is_speaker %}✓ {% trans "Speaker" %}{% endif %}
+                          {% if existing_review.is_organizer %} · ✓ {% trans "Organizer" %}{% endif %}
+                          {% if existing_review.is_local_contributor %} · ✓ {% trans "Local contributor" %}{% endif %}
+                          {% if not existing_review.is_speaker and not existing_review.is_organizer and not existing_review.is_local_contributor %}—{% endif %}
+                        </p>
+                        <p class="text-xs font-semibold text-gray-800 mt-0.5">{% trans "Score" %}: {{ existing_review.contributor_score }}</p>
+                      </div>
+
+                      <div class="pt-2 border-t border-gray-200">
+                        <p class="text-xs text-gray-500 mb-0.5">{% trans "Regional attendee" %}</p>
+                        <p class="text-xs text-gray-600">{{ existing_review.get_region_display|default:"Not set" }}</p>
+                        <p class="text-xs font-semibold text-gray-800 mt-0.5">{% trans "Score" %}: {{ existing_review.regional_score }}</p>
+                      </div>
+
+                      <div class="pt-2 border-t border-gray-200">
+                        <p class="text-xs text-gray-500 mb-0.5">{% trans "Diversity" %}</p>
+                        <p class="text-xs text-gray-600">
+                          {% if existing_review.is_woman %}✓ {% trans "Woman" %}{% endif %}
+                          {% if existing_review.is_professional_cant_afford %} · ✓ {% trans "Professional" %}{% endif %}
+                          {% if existing_review.has_disability %} · ✓ {% trans "Disability" %}{% endif %}
+                          {% if existing_review.is_motivated_student %} · ✓ {% trans "Motivated student" %}{% endif %}
+                          {% if existing_review.is_student and not existing_review.is_motivated_student %} · ✓ {% trans "Student" %}{% endif %}
+                          {% if not existing_review.is_woman and not existing_review.is_professional_cant_afford and not existing_review.has_disability and not existing_review.is_motivated_student and not existing_review.is_student %}—{% endif %}
+                        </p>
+                        <p class="text-xs font-semibold text-gray-800 mt-0.5">{% trans "Score" %}: {{ existing_review.diversity_score }}</p>
+                      </div>
+
+                      <div class="pt-2 border-t border-gray-200">
+                        <p class="text-xs text-gray-500 mb-0.5">{% trans "Alignment" %}</p>
+                        <p class="text-xs font-semibold text-gray-800">{% trans "Score" %}: {{ existing_review.alignment_score }}</p>
+                      </div>
+
+                      <div class="pt-2 border-t border-gray-200">
+                        <p class="text-xs text-gray-500 mb-0.5">{% trans "Grant type" %}</p>
+                        <p class="text-xs text-gray-600">{{ existing_review.get_grant_type_display|default:application.get_support_type_display }}</p>
+                        <p class="text-xs font-semibold text-gray-800 mt-0.5">{% trans "Score" %}: {{ existing_review.grant_type_score }}</p>
+                      </div>
+
+                      {% if existing_review.amount_exceeded %}
+                        <div class="pt-2 border-t border-gray-200">
+                          <p class="text-xs text-gray-500 mb-0.5">{% trans "Amount exceeded beyond regional cap" %}</p>
+                          <p class="text-xs font-semibold text-gray-800">${{ existing_review.amount_exceeded|floatformat:"-2" }}</p>
+                        </div>
+                      {% endif %}
                     </div>
-                  {% endif %}
-                </dl>
-              {% else %}
-                <form method="post" action="" class="space-y-4" x-data="{ loading: false }" @submit="loading = true">
-                  {% csrf_token %}
-                  {% crispy form %}
-                  {% trans "Save review" as idle_label %}
-                  {% trans "Saving…" as busy_label %}
-                  {% include '2026/fin_aid/_opportunity_grant_form_submit.html' %}
-                </form>
-              {% endif %}
-            </div>
 
-          {% endif %}
-        </div>
+                    <div class="pt-3 border-t border-gray-200 flex items-center justify-between">
+                      <span class="font-semibold text-gray-800 text-sm">{% trans "Total score" %}</span>
+                      <span class="text-2xl font-bold text-gray-900 tabular-nums">{{ existing_review.total_score|floatformat:"-2" }}</span>
+                    </div>
+                  </div>
+
+                  <dl class="space-y-3 text-sm">
+                    <div>
+                      <dt class="text-xs font-semibold uppercase tracking-wide text-gray-400">{% trans "Recommendation" %}</dt>
+                      <dd class="mt-1 text-gray-900">{{ existing_review.get_recommendation_display }}</dd>
+                    </div>
+                    {% if existing_review.comments %}
+                      <div>
+                        <dt class="text-xs font-semibold uppercase tracking-wide text-gray-400">{% trans "Comments" %}</dt>
+                        <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{{ existing_review.comments }}</dd>
+                      </div>
+                    {% endif %}
+                  </dl>
+
+                {% else %}
+                  <form
+                    method="post"
+                    action=""
+                    class="space-y-4"
+                    x-data="{ loading: false }"
+                    @submit="if ($el.checkValidity()) { loading = true } else { $event.preventDefault() }"
+                  >
+                    {% csrf_token %}
+
+                    {# Impactful contributors #}
+                    <fieldset class="rounded-xl border border-gray-200 p-3">
+                      <legend class="px-1 text-xs font-semibold text-gray-800">
+                        {% trans "Impactful contributors" %}
+                        <span class="ml-1 font-normal text-gray-500">({% trans "select all that apply" %})</span>
+                      </legend>
+                      <div class="mt-2 space-y-1.5 text-sm text-gray-700">
+                        {% if accepted_proposal %}
+                          <label class="flex items-center gap-2 cursor-not-allowed opacity-75">
+                            <input type="checkbox" id="id_is_speaker" checked disabled>
+                            <input type="hidden" name="is_speaker" value="on">
+                            {{ form.is_speaker.label }}
+                            <span class="text-gray-400 text-xs">(+1)</span>
+                            <span class="text-xs font-medium" style="color:#166534;">— {% trans "locked: accepted talk" %}</span>
+                          </label>
+                        {% else %}
+                          <label class="flex items-center gap-2">
+                            {{ form.is_speaker }} {{ form.is_speaker.label }}
+                            <span class="text-gray-400 text-xs">(+1)</span>
+                          </label>
+                        {% endif %}
+                        <label class="flex items-center gap-2">
+                          {{ form.is_organizer }} {{ form.is_organizer.label }}
+                          <span class="text-gray-400 text-xs">(+1)</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                          {{ form.is_local_contributor }} {{ form.is_local_contributor.label }}
+                          <span class="text-gray-400 text-xs">(+1)</span>
+                        </label>
+                      </div>
+                      {% if form.is_speaker.errors or form.is_organizer.errors or form.is_local_contributor.errors %}
+                        <p class="mt-2 text-xs text-red-600">{{ form.is_speaker.errors }}{{ form.is_organizer.errors }}{{ form.is_local_contributor.errors }}</p>
+                      {% endif %}
+                    </fieldset>
+
+                    {# Regional attendee #}
+                    <fieldset class="rounded-xl border border-gray-200 p-3">
+                      <legend class="px-1 text-xs font-semibold text-gray-800">
+                        {% trans "Regional attendee" %}
+                        <span class="ml-1 font-normal text-gray-500">({% trans "applicant is from" %} {{ application.country.name }})</span>
+                      </legend>
+                      <div class="mt-2 space-y-1 text-sm text-gray-700">
+                        <label class="flex items-center gap-2">
+                          <span class="font-medium text-xs">{% trans "Region" %}:</span>
+                          {{ form.region }}
+                        </label>
+                        <p class="text-xs text-gray-400">Uganda / East Africa / Other Africa = +1 &nbsp;|&nbsp; Outside Africa = 0</p>
+                      </div>
+                      {% if form.region.errors %}
+                        <p class="mt-2 text-xs text-red-600">{{ form.region.errors }}</p>
+                      {% endif %}
+                    </fieldset>
+
+                    {# Diversity #}
+                    <fieldset class="rounded-xl border border-gray-200 p-3">
+                      <legend class="px-1 text-xs font-semibold text-gray-800">
+                        {% trans "Diversity" %}
+                        <span class="ml-1 font-normal text-gray-500">({% trans "select all that apply" %})</span>
+                      </legend>
+                      <div class="mt-2 space-y-1.5 text-sm text-gray-700">
+                        <label class="flex items-center gap-2">
+                          {{ form.is_woman }} {{ form.is_woman.label }}
+                          <span class="text-gray-400 text-xs">(+1)</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                          {{ form.is_professional_cant_afford }} {{ form.is_professional_cant_afford.label }}
+                          <span class="text-gray-400 text-xs">(+1)</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                          {{ form.has_disability }} {{ form.has_disability.label }}
+                          <span class="text-gray-400 text-xs">(+1)</span>
+                        </label>
+                        <label class="flex items-center gap-2" id="label-motivated-student">
+                          {{ form.is_motivated_student }} {{ form.is_motivated_student.label }}
+                          <span class="text-gray-400 text-xs">(+1)</span>
+                        </label>
+                        <label class="flex items-center gap-2" id="label-student">
+                          {{ form.is_student }} {{ form.is_student.label }}
+                          <span class="text-gray-400 text-xs">(+0.5)</span>
+                        </label>
+                      </div>
+                      {% if form.is_woman.errors or form.is_professional_cant_afford.errors or form.has_disability.errors or form.is_motivated_student.errors or form.is_student.errors %}
+                        <p class="mt-2 text-xs text-red-600">{{ form.is_woman.errors }}{{ form.is_professional_cant_afford.errors }}{{ form.has_disability.errors }}{{ form.is_motivated_student.errors }}{{ form.is_student.errors }}</p>
+                      {% endif %}
+                    </fieldset>
+
+                    {# Alignment #}
+                    <fieldset class="rounded-xl border border-gray-200 p-3">
+                      <legend class="px-1 text-xs font-semibold text-gray-800">
+                        {% trans "Alignment" %}
+                        <span class="ml-1 font-normal text-gray-500">({% trans "how motivation is aligning with the PyCon Africa goals" %})</span>
+                      </legend>
+                      <div class="mt-2 text-sm text-gray-700 space-y-1">
+                        <label class="flex items-center gap-2">
+                          <span class="text-xs font-medium">{% trans "Score (0–5)" %}:</span>
+                          {{ form.alignment_score }}
+                        </label>
+                        <p class="text-xs text-gray-400">{% trans "0 = no alignment; 5 = strong alignment" %}</p>
+                      </div>
+                      {% if form.alignment_score.errors %}
+                        <p class="mt-2 text-xs text-red-600">{{ form.alignment_score.errors }}</p>
+                      {% endif %}
+                    </fieldset>
+
+                    {# Grant type #}
+                    <fieldset class="rounded-xl border border-gray-200 p-3">
+                      <legend class="px-1 text-xs font-semibold text-gray-800">
+                        {% trans "Grant type" %}
+                        <span class="ml-1 font-normal text-gray-500">({% trans "pre-filled — change if needed" %})</span>
+                      </legend>
+                      <div class="mt-2 space-y-1.5 text-sm text-gray-700">
+                        {% for radio in form.grant_type %}
+                          <label class="flex items-center gap-2">
+                            {{ radio.tag }}
+                            {{ radio.choice_label }}
+                            <span class="text-gray-400 text-xs">
+                              ({% if radio.data.value == 'ticket' %}3{% elif radio.data.value == 'accommodation' %}2{% elif radio.data.value == 'travel' %}1{% else %}0{% endif %})
+                            </span>
+                          </label>
+                        {% endfor %}
+                      </div>
+                      {% if form.grant_type.errors %}
+                        <p class="mt-2 text-xs text-red-600">{{ form.grant_type.errors }}</p>
+                      {% endif %}
+                    </fieldset>
+
+                    {# Amount exceeded #}
+                    <div class="rounded-xl border border-gray-200 p-3">
+                      <label class="block text-xs font-semibold text-gray-800 mb-1" for="{{ form.amount_exceeded.id_for_label }}">
+                        {% trans "Amount exceeded beyond regional cap" %}
+                        {% if flight_budget %}
+                          <span class="ml-1 font-normal" style="color:#5b21b6;">
+                            ({{ flight_budget.0 }} cap: ${{ flight_budget.1 }})
+                          </span>
+                        {% endif %}
+                      </label>
+                      <p class="text-xs text-gray-500 mb-2">
+                        {% if flight_budget %}
+                          {% blocktrans with cap=flight_budget.1 region=flight_budget.0 %}
+                            If the applicant's requested budget exceeds the ${{ cap }} {{ region }} regional cap, enter the excess amount in USD. Leave blank if within cap.
+                          {% endblocktrans %}
+                        {% else %}
+                          {% trans "Enter how much the applicant's requested budget exceeds the regional flight cap in USD. Leave blank if within cap." %}
+                        {% endif %}
+                      </p>
+                      <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-500 font-medium">$</span>
+                        {{ form.amount_exceeded }}
+                      </div>
+                      {% if form.amount_exceeded.errors %}
+                        <p class="mt-1 text-xs text-red-600">{{ form.amount_exceeded.errors }}</p>
+                      {% endif %}
+                    </div>
+
+                    {# Live score summary #}
+                    <div id="score-card" class="rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm">
+                      <p class="text-xs font-semibold uppercase tracking-wide text-gray-500 mb-2">{% trans "Running score" %}</p>
+                      <div class="space-y-1 text-gray-700 mb-3">
+                        <div class="flex items-center justify-between">
+                          <span class="text-xs text-gray-500">{% trans "Contributors" %}</span>
+                          <span id="sc-contributor" class="text-xs font-medium text-gray-900 tabular-nums">0</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                          <span class="text-xs text-gray-500">{% trans "Regional" %}</span>
+                          <span id="sc-regional" class="text-xs font-medium text-gray-900 tabular-nums">0</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                          <span class="text-xs text-gray-500">{% trans "Diversity" %}</span>
+                          <span id="sc-diversity" class="text-xs font-medium text-gray-900 tabular-nums">0</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                          <span class="text-xs text-gray-500">{% trans "Alignment" %}</span>
+                          <span id="sc-alignment" class="text-xs font-medium text-gray-900 tabular-nums">0</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                          <span class="text-xs text-gray-500">{% trans "Grant type" %}</span>
+                          <span id="sc-grant" class="text-xs font-medium text-gray-900 tabular-nums">0</span>
+                        </div>
+                      </div>
+                      <div class="pt-2 border-t border-gray-200 flex items-center justify-between">
+                        <span class="text-sm font-semibold text-gray-800">{% trans "Total score" %}</span>
+                        <span id="sc-total" class="text-2xl font-bold text-gray-900 tabular-nums">0</span>
+                      </div>
+                    </div>
+
+                    <script>
+                    (function () {
+                      var grantScoreMap = {ticket: 3, accommodation: 2, travel: 1, other: 0};
+
+                      function selectedGrantType() {
+                        var radios = document.querySelectorAll('input[name="grant_type"]');
+                        for (var i = 0; i < radios.length; i++) {
+                          if (radios[i].checked) return radios[i].value;
+                        }
+                        return '';
+                      }
+
+                      function checked(id) {
+                        var el = document.getElementById(id);
+                        return el ? el.checked : false;
+                      }
+
+                      function calc() {
+                        var contributor = (
+                          (checked('id_is_speaker') ? 1 : 0) +
+                          (checked('id_is_organizer') ? 1 : 0) +
+                          (checked('id_is_local_contributor') ? 1 : 0)
+                        ) * 3;
+
+                        var region = document.getElementById('id_region').value;
+                        var regional = (region && region !== 'outside_africa') ? 3 : 0;
+
+                        var studentRaw = checked('id_is_motivated_student') ? 1 : (checked('id_is_student') ? 0.5 : 0);
+                      var diversity = (
+                          (checked('id_is_woman') ? 1 : 0) +
+                          (checked('id_is_professional_cant_afford') ? 1 : 0) +
+                          (checked('id_has_disability') ? 1 : 0) +
+                          studentRaw
+                        ) * 5;
+
+                        var alignment = parseInt(document.getElementById('id_alignment_score').value, 10) || 0;
+                        var grantScore = grantScoreMap[selectedGrantType()] || 0;
+
+                        document.getElementById('sc-contributor').textContent = contributor;
+                        document.getElementById('sc-regional').textContent = regional;
+                        document.getElementById('sc-diversity').textContent = diversity;
+                        document.getElementById('sc-alignment').textContent = alignment;
+                        document.getElementById('sc-grant').textContent = grantScore;
+                        document.getElementById('sc-total').textContent = contributor + regional + diversity + alignment + grantScore;
+                      }
+
+                      // Mutual exclusion: motivated student and student are alternatives
+                      var motivatedEl = document.getElementById('id_is_motivated_student');
+                      var studentEl   = document.getElementById('id_is_student');
+                      if (motivatedEl && studentEl) {
+                        motivatedEl.addEventListener('change', function() {
+                          if (this.checked) studentEl.checked = false;
+                          calc();
+                        });
+                        studentEl.addEventListener('change', function() {
+                          if (this.checked) motivatedEl.checked = false;
+                          calc();
+                        });
+                      }
+
+                      ['id_is_speaker','id_is_organizer','id_is_local_contributor',
+                       'id_is_woman','id_is_professional_cant_afford','id_has_disability'
+                      ].forEach(function(id) {
+                        var el = document.getElementById(id);
+                        if (el) el.addEventListener('change', calc);
+                      });
+                      document.getElementById('id_region').addEventListener('change', calc);
+                      document.getElementById('id_alignment_score').addEventListener('change', calc);
+                      document.querySelectorAll('input[name="grant_type"]').forEach(function(r) {
+                        r.addEventListener('change', calc);
+                      });
+
+                      calc();
+                    })();
+                    </script>
+
+                    {# Recommendation & comments #}
+                    <div class="space-y-3 pt-2 border-t border-gray-100">
+                      <div>
+                        <label for="{{ form.recommendation.id_for_label }}" class="block text-xs font-semibold text-gray-800 mb-1">
+                          {{ form.recommendation.label }}
+                        </label>
+                        {{ form.recommendation }}
+                        {% if form.recommendation.errors %}
+                          <p class="mt-1 text-xs text-red-600">{{ form.recommendation.errors }}</p>
+                        {% endif %}
+                      </div>
+                      <div>
+                        <label for="{{ form.comments.id_for_label }}" class="block text-xs font-semibold text-gray-800 mb-1">
+                          {{ form.comments.label }}
+                        </label>
+                        {{ form.comments }}
+                        {% if form.comments.errors %}
+                          <p class="mt-1 text-xs text-red-600">{{ form.comments.errors }}</p>
+                        {% endif %}
+                      </div>
+                    </div>
+
+                    {% trans "Save review" as idle_label %}
+                    {% trans "Saving…" as busy_label %}
+                    {% include '2026/fin_aid/_opportunity_grant_form_submit.html' %}
+                  </form>
+                {% endif %}
+              </div>
+            </div>{# end right panel #}
+
+          </div>{# end two-column #}
+
+        {% endif %}
       </div>
     </div>
   </section>
