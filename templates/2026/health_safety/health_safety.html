@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% block meta_title %}{% trans "Health & Safety | PyCon Africa 2026" %}{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+    <!-- Header -->
+    <div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
+      <h1 class="text-5xl font-bold text-gray-900 text-center">Health &amp; Safety</h1>
+    </div>
+
+    <!-- Body -->
+    <div class="max-w-7xl mx-auto px-4 pb-16">
+      <div class="max-w-4xl mx-auto">
+
+        <!-- Ebola Update -->
+        <div class="mb-10 p-6 rounded-lg" style="background-color: #FEF3C7; border: 1px solid #FCD34D;">
+          <h2 class="text-xl font-bold mb-3" style="color: #92400E;">
+            <i class="fa-solid fa-circle-info mr-2" aria-hidden="true"></i>Ebola Situation Update
+          </h2>
+          <p class="text-base leading-relaxed" style="color: #78350F;">
+            We remain in active consultation with the Ministry of Public Health regarding the Ebola situation and are following all recommended SOPs. Based on current information, we are optimistic that PyCon Africa 2026 will proceed in person and safely. We will share updates promptly should circumstances change.
+          </p>
+        </div>
+
+        <!-- General Health & Safety -->
+        <div class="mb-8">
+          <h2 class="text-2xl font-bold text-gray-900 mb-4">Our Commitment</h2>
+          <p class="text-gray-700 text-base leading-relaxed mb-4">
+            Our attendees' health and safety remain our top priority. We look to the venue and Ministry of Health guidelines to make the best and most informed decisions around onsite safety and requirements, erring on the side of caution for all participants.
+          </p>
+        </div>
+
+        <!-- Attendance -->
+        <div class="mb-8">
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Attendance</h3>
+          <p class="text-gray-700 text-base leading-relaxed mb-4">
+            Individuals should not attend the event if they are exhibiting symptoms of any infectious illness, or have been exposed within 7 days prior to the event to someone who was ill. If you are feeling sick prior to or during the conference, please contact us at <a href="mailto:pyconug@pycon.org" class="underline text-yellow-700 hover:text-yellow-900">pyconug@pycon.org</a> and we will work with you on alternatives.
+          </p>
+        </div>
+
+        <!-- Travel -->
+        <div class="mb-8">
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Travel</h3>
+          <p class="text-gray-700 text-base leading-relaxed mb-4">
+            Anyone traveling to the event should read and abide by the travel guidelines for domestic and international travel. We ask that participants respect fellow attendees and do everything possible to ensure an environment that is as safe as possible.
+          </p>
+        </div>
+
+        <!-- Monitoring -->
+        <div class="mb-8">
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Ongoing Monitoring</h3>
+          <p class="text-gray-700 text-base leading-relaxed mb-4">
+            We continuously monitor public health news and data. We follow all Ministry of Health guidelines in addition to those of the local government and venue. International, national, regional, and local sources are closely watched and will result in a change of policy if warranted.
+          </p>
+        </div>
+
+        <!-- Compliance -->
+        <div class="mb-8">
+          <h3 class="text-xl font-bold text-gray-900 mb-3">Commitment to Compliance</h3>
+          <p class="text-gray-700 text-base leading-relaxed mb-4">
+            PyCon Africa takes these Health &amp; Safety Guidelines very seriously and will enforce them throughout the event. Anyone who repeatedly violates these guidelines is subject to removal from the conference.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+{% endblock %}

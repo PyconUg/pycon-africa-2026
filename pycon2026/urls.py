@@ -39,6 +39,7 @@ urlpatterns = [
     path('visa/letter/', view=views.visa_letter, name='visa_letter'),
     path('visa/bus/', view=views.visa_bus, name='visa_bus'),
     path('visa/flying/', view=views.visa_flying, name='visa_flying'),
+    path('health-safety/', view=views.health_safety, name='health_safety'),
     path('opportunity-grants/', fin_aid_views.fin_aid, {'year': 2026}, name='fin_aid'),
     path('opportunity-grants/apply/', fin_aid_views.fin_aid_apply, {'year': 2026}, name='fin_aid_apply'),
     path(
