@@ -527,7 +527,7 @@ def fin_aid_review_detail(request, year, pk):
             review = form.save(commit=False)
             review.application = application
             review.reviewer = reviewer
-            if accepted_proposal:
+            if accepted_proposal and accepted_proposal.user_response != 'R':
                 review.is_speaker = True
             review.save()
             return redirect(_fin_aid_review_success_url(year))

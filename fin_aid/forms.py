@@ -113,3 +113,11 @@ class FinAidApplicationReviewForm(forms.ModelForm):
         )
         self.fields['region'].required = True
         self.fields['grant_type'].required = True
+
+    def clean(self):
+        cleaned = super().clean()
+        if cleaned.get('is_motivated_student') and cleaned.get('is_student'):
+            raise forms.ValidationError(
+                'Select either Motivated student or Student — not both.'
+            )
+        return cleaned

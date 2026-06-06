@@ -1,3 +1,4 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
@@ -284,6 +285,7 @@ class FinAidApplicationReview(models.Model):
         decimal_places=2,
         null=True,
         blank=True,
+        validators=[MinValueValidator(0)],
         verbose_name='Amount exceeded (USD)',
         help_text='How much the applicant\'s requested budget exceeds the regional flight cap, in USD.',
     )

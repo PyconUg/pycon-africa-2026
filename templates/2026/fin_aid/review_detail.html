@@ -212,14 +212,14 @@
                       {% if existing_review.amount_exceeded %}
                         <div class="pt-2 border-t border-gray-200">
                           <p class="text-xs text-gray-500 mb-0.5">{% trans "Amount exceeded beyond regional cap" %}</p>
-                          <p class="text-xs font-semibold text-gray-800">${{ existing_review.amount_exceeded }}</p>
+                          <p class="text-xs font-semibold text-gray-800">${{ existing_review.amount_exceeded|floatformat:"-2" }}</p>
                         </div>
                       {% endif %}
                     </div>
 
                     <div class="pt-3 border-t border-gray-200 flex items-center justify-between">
                       <span class="font-semibold text-gray-800 text-sm">{% trans "Total score" %}</span>
-                      <span class="text-2xl font-bold text-gray-900 tabular-nums">{{ existing_review.total_score }}</span>
+                      <span class="text-2xl font-bold text-gray-900 tabular-nums">{{ existing_review.total_score|floatformat:"-2" }}</span>
                     </div>
                   </div>
 
