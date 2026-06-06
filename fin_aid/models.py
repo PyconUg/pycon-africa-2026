@@ -202,11 +202,13 @@ class OpportunityGrantApplication(models.Model):
 
 class FinAidApplicationReview(models.Model):
     RECOMMEND_ACCEPT = 'accept'
+    RECOMMEND_PARTIAL = 'partial'
     RECOMMEND_REJECT = 'reject'
     RECOMMEND_UNSURE = 'unsure'
 
     RECOMMENDATION_CHOICES = (
         (RECOMMEND_ACCEPT, 'Accept / fund'),
+        (RECOMMEND_PARTIAL, 'Partial grant'),
         (RECOMMEND_REJECT, 'Reject'),
         (RECOMMEND_UNSURE, 'Unsure / needs discussion'),
     )
