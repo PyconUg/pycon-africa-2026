@@ -86,6 +86,7 @@ class FinAidApplicationReviewForm(forms.ModelForm):
             'is_student',
             'alignment_score',
             'grant_type',
+            'amount_exceeded',
             'recommendation',
             'comments',
         )
@@ -95,6 +96,12 @@ class FinAidApplicationReviewForm(forms.ModelForm):
             'region': forms.Select(attrs={'class': 'w-full max-w-xs rounded-lg border border-gray-300 px-3 py-2'}),
             'alignment_score': forms.Select(attrs={'class': 'w-full max-w-xs rounded-lg border border-gray-300 px-3 py-2'}),
             'grant_type': forms.RadioSelect(),
+            'amount_exceeded': forms.NumberInput(attrs={
+                'class': 'w-full max-w-xs rounded-lg border border-gray-300 px-3 py-2 text-sm',
+                'placeholder': 'e.g. 150.00',
+                'min': '0',
+                'step': '0.01',
+            }),
         }
 
     def __init__(self, *args, **kwargs):

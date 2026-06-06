@@ -208,6 +208,13 @@
                         <p class="text-xs text-gray-600">{{ existing_review.get_grant_type_display|default:application.get_support_type_display }}</p>
                         <p class="text-xs font-semibold text-gray-800 mt-0.5">{% trans "Score" %}: {{ existing_review.grant_type_score }}</p>
                       </div>
+
+                      {% if existing_review.amount_exceeded %}
+                        <div class="pt-2 border-t border-gray-200">
+                          <p class="text-xs text-gray-500 mb-0.5">{% trans "Amount exceeded beyond regional cap" %}</p>
+                          <p class="text-xs font-semibold text-gray-800">${{ existing_review.amount_exceeded }}</p>
+                        </div>
+                      {% endif %}
                     </div>
 
                     <div class="pt-3 border-t border-gray-200 flex items-center justify-between">
@@ -364,6 +371,34 @@
                         <p class="mt-2 text-xs text-red-600">{{ form.grant_type.errors }}</p>
                       {% endif %}
                     </fieldset>
+
+                    {# Amount exceeded #}
+                    <div class="rounded-xl border border-gray-200 p-3">
+                      <label class="block text-xs font-semibold text-gray-800 mb-1" for="{{ form.amount_exceeded.id_for_label }}">
+                        {% trans "Amount exceeded beyond regional cap" %}
+                        {% if flight_budget %}
+                          <span class="ml-1 font-normal" style="color:#5b21b6;">
+                            ({{ flight_budget.0 }} cap: ${{ flight_budget.1 }})
+                          </span>
+                        {% endif %}
+                      </label>
+                      <p class="text-xs text-gray-500 mb-2">
+                        {% if flight_budget %}
+                          {% blocktrans with cap=flight_budget.1 region=flight_budget.0 %}
+                            If the applicant's requested budget exceeds the ${{ cap }} {{ region }} regional cap, enter the excess amount in USD. Leave blank if within cap.
+                          {% endblocktrans %}
+                        {% else %}
+                          {% trans "Enter how much the applicant's requested budget exceeds the regional flight cap in USD. Leave blank if within cap." %}
+                        {% endif %}
+                      </p>
+                      <div class="flex items-center gap-2">
+                        <span class="text-sm text-gray-500 font-medium">$</span>
+                        {{ form.amount_exceeded }}
+                      </div>
+                      {% if form.amount_exceeded.errors %}
+                        <p class="mt-1 text-xs text-red-600">{{ form.amount_exceeded.errors }}</p>
+                      {% endif %}
+                    </div>
 
                     {# Live score summary #}
                     <div id="score-card" class="rounded-xl border border-gray-200 bg-gray-50 p-3 text-sm">

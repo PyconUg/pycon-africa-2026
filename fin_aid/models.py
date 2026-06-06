@@ -278,6 +278,16 @@ class FinAidApplicationReview(models.Model):
     # Persisted total score — computed and stored on every save() (float due to 0.5 student score)
     total_score = models.FloatField(default=0, editable=False)
 
+    # Amount by which the applicant's budget request exceeds the regional flight cap (USD)
+    amount_exceeded = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        verbose_name='Amount exceeded (USD)',
+        help_text='How much the applicant\'s requested budget exceeds the regional flight cap, in USD.',
+    )
+
     # Scoring: Grant type (reviewer-confirmed, pre-filled from application)
     grant_type = models.CharField(
         max_length=32,
