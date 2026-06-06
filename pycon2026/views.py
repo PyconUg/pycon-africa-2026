@@ -182,6 +182,10 @@ def visa_flying(request):
     context = {}
     return render(request, '2026/visa/flying.html', context)
 
+def health_safety(request):
+    context = {}
+    return render(request, '2026/health_safety/health_safety.html', context)
+
 def team(request):
     context = {}
     template = '2026/team/team.html'
