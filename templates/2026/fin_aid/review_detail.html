@@ -191,8 +191,9 @@
                           {% if existing_review.is_woman %}✓ {% trans "Woman" %}{% endif %}
                           {% if existing_review.is_professional_cant_afford %} · ✓ {% trans "Professional" %}{% endif %}
                           {% if existing_review.has_disability %} · ✓ {% trans "Disability" %}{% endif %}
-                          {% if existing_review.is_student %} · ✓ {% trans "Student" %}{% endif %}
-                          {% if not existing_review.is_woman and not existing_review.is_professional_cant_afford and not existing_review.has_disability and not existing_review.is_student %}—{% endif %}
+                          {% if existing_review.is_motivated_student %} · ✓ {% trans "Motivated student" %}{% endif %}
+                          {% if existing_review.is_student and not existing_review.is_motivated_student %} · ✓ {% trans "Student" %}{% endif %}
+                          {% if not existing_review.is_woman and not existing_review.is_professional_cant_afford and not existing_review.has_disability and not existing_review.is_motivated_student and not existing_review.is_student %}—{% endif %}
                         </p>
                         <p class="text-xs font-semibold text-gray-800 mt-0.5">{% trans "Score" %}: {{ existing_review.diversity_score }}</p>
                       </div>
@@ -310,13 +311,17 @@
                           {{ form.has_disability }} {{ form.has_disability.label }}
                           <span class="text-gray-400 text-xs">(+1)</span>
                         </label>
-                        <label class="flex items-center gap-2">
+                        <label class="flex items-center gap-2" id="label-motivated-student">
+                          {{ form.is_motivated_student }} {{ form.is_motivated_student.label }}
+                          <span class="text-gray-400 text-xs">(+1)</span>
+                        </label>
+                        <label class="flex items-center gap-2" id="label-student">
                           {{ form.is_student }} {{ form.is_student.label }}
-                          <span class="text-gray-400 text-xs">(+2)</span>
+                          <span class="text-gray-400 text-xs">(+0.5)</span>
                         </label>
                       </div>
-                      {% if form.is_woman.errors or form.is_professional_cant_afford.errors or form.has_disability.errors or form.is_student.errors %}
-                        <p class="mt-2 text-xs text-red-600">{{ form.is_woman.errors }}{{ form.is_professional_cant_afford.errors }}{{ form.has_disability.errors }}{{ form.is_student.errors }}</p>
+                      {% if form.is_woman.errors or form.is_professional_cant_afford.errors or form.has_disability.errors or form.is_motivated_student.errors or form.is_student.errors %}
+                        <p class="mt-2 text-xs text-red-600">{{ form.is_woman.errors }}{{ form.is_professional_cant_afford.errors }}{{ form.has_disability.errors }}{{ form.is_motivated_student.errors }}{{ form.is_student.errors }}</p>
                       {% endif %}
                     </fieldset>
 
@@ -418,11 +423,12 @@
                         var region = document.getElementById('id_region').value;
                         var regional = (region && region !== 'outside_africa') ? 3 : 0;
 
-                        var diversity = (
+                        var studentRaw = checked('id_is_motivated_student') ? 1 : (checked('id_is_student') ? 0.5 : 0);
+                      var diversity = (
                           (checked('id_is_woman') ? 1 : 0) +
                           (checked('id_is_professional_cant_afford') ? 1 : 0) +
                           (checked('id_has_disability') ? 1 : 0) +
-                          (checked('id_is_student') ? 2 : 0)
+                          studentRaw
                         ) * 5;
 
                         var alignment = parseInt(document.getElementById('id_alignment_score').value, 10) || 0;
@@ -436,8 +442,22 @@
                         document.getElementById('sc-total').textContent = contributor + regional + diversity + alignment + grantScore;
                       }
 
+                      // Mutual exclusion: motivated student and student are alternatives
+                      var motivatedEl = document.getElementById('id_is_motivated_student');
+                      var studentEl   = document.getElementById('id_is_student');
+                      if (motivatedEl && studentEl) {
+                        motivatedEl.addEventListener('change', function() {
+                          if (this.checked) studentEl.checked = false;
+                          calc();
+                        });
+                        studentEl.addEventListener('change', function() {
+                          if (this.checked) motivatedEl.checked = false;
+                          calc();
+                        });
+                      }
+
                       ['id_is_speaker','id_is_organizer','id_is_local_contributor',
-                       'id_is_woman','id_is_professional_cant_afford','id_has_disability','id_is_student'
+                       'id_is_woman','id_is_professional_cant_afford','id_has_disability'
                       ].forEach(function(id) {
                         var el = document.getElementById(id);
                         if (el) el.addEventListener('change', calc);

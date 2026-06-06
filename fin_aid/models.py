@@ -257,12 +257,13 @@ class FinAidApplicationReview(models.Model):
         verbose_name='Region',
     )
 
-    # Scoring: Diversity (raw 0-5, weight ×5)
+    # Scoring: Diversity (raw 0-4.5, weight ×5)
     is_woman = models.BooleanField(default=False, verbose_name='Woman')
     is_professional_cant_afford = models.BooleanField(
         default=False, verbose_name='Professional who cannot afford to attend'
     )
     has_disability = models.BooleanField(default=False, verbose_name='Person with disability')
+    is_motivated_student = models.BooleanField(default=False, verbose_name='Motivated student')
     is_student = models.BooleanField(default=False, verbose_name='Student')
 
     # Scoring: Alignment (0–5)
@@ -272,8 +273,8 @@ class FinAidApplicationReview(models.Model):
         verbose_name='Alignment score (0–5)',
     )
 
-    # Persisted total score — computed and stored on every save()
-    total_score = models.IntegerField(default=0, editable=False)
+    # Persisted total score — computed and stored on every save() (float due to 0.5 student score)
+    total_score = models.FloatField(default=0, editable=False)
 
     # Scoring: Grant type (reviewer-confirmed, pre-filled from application)
     grant_type = models.CharField(
@@ -308,11 +309,17 @@ class FinAidApplicationReview(models.Model):
 
     @property
     def diversity_score(self):
+        if self.is_motivated_student:
+            student_raw = 1
+        elif self.is_student:
+            student_raw = 0.5
+        else:
+            student_raw = 0
         raw = (
             (1 if self.is_woman else 0)
             + (1 if self.is_professional_cant_afford else 0)
             + (1 if self.has_disability else 0)
-            + (2 if self.is_student else 0)
+            + student_raw
         )
         return raw * 5
 

@@ -82,6 +82,7 @@ class FinAidApplicationReviewForm(forms.ModelForm):
             'is_woman',
             'is_professional_cant_afford',
             'has_disability',
+            'is_motivated_student',
             'is_student',
             'alignment_score',
             'grant_type',
