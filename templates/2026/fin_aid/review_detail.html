@@ -74,6 +74,7 @@
                 </span>
               {% endif %}
 
+              {% comment %}
               {% if flight_budget %}
                 <span
                   class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold"
@@ -83,6 +84,7 @@
                   ✈ {% trans "Flight budget" %}: {{ flight_budget.0 }} ({{ application.country.name }}) — max ${{ flight_budget.1 }}
                 </span>
               {% endif %}
+              {% endcomment %}
 
               {% if accepted_proposal %}
                 <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold" style="background-color:#dcfce7; color:#166534;">
@@ -376,13 +378,16 @@
                     <div class="rounded-xl border border-gray-200 p-3">
                       <label class="block text-xs font-semibold text-gray-800 mb-1" for="{{ form.amount_exceeded.id_for_label }}">
                         {% trans "Amount exceeded beyond regional cap" %}
+                        {% comment %}
                         {% if flight_budget %}
                           <span class="ml-1 font-normal" style="color:#5b21b6;">
                             ({{ flight_budget.0 }} cap: ${{ flight_budget.1 }})
                           </span>
                         {% endif %}
+                        {% endcomment %}
                       </label>
                       <p class="text-xs text-gray-500 mb-2">
+                        {% comment %}
                         {% if flight_budget %}
                           {% blocktrans with cap=flight_budget.1 region=flight_budget.0 %}
                             If the applicant's requested budget exceeds the ${{ cap }} {{ region }} regional cap, enter the excess amount in USD. Leave blank if within cap.
@@ -390,6 +395,8 @@
                         {% else %}
                           {% trans "Enter how much the applicant's requested budget exceeds the regional flight cap in USD. Leave blank if within cap." %}
                         {% endif %}
+                        {% endcomment %}
+                        {% trans "Enter how much the applicant's requested budget exceeds the regional flight cap in USD. Leave blank if within cap." %}
                       </p>
                       <div class="flex items-center gap-2">
                         <span class="text-sm text-gray-500 font-medium">$</span>
