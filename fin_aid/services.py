@@ -26,7 +26,7 @@ def _eligible_applications_for(
 
 
 def _target_reviews_per_application(num_reviewers: int) -> int:
-    """Target 2 reviews per application; falls to 1 only if there is exactly 1 reviewer."""
+    """Target 3 reviews per application."""
     return min(num_reviewers, 3)
 
 
