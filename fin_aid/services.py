@@ -26,12 +26,8 @@ def _eligible_applications_for(
 
 
 def _target_reviews_per_application(num_reviewers: int) -> int:
-    """Calculate target reviews per application based on reviewer pool size.
-
-    Minimum 2, scales to floor(N/2) for pools of 4+, capped at pool size.
-    Examples: 1→1, 2→2, 3→2, 4→2, 6→3, 8→4.
-    """
-    return min(num_reviewers, max(2, num_reviewers // 2))
+    """Target 3 reviews per application."""
+    return min(num_reviewers, 3)
 
 
 @transaction.atomic
