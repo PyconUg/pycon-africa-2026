@@ -61,7 +61,7 @@ class FinAidReviewerAdmin(admin.ModelAdmin):
     list_filter = ('review_load', 'is_active')
     search_fields = ('user__username', 'user__email', 'user__first_name', 'user__last_name')
     autocomplete_fields = ('user',)
-    actions = ('run_assignment_for_latest_year_action',)
+    actions = ('run_assignment_for_latest_year_action', 'reassign_for_latest_year_action')
 
     def get_email(self, obj):
         return obj.user.email
@@ -72,44 +72,74 @@ class FinAidReviewerAdmin(admin.ModelAdmin):
         return obj.assignments.count()
     assignment_count.short_description = 'Current assignments'
 
-    def run_assignment_for_latest_year_action(self, request, queryset):
-        """Run application assignment for the most recent event year using the selected reviewers."""
+    def _get_latest_year(self, request):
         from home.models import EventYear
         latest_year = EventYear.objects.order_by('-year').first()
         if not latest_year:
             self.message_user(request, "No event year configured.", level=messages.ERROR)
-            return
+        return latest_year
 
-        result = assign_applications(
-            latest_year,
-            reviewers=queryset,
-            assigned_by=request.user,
-        )
-
-        if result['created']:
+    def _report_assignment_result(self, request, result, year, soft_reassign=False):
+        if soft_reassign and result['deleted']:
             self.message_user(
                 request,
-                f"Created {result['created']} new review assignment(s) for {latest_year.year}.",
+                f"Removed {result['deleted']} unreviewed assignment(s) before reassigning.",
+                level=messages.INFO,
+            )
+        if result['created']:
+            rpa = result['reviews_per_application']
+            self.message_user(
+                request,
+                f"Created {result['created']} new review assignment(s) for {year.year} "
+                f"(targeting {rpa} review(s) per application).",
                 level=messages.SUCCESS,
             )
         else:
             self.message_user(
                 request,
-                "No new assignments created (everything is already assigned).",
+                "No new assignments created (all applications already have the target number of reviews).",
                 level=messages.INFO,
             )
-
         if result['unassignable']:
             self.message_user(
                 request,
                 f"{len(result['unassignable'])} application(s) could not be assigned "
-                f"(every eligible reviewer is the applicant themselves). "
+                f"(no eligible reviewer available — only the applicant themselves is a reviewer). "
                 f"Application IDs: {', '.join(str(pk) for pk in result['unassignable'])}",
                 level=messages.WARNING,
             )
 
+    def run_assignment_for_latest_year_action(self, request, queryset):
+        """Assign unassigned applications for the latest event year using the selected reviewers."""
+        latest_year = self._get_latest_year(request)
+        if not latest_year:
+            return
+        result = assign_applications(latest_year, reviewers=queryset, assigned_by=request.user)
+        self._report_assignment_result(request, result, latest_year)
+
     run_assignment_for_latest_year_action.short_description = (
-        "Run assignment for the latest event year (using selected reviewers)"
+        "Assign applications for the latest event year (selected reviewers)"
+    )
+
+    def reassign_for_latest_year_action(self, request, queryset):
+        """Soft-reassign: remove unreviewed assignments then redistribute across selected reviewers.
+
+        Completed reviews are preserved and count toward each reviewer's load
+        so they are not re-piled on.
+        """
+        latest_year = self._get_latest_year(request)
+        if not latest_year:
+            return
+        result = assign_applications(
+            latest_year,
+            reviewers=queryset,
+            assigned_by=request.user,
+            soft_reassign=True,
+        )
+        self._report_assignment_result(request, result, latest_year, soft_reassign=True)
+
+    reassign_for_latest_year_action.short_description = (
+        "Reassign applications for the latest event year (soft — keeps completed reviews)"
     )
 
 
@@ -172,6 +202,7 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
         'waitlist_and_notify_action',
         'resend_status_notification_action',
         'assign_to_reviewers_action',
+        'reassign_to_reviewers_action',
     )
     fieldsets = (
         (
@@ -342,8 +373,7 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
 
     resend_status_notification_action.short_description = "Resend status notification email (selected)"
 
-    def assign_to_reviewers_action(self, request, queryset):
-        """Run the assignment algorithm scoped to the selected applications."""
+    def _run_assignment_on_queryset(self, request, queryset, soft_reassign=False):
         event_years = set()
         for app in queryset.select_related('fin_aid__event_year'):
             event_years.add(app.fin_aid.event_year)
@@ -353,30 +383,42 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
             return
 
         total_created = 0
+        total_deleted = 0
         all_unassignable = []
+        reviews_per_application = 0
+
         for event_year in event_years:
             scoped = queryset.filter(fin_aid__event_year=event_year)
             result = assign_applications(
                 event_year,
                 applications=scoped,
                 assigned_by=request.user,
+                soft_reassign=soft_reassign,
             )
             total_created += result['created']
+            total_deleted += result['deleted']
             all_unassignable.extend(result['unassignable'])
+            reviews_per_application = result['reviews_per_application']
 
+        if soft_reassign and total_deleted:
+            self.message_user(
+                request,
+                f"Removed {total_deleted} unreviewed assignment(s) before reassigning.",
+                level=messages.INFO,
+            )
         if total_created:
             self.message_user(
                 request,
-                f"Created {total_created} new review assignment(s).",
+                f"Created {total_created} new review assignment(s) "
+                f"(targeting {reviews_per_application} review(s) per application).",
                 level=messages.SUCCESS,
             )
         else:
             self.message_user(
                 request,
-                "No new assignments were created (everything is already assigned).",
+                "No new assignments were created (all applications already have the target number of reviews).",
                 level=messages.INFO,
             )
-
         if all_unassignable:
             self.message_user(
                 request,
@@ -385,7 +427,23 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
                 level=messages.WARNING,
             )
 
+    def assign_to_reviewers_action(self, request, queryset):
+        """Assign selected applications to reviewers (skips already-assigned ones)."""
+        self._run_assignment_on_queryset(request, queryset, soft_reassign=False)
+
     assign_to_reviewers_action.short_description = "Assign selected applications to reviewers"
+
+    def reassign_to_reviewers_action(self, request, queryset):
+        """Soft-reassign selected applications: remove unreviewed assignments and redistribute.
+
+        Completed reviews are preserved and count toward each reviewer's load
+        so they are not re-piled on.
+        """
+        self._run_assignment_on_queryset(request, queryset, soft_reassign=True)
+
+    reassign_to_reviewers_action.short_description = (
+        "Reassign selected applications to reviewers (soft — keeps completed reviews)"
+    )
 
 
 @admin.register(FinAidApplicationReview)
