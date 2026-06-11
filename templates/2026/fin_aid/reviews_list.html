@@ -64,15 +64,15 @@
                     <thead class="bg-gray-50">
                       <tr>
                         <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Applicant" %}</th>
-                        <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Support type" %}</th>
-                        <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Country" %}</th>
-                        <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Submitted" %}</th>
+                        <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="type">{% trans "Support type" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
+                        <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="country">{% trans "Country" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
+                        <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="submitted">{% trans "Submitted" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
                         <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Actions" %}</th>
                       </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100 bg-white">
                       {% for app in unreviewed_applications %}
-                        <tr class="hover:bg-gray-50">
+                        <tr class="hover:bg-gray-50" data-filterable="true" data-country="{{ app.country.name }}" data-type="{{ app.get_support_type_display }}" data-submitted="{{ app.submitted_at|date:'Y-m-d' }}">
                           <td class="px-3 sm:px-4 py-2.5 align-top">
                             <a href="{% fin_aid_review_detail_url app.pk %}" class="font-medium text-pycon-teal hover:underline">{{ app.legal_name }}</a>
                           </td>
@@ -125,14 +125,14 @@
                       <thead class="bg-gray-50">
                         <tr>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Applicant" %}</th>
-                          <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Support type" %}</th>
-                          <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Country" %}</th>
+                          <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="type">{% trans "Support type" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
+                          <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="country">{% trans "Country" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Actions" %}</th>
                         </tr>
                       </thead>
                       <tbody class="divide-y divide-gray-100 bg-white">
                         {% for app in previously_reviewed_applications %}
-                          <tr class="hover:bg-gray-50">
+                          <tr class="hover:bg-gray-50" data-filterable="true" data-country="{{ app.country.name }}" data-type="{{ app.get_support_type_display }}">
                             <td class="px-3 sm:px-4 py-2.5 align-top">
                               <a href="{% fin_aid_review_detail_url app.pk %}" class="font-medium text-pycon-teal hover:underline">{{ app.legal_name }}</a>
                               <div class="text-xs text-gray-500 mt-0.5">{{ app.reviews.count }} review{{ app.reviews.count|pluralize }} by others</div>
@@ -185,14 +185,14 @@
                       <thead class="bg-gray-50">
                         <tr>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Applicant" %}</th>
-                          <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Support type" %}</th>
-                          <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Your recommendation" %}</th>
+                          <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="type">{% trans "Support type" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
+                          <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="recommendation">{% trans "Your recommendation" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Actions" %}</th>
                         </tr>
                       </thead>
                       <tbody class="divide-y divide-gray-100 bg-white">
                         {% for app, rev in my_completed_reviews %}
-                          <tr class="hover:bg-gray-50">
+                          <tr class="hover:bg-gray-50" data-type="{{ app.get_support_type_display }}" data-recommendation="{{ rev.get_recommendation_display }}">
                             <td class="px-3 sm:px-4 py-2.5 text-gray-900">{{ app.legal_name }}</td>
                             <td class="px-3 sm:px-4 py-2.5 text-gray-700">{{ app.get_support_type_display }}</td>
                             <td class="px-3 sm:px-4 py-2.5 text-gray-700">{{ rev.get_recommendation_display }}</td>
@@ -234,5 +234,38 @@ function toggleSection(sectionId, btnId) {
     button.setAttribute('aria-expanded', 'false');
   }
 }
+
+(function () {
+  const sortState = new WeakMap();
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('th.sortable-header').forEach(th => {
+      th.addEventListener('click', () => {
+        const table = th.closest('table');
+        const tbody = table.querySelector('tbody');
+        const key = th.dataset.sort;
+        const asc = (sortState.get(th) || 'none') !== 'asc';
+
+        th.closest('thead').querySelectorAll('th.sortable-header').forEach(h => {
+          sortState.set(h, 'none');
+          const icon = h.querySelector('.sort-icon');
+          if (icon) { icon.textContent = '⇅'; icon.style.color = ''; }
+        });
+
+        sortState.set(th, asc ? 'asc' : 'desc');
+        const icon = th.querySelector('.sort-icon');
+        if (icon) { icon.textContent = asc ? '↑' : '↓'; icon.style.color = '#374151'; }
+
+        const rows = [...tbody.querySelectorAll('tr[data-type]')];
+        rows.sort((a, b) => {
+          const av = (a.dataset[key] || '').toLowerCase();
+          const bv = (b.dataset[key] || '').toLowerCase();
+          return asc ? av.localeCompare(bv) : bv.localeCompare(av);
+        });
+        rows.forEach(r => tbody.appendChild(r));
+      });
+    });
+  });
+})();
 </script>
 {% endblock %}
