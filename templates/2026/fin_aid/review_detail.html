@@ -162,7 +162,7 @@
               <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6">
                 <h3 class="text-base font-semibold text-gray-900 mb-4">{% trans "Your review" %}</h3>
 
-                {% if already_reviewed %}
+                {% if already_reviewed and not editing %}
                   <p class="text-gray-500 text-xs mb-4">{% trans "You have already submitted a review for this application." %}</p>
 
                   {# Scores summary #}
@@ -238,10 +238,20 @@
                     {% endif %}
                   </dl>
 
+                  <div class="mt-5 pt-4 border-t border-gray-100">
+                    <a href="?edit=1"
+                       class="inline-flex items-center justify-center w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 transition">
+                      {% trans "Edit review" %}
+                    </a>
+                  </div>
+
                 {% else %}
+                  {% if editing %}
+                    <p class="text-gray-500 text-xs mb-4">{% trans "Editing your review. Update and save when ready." %}</p>
+                  {% endif %}
                   <form
                     method="post"
-                    action=""
+                    action="{% if editing %}?edit=1{% endif %}"
                     class="space-y-4"
                     x-data="{ loading: false }"
                     @submit="if ($el.checkValidity()) { loading = true } else { $event.preventDefault() }"
@@ -536,9 +546,21 @@
                       </div>
                     </div>
 
-                    {% trans "Save review" as idle_label %}
-                    {% trans "Saving…" as busy_label %}
+                    {% if editing %}
+                      {% trans "Update review" as idle_label %}
+                      {% trans "Updating…" as busy_label %}
+                    {% else %}
+                      {% trans "Save review" as idle_label %}
+                      {% trans "Saving…" as busy_label %}
+                    {% endif %}
                     {% include '2026/fin_aid/_opportunity_grant_form_submit.html' %}
+
+                    {% if editing %}
+                      <a href="{% fin_aid_review_detail_url application.pk %}"
+                         class="inline-flex items-center justify-center w-full rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 transition mt-1">
+                        {% trans "Cancel" %}
+                      </a>
+                    {% endif %}
                   </form>
                 {% endif %}
               </div>

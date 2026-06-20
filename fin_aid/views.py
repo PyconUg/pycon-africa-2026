@@ -512,6 +512,7 @@ def fin_aid_review_detail(request, year, pk):
         reviewer=reviewer,
     ).first()
     already_reviewed = existing_review is not None
+    editing = already_reviewed and request.GET.get('edit') == '1'
 
     flight_budget = get_flight_budget(str(application.country.code))
 
@@ -531,6 +532,16 @@ def fin_aid_review_detail(request, year, pk):
                 review.is_speaker = True
             review.save()
             return redirect(_fin_aid_review_success_url(year))
+    elif request.method == 'POST' and editing:
+        form = FinAidApplicationReviewForm(request.POST, instance=existing_review)
+        if form.is_valid():
+            review = form.save(commit=False)
+            if accepted_proposal and accepted_proposal.user_response != 'R':
+                review.is_speaker = True
+            review.save()
+            return redirect(_fin_aid_review_success_url(year))
+    elif editing:
+        form = FinAidApplicationReviewForm(instance=existing_review)
     else:
         initial = {
             'grant_type': application.support_type,
@@ -548,6 +559,7 @@ def fin_aid_review_detail(request, year, pk):
             'application': application,
             'form': form,
             'already_reviewed': already_reviewed,
+            'editing': editing,
             'existing_review': existing_review,
             'accepted_proposal': accepted_proposal,
             'flight_budget': flight_budget,
