@@ -318,8 +318,12 @@ class FinAidApplicationReview(models.Model):
 
     @property
     def regional_score(self):
-        raw = 0 if self.region == self.REGION_OUTSIDE_AFRICA else (1 if self.region else 0)
-        return raw * 3
+        return {
+            self.REGION_UGANDA: 3,
+            self.REGION_EAST_AFRICA: 2,
+            self.REGION_OTHER_AFRICA: 1,
+            self.REGION_OUTSIDE_AFRICA: 0,
+        }.get(self.region, 0)
 
     @property
     def diversity_score(self):

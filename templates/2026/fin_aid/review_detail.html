@@ -304,7 +304,7 @@
                           <span class="font-medium text-xs">{% trans "Region" %}:</span>
                           {{ form.region }}
                         </label>
-                        <p class="text-xs text-gray-400">Uganda / East Africa / Other Africa = +1 &nbsp;|&nbsp; Outside Africa = 0</p>
+                        <p class="text-xs text-gray-400">Uganda = 3 &nbsp;|&nbsp; East Africa = 2 &nbsp;|&nbsp; Other Africa = 1 &nbsp;|&nbsp; Outside Africa = 0</p>
                       </div>
                       {% if form.region.errors %}
                         <p class="mt-2 text-xs text-red-600">{{ form.region.errors }}</p>
@@ -473,7 +473,8 @@
                         ) * 3;
 
                         var region = document.getElementById('id_region').value;
-                        var regional = (region && region !== 'outside_africa') ? 3 : 0;
+                        var regionalMap = {uganda: 3, east_africa: 2, other_africa: 1, outside_africa: 0};
+                        var regional = regionalMap[region] || 0;
 
                         var studentRaw = checked('id_is_motivated_student') ? 1 : (checked('id_is_student') ? 0.5 : 0);
                       var diversity = (

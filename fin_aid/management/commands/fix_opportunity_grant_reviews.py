@@ -6,8 +6,9 @@ from fin_aid.models import FinAidApplicationReview
 
 class Command(BaseCommand):
     help = (
-        "Fix opportunity grant reviews where the region was saved incorrectly "
-        "(empty or mismatched) and recalculate total_score."
+        "Fix opportunity grant reviews: fill in missing regions from the "
+        "applicant's country and recalculate total_score using the corrected "
+        "regional scoring (Uganda=3, East Africa=2, Other Africa=1, Outside=0)."
     )
 
     def add_arguments(self, parser):
@@ -30,11 +31,7 @@ class Command(BaseCommand):
             old_region = review.region
             old_score = review.total_score
 
-            region_wrong = old_region != expected_region and (
-                not old_region or old_region == ""
-            )
-
-            if region_wrong:
+            if not old_region:
                 review.region = expected_region
                 fixed_region += 1
 
@@ -47,7 +44,7 @@ class Command(BaseCommand):
             )
             score_changed = new_score != old_score
 
-            if region_wrong or score_changed:
+            if not old_region or score_changed:
                 self.stdout.write(
                     f"  Review {review.pk} "
                     f"(country={country_code}): "
