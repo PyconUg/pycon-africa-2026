@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 NOTIFY_STATUSES = {
     OpportunityGrantApplication.STATUS_ACCEPTED,
     OpportunityGrantApplication.STATUS_REJECTED,
-    OpportunityGrantApplication.STATUS_WAITLIST,
+    OpportunityGrantApplication.STATUS_PARTIAL,
 }
 
 

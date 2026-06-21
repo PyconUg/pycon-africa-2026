@@ -8,6 +8,8 @@
     .header { background-color: #ecc8a4; padding: 10px; text-align: center; }
     .details { margin: 20px 0; }
     .details p { line-height: 1.6; }
+    .granted-items { margin: 12px 0; padding-left: 20px; }
+    .granted-items li { margin: 4px 0; }
     .signature { margin-top: 28px; padding-top: 20px; border-top: 1px solid #e5e5e5; line-height: 1.5; }
     .signature p { margin: 0 0 6px 0; }
     .footer { max-width: 600px; margin: 28px auto 0; padding-top: 16px; border-top: 1px solid #e5e5e5; text-align: center; font-size: 0.9em; color: #555; line-height: 1.6; }
@@ -24,19 +26,31 @@
       <p>Thank you for applying for an Opportunity Grant to attend PyCon Africa {{ year }}.</p>
       <p>
         We're happy to let you know that your application has been successful and that you have been awarded
-        a <strong>full opportunity grant</strong>.
+        a <strong>partial opportunity grant</strong>.
       </p>
       <p>
-        Please confirm your acceptance by <strong>{{ acceptance_deadline }}</strong>.
+        Due to the number of applications received and the funding available, we were unable to provide full
+        support to all successful applicants. However, we are able to offer support for the following:
+      </p>
+      <ul class="granted-items">
+        {% for item in granted_items %}
+        <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+      <p>
+        Please confirm whether you would like to accept this offer by <strong>{{ acceptance_deadline }}</strong>.
       </p>
       <p>
-        If we do not hear from you by this date, we may offer the grant to another applicant.
+        If we do not receive a response by this date, we may need to reallocate the funding.
       </p>
       <p>
-        If you have any questions, feel free to reach out to us at
+        We hope this support will help make it possible for you to join us at PyCon Africa {{ year }}.
+      </p>
+      <p>
+        If you have any questions about what is covered by your grant, please don't hesitate to contact us at
         <a href="mailto:fin-aid@pycon.ug">fin-aid@pycon.ug</a>.
       </p>
-      <p>Congratulations, and we look forward to welcoming you to PyCon Africa {{ year }}.</p>
+      <p>We hope to see you at PyCon Africa {{ year }}.</p>
     </div>
     <div class="signature">
       <p>Kind regards,</p>
