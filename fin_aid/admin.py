@@ -199,7 +199,7 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
     actions = (
         'accept_and_notify_action',
         'reject_and_notify_action',
-        'waitlist_and_notify_action',
+        'partial_accept_and_notify_action',
         'resend_status_notification_action',
         'assign_to_reviewers_action',
         'reassign_to_reviewers_action',
@@ -298,35 +298,35 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
 
     reject_and_notify_action.short_description = "Reject & notify applicant (selected)"
 
-    def waitlist_and_notify_action(self, request, queryset):
-        """Set status to Waitlist and trigger the applicant notification email."""
+    def partial_accept_and_notify_action(self, request, queryset):
+        """Set status to Partially accepted and trigger the applicant notification email."""
         updated = 0
         already = 0
         for pk in queryset.values_list('pk', flat=True):
             app = OpportunityGrantApplication.objects.get(pk=pk)
-            if app.status == OpportunityGrantApplication.STATUS_WAITLIST:
+            if app.status == OpportunityGrantApplication.STATUS_PARTIAL:
                 already += 1
                 continue
-            app.status = OpportunityGrantApplication.STATUS_WAITLIST
+            app.status = OpportunityGrantApplication.STATUS_PARTIAL
             app.save()
             updated += 1
         if updated:
             self.message_user(
                 request,
-                f"Waitlisted {updated} application(s). Notifications send when SMTP succeeds.",
+                f"Partially accepted {updated} application(s). Notifications send when SMTP succeeds.",
                 messages.SUCCESS,
             )
         if already:
             self.message_user(
                 request,
-                f"{already} application(s) were already on the waitlist (skipped). "
+                f"{already} application(s) were already partially accepted (skipped). "
                 "Use 'Resend status notification' to email them again without changing status.",
                 messages.INFO,
             )
         if not updated and not already:
             self.message_user(request, "No applications to update.", messages.WARNING)
 
-    waitlist_and_notify_action.short_description = "Waitlist & notify applicant (selected)"
+    partial_accept_and_notify_action.short_description = "Partially accept & notify applicant (selected)"
 
     def resend_status_notification_action(self, request, queryset):
         """Re-send the status email matching each application's current status."""
@@ -335,7 +335,7 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
         NOTIFY_STATUSES = {
             OpportunityGrantApplication.STATUS_ACCEPTED,
             OpportunityGrantApplication.STATUS_REJECTED,
-            OpportunityGrantApplication.STATUS_WAITLIST,
+            OpportunityGrantApplication.STATUS_PARTIAL,
         }
 
         sent = 0
@@ -359,7 +359,7 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
         if skipped:
             self.message_user(
                 request,
-                f"{skipped} application(s) skipped — only accepted, rejected, and waitlisted "
+                f"{skipped} application(s) skipped — only accepted, rejected, and partially accepted "
                 "applications trigger a notification email.",
                 messages.INFO,
             )

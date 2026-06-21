@@ -138,13 +138,14 @@ class OpportunityGrantApplication(models.Model):
     STATUS_ACCEPTED = 'accepted'
     STATUS_REJECTED = 'rejected'
     STATUS_WAITLIST = 'waitlist'
+    STATUS_PARTIAL = STATUS_WAITLIST
 
     STATUS_CHOICES = (
         (STATUS_SUBMITTED, 'Submitted'),
         (STATUS_IN_REVIEW, 'In review'),
         (STATUS_ACCEPTED, 'Accepted'),
         (STATUS_REJECTED, 'Rejected'),
-        (STATUS_WAITLIST, 'Waitlist'),
+        (STATUS_WAITLIST, 'Partially accepted'),
     )
 
     fin_aid = models.ForeignKey(

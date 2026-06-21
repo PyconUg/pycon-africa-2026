@@ -7,6 +7,7 @@
     .content { max-width: 600px; margin: auto; }
     .header { background-color: #ecc8a4; padding: 10px; text-align: center; }
     .details { margin: 20px 0; }
+    .details p { line-height: 1.6; }
     .signature { margin-top: 28px; padding-top: 20px; border-top: 1px solid #e5e5e5; line-height: 1.5; }
     .signature p { margin: 0 0 6px 0; }
     .footer { max-width: 600px; margin: 28px auto 0; padding-top: 16px; border-top: 1px solid #e5e5e5; text-align: center; font-size: 0.9em; color: #555; line-height: 1.6; }
@@ -21,22 +22,30 @@
     <div class="details">
       <p>Dear {{ applicant_name }},</p>
       <p>
-        Thank you for applying for an opportunity grant for <strong>{{ round_title }}</strong>
-        at PyCon Africa {{ year }}. After careful consideration, we are unable to offer you
-        a grant at this time.
+        Thank you for taking the time to apply for an Opportunity Grant to attend PyCon Africa {{ year }}.
       </p>
       <p>
-        We received many applications and the decision was difficult. We encourage you to
-        attend PyCon Africa {{ year }} and stay connected with the community.
+        After carefully reviewing all applications, we're sorry to let you know that we are unable to offer you a
+        grant this year.
       </p>
       <p>
-        If you have any questions, please reach out to us at
+        We received a large number of strong applications, and unfortunately our available funding could not
+        support everyone.
+      </p>
+      <p>
+        We appreciate your interest in PyCon Africa and the effort you put into your application. We hope
+        you'll still be able to join us at the conference, and we look forward to seeing you at future community
+        events.
+      </p>
+      <p>
+        If you have any questions, please feel free to contact us at
         <a href="mailto:fin-aid@pycon.ug">fin-aid@pycon.ug</a>.
       </p>
     </div>
     <div class="signature">
-      <p>Best regards,</p>
-      <p><strong>PyCon Africa {{ year }} Team</strong></p>
+      <p>Kind regards,</p>
+      <p><strong>Opportunity Grants Team</strong></p>
+      <p><strong>PyCon Africa {{ year }}</strong></p>
     </div>
   </div>
   <div class="footer">

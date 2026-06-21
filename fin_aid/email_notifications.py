@@ -111,12 +111,12 @@ def send_opportunity_grant_status_notification(application_pk, new_status: str) 
     subject_map = {
         OpportunityGrantApplication.STATUS_ACCEPTED: f"PyCon Africa {year} — Your Opportunity Grant Application Has Been Accepted",
         OpportunityGrantApplication.STATUS_REJECTED: f"PyCon Africa {year} — Update on Your Opportunity Grant Application",
-        OpportunityGrantApplication.STATUS_WAITLIST: f"PyCon Africa {year} — Your Opportunity Grant Application Is on the Waitlist",
+        OpportunityGrantApplication.STATUS_PARTIAL: f"PyCon Africa {year} — Your Opportunity Grant Has Been Partially Accepted",
     }
     template_map = {
         OpportunityGrantApplication.STATUS_ACCEPTED: "emails/opportunity_grants/application_accepted.html",
         OpportunityGrantApplication.STATUS_REJECTED: "emails/opportunity_grants/application_rejected.html",
-        OpportunityGrantApplication.STATUS_WAITLIST: "emails/opportunity_grants/application_waitlisted.html",
+        OpportunityGrantApplication.STATUS_PARTIAL: "emails/opportunity_grants/application_partial.html",
     }
 
     subject = subject_map.get(new_status, f"PyCon Africa {year} — Opportunity Grant Status Update")
@@ -133,6 +133,15 @@ def send_opportunity_grant_status_notification(application_pk, new_status: str) 
 
     applicant_name = user.get_full_name() or user.get_username()
 
+    granted_items = []
+    if new_status == OpportunityGrantApplication.STATUS_PARTIAL:
+        grant_type = application.support_type
+        latest_review = application.reviews.order_by('-pk').first()
+        if latest_review and latest_review.grant_type:
+            grant_type = latest_review.grant_type
+        support_labels = dict(OpportunityGrantApplication.SUPPORT_TYPE_CHOICES)
+        granted_items = [support_labels.get(grant_type, grant_type)]
+
     context = {
         "application": application,
         "user": user,
@@ -140,6 +149,8 @@ def send_opportunity_grant_status_notification(application_pk, new_status: str) 
         "year": year,
         "view_url": view_url,
         "round_title": application.fin_aid.title,
+        "acceptance_deadline": "Monday, 6 July 2026",
+        "granted_items": granted_items,
     }
 
     html_content = render_to_string(html_template, context)
@@ -152,7 +163,7 @@ def send_opportunity_grant_status_notification(application_pk, new_status: str) 
     cc = list(EMAIL_CC) if new_status in (
         OpportunityGrantApplication.STATUS_ACCEPTED,
         OpportunityGrantApplication.STATUS_REJECTED,
-        OpportunityGrantApplication.STATUS_WAITLIST,
+        OpportunityGrantApplication.STATUS_PARTIAL,
     ) else []
 
     msg = EmailMultiAlternatives(
