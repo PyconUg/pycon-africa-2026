@@ -55,6 +55,12 @@ urlpatterns = [
         name='fin_aid_application_edit',
     ),
     path(
+        'opportunity-grants/my-application/respond/',
+        fin_aid_views.fin_aid_respond,
+        {'year': 2026},
+        name='fin_aid_respond',
+    ),
+    path(
         'opportunity-grants/reviews/',
         fin_aid_views.fin_aid_reviews_list,
         {'year': 2026},
@@ -84,6 +90,10 @@ urlpatterns = [
     path(
         'fin-aid/my-application/edit/',
         RedirectView.as_view(pattern_name='pycon2026:fin_aid_application_edit', permanent=True),
+    ),
+    path(
+        'fin-aid/my-application/respond/',
+        RedirectView.as_view(pattern_name='pycon2026:fin_aid_respond', permanent=True),
     ),
     path(
         'fin-aid/reviews/',

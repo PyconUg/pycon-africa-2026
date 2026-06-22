@@ -76,6 +76,83 @@ def send_opportunity_grant_submission_confirmation(application, request, year):
         )
 
 
+def _fin_aid_respond_path(year):
+    if year == 2026:
+        return reverse("pycon2026:fin_aid_respond")
+    return reverse("fin_aid:fin_aid_respond", kwargs={"year": year})
+
+
+def send_opportunity_grant_response_confirmation(application, year=None):
+    user = application.user
+    to_email = (user.email or "").strip()
+    if not to_email:
+        logger.warning(
+            "Skipping opportunity grant response email: user %s has no email",
+            user.pk,
+        )
+        return
+
+    if year is None:
+        year = application.fin_aid.event_year.year
+
+    raw_from = getattr(settings, "DEFAULT_FROM_EMAIL", "") or ""
+    from_email = raw_from.strip() or None
+    if not from_email:
+        logger.warning("DEFAULT_FROM_EMAIL is not set; cannot send opportunity grant response email")
+        return
+
+    applicant_name = user.get_full_name() or user.get_username()
+
+    if application.user_response == "A":
+        subject = f"PyCon Africa {year} — Thank You for Accepting Your Opportunity Grant"
+        html_template = "emails/opportunity_grants/grant_accepted_response.html"
+    elif application.user_response == "R":
+        subject = f"PyCon Africa {year} — Thank You for Your Response"
+        html_template = "emails/opportunity_grants/grant_declined_response.html"
+    else:
+        return
+
+    site = Site.objects.get_current()
+    domain = site.domain
+
+    view_path = _fin_aid_my_application_path(year)
+    view_url = f"https://{domain}{view_path}"
+
+    context = {
+        "application": application,
+        "user": user,
+        "applicant_name": applicant_name,
+        "year": year,
+        "view_url": view_url,
+    }
+
+    html_content = render_to_string(html_template, context)
+    text_body = render_to_string("emails/opportunity_grants/status_changed_body.txt", {
+        **context,
+        "new_status_display": application.get_user_response_display(),
+        "old_status_display": "",
+    })
+
+    msg = EmailMultiAlternatives(
+        subject,
+        text_body,
+        f"PyCon Africa {year} Team <{from_email}>",
+        [to_email],
+        cc=list(EMAIL_CC),
+    )
+    msg.attach_alternative(html_content, "text/html")
+
+    try:
+        msg.send(fail_silently=False)
+    except Exception:
+        logger.exception(
+            "Failed to send opportunity grant response email (pk=%s, response=%s, to=%s)",
+            application.pk,
+            application.user_response,
+            to_email,
+        )
+
+
 def send_opportunity_grant_status_notification(application_pk, new_status: str) -> bool:
     """Send a status decision email to the applicant.
 
@@ -142,12 +219,16 @@ def send_opportunity_grant_status_notification(application_pk, new_status: str) 
         support_labels = dict(OpportunityGrantApplication.SUPPORT_TYPE_CHOICES)
         granted_items = [support_labels.get(grant_type, grant_type)]
 
+    respond_path = _fin_aid_respond_path(year)
+    response_url = f"https://{domain}{respond_path}"
+
     context = {
         "application": application,
         "user": user,
         "applicant_name": applicant_name,
         "year": year,
         "view_url": view_url,
+        "response_url": response_url,
         "round_title": application.fin_aid.title,
         "acceptance_deadline": "Monday, 6 July 2026",
         "granted_items": granted_items,

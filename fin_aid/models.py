@@ -148,6 +148,16 @@ class OpportunityGrantApplication(models.Model):
         (STATUS_WAITLIST, 'Partially accepted'),
     )
 
+    USER_RESPONSE_PENDING = 'P'
+    USER_RESPONSE_ACCEPTED = 'A'
+    USER_RESPONSE_REJECTED = 'R'
+
+    USER_RESPONSE_CHOICES = (
+        (USER_RESPONSE_PENDING, 'Pending'),
+        (USER_RESPONSE_ACCEPTED, 'Accepted'),
+        (USER_RESPONSE_REJECTED, 'Declined'),
+    )
+
     fin_aid = models.ForeignKey(
         Fin_aid,
         on_delete=models.CASCADE,
@@ -175,6 +185,11 @@ class OpportunityGrantApplication(models.Model):
         max_length=20,
         choices=STATUS_CHOICES,
         default=STATUS_SUBMITTED,
+    )
+    user_response = models.CharField(
+        max_length=1,
+        choices=USER_RESPONSE_CHOICES,
+        default=USER_RESPONSE_PENDING,
     )
     submitted_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

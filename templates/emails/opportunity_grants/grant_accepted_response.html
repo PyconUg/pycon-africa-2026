@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>PyCon Africa {{ year }} — Opportunity Grant Award</title>
+  <title>PyCon Africa {{ year }} — Thank You for Accepting Your Opportunity Grant</title>
   <style>
     body { font-family: Arial, sans-serif; }
     .content { max-width: 600px; margin: auto; }
@@ -17,29 +17,27 @@
 <body>
   <div class="content">
     <div class="header">
-      <h2>PyCon Africa {{ year }} — Opportunity Grant Award</h2>
+      <h2>Thank You for Accepting, {{ applicant_name }}!</h2>
     </div>
     <div class="details">
       <p>Dear {{ applicant_name }},</p>
-      <p>Thank you for applying for an Opportunity Grant to attend PyCon Africa {{ year }}.</p>
       <p>
-        We're happy to let you know that your application has been successful and that you have been awarded
-        a <strong>full opportunity grant</strong>.
+        We are delighted to confirm that you have accepted your opportunity grant to attend
+        PyCon Africa {{ year }}.
       </p>
       <p>
-        Please confirm your acceptance by <strong>{{ acceptance_deadline }}</strong> by visiting the link below:
-      </p>
-      <p style="margin: 20px 0;">
-        <a href="{{ response_url }}" style="display: inline-block; background-color: #0d9488; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Respond to your grant offer</a>
+        Our team will be in touch with further details regarding your grant, including any next steps
+        for travel, accommodation, or ticketing arrangements.
       </p>
       <p>
-        If we do not hear from you by this date, we may offer the grant to another applicant.
+        You can view your application status at any time here:
+        <a href="{{ view_url }}">{{ view_url }}</a>
       </p>
       <p>
-        If you have any questions, feel free to reach out to us at
+        If you have any questions in the meantime, please contact us at
         <a href="mailto:fin-aid@pycon.ug">fin-aid@pycon.ug</a>.
       </p>
-      <p>Congratulations, and we look forward to welcoming you to PyCon Africa {{ year }}.</p>
+      <p>We look forward to welcoming you to PyCon Africa {{ year }}!</p>
     </div>
     <div class="signature">
       <p>Kind regards,</p>

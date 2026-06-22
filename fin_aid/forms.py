@@ -71,6 +71,24 @@ class OpportunityGrantApplicationForm(forms.ModelForm):
         self.helper.form_tag = False
 
 
+class OpportunityGrantResponseForm(forms.ModelForm):
+    class Meta:
+        model = OpportunityGrantApplication
+        fields = ('user_response',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['user_response'].widget = forms.RadioSelect()
+        self.fields['user_response'].choices = [
+            ('A', _('I accept — I will attend PyCon Africa with this grant.')),
+            ('R', _('I decline — I cannot accept this grant.')),
+        ]
+        self.fields['user_response'].label = _('Your response')
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+
+
 class FinAidApplicationReviewForm(forms.ModelForm):
     class Meta:
         model = FinAidApplicationReview

@@ -183,10 +183,11 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
         'user',
         'fin_aid',
         'status',
+        'user_response',
         'support_type',
         'submitted_at',
     )
-    list_filter = ('status', 'support_type', 'fin_aid')
+    list_filter = ('status', 'user_response', 'support_type', 'fin_aid')
     search_fields = (
         'user__username',
         'user__email',
@@ -228,7 +229,7 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
         ),
         (
             'Committee',
-            {'fields': ('status',)},
+            {'fields': ('status', 'user_response')},
         ),
         (
             'Timestamps',

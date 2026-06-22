@@ -12,6 +12,11 @@ urlpatterns = [
         views.fin_aid_application_edit,
         name='fin_aid_application_edit',
     ),
+    path(
+        'my-application/respond/',
+        views.fin_aid_respond,
+        name='fin_aid_respond',
+    ),
     path('reviews/', views.fin_aid_reviews_list, name='fin_aid_reviews'),
     path('reviews/success/', views.fin_aid_review_success, name='fin_aid_review_success'),
     path('reviews/<int:pk>/', views.fin_aid_review_detail, name='fin_aid_review_detail'),
