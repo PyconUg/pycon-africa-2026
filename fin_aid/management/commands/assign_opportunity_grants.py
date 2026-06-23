@@ -58,17 +58,21 @@ class Command(BaseCommand):
 
         reviewers = None
         if usernames:
-            reviewers = FinAidReviewer.objects.filter(
-                user__username__in=usernames, is_active=True
-            ).select_related("user")
-            found = set(reviewers.values_list("user__username", flat=True))
+            reviewers = list(
+                FinAidReviewer.objects.filter(
+                    user__username__in=usernames, is_active=True
+                ).select_related("user")
+            )
+            found = {r.user.username for r in reviewers}
             missing = set(usernames) - found
             if missing:
                 raise CommandError(
                     f"No active reviewer(s) found for: {', '.join(sorted(missing))}"
                 )
+            for r in reviewers:
+                r.review_load = FinAidReviewer.LOAD_EQUAL
             self.stdout.write(
-                f"Assigning to {len(found)} reviewer(s): {', '.join(sorted(found))}"
+                f"Assigning equally to {len(found)} reviewer(s): {', '.join(sorted(found))}"
             )
 
         applications = None
