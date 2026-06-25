@@ -95,6 +95,7 @@
         <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
           <a class="nav-item" href="{% url 'pycon2026:tickets' %}">Buy Tickets</a>
           <a class="nav-item" href="{% url 'pycon2026:merch' %}">Buy Merch</a>
+          <a class="nav-item" href="{% url 'pycon2026:venue_hotels' %}">VENUE + HOTELS</a>
           <a class="nav-item" href="{% url 'pycon2026:fin_aid' %}">Opportunity Grants</a>
         </div>
       </div>
@@ -144,7 +145,6 @@
         </div>
       </div>
       {% endcomment %}
-      <a class="nav-item" href="{% url 'pycon2026:venue_hotels' %}">VENUE + HOTELS</a>
 
       <!-- Venue -->
       <!-- <div class="nav-dropdown-wrapper" x-data="{open:false}">
