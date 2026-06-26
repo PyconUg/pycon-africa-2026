@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from .schedule_data import SCHEDULE_DATA
 
 SPONSORS_2026 = [
     {
@@ -112,7 +113,7 @@ def contact_us(request):
     return render(request, '2026/about/contact_us.html', context)
 
 def scheduIe(request):
-    context = {}
+    context = {"tabs": SCHEDULE_DATA}
     template = '2026/schedule/schedule.html'
     return render(request, template, context)
 
