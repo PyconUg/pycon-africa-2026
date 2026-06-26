@@ -1,16 +1,18 @@
 {% load static %}
 
-<header class="{% if request.path == '/' or request.path == '' %}bg-black{% else %}bg-gray-700{% endif %}" id="main-header">
+<header class="{% if request.path == '/' or request.path == '' %}bg-black{% else %}bg-gray-700{% endif %}"
+  id="main-header">
   <div class="navbar-container">
     <!-- Logo -->
     <div>
       <a href="/">
-        <img src="{% static '2026/img/logo final.png' %}" class="navbar-logo-img" alt="PyCon Africa 2026" style="max-width: 80px;">
+        <img src="{% static '2026/img/logo final.png' %}" class="navbar-logo-img" alt="PyCon Africa 2026"
+          style="max-width: 80px;">
       </a>
     </div>
 
     <!-- Desktop Navigation -->
-    <div class="nav-desktop">
+    <div class="nav-desktop nav-desktop-centered">
       <!-- About Dropdown -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open">
@@ -20,19 +22,17 @@
         </button>
         <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
           <a class="nav-item" href="/2026/about/pycon-africa-2026/">About Us</a>
-          <a class="nav-item" href="{% url 'pycon2026:fin_aid' %}">Opportunity Grants</a>
-          <a class="nav-item" href="{% url 'pycon2026:tickets' %}">Tickets</a>
+          <a class="nav-item" href="https://pyconafrica.blogspot.com/" target="_blank"
+            rel="noopener noreferrer">BLOG</a>
           <a class="nav-item" href="/2026/coc/">Code of Conduct</a>
           <a class="nav-item" href="/2026/about/privacy-policy/">Privacy Policy</a>
           <a class="nav-item" href="/2026/about/contact-us/">Contact Us</a>
+          <a class="nav-item" href="{% url 'pycon2026:venue_hotels' %}">Venue + Hotels</a>
           <!-- <a class="nav-item" href="/2026/travel/">Travel Guide</a> -->
         </div>
       </div>
 
-      <!-- Blog -->
-      <a class="nav-item" href="https://pyconafrica.blogspot.com/" target="_blank" rel="noopener noreferrer">BLOG</a>
-
-        <!-- Talks -->
+      <!-- Talks -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open">
           SPEAK AT PYCON
@@ -45,15 +45,17 @@
           <a class="nav-item" href="/2026/talks/proposing_a_talk/">Proposing a Talk</a>
           {% comment %}
           {% if user.is_authenticated %}
-            <a class="nav-item" href="{% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
+          <a class="nav-item" href="{% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
           {% else %}
-            <a class="nav-item" href="{% url 'auth_login' %}?next={% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
+          <a class="nav-item" href="{% url 'auth_login' %}?next={% url 'talks:submit_talk' year=2026 %}">Submit a
+            Proposal</a>
           {% endif %}
           {% endcomment %}
           {% if user.is_authenticated %}
-            <a class="nav-item" href="{% url 'talks:submit_poster' year=2026 %}">Submit a Poster</a>
+          <a class="nav-item" href="{% url 'talks:submit_poster' year=2026 %}">Submit a Poster</a>
           {% else %}
-            <a class="nav-item" href="{% url 'auth_login' %}?next={% url 'talks:submit_poster' year=2026 %}">Submit a Poster</a>
+          <a class="nav-item" href="{% url 'auth_login' %}?next={% url 'talks:submit_poster' year=2026 %}">Submit a
+            Poster</a>
           {% endif %}
           <a class="nav-item" href="/2026/talks/recording-release/">Recording Release</a>
           {% comment %}<a class="nav-item" href="/2026/talks/mentorship/">SPEAKER MENTORSHIP</a>{% endcomment %}
@@ -89,6 +91,7 @@
         </div>
       </div>
 
+      <!--Tickets-->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open">
           TICKETS
@@ -98,10 +101,11 @@
         <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
           <a class="nav-item" href="{% url 'pycon2026:tickets' %}">Buy Tickets</a>
           <a class="nav-item" href="{% url 'pycon2026:merch' %}">Buy Merch</a>
+          <a class="nav-item" href="{% url 'pycon2026:fin_aid' %}">Opportunity Grants</a>
         </div>
       </div>
 
-       <!-- Regions -->
+      <!-- Regions -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open">
           REGIONS
@@ -146,7 +150,6 @@
         </div>
       </div>
       {% endcomment %}
-      <a class="nav-item" href="{% url 'pycon2026:venue_hotels' %}">VENUE + HOTELS</a>
 
       <!-- Venue -->
       <!-- <div class="nav-dropdown-wrapper" x-data="{open:false}">
@@ -214,13 +217,18 @@
         </button>
         <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
           <a class="nav-item" href="https://za.pycon.org/" target="_blank" rel="noopener noreferrer">2025</a>
-          <a class="nav-item" href="https://pyconafrica.pythonanywhere.com/2024/" target="_blank" rel="noopener noreferrer">2024</a>
-          <a class="nav-item" href="https://pyconafrica.pythonanywhere.com/2020/" target="_blank" rel="noopener noreferrer">2020</a>
-          <a class="nav-item" href="https://pyconafrica.pythonanywhere.com/2019/" target="_blank" rel="noopener noreferrer">2019</a>
+          <a class="nav-item" href="https://pyconafrica.pythonanywhere.com/2024/" target="_blank"
+            rel="noopener noreferrer">2024</a>
+          <a class="nav-item" href="https://pyconafrica.pythonanywhere.com/2020/" target="_blank"
+            rel="noopener noreferrer">2020</a>
+          <a class="nav-item" href="https://pyconafrica.pythonanywhere.com/2019/" target="_blank"
+            rel="noopener noreferrer">2019</a>
         </div>
       </div>
+    </div>
 
-      <!-- User Authentication -->
+    <!-- User Authentication (Far Right) -->
+    <div class="nav-auth">
       {% if user.is_authenticated %}
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open">
@@ -254,7 +262,8 @@
       <div x-show="open" style="display:none;" class="nav-mobile-menu" @click.outside="open = false">
         <!-- About (dropdown) -->
         <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
+          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection"
+            type="button">
             ABOUT
             <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
             <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
@@ -266,6 +275,7 @@
             <a class="nav-item nav-item-indent" href="/2026/coc/">Code of Conduct</a>
             <a class="nav-item nav-item-indent" href="/2026/about/privacy-policy/">Privacy Policy</a>
             <a class="nav-item nav-item-indent" href="/2026/about/contact-us/">Contact Us</a>
+            <a class="nav-item nav-item-indent" href="{% url 'pycon2026:venue_hotels' %}">Venue + Hotels</a>
           </div>
         </div>
 
@@ -274,26 +284,30 @@
 
         <!-- Speak at PyCon (dropdown) -->
         <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
+          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection"
+            type="button">
             SPEAK AT PYCON
             <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
             <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
           </button>
           <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
-            {% comment %}<a class="nav-item nav-item-indent" href="/2026/speakers_list/">Our Speakers</a>{% endcomment %}
+            {% comment %}<a class="nav-item nav-item-indent" href="/2026/speakers_list/">Our Speakers</a>{% endcomment
+            %}
             <a class="nav-item nav-item-indent" href="/2026/talks/proposals/">Proposals</a>
             <a class="nav-item nav-item-indent" href="/2026/talks/proposing_a_talk/">Proposing a Talk</a>
             {% comment %}
             {% if user.is_authenticated %}
-              <a class="nav-item nav-item-indent" href="{% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
+            <a class="nav-item nav-item-indent" href="{% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
             {% else %}
-              <a class="nav-item nav-item-indent" href="{% url 'auth_login' %}?next={% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
+            <a class="nav-item nav-item-indent"
+              href="{% url 'auth_login' %}?next={% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
             {% endif %}
             {% endcomment %}
             {% if user.is_authenticated %}
-              <a class="nav-item nav-item-indent" href="{% url 'talks:submit_poster' year=2026 %}">Submit a Poster</a>
+            <a class="nav-item nav-item-indent" href="{% url 'talks:submit_poster' year=2026 %}">Submit a Poster</a>
             {% else %}
-              <a class="nav-item nav-item-indent" href="{% url 'auth_login' %}?next={% url 'talks:submit_poster' year=2026 %}">Submit a Poster</a>
+            <a class="nav-item nav-item-indent"
+              href="{% url 'auth_login' %}?next={% url 'talks:submit_poster' year=2026 %}">Submit a Poster</a>
             {% endif %}
             <a class="nav-item nav-item-indent" href="/2026/talks/recording-release/">Recording Release</a>
           </div>
@@ -301,7 +315,8 @@
 
         <!-- Sponsor (dropdown) -->
         <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
+          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection"
+            type="button">
             SPONSOR
             <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
             <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
@@ -314,7 +329,8 @@
 
         <!-- Regions (dropdown) -->
         <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
+          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection"
+            type="button">
             REGIONS
             <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
             <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
@@ -322,16 +338,17 @@
           <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
             <a class="nav-item nav-item-indent" href="/2026/region/kenya-region/">PYCON AFRICA 2026 – KENYA REGION</a>
             <a class="nav-item nav-item-indent" href="/2026/region/rwanda-region/">PYCON AFRICA 2026 – RWANDA REGION</a>
-            <a class="nav-item nav-item-indent" href="/2026/region/tanzania-region/">PYCON AFRICA 2026 – TANZANIA REGION</a>
-            <a class="nav-item nav-item-indent" href="/2026/region/south-sudan-region/">PYCON AFRICA 2026 – SOUTH SUDAN REGION</a>
+            <a class="nav-item nav-item-indent" href="/2026/region/tanzania-region/">PYCON AFRICA 2026 – TANZANIA
+              REGION</a>
+            <a class="nav-item nav-item-indent" href="/2026/region/south-sudan-region/">PYCON AFRICA 2026 – SOUTH SUDAN
+              REGION</a>
           </div>
         </div>
 
-        <a class="nav-item" href="{% url 'pycon2026:venue_hotels' %}">VENUE + HOTELS</a>
-
         <!-- Tickets (dropdown) -->
         <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
+          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection"
+            type="button">
             TICKETS
             <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
             <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
@@ -344,7 +361,8 @@
 
         <!-- Uganda (dropdown) -->
         <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
+          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection"
+            type="button">
             UGANDA
             <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
             <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
@@ -360,23 +378,29 @@
 
         <!-- Past (dropdown) -->
         <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
+          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection"
+            type="button">
             PAST
             <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
             <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
           </button>
           <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
-            <a class="nav-item nav-item-indent" href="https://za.pycon.org/" target="_blank" rel="noopener noreferrer">2025</a>
-            <a class="nav-item nav-item-indent" href="https://pyconafrica.pythonanywhere.com/2024/" target="_blank" rel="noopener noreferrer">2024</a>
-            <a class="nav-item nav-item-indent" href="https://pyconafrica.pythonanywhere.com/2020/" target="_blank" rel="noopener noreferrer">2020</a>
-            <a class="nav-item nav-item-indent" href="https://pyconafrica.pythonanywhere.com/2019/" target="_blank" rel="noopener noreferrer">2019</a>
+            <a class="nav-item nav-item-indent" href="https://za.pycon.org/" target="_blank"
+              rel="noopener noreferrer">2025</a>
+            <a class="nav-item nav-item-indent" href="https://pyconafrica.pythonanywhere.com/2024/" target="_blank"
+              rel="noopener noreferrer">2024</a>
+            <a class="nav-item nav-item-indent" href="https://pyconafrica.pythonanywhere.com/2020/" target="_blank"
+              rel="noopener noreferrer">2020</a>
+            <a class="nav-item nav-item-indent" href="https://pyconafrica.pythonanywhere.com/2019/" target="_blank"
+              rel="noopener noreferrer">2019</a>
           </div>
         </div>
 
         <!-- Account -->
         {% if user.is_authenticated %}
         <div x-data="{ openSection: false }">
-          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection" type="button">
+          <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection"
+            type="button">
             <span><i class="fa-solid fa-user" aria-hidden="true"></i> {{ user.username }}</span>
             <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
             <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
