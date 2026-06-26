@@ -27,6 +27,7 @@
           <a class="nav-item" href="/2026/coc/">Code of Conduct</a>
           <a class="nav-item" href="/2026/about/privacy-policy/">Privacy Policy</a>
           <a class="nav-item" href="/2026/about/contact-us/">Contact Us</a>
+          <a class="nav-item" href="{% url 'pycon2026:venue_hotels' %}">Venue + Hotels</a>
           <!-- <a class="nav-item" href="/2026/travel/">Travel Guide</a> -->
         </div>
       </div>
@@ -100,7 +101,6 @@
         <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
           <a class="nav-item" href="{% url 'pycon2026:tickets' %}">Buy Tickets</a>
           <a class="nav-item" href="{% url 'pycon2026:merch' %}">Buy Merch</a>
-          <a class="nav-item" href="{% url 'pycon2026:venue_hotels' %}">VENUE + HOTELS</a>
           <a class="nav-item" href="{% url 'pycon2026:fin_aid' %}">Opportunity Grants</a>
         </div>
       </div>
@@ -275,6 +275,7 @@
             <a class="nav-item nav-item-indent" href="/2026/coc/">Code of Conduct</a>
             <a class="nav-item nav-item-indent" href="/2026/about/privacy-policy/">Privacy Policy</a>
             <a class="nav-item nav-item-indent" href="/2026/about/contact-us/">Contact Us</a>
+            <a class="nav-item nav-item-indent" href="{% url 'pycon2026:venue_hotels' %}">Venue + Hotels</a>
           </div>
         </div>
 
@@ -343,8 +344,6 @@
               REGION</a>
           </div>
         </div>
-
-        <a class="nav-item" href="{% url 'pycon2026:venue_hotels' %}">VENUE + HOTELS</a>
 
         <!-- Tickets (dropdown) -->
         <div x-data="{ openSection: false }">
