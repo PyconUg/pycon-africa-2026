@@ -5,41 +5,50 @@
 {% block content %}
 {% include '2026/navbar.html' %}
 
-<div class="max-w-7xl mx-auto px-4 py-16">
-  <div class="text-center mb-12">
-    <h1 class="text-4xl font-semibold text-gray-900 mb-4">Community &amp; Co-events</h1>
-    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+<!-- Header -->
+<div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
+  <div class="text-center">
+    <h1 class="text-4xl lg:text-5xl font-bold mb-4">Community &amp; Co-events</h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto mt-4">
       Workshops, community programmes, and initiatives running alongside PyCon Africa 2026.
     </p>
   </div>
+</div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    {% for event in co_events %}
-    <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8 flex flex-col">
-      <h2 class="text-xl font-semibold text-gray-900 mb-3">{{ event.name }}</h2>
-      <p class="text-gray-600 leading-relaxed flex-1">{{ event.description }}</p>
-      <div class="mt-6">
-        <a href="{{ event.url }}"
-           class="inline-block px-5 py-2 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors">
-          Learn more
-        </a>
+<!-- Body -->
+<div class="max-w-7xl mx-auto px-4 pb-16">
+  <div class="max-w-4xl mx-auto text-gray-900">
+
+    <!-- Event Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+      {% for event in co_events %}
+      <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-8 flex flex-col">
+        <h2 class="text-xl font-semibold text-gray-900 mb-3">{{ event.name }}</h2>
+        <p class="text-gray-600 leading-relaxed flex-1">{{ event.description }}</p>
+        <div class="mt-6">
+          <a href="{{ event.url }}"
+             class="inline-block px-6 py-2.5 text-sm font-semibold text-white bg-pycon-teal hover:bg-teal-700 rounded-lg transition-colors no-underline">
+            Learn more
+          </a>
+        </div>
       </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-  </div>
 
-  <!-- Diversity / Regional grants cross-link -->
-  <div class="mt-16 rounded-xl bg-gray-50 border border-gray-200 px-8 py-10 text-center">
-    <h2 class="text-2xl font-bold text-gray-900 mb-3">Attending from a neighbouring country?</h2>
-    <p class="text-gray-600 mb-6 max-w-xl mx-auto">
-      The Python Software Society of Uganda offers regional opportunity grants for participants
-      from Kenya, Rwanda, Tanzania, South Sudan, and other East African countries.
-    </p>
-    <a href="https://pssu.ug/apply/"
-       target="_blank" rel="noopener noreferrer"
-       class="inline-block px-7 py-3 text-sm font-semibold text-white bg-red-500 hover:bg-red-600 rounded-lg transition-colors">
-      Apply for a Regional Opportunity Grant &rarr;
-    </a>
+    <!-- Regional grants -->
+    <div class="text-center rounded-lg border border-gray-200 bg-gray-50 px-8 py-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Attending from a neighbouring country?</h2>
+      <p class="text-lg text-gray-600 mb-8">
+        The Python Software Society of Uganda offers regional opportunity grants for participants
+        from Kenya, Rwanda, Tanzania, South Sudan, and other East African countries.
+      </p>
+      <a href="https://pssu.ug/apply/"
+         target="_blank" rel="noopener noreferrer"
+         class="inline-block px-8 py-3 text-lg font-semibold text-white bg-pycon-teal hover:bg-teal-700 rounded-lg transition-colors no-underline">
+        Apply for a Regional Opportunity Grant &rarr;
+      </a>
+    </div>
+
   </div>
 </div>
 
