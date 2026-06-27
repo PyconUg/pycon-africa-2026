@@ -85,8 +85,10 @@
                 {% if application.user_response == 'P' %}
                   <div class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 mb-4">
                     <p class="text-sm font-medium text-amber-900">
-                      {% if application.status == 'accepted' %}
-                        {% trans "You have been awarded a full opportunity grant. Please respond to confirm your acceptance." %}
+                      {% if application.has_travel_grant %}
+                        {% blocktrans with amount=application.travel_grant_amount|floatformat:0 %}You have been awarded a complimentary conference ticket and travel support of ${{ amount }}. Please respond to confirm your acceptance.{% endblocktrans %}
+                      {% elif application.status == 'accepted' %}
+                        {% trans "You have been awarded a complimentary conference ticket. Please respond to confirm your acceptance." %}
                       {% else %}
                         {% trans "You have been awarded a partial opportunity grant. Please respond to confirm whether you accept." %}
                       {% endif %}
@@ -98,8 +100,13 @@
                 {% elif application.user_response == 'A' %}
                   <div class="rounded-lg border border-green-200 bg-green-50 px-4 py-3">
                     <p class="text-sm font-medium text-green-900">
-                      {% trans "You have accepted this opportunity grant. The grants team will be in touch with next steps." %}
+                      {% trans "You have accepted this opportunity grant." %}
                     </p>
+                    {% if application.has_travel_grant %}
+                    <p class="text-sm text-green-800 mt-2">
+                      {% blocktrans with amount=application.travel_grant_amount|floatformat:0 %}Travel support: ${{ amount }}. Details about receipts and disbursement will be shared via email.{% endblocktrans %}
+                    </p>
+                    {% endif %}
                   </div>
                 {% elif application.user_response == 'R' %}
                   <div class="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">

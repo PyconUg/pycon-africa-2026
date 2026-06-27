@@ -104,11 +104,22 @@ def send_opportunity_grant_response_confirmation(application, year=None):
     applicant_name = user.get_full_name() or user.get_username()
 
     if application.user_response == "A":
-        subject = f"PyCon Africa {year} — Thank You for Accepting Your Opportunity Grant"
+        if application.has_travel_grant:
+            subject = f"PyCon Africa {year} — Next Steps for Your Opportunity Grant"
+        else:
+            subject = f"PyCon Africa {year} — Redeem Your Conference Ticket"
         html_template = "emails/opportunity_grants/grant_accepted_response.html"
+        text_template = "emails/opportunity_grants/grant_accepted_response.txt"
+        if not application.ticket_code:
+            logger.warning(
+                "User %s accepted grant (pk=%s) but no ticket_code assigned yet",
+                user.pk,
+                application.pk,
+            )
     elif application.user_response == "R":
         subject = f"PyCon Africa {year} — Thank You for Your Response"
         html_template = "emails/opportunity_grants/grant_declined_response.html"
+        text_template = "emails/opportunity_grants/status_changed_body.txt"
     else:
         return
 
@@ -127,7 +138,7 @@ def send_opportunity_grant_response_confirmation(application, year=None):
     }
 
     html_content = render_to_string(html_template, context)
-    text_body = render_to_string("emails/opportunity_grants/status_changed_body.txt", {
+    text_body = render_to_string(text_template, {
         **context,
         "new_status_display": application.get_user_response_display(),
         "old_status_display": "",

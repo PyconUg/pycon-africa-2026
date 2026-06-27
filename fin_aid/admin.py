@@ -1,4 +1,6 @@
 from django.contrib import admin, messages
+from import_export import resources, fields
+from import_export.admin import ImportExportModelAdmin
 
 from .models import (
     Fin_aid,
@@ -7,7 +9,14 @@ from .models import (
     FinAidReviewer,
     OpportunityGrantApplication,
 )
-from .services import assign_applications
+class OpportunityGrantApplicationResource(resources.ModelResource):
+    user_email = fields.Field(attribute='user__email', column_name='Email', readonly=True)
+    applicant_name = fields.Field(attribute='legal_name', column_name='Name', readonly=True)
+
+    class Meta:
+        model = OpportunityGrantApplication
+        fields = ('id', 'user_email', 'applicant_name', 'ticket_code', 'travel_grant_amount')
+        import_id_fields = ('id',)
 
 
 @admin.register(Fin_aid)
@@ -177,16 +186,21 @@ class FinAidApplicationReviewInline(admin.TabularInline):
 
 
 @admin.register(OpportunityGrantApplication)
-class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
+class OpportunityGrantApplicationAdmin(ImportExportModelAdmin):
+    resource_class = OpportunityGrantApplicationResource
     list_display = (
         'id',
+        'legal_name',
         'user',
         'fin_aid',
         'status',
         'user_response',
         'support_type',
+        'ticket_code',
+        'travel_grant_amount',
         'submitted_at',
     )
+    list_editable = ('ticket_code', 'travel_grant_amount')
     list_filter = ('status', 'user_response', 'support_type', 'fin_aid')
     search_fields = (
         'user__username',
@@ -200,10 +214,8 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
     actions = (
         'accept_and_notify_action',
         'reject_and_notify_action',
-        'partial_accept_and_notify_action',
         'resend_status_notification_action',
-        'assign_to_reviewers_action',
-        'reassign_to_reviewers_action',
+        'send_ticket_code_email_action',
     )
     fieldsets = (
         (
@@ -230,6 +242,17 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
         (
             'Committee',
             {'fields': ('status', 'user_response')},
+        ),
+        (
+            'Grant fulfilment',
+            {
+                'fields': ('ticket_code', 'travel_grant_amount'),
+                'description': (
+                    'Ticket codes come from Quicket. Travel grant amounts are in USD. '
+                    'These details are included in the acceptance confirmation email sent to the applicant '
+                    'when they accept their grant offer.'
+                ),
+            },
         ),
         (
             'Timestamps',
@@ -299,36 +322,6 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
 
     reject_and_notify_action.short_description = "Reject & notify applicant (selected)"
 
-    def partial_accept_and_notify_action(self, request, queryset):
-        """Set status to Partially accepted and trigger the applicant notification email."""
-        updated = 0
-        already = 0
-        for pk in queryset.values_list('pk', flat=True):
-            app = OpportunityGrantApplication.objects.get(pk=pk)
-            if app.status == OpportunityGrantApplication.STATUS_PARTIAL:
-                already += 1
-                continue
-            app.status = OpportunityGrantApplication.STATUS_PARTIAL
-            app.save()
-            updated += 1
-        if updated:
-            self.message_user(
-                request,
-                f"Partially accepted {updated} application(s). Notifications send when SMTP succeeds.",
-                messages.SUCCESS,
-            )
-        if already:
-            self.message_user(
-                request,
-                f"{already} application(s) were already partially accepted (skipped). "
-                "Use 'Resend status notification' to email them again without changing status.",
-                messages.INFO,
-            )
-        if not updated and not already:
-            self.message_user(request, "No applications to update.", messages.WARNING)
-
-    partial_accept_and_notify_action.short_description = "Partially accept & notify applicant (selected)"
-
     def resend_status_notification_action(self, request, queryset):
         """Re-send the status email matching each application's current status."""
         from .email_notifications import send_opportunity_grant_status_notification
@@ -374,77 +367,42 @@ class OpportunityGrantApplicationAdmin(admin.ModelAdmin):
 
     resend_status_notification_action.short_description = "Resend status notification email (selected)"
 
-    def _run_assignment_on_queryset(self, request, queryset, soft_reassign=False):
-        event_years = set()
-        for app in queryset.select_related('fin_aid__event_year'):
-            event_years.add(app.fin_aid.event_year)
+    def send_ticket_code_email_action(self, request, queryset):
+        """Send (or re-send) the acceptance confirmation email with ticket code to users who accepted."""
+        from .email_notifications import send_opportunity_grant_response_confirmation
 
-        if not event_years:
-            self.message_user(request, "No applications selected.", level=messages.WARNING)
-            return
-
-        total_created = 0
-        total_deleted = 0
-        all_unassignable = []
-        reviews_per_application = 0
-
-        for event_year in event_years:
-            scoped = queryset.filter(fin_aid__event_year=event_year)
-            result = assign_applications(
-                event_year,
-                applications=scoped,
-                assigned_by=request.user,
-                soft_reassign=soft_reassign,
-            )
-            total_created += result['created']
-            total_deleted += result['deleted']
-            all_unassignable.extend(result['unassignable'])
-            reviews_per_application = result['reviews_per_application']
-
-        if soft_reassign and total_deleted:
+        sent = 0
+        no_code = 0
+        not_accepted = 0
+        for app in queryset.select_related('user', 'fin_aid', 'fin_aid__event_year'):
+            if app.user_response != OpportunityGrantApplication.USER_RESPONSE_ACCEPTED:
+                not_accepted += 1
+                continue
+            if not app.ticket_code:
+                no_code += 1
+                continue
+            send_opportunity_grant_response_confirmation(app)
+            sent += 1
+        if sent:
             self.message_user(
                 request,
-                f"Removed {total_deleted} unreviewed assignment(s) before reassigning.",
-                level=messages.INFO,
+                f"Sent ticket code email to {sent} applicant(s).",
+                messages.SUCCESS,
             )
-        if total_created:
+        if no_code:
             self.message_user(
                 request,
-                f"Created {total_created} new review assignment(s) "
-                f"(targeting {reviews_per_application} review(s) per application).",
-                level=messages.SUCCESS,
+                f"{no_code} applicant(s) skipped — no ticket code assigned yet.",
+                messages.WARNING,
             )
-        else:
+        if not_accepted:
             self.message_user(
                 request,
-                "No new assignments were created (all applications already have the target number of reviews).",
-                level=messages.INFO,
-            )
-        if all_unassignable:
-            self.message_user(
-                request,
-                f"{len(all_unassignable)} application(s) could not be assigned to any reviewer. "
-                f"Application IDs: {', '.join(str(pk) for pk in all_unassignable)}",
-                level=messages.WARNING,
+                f"{not_accepted} applicant(s) skipped — they have not accepted their grant yet.",
+                messages.INFO,
             )
 
-    def assign_to_reviewers_action(self, request, queryset):
-        """Assign selected applications to reviewers (skips already-assigned ones)."""
-        self._run_assignment_on_queryset(request, queryset, soft_reassign=False)
-
-    assign_to_reviewers_action.short_description = "Assign selected applications to reviewers"
-
-    def reassign_to_reviewers_action(self, request, queryset):
-        """Soft-reassign selected applications: remove unreviewed assignments and redistribute.
-
-        Completed reviews are preserved and count toward each reviewer's load
-        so they are not re-piled on.
-        """
-        self._run_assignment_on_queryset(request, queryset, soft_reassign=True)
-
-    reassign_to_reviewers_action.short_description = (
-        "Reassign selected applications to reviewers (soft — keeps completed reviews)"
-    )
+    send_ticket_code_email_action.short_description = "Send ticket code email to accepted applicants (selected)"
 
 
 @admin.register(FinAidApplicationReview)

@@ -73,8 +73,10 @@
               {% trans "Please confirm your response" %}
             </h2>
             <p class="text-sm text-gray-600 mb-6 leading-relaxed">
-              {% if application.status == 'accepted' %}
-                {% trans "Congratulations on your full opportunity grant! Please let us know whether you can attend PyCon Africa with this grant." %}
+              {% if application.has_travel_grant %}
+                {% blocktrans with amount=application.travel_grant_amount|floatformat:0 %}Congratulations! You have been awarded a complimentary conference ticket and travel support of ${{ amount }}. Please let us know whether you can attend PyCon Africa with this grant.{% endblocktrans %}
+              {% elif application.status == 'accepted' %}
+                {% trans "Congratulations! You have been awarded a complimentary conference ticket. Please let us know whether you can attend PyCon Africa with this grant." %}
               {% else %}
                 {% trans "You have been offered a partial opportunity grant. Please let us know whether you would like to accept this offer." %}
               {% endif %}

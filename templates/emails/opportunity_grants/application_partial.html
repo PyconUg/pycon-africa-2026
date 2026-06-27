@@ -33,6 +33,10 @@
         support to all successful applicants. However, we are able to offer support for the following:
       </p>
       <ul class="granted-items">
+        <li>Complimentary conference ticket</li>
+        {% if application.has_travel_grant %}
+        <li>Travel support: ${{ application.travel_grant_amount|floatformat:0 }}</li>
+        {% endif %}
         {% for item in granted_items %}
         <li>{{ item }}</li>
         {% endfor %}
