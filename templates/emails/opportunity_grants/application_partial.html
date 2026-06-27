@@ -33,12 +33,19 @@
         support to all successful applicants. However, we are able to offer support for the following:
       </p>
       <ul class="granted-items">
+        <li>Complimentary conference ticket</li>
+        {% if application.has_travel_grant %}
+        <li>Travel support: ${{ application.travel_grant_amount|floatformat:0 }}</li>
+        {% endif %}
         {% for item in granted_items %}
         <li>{{ item }}</li>
         {% endfor %}
       </ul>
       <p>
-        Please confirm whether you would like to accept this offer by <strong>{{ acceptance_deadline }}</strong>.
+        Please confirm whether you would like to accept this offer by <strong>{{ acceptance_deadline }}</strong> by visiting the link below:
+      </p>
+      <p style="margin: 20px 0;">
+        <a href="{{ response_url }}" style="display: inline-block; background-color: #0d9488; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Respond to your grant offer</a>
       </p>
       <p>
         If we do not receive a response by this date, we may need to reallocate the funding.

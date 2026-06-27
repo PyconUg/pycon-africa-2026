@@ -66,6 +66,14 @@ def fin_aid_application_edit_url(context):
 
 
 @register.simple_tag(takes_context=True)
+def fin_aid_respond_url(context):
+    y = _year(context)
+    if y == 2026:
+        return reverse('pycon2026:fin_aid_respond')
+    return reverse('fin_aid:fin_aid_respond', kwargs={'year': y})
+
+
+@register.simple_tag(takes_context=True)
 def fin_aid_submitted_application_url(context):
     request = context.get('request')
     if not request or not getattr(request.user, 'is_authenticated', False):

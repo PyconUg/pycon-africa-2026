@@ -148,6 +148,16 @@ class OpportunityGrantApplication(models.Model):
         (STATUS_WAITLIST, 'Partially accepted'),
     )
 
+    USER_RESPONSE_PENDING = 'P'
+    USER_RESPONSE_ACCEPTED = 'A'
+    USER_RESPONSE_REJECTED = 'R'
+
+    USER_RESPONSE_CHOICES = (
+        (USER_RESPONSE_PENDING, 'Pending'),
+        (USER_RESPONSE_ACCEPTED, 'Accepted'),
+        (USER_RESPONSE_REJECTED, 'Declined'),
+    )
+
     fin_aid = models.ForeignKey(
         Fin_aid,
         on_delete=models.CASCADE,
@@ -176,6 +186,25 @@ class OpportunityGrantApplication(models.Model):
         choices=STATUS_CHOICES,
         default=STATUS_SUBMITTED,
     )
+    user_response = models.CharField(
+        max_length=1,
+        choices=USER_RESPONSE_CHOICES,
+        default=USER_RESPONSE_PENDING,
+    )
+    ticket_code = models.CharField(
+        max_length=100,
+        blank=True,
+        default='',
+        help_text='Ticket redemption code from Quicket.',
+    )
+    travel_grant_amount = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0)],
+        help_text='Travel support amount in USD. Leave blank for ticket-only grants.',
+    )
     submitted_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -193,10 +222,19 @@ class OpportunityGrantApplication(models.Model):
                 fields=('fin_aid', 'user'),
                 name='unique_opportunity_grant_application_per_user_round',
             ),
+            models.UniqueConstraint(
+                fields=('ticket_code',),
+                condition=~models.Q(ticket_code=''),
+                name='unique_nonempty_ticket_code',
+            ),
         ]
 
     def __str__(self):
         return f'{self.legal_name} ({self.get_support_type_display()})'
+
+    @property
+    def has_travel_grant(self):
+        return self.travel_grant_amount is not None and self.travel_grant_amount > 0
 
     def is_locked_for_applicant_edits(self):
         return self.reviews.exists()
