@@ -80,10 +80,13 @@ class OpportunityGrantResponseForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['user_response'].widget = forms.RadioSelect()
         self.fields['user_response'].choices = [
+            ('', ''),
             ('A', _('I accept — I will attend PyCon Africa with this grant.')),
             ('R', _('I decline — I cannot accept this grant.')),
         ]
         self.fields['user_response'].label = _('Your response')
+        self.fields['user_response'].required = True
+        self.fields['user_response'].initial = None
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = True
