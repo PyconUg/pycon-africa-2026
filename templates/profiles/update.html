@@ -193,9 +193,13 @@
 
             {{ form|crispy }}
             {{ form.media }}
-            <button type="submit"
-                    class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm hover:shadow">
-              {% trans "Update Profile" %}
+            <button type="submit" id="update-profile-btn"
+                    class="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm hover:shadow disabled:opacity-60 disabled:cursor-not-allowed transition-opacity">
+              <svg id="update-spinner" class="animate-spin h-4 w-4 text-white" style="display:none;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+              </svg>
+              <span id="update-btn-text">{% trans "Update Profile" %}</span>
             </button>
           </form>
 
@@ -219,6 +223,25 @@
                 });
               }
             })();
+
+            var btn = document.getElementById('update-profile-btn');
+            var form = btn ? btn.form : null;  // the button's own form — not the navbar's
+            var spinner = document.getElementById('update-spinner');
+            var btnText = document.getElementById('update-btn-text');
+            if (form && btn) {
+              form.addEventListener('submit', function() {
+                // The submit event only fires once HTML5 validation passes, so the
+                // button never sticks in the loading state when a required field is
+                // empty. requestAnimationFrame ensures the spinner is painted before
+                // the browser gets busy sending the request — without it, the change
+                // is often skipped over on a fast (localhost) submit.
+                window.requestAnimationFrame(function() {
+                  btn.disabled = true;
+                  spinner.style.display = 'inline';
+                  btnText.textContent = '{% trans "Updating..." %}';
+                });
+              });
+            }
           </script>
         </div>
       </div>
