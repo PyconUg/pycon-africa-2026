@@ -82,25 +82,26 @@
               {% endif %}
             </p>
 
-            {% if form.non_field_errors %}
-            <div class="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
-              <ul class="list-disc list-inside space-y-1">
-                {% for error in form.non_field_errors %}
-                <li>{{ error }}</li>
-                {% endfor %}
-              </ul>
-            </div>
-            {% endif %}
-            {% for field in form %}
-              {% if field.errors %}
-              <div class="mb-3 rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-800">
-                <strong>{{ field.label }}:</strong> {{ field.errors|striptags }}
+            <form method="post" action="{% fin_aid_respond_url %}" class="grant-response-form space-y-4">
+              {% csrf_token %}
+
+              {% if form.non_field_errors %}
+              <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+                <ul class="list-disc list-inside space-y-1">
+                  {% for error in form.non_field_errors %}
+                  <li>{{ error }}</li>
+                  {% endfor %}
+                </ul>
               </div>
               {% endif %}
-            {% endfor %}
+              {% for field in form %}
+                {% if field.errors %}
+                <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-800">
+                  <strong>{{ field.label }}:</strong> {{ field.errors|striptags }}
+                </div>
+                {% endif %}
+              {% endfor %}
 
-            <form method="post" action="{% fin_aid_respond_url %}" class="grant-response-form space-y-6">
-              {% csrf_token %}
               <div class="grant-response-radios">
                 {{ form.user_response|as_crispy_field }}
               </div>
