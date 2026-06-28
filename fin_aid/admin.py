@@ -178,6 +178,63 @@ class FinAidReviewAssignmentAdmin(admin.ModelAdmin):
     has_review.short_description = 'Reviewed?'
 
 
+class TicketCodeFilter(admin.SimpleListFilter):
+    title = 'ticket code'
+    parameter_name = 'has_ticket_code'
+
+    def lookups(self, request, model_admin):
+        return [
+            ('yes', 'Has ticket code'),
+            ('no', 'No ticket code'),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == 'yes':
+            return queryset.exclude(ticket_code='')
+        if self.value() == 'no':
+            return queryset.filter(ticket_code='')
+
+
+class TravelGrantFilter(admin.SimpleListFilter):
+    title = 'travel grant'
+    parameter_name = 'has_travel_grant'
+
+    def lookups(self, request, model_admin):
+        return [
+            ('yes', 'Has travel grant'),
+            ('no', 'No travel grant'),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == 'yes':
+            return queryset.filter(travel_grant_amount__gt=0)
+        if self.value() == 'no':
+            return queryset.filter(travel_grant_amount__isnull=True)
+
+
+class GrantTypeFilter(admin.SimpleListFilter):
+    title = 'grant type'
+    parameter_name = 'grant_type'
+
+    def lookups(self, request, model_admin):
+        return [
+            ('either', 'Has ticket or travel (any grant)'),
+            ('ticket_and_travel', 'Ticket + travel'),
+            ('ticket_only', 'Ticket only'),
+            ('none', 'No grant assigned'),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == 'ticket_and_travel':
+            return queryset.exclude(ticket_code='').filter(travel_grant_amount__gt=0)
+        if self.value() == 'ticket_only':
+            return queryset.exclude(ticket_code='').filter(travel_grant_amount__isnull=True)
+        if self.value() == 'either':
+            return queryset.exclude(ticket_code='') | queryset.filter(travel_grant_amount__gt=0)
+        if self.value() == 'none':
+            return queryset.filter(ticket_code='', travel_grant_amount__isnull=True)
+
+
 class FinAidApplicationReviewInline(admin.TabularInline):
     model = FinAidApplicationReview
     extra = 0
@@ -201,7 +258,7 @@ class OpportunityGrantApplicationAdmin(ImportExportModelAdmin):
         'submitted_at',
     )
     list_editable = ('ticket_code', 'travel_grant_amount')
-    list_filter = ('status', 'user_response', 'support_type', 'fin_aid')
+    list_filter = ('status', 'user_response', 'support_type', 'fin_aid', GrantTypeFilter, TicketCodeFilter, TravelGrantFilter)
     search_fields = (
         'user__username',
         'user__email',
