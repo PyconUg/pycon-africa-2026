@@ -3,35 +3,127 @@
 
 {% block meta_title %}{% trans "Profile updated | PyCon Africa 2026" %}{% endblock %}
 
+{% block extra_css %}
+<style>
+  .success-avatar {
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid #d1fae5;
+    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
+    margin: 0 auto;
+  }
+  .success-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .success-badge {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 1.75rem;
+    height: 1.75rem;
+    background: #10b981;
+    border: 2.5px solid #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 0.7rem;
+  }
+  .success-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    color: #374151;
+    transition: background-color 0.15s;
+  }
+  .success-link:hover {
+    background: #f3f4f6;
+  }
+  .success-link-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 {% include '2026/navbar.html' %}
 
 <div class="auth-page-content min-h-screen bg-gray-50">
-  <main class="max-w-3xl mx-auto px-4 py-10 sm:py-12">
-    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 text-center">
-      <div class="flex justify-center mb-4">
-        <div class="h-12 w-12 sm:h-14 sm:w-14 flex items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-          <i class="fa-solid fa-circle-check text-xl" aria-hidden="true"></i>
+  <main class="max-w-lg mx-auto px-4 py-10 sm:py-16">
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+
+      <!-- Header -->
+      <div class="px-6 pt-8 pb-6 text-center">
+        <div class="relative inline-block mb-4">
+          <div class="success-avatar">
+            {% if profile and profile.profile_image %}
+              <img src="{{ profile.profile_image.url }}" alt="{% trans 'Profile picture' %}">
+            {% else %}
+              <img src="/robohash/{% firstof request.user.get_short_name request.user.get_username|capfirst %}/?width=200&height=200" alt="{% trans 'Profile picture' %}">
+            {% endif %}
+          </div>
+          <span class="success-badge">
+            <i class="fa-solid fa-check" aria-hidden="true"></i>
+          </span>
         </div>
+
+        <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-1">
+          {% trans "Profile updated!" %}
+        </h1>
+        {% if profile %}
+        <p class="text-sm text-gray-500 mb-3">
+          {{ profile.get_full_name }}
+          {% if profile.profession %}&middot; {{ profile.profession }}{% endif %}
+        </p>
+        {% endif %}
+        <p class="text-sm text-gray-600">
+          {% trans "Your changes have been saved. Your profile is now up to date." %}
+        </p>
       </div>
-      <h1 class="text-xl sm:text-2xl font-bold text-gray-900 mb-2">
-        {% trans "Profile update successful!" %}
-      </h1>
-      <p class="text-sm sm:text-base text-gray-600 mb-6">
-        {% trans "Your profile changes have been saved. Thank you for keeping your information up to date." %}
-      </p>
-      <div class="flex flex-col sm:flex-row gap-3 sm:justify-center">
-        <a href="/accounts/profile/"
-           class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm hover:shadow">
-          <i class="fa-solid fa-user w-4 text-center mr-2" aria-hidden="true"></i>
-          <span>{% trans "Back to my profile" %}</span>
+
+      <!-- Divider -->
+      <div class="border-t border-gray-100 mx-6"></div>
+
+      <!-- Quick Links -->
+      <div class="px-4 py-4">
+        <p class="px-2 text-xs font-medium text-gray-400 uppercase tracking-wider mb-2">{% trans "What's next?" %}</p>
+
+        <a href="/accounts/profile/" class="success-link">
+          <span class="success-link-icon bg-teal-50 text-pycon-teal">
+            <i class="fa-solid fa-user" aria-hidden="true"></i>
+          </span>
+          <span>
+            <span class="block text-sm font-semibold text-gray-900">{% trans "View my profile" %}</span>
+            <span class="block text-xs text-gray-500">{% trans "See how your profile looks to others" %}</span>
+          </span>
         </a>
-        <a href="{% url 'talks:submit_talk' year=2026 %}"
-           class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold rounded-lg border border-gray-300 text-pycon-teal bg-white hover:bg-gray-50">
-          <i class="fa-solid fa-microphone w-4 text-center mr-2" aria-hidden="true"></i>
-          <span>{% trans "Submit a talk" %}</span>
+
+        <a href="/" class="success-link">
+          <span class="success-link-icon bg-blue-50 text-blue-600">
+            <i class="fa-solid fa-house" aria-hidden="true"></i>
+          </span>
+          <span>
+            <span class="block text-sm font-semibold text-gray-900">{% trans "Go to homepage" %}</span>
+            <span class="block text-xs text-gray-500">{% trans "Explore PyCon Africa 2026" %}</span>
+          </span>
         </a>
       </div>
+
     </div>
   </main>
 </div>

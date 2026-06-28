@@ -319,6 +319,10 @@ class SuccessView(TemplateView):
         context = super(SuccessView, self).get_context_data(**kwargs)
         context['title'] = 'Profile Update Successful'
         context['year'] = datetime.now().year
+        try:
+            context['profile'] = Profile.objects.get(user=self.request.user)
+        except Profile.DoesNotExist:
+            context['profile'] = None
         return context
  
 
