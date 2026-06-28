@@ -32,6 +32,83 @@
     background: #0f766e;
     color: #fff;
   }
+  .profile-photo-upload {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    background: #f9fafb;
+    border: 1px dashed #d1d5db;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .profile-photo-preview {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #e5e7eb;
+    flex-shrink: 0;
+  }
+  .profile-photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .profile-photo-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .profile-photo-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #0d9488;
+    background: #fff;
+    border: 1px solid #0d9488;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+  }
+  .profile-photo-label:hover {
+    background: #0d9488;
+    color: #fff;
+  }
+  .profile-photo-hint {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.4rem;
+  }
+  .profile-photo-filename {
+    font-size: 0.8rem;
+    color: #374151;
+    margin-top: 0.35rem;
+    word-break: break-all;
+  }
+  #div_id_biography textarea {
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+  }
+  #div_id_biography textarea:focus {
+    border-color: #0d9488;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(13, 148, 136, 0.15);
+  }
+  .profile-photo-info input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
 </style>
 {% endblock %}
 
@@ -93,13 +170,79 @@
 
           <form method="post" enctype="multipart/form-data" class="space-y-4">
             {% csrf_token %}
+
+            <!-- Profile Picture Upload -->
+            <div class="profile-photo-upload">
+              <div class="profile-photo-preview" id="photo-preview">
+                {% if profile.profile_image %}
+                  <img src="{{ profile.profile_image.url }}" alt="{% trans 'Profile picture' %}" id="preview-img">
+                {% else %}
+                  <img src="/robohash/{% firstof request.user.get_short_name request.user.get_username|capfirst %}/?width=200&height=200" alt="{% trans 'Profile picture' %}" id="preview-img">
+                {% endif %}
+              </div>
+              <div class="profile-photo-info">
+                <label for="{{ form.profile_image.id_for_label }}" class="profile-photo-label">
+                  <i class="fa-solid fa-camera"></i>
+                  {% trans "Change Photo" %}
+                </label>
+                <div class="profile-photo-hint">{% trans "JPG, PNG or GIF. Max 5MB." %}</div>
+                <div class="profile-photo-filename" id="photo-filename" style="display: none;"></div>
+                {{ form.profile_image }}
+              </div>
+            </div>
+
             {{ form|crispy }}
             {{ form.media }}
-            <button type="submit"
-                    class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm hover:shadow">
-              {% trans "Update Profile" %}
+            <button type="submit" id="update-profile-btn"
+                    class="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm hover:shadow disabled:opacity-60 disabled:cursor-not-allowed transition-opacity">
+              <svg id="update-spinner" class="animate-spin h-4 w-4 text-white" style="display:none;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+              </svg>
+              <span id="update-btn-text">{% trans "Update Profile" %}</span>
             </button>
           </form>
+
+          <script>
+            (function() {
+              var input = document.getElementById('{{ form.profile_image.id_for_label }}');
+              var previewImg = document.getElementById('preview-img');
+              var filenameEl = document.getElementById('photo-filename');
+              if (input) {
+                input.addEventListener('change', function() {
+                  if (this.files && this.files[0]) {
+                    var file = this.files[0];
+                    filenameEl.textContent = file.name;
+                    filenameEl.style.display = 'block';
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                      previewImg.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                });
+              }
+            })();
+
+            var btn = document.getElementById('update-profile-btn');
+            var form = btn ? btn.form : null;  // the button's own form — not the navbar's
+            var spinner = document.getElementById('update-spinner');
+            var btnText = document.getElementById('update-btn-text');
+            if (form && btn) {
+              form.addEventListener('submit', function() {
+                // The submit event only fires once HTML5 validation passes, so the
+                // button never sticks in the loading state when a required field is
+                // empty. requestAnimationFrame ensures the spinner is painted before
+                // the browser gets busy sending the request — without it, the change
+                // is often skipped over on a fast (localhost) submit.
+                window.requestAnimationFrame(function() {
+                  btn.disabled = true;
+                  spinner.style.display = 'inline';
+                  btnText.textContent = '{% trans "Updating..." %}';
+                });
+              });
+            }
+          </script>
         </div>
       </div>
     </div>
