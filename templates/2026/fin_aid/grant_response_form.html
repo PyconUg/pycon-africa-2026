@@ -6,39 +6,35 @@
 {% include '2026/navbar.html' %}
 
 <style>
-  .grant-response-radios ul,
-  .grant-response-radios [id*="id_user_response"] {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  .response-options {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1.5rem;
   }
-  .grant-response-radios li label,
-  .grant-response-radios div label,
-  .grant-response-radios [id*="id_user_response"] > div {
+  .response-option {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.75rem;
     cursor: pointer;
     font-size: 0.9375rem;
     color: #374151;
-    padding: 0.75rem 1rem;
+    padding: 1rem 1.25rem;
     border: 1px solid #e5e7eb;
     border-radius: 0.5rem;
-    transition: border-color 0.15s;
+    transition: border-color 0.15s, background-color 0.15s;
   }
-  .grant-response-radios li label:hover,
-  .grant-response-radios div label:hover,
-  .grant-response-radios [id*="id_user_response"] > div:hover {
+  .response-option:hover {
     border-color: #0d9488;
   }
-  .grant-response-radios input[type="radio"]:checked + label,
-  .grant-response-radios label:has(input[type="radio"]:checked),
-  .grant-response-radios div:has(input[type="radio"]:checked) {
+  .response-option:has(input:checked) {
     background-color: #f0fdfa;
     border-color: #0d9488;
+  }
+  .response-option input[type="radio"] {
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: #0d9488;
+    flex-shrink: 0;
   }
   #grant-response-submit.is-loading {
     pointer-events: none;
@@ -121,7 +117,15 @@
               {% endfor %}
 
               <div class="grant-response-radios">
-                {{ form.user_response|as_crispy_field }}
+                <p class="block text-sm font-medium text-gray-700 mb-4">{% trans "Your response" %} <span class="text-red-500">*</span></p>
+                <div class="response-options">
+                  {% for radio in form.user_response %}
+                  <label class="response-option">
+                    {{ radio.tag }}
+                    <span>{{ radio.choice_label }}</span>
+                  </label>
+                  {% endfor %}
+                </div>
               </div>
               <button
                 type="submit"
