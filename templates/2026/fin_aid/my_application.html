@@ -71,11 +71,17 @@
                 {% elif application.user_response == 'A' %}
                   <div class="rounded-lg border border-green-200 bg-green-50 px-4 py-3">
                     <p class="text-sm font-medium text-green-900">
-                      {% trans "You have accepted this opportunity grant." %}
+                      {% trans "You have accepted this opportunity grant. Your grant includes:" %}
                     </p>
-                    {% if application.has_travel_grant %}
+                    <ul class="text-sm text-green-800 mt-2 list-disc list-inside space-y-1">
+                      <li>{% trans "Complimentary conference ticket" %}</li>
+                      {% if application.has_travel_grant %}
+                      <li>{% blocktrans with amount=application.travel_grant_amount|floatformat:0 %}Travel support: ${{ amount }}{% endblocktrans %}</li>
+                      {% endif %}
+                    </ul>
+                    {% if application.ticket_code %}
                     <p class="text-sm text-green-800 mt-2">
-                      {% blocktrans with amount=application.travel_grant_amount|floatformat:0 %}Travel support: ${{ amount }}. Details about receipts and disbursement will be shared via email.{% endblocktrans %}
+                      {% blocktrans with code=application.ticket_code %}Your ticket code: <strong>{{ code }}</strong>{% endblocktrans %}
                     </p>
                     {% endif %}
                   </div>
