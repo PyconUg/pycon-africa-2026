@@ -32,6 +32,62 @@
     background: #0f766e;
     color: #fff;
   }
+  .profile-photo-upload {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    background: #f9fafb;
+    border: 1px dashed #d1d5db;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .profile-photo-preview {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #e5e7eb;
+    flex-shrink: 0;
+  }
+  .profile-photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .profile-photo-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .profile-photo-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #0d9488;
+    background: #fff;
+    border: 1px solid #0d9488;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.15s, color 0.15s;
+  }
+  .profile-photo-label:hover {
+    background: #0d9488;
+    color: #fff;
+  }
+  .profile-photo-hint {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.4rem;
+  }
+  .profile-photo-filename {
+    font-size: 0.8rem;
+    color: #374151;
+    margin-top: 0.35rem;
+    word-break: break-all;
+  }
 </style>
 {% endblock %}
 
@@ -93,6 +149,32 @@
 
           <form method="post" enctype="multipart/form-data" class="space-y-4">
             {% csrf_token %}
+
+            <!-- Profile Picture Upload -->
+            <div class="profile-photo-upload">
+              <div class="profile-photo-preview" id="photo-preview">
+                {% if profile.profile_image %}
+                  <img src="{{ profile.profile_image.url }}" alt="{% trans 'Profile picture' %}" id="preview-img">
+                {% else %}
+                  <img src="/robohash/{% firstof request.user.get_short_name request.user.get_username|capfirst %}/?width=200&height=200" alt="{% trans 'Profile picture' %}" id="preview-img">
+                {% endif %}
+              </div>
+              <div class="profile-photo-info">
+                <label for="{{ form.profile_image.id_for_label }}" class="profile-photo-label">
+                  <i class="fa-solid fa-camera"></i>
+                  {% trans "Change Photo" %}
+                </label>
+                <div class="profile-photo-hint">{% trans "JPG, PNG or GIF. Max 5MB." %}</div>
+                <div class="profile-photo-filename" id="photo-filename" style="display: none;"></div>
+                {{ form.profile_image }}
+              </div>
+            </div>
+
+            <style>
+              #div_id_profile_image { display: none; }
+              .profile-photo-info #{{ form.profile_image.id_for_label }} { display: none; }
+            </style>
+
             {{ form|crispy }}
             {{ form.media }}
             <button type="submit"
@@ -100,6 +182,28 @@
               {% trans "Update Profile" %}
             </button>
           </form>
+
+          <script>
+            (function() {
+              var input = document.getElementById('{{ form.profile_image.id_for_label }}');
+              var previewImg = document.getElementById('preview-img');
+              var filenameEl = document.getElementById('photo-filename');
+              if (input) {
+                input.addEventListener('change', function() {
+                  if (this.files && this.files[0]) {
+                    var file = this.files[0];
+                    filenameEl.textContent = file.name;
+                    filenameEl.style.display = 'block';
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                      previewImg.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                });
+              }
+            })();
+          </script>
         </div>
       </div>
     </div>
