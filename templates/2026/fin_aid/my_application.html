@@ -51,37 +51,8 @@
               </div>
             </div>
 
-            <dl class="space-y-4 text-sm sm:text-base">
-              <div>
-                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Support requested" %}</dt>
-                <dd class="mt-1 text-gray-900">{{ application.get_support_type_display }}</dd>
-              </div>
-              <div>
-                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Country" %}</dt>
-                <dd class="mt-1 text-gray-900">{{ application.country.name }}</dd>
-              </div>
-              <div>
-                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Budget / use of funds" %}</dt>
-                <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{{ application.budget_narrative }}</dd>
-              </div>
-              <div>
-                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Why you need support" %}</dt>
-                <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{{ application.why_need_support }}</dd>
-              </div>
-              <div>
-                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Community contribution" %}</dt>
-                <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{{ application.community_contribution }}</dd>
-              </div>
-              {% if application.additional_notes %}
-                <div>
-                  <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Additional notes" %}</dt>
-                  <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{{ application.additional_notes }}</dd>
-                </div>
-              {% endif %}
-            </dl>
-
             {% if application.status == 'accepted' or application.status == 'waitlist' %}
-              <div class="pt-6 border-t border-gray-200">
+              <div>
                 {% if application.user_response == 'P' %}
                   <div class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 mb-4">
                     <p class="text-sm font-medium text-amber-900">
@@ -117,6 +88,35 @@
                 {% endif %}
               </div>
             {% endif %}
+
+            <dl class="space-y-4 text-sm sm:text-base">
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Support requested" %}</dt>
+                <dd class="mt-1 text-gray-900">{{ application.get_support_type_display }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Country" %}</dt>
+                <dd class="mt-1 text-gray-900">{{ application.country.name }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Budget / use of funds" %}</dt>
+                <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{{ application.budget_narrative }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Why you need support" %}</dt>
+                <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{{ application.why_need_support }}</dd>
+              </div>
+              <div>
+                <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Community contribution" %}</dt>
+                <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{{ application.community_contribution }}</dd>
+              </div>
+              {% if application.additional_notes %}
+                <div>
+                  <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Additional notes" %}</dt>
+                  <dd class="mt-1 text-gray-900 whitespace-pre-wrap">{{ application.additional_notes }}</dd>
+                </div>
+              {% endif %}
+            </dl>
 
             <div class="pt-6 border-t border-gray-200 flex flex-col sm:flex-row gap-3">
               {% if can_edit %}
