@@ -127,7 +127,12 @@ class UpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ('name', 'surname', 'profile_image', 'profession', 'organization', 'biography', 'twitter_handle', 'github_username', 'linkedin', 'contact_number', 'website', 'city', 'country',)
-        widgets = {'country': CountrySelectWidget()}
+        widgets = {
+            'country': CountrySelectWidget(),
+            # Plain file input (no "Currently/Clear" clutter) — rendered inside
+            # the custom upload box in profiles/update.html.
+            'profile_image': forms.FileInput(attrs={'accept': 'image/*'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super(UpdateForm, self).__init__(*args, **kwargs)
@@ -135,7 +140,12 @@ class UpdateForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.form_id = 'id-Crispy_UpdateForm'
         self.helper.form_class = 'form-horizontal'
-        self.helper.add_input(Submit('update', 'Update Profile'))
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            'name', 'surname', 'profession', 'organization', 'biography',
+            'twitter_handle', 'github_username', 'linkedin',
+            'contact_number', 'website', 'city', 'country', 'captcha',
+        )
 
 class UserForm(forms.ModelForm):
     captcha = ReCaptchaField()
