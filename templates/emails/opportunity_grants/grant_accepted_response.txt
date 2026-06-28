@@ -6,9 +6,11 @@ Dear {{ applicant_name }},
 
 To redeem your complimentary conference ticket:
 1. Visit: https://www.quicket.co.ug/events/361146-pycon-africa-2026/?ref=events-list
-2. Enter your unique ticket code: {{ application.ticket_code }}
+2. Select the Individual ticket type.
+3. Enter your unique ticket code: {{ application.ticket_code }}
 
 Please note:
+- Your ticket code will only work for the Individual ticket type.
 - Your ticket code is case-sensitive.
 - The code can only be redeemed once.
 {% else %}Your conference ticket redemption code will be sent to you in a separate email shortly.
