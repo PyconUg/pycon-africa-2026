@@ -6,7 +6,8 @@
 {% include '2026/navbar.html' %}
 
 <style>
-  .grant-response-radios ul {
+  .grant-response-radios ul,
+  .grant-response-radios [id*="id_user_response"] {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -14,9 +15,11 @@
     flex-direction: column;
     gap: 1.25rem;
   }
-  .grant-response-radios li label {
+  .grant-response-radios li label,
+  .grant-response-radios div label,
+  .grant-response-radios [id*="id_user_response"] > div {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     gap: 0.5rem;
     cursor: pointer;
     font-size: 0.9375rem;
@@ -26,11 +29,10 @@
     border-radius: 0.5rem;
     transition: border-color 0.15s;
   }
-  .grant-response-radios li label:hover {
+  .grant-response-radios li label:hover,
+  .grant-response-radios div label:hover,
+  .grant-response-radios [id*="id_user_response"] > div:hover {
     border-color: #0d9488;
-  }
-  .grant-response-radios li:first-child {
-    display: none;
   }
   #grant-response-submit.is-loading {
     pointer-events: none;
