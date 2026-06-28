@@ -88,7 +88,16 @@
                 {% elif application.user_response == 'R' %}
                   <div class="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
                     <p class="text-sm font-medium text-gray-700">
-                      {% trans "You have declined this opportunity grant." %}
+                      {% trans "You have declined this opportunity grant. The following was included in your award:" %}
+                    </p>
+                    <ul class="text-sm text-gray-600 mt-2 list-disc list-inside space-y-1">
+                      <li>{% trans "Complimentary conference ticket" %}</li>
+                      {% if application.has_travel_grant %}
+                      <li>{% blocktrans with amount=application.travel_grant_amount|floatformat:0 %}Travel support: ${{ amount }}{% endblocktrans %}</li>
+                      {% endif %}
+                    </ul>
+                    <p class="text-sm text-gray-500 mt-2">
+                      {% trans "If your situation changes, please contact us at" %} <a href="mailto:fin-aid@pycon.ug" class="text-pycon-teal hover:underline">fin-aid@pycon.ug</a>.
                     </p>
                   </div>
                 {% endif %}
