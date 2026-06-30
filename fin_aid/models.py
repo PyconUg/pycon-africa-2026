@@ -411,7 +411,7 @@ class RegionalGrantApplication(models.Model):
     can_cover_expenses_with_ticket = models.CharField(
         max_length=8,
         choices=REGIONAL_GRANT_YES_NO_CHOICES,
-        default='no',
+        default='yes',
         verbose_name=(
             'If given a to-and-return bus ticket to the event, would you be able '
             'to cover all your other expenses?'
@@ -421,7 +421,7 @@ class RegionalGrantApplication(models.Model):
     can_attend_with_travel_support = models.CharField(
         max_length=8,
         choices=REGIONAL_GRANT_YES_NO_CHOICES,
-        default='no',
+        default='yes',
         verbose_name='Would you be able to get a conference ticket if given travel support?',
         help_text='Let us know if travel support alone would enable you to attend',
     )
