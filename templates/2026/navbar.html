@@ -121,7 +121,8 @@
         </div>
       </div>
 
-      <!-- Community -->
+      {% comment %}Community nav hidden for now; keep routes accessible directly.{% endcomment %}
+      {% comment %}
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open">
           COMMUNITY
@@ -137,6 +138,7 @@
           <a class="nav-item" href="/2026/co-events/refugee-funding/">Funding for Refugees/POC</a>
         </div>
       </div>
+      {% endcomment %}
 
       {% comment %}Diversity nav hidden for now; keep route accessible directly.{% endcomment %}
       {% comment %}
@@ -346,6 +348,8 @@
           </div>
         </div>
 
+        {% comment %}Community nav hidden for now; keep routes accessible directly.{% endcomment %}
+        {% comment %}
         <!-- Community (dropdown) -->
         <div x-data="{ openSection: false }">
           <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection"
@@ -363,6 +367,7 @@
             <a class="nav-item nav-item-indent" href="/2026/co-events/refugee-funding/">Funding for Refugees/POC</a>
           </div>
         </div>
+        {% endcomment %}
 
         <!-- Tickets (dropdown) -->
         <div x-data="{ openSection: false }">
