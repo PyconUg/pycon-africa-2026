@@ -240,6 +240,220 @@ class OpportunityGrantApplication(models.Model):
         return self.reviews.exists()
 
 
+REGIONAL_GRANT_COUNTRIES = (
+    ('kenya', 'Kenya'),
+    ('rwanda', 'Rwanda'),
+    ('tanzania', 'Tanzania'),
+    ('south_sudan', 'South Sudan'),
+    ('drc', 'DRC'),
+    ('uganda', 'Uganda'),
+    ('other', 'Other'),
+)
+
+REGIONAL_GRANT_STATUS_CHOICES = (
+    ('student', 'Student'),
+    ('employed', 'Employed'),
+    ('freelancer', 'Freelancer'),
+    ('other', 'Other'),
+)
+
+REGIONAL_GRANT_PYTHON_LEVEL_CHOICES = (
+    ('beginner', 'Beginner'),
+    ('intermediate', 'Intermediate'),
+    ('advanced', 'Advanced'),
+)
+
+REGIONAL_GRANT_PYTHON_DURATION_CHOICES = (
+    ('lt_6m', '< 6 months'),
+    ('6_12m', '6–12 months'),
+    ('1_2y', '1–2 years'),
+    ('2y_plus', '2+ years'),
+)
+
+REGIONAL_GRANT_INTEREST_CHOICES = (
+    ('ai_ml', 'AI / Machine Learning'),
+    ('web_dev', 'Web Development'),
+    ('data_science', 'Data Science'),
+    ('open_source', 'Open Source'),
+    ('devops_cloud', 'DevOps / Cloud'),
+)
+
+REGIONAL_GRANT_FINANCIAL_SUPPORT_CHOICES = (
+    ('travel', 'Travel'),
+    ('accommodation', 'Accommodation'),
+    ('conference_ticket', 'Conference Ticket'),
+    ('none', 'None'),
+)
+
+REGIONAL_GRANT_YES_NO_CHOICES = (
+    ('yes', 'Yes'),
+    ('no', 'No'),
+)
+
+REGIONAL_GRANT_APPLICATION_STATUS_CHOICES = (
+    ('submitted', 'Submitted'),
+    ('reviewed', 'Reviewed'),
+    ('accepted', 'Accepted'),
+    ('rejected', 'Rejected'),
+)
+
+REGIONAL_GRANT_GENDER_CHOICES = (
+    ('female', 'Female'),
+    ('male', 'Male'),
+    ('prefer_not_to_say', 'Prefer not to say'),
+)
+
+
+class RegionalGrantApplication(models.Model):
+    """Regional Opportunity Grant application for applicants from neighbouring East African countries.
+
+    Mirrors the public, login-free application form previously hosted on pssu.ug
+    (the diversity_applications app), now hosted directly on this site.
+    """
+
+    country = models.CharField(
+        max_length=32,
+        choices=REGIONAL_GRANT_COUNTRIES,
+        help_text='Country of residence',
+    )
+    full_name = models.CharField(max_length=255)
+    email = models.EmailField()
+    phone = models.CharField(max_length=32)
+    city = models.CharField(max_length=255)
+    gender = models.CharField(max_length=32, choices=REGIONAL_GRANT_GENDER_CHOICES)
+    dob = models.DateField('Date of Birth')
+    is_18 = models.BooleanField(
+        'I confirm that I am 18 years or older',
+        help_text='Applicant must be 18 or older',
+    )
+    status = models.CharField(
+        max_length=32,
+        choices=REGIONAL_GRANT_STATUS_CHOICES,
+        help_text='Current employment/student status',
+    )
+    field = models.CharField(
+        'Field of study or work',
+        max_length=255,
+        help_text='Your field of study or professional field',
+    )
+    python_level = models.CharField(
+        max_length=32,
+        choices=REGIONAL_GRANT_PYTHON_LEVEL_CHOICES,
+        verbose_name='Python proficiency level',
+    )
+    python_duration = models.CharField(
+        max_length=32,
+        choices=REGIONAL_GRANT_PYTHON_DURATION_CHOICES,
+        verbose_name='How long have you been using Python?',
+    )
+    why_attend = models.TextField(
+        'Why do you want to attend PyCon Africa?',
+        help_text='Tell us about your motivation for attending',
+    )
+    hope_to_gain = models.TextField(
+        'What do you hope to gain from the conference?',
+        help_text='What skills, knowledge, or connections are you looking for?',
+    )
+    interests = models.CharField(
+        max_length=255,
+        verbose_name='Areas of interest (comma-separated)',
+        help_text='e.g., AI/ML, Web Development, Data Science, Open Source, DevOps/Cloud',
+    )
+    community = models.TextField(
+        blank=True,
+        verbose_name='Are you part of any community or organization?',
+        help_text='Optional: Tell us about your involvement in tech communities',
+    )
+    contributions = models.TextField(
+        blank=True,
+        verbose_name='How have you contributed to the tech community?',
+        help_text='Optional: Open source, mentoring, organizing events, etc.',
+    )
+    knowledge_sharing = models.TextField(
+        blank=True,
+        verbose_name='How do you share knowledge with others?',
+        help_text='Optional: Blogging, teaching, talks, etc.',
+    )
+    attend_all = models.BooleanField(
+        'I can attend all days of the conference',
+        help_text='Confirm your commitment to attend the full conference',
+    )
+    represent_professionally = models.BooleanField(
+        'I will represent the regional grant program professionally',
+        help_text='Agree to represent the event and community professionally',
+    )
+    share_publicly = models.BooleanField(
+        'I agree to share my experience publicly',
+        help_text='Permission to share your experience on social media, etc.',
+    )
+    represent_how = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name='How will you represent the event?',
+        help_text='Optional: Social media, blog posts, presentations, etc.',
+    )
+    has_national_id = models.BooleanField(
+        default=False,
+        verbose_name='I have a valid national ID',
+        help_text='Confirm you have a national ID',
+    )
+    has_passport = models.BooleanField(
+        default=False,
+        verbose_name='I have a valid passport',
+        help_text='Confirm you have a valid passport',
+    )
+    can_travel = models.BooleanField(
+        default=False,
+        verbose_name='I can obtain travel documents if needed',
+        help_text='Confirm you can get travel documents for attending',
+    )
+    can_cover_expenses_with_ticket = models.CharField(
+        max_length=8,
+        choices=REGIONAL_GRANT_YES_NO_CHOICES,
+        default='yes',
+        verbose_name=(
+            'If given a to-and-return bus ticket to the event, would you be able '
+            'to cover all your other expenses?'
+        ),
+        help_text='e.g. accommodation, food, and other personal costs',
+    )
+    can_attend_with_travel_support = models.CharField(
+        max_length=8,
+        choices=REGIONAL_GRANT_YES_NO_CHOICES,
+        default='yes',
+        verbose_name='Would you be able to get a conference ticket if given travel support?',
+        help_text='Let us know if travel support alone would enable you to attend',
+    )
+    financial_support = models.CharField(
+        max_length=32,
+        choices=REGIONAL_GRANT_FINANCIAL_SUPPORT_CHOICES,
+        verbose_name='Do you need financial support?',
+        help_text='Select the type of support you may need',
+    )
+    additional_notes = models.TextField(
+        blank=True,
+        verbose_name='Additional notes',
+        help_text='Optional: Additional information about yourself',
+    )
+    application_status = models.CharField(
+        max_length=20,
+        choices=REGIONAL_GRANT_APPLICATION_STATUS_CHOICES,
+        default='submitted',
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = 'Regional grant application'
+        verbose_name_plural = 'Regional grant applications'
+
+    def __str__(self):
+        return f'{self.full_name} ({self.get_country_display()})'
+
+    def get_interests_list(self):
+        return [interest for interest in self.interests.split(',') if interest]
+
+
 class FinAidApplicationReview(models.Model):
     RECOMMEND_ACCEPT = 'accept'
     RECOMMEND_PARTIAL = 'partial'

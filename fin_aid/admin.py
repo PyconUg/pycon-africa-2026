@@ -8,6 +8,7 @@ from .models import (
     FinAidReviewAssignment,
     FinAidReviewer,
     OpportunityGrantApplication,
+    RegionalGrantApplication,
 )
 class OpportunityGrantApplicationResource(resources.ModelResource):
     user_email = fields.Field(attribute='user__email', column_name='Email', readonly=True)
@@ -460,6 +461,25 @@ class OpportunityGrantApplicationAdmin(ImportExportModelAdmin):
             )
 
     send_ticket_code_email_action.short_description = "Send ticket code email to accepted applicants (selected)"
+
+
+@admin.register(RegionalGrantApplication)
+class RegionalGrantApplicationAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'full_name',
+        'email',
+        'country',
+        'gender',
+        'application_status',
+        'financial_support',
+        'created_at',
+    )
+    list_editable = ('application_status',)
+    list_filter = ('application_status', 'country', 'gender', 'financial_support')
+    search_fields = ('full_name', 'email', 'phone', 'city')
+    readonly_fields = ('created_at', 'updated_at')
+    ordering = ('-created_at',)
 
 
 @admin.register(FinAidApplicationReview)
