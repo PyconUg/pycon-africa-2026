@@ -300,7 +300,6 @@ REGIONAL_GRANT_APPLICATION_STATUS_CHOICES = (
 REGIONAL_GRANT_GENDER_CHOICES = (
     ('female', 'Female'),
     ('male', 'Male'),
-    ('non_binary', 'Non-binary'),
     ('prefer_not_to_say', 'Prefer not to say'),
 )
 
