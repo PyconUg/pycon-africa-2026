@@ -451,7 +451,7 @@ class RegionalGrantApplication(models.Model):
         return f'{self.full_name} ({self.get_country_display()})'
 
     def get_interests_list(self):
-        return [interest for interest in self.interests.split(',') if interest]
+        return [interest.strip() for interest in self.interests.split(',') if interest.strip()]
 
 
 class FinAidApplicationReview(models.Model):
