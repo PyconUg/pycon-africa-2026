@@ -27,14 +27,13 @@
       {% trans "Please complete all fields below. You can submit only one application for the Regional Opportunity Grant." %}
     </p>
 
-    <form method="post" action="" class="space-y-2">
+    <form method="post" action="" class="space-y-2" x-data="{ loading: false }" @submit="loading = true">
       {% csrf_token %}
       {% crispy form %}
       <div class="pt-6">
-        <button type="submit"
-                class="inline-block px-8 py-3 text-lg font-semibold text-white bg-pycon-teal hover:bg-teal-700 rounded-lg transition-colors">
-          {% trans "Submit application" %}
-        </button>
+        {% trans "Submit application" as idle_label %}
+        {% trans "Submitting…" as busy_label %}
+        {% include '2026/fin_aid/_opportunity_grant_form_submit.html' %}
       </div>
     </form>
   </div>
