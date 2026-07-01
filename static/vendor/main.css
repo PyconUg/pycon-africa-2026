@@ -380,17 +380,8 @@
   .inset-3 {
     inset: calc(var(--spacing) * 3);
   }
-  .inset-y-0 {
-    inset-block: calc(var(--spacing) * 0);
-  }
   .start-1 {
     inset-inline-start: calc(var(--spacing) * 1);
-  }
-  .right-0 {
-    right: calc(var(--spacing) * 0);
-  }
-  .right-3 {
-    right: calc(var(--spacing) * 3);
   }
   .right-4 {
     right: calc(var(--spacing) * 4);
@@ -2460,9 +2451,6 @@
   .w-75 {
     width: calc(var(--spacing) * 75);
   }
-  .w-80 {
-    width: calc(var(--spacing) * 80);
-  }
   .w-100 {
     width: calc(var(--spacing) * 100);
   }
@@ -3066,13 +3054,6 @@
       margin-inline-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-x-reverse)));
     }
   }
-  .space-x-4 {
-    :where(& > :not(:last-child)) {
-      --tw-space-x-reverse: 0;
-      margin-inline-start: calc(calc(var(--spacing) * 4) * var(--tw-space-x-reverse));
-      margin-inline-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-x-reverse)));
-    }
-  }
   .space-x-reverse {
     :where(& > :not(:last-child)) {
       --tw-space-x-reverse: 1;
@@ -3393,9 +3374,6 @@
   .border-gray-300 {
     border-color: var(--color-gray-300);
   }
-  .border-gray-500 {
-    border-color: var(--color-gray-500);
-  }
   .border-green-200 {
     border-color: var(--color-green-200);
   }
@@ -3410,9 +3388,6 @@
   }
   .border-sky-200 {
     border-color: var(--color-sky-200);
-  }
-  .border-slate-700 {
-    border-color: var(--color-slate-700);
   }
   .border-teal-100 {
     border-color: var(--color-teal-100);
@@ -4042,9 +4017,6 @@
   .pr-1 {
     padding-right: calc(var(--spacing) * 1);
   }
-  .pr-4 {
-    padding-right: calc(var(--spacing) * 4);
-  }
   .pb-2 {
     padding-bottom: calc(var(--spacing) * 2);
   }
@@ -4345,9 +4317,6 @@
   }
   .text-gray-100 {
     color: var(--color-gray-100);
-  }
-  .text-gray-200 {
-    color: var(--color-gray-200);
   }
   .text-gray-300 {
     color: var(--color-gray-300);
@@ -5719,16 +5688,6 @@
   .lg\:mt-16 {
     @media (width >= 64rem) {
       margin-top: calc(var(--spacing) * 16);
-    }
-  }
-  .lg\:block {
-    @media (width >= 64rem) {
-      display: block;
-    }
-  }
-  .lg\:hidden {
-    @media (width >= 64rem) {
-      display: none;
     }
   }
   .lg\:table-cell {
