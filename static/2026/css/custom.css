@@ -629,6 +629,62 @@ header[class*="bg-black"] {
     color: #dc3545;
 }
 
+/* Community page CTA button — non-layered to guarantee visibility over @layer base/utilities conflicts */
+.btn-teal {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #ffffff !important;
+    background-color: #177e89 !important;
+    border-radius: 0.5rem;
+    text-decoration: none !important;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-teal:hover {
+    background-color: #0f5f68 !important;
+    color: #ffffff !important;
+}
+
+.btn-teal-sm {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #ffffff !important;
+    background-color: #177e89 !important;
+    border-radius: 0.5rem;
+    text-decoration: none !important;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-teal-sm:hover {
+    background-color: #0f5f68 !important;
+    color: #ffffff !important;
+}
+
+.btn-teal-outline {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #177e89 !important;
+    background-color: #ffffff !important;
+    border: 2px solid #177e89;
+    border-radius: 0.5rem;
+    text-decoration: none !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+}
+
+.btn-teal-outline:hover {
+    background-color: #177e89 !important;
+    color: #ffffff !important;
+}
+
 .promo-buttons {
     display: flex;
     flex-direction: column;
