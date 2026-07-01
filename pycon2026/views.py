@@ -237,6 +237,47 @@ def persons_of_concern(request):
 #         'description': 'We are a group of women who are passionate about data science and want to see more women involved in the field.',
 #     }
 #     return render(request, '2026/community/women_in_data_science.html', context)
+def community(request):
+    co_events = [
+        {
+            "name": "PyLadiesCon Africa",
+            "description": "A dedicated program within PyCon Africa 2026 to empower women in the Python ecosystem across Africa.",
+            "url": "/2026/co-events/pyladies/",
+        },
+        {
+            "name": "Django Girls Workshop",
+            "description": "A free one-day workshop for women who want to learn to build websites using Python and Django.",
+            "url": "/2026/co-events/django-girls/",
+        },
+        {
+            "name": "PyLadies Arua Refugee Workshop",
+            "description": "A full-day hands-on Python and web development workshop for refugees and underserved youth, organised by PyLadies Kampala.",
+            "url": "/2026/co-events/persons_of_concern/",
+        },
+        {
+            "name": "Women in Data Science (WiDS)",
+            "description": "Inspiring and connecting women in data science across Africa through talks, networking, and workshops.",
+            "url": "/2026/co-events/women_in_data_science/",
+        },
+    ]
+    return render(request, '2026/community/community.html', {"co_events": co_events})
+
+
+def women_in_data_science(request):
+    context = {
+        'title': 'Women in Data Science (WiDS)',
+        'description': 'Inspiring and connecting women in data science across Africa.',
+    }
+    return render(request, '2026/co-events/women_in_data_science.html', context)
+
+
+def refugee_funding(request):
+    context = {
+        'title': 'Funding for Refugees & Persons of Concern',
+    }
+    return render(request, '2026/co-events/refugee_funding.html', context)
+
+
 def past_events(request):
     return render(request, '2026/past_events/past_events.html')
 

@@ -259,11 +259,16 @@ class UpdateProfileView(UpdateView):
     def form_valid(self, form):
         profile = form.save(commit=False)
         profile.user = self.request.user
-        profile.user.name = profile.name
-        profile.user.last_name = profile.surname
-        profile.user.save()
         profile.save()
-        return super(UpdateProfileView, self).form_valid(form)
+        # Keep the auth user's name in sync with the profile, then redirect.
+        # Saving here (instead of via super().form_valid) avoids a redundant
+        # second form.save() that re-processed the uploaded image.
+        user = self.request.user
+        user.first_name = profile.name
+        user.last_name = profile.surname
+        user.save(update_fields=["first_name", "last_name"])
+        self.object = profile
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class UpdateLoginView(EditOwnLoginMixin, UpdateView):
@@ -314,6 +319,10 @@ class SuccessView(TemplateView):
         context = super(SuccessView, self).get_context_data(**kwargs)
         context['title'] = 'Profile Update Successful'
         context['year'] = datetime.now().year
+        try:
+            context['profile'] = Profile.objects.get(user=self.request.user)
+        except Profile.DoesNotExist:
+            context['profile'] = None
         return context
  
 

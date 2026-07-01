@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load i18n static markdown_extras %}
+{% block meta_title %}{% trans "Women in Data Science (WiDS) | PyCon Africa 2026" %}{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<!-- Header -->
+<div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
+  <div class="text-center">
+    <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">Women in Data Science (WiDS) @ PyCon Africa 2026</h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+      A programme dedicated to inspiring and connecting women working in data science, machine learning,
+      and AI across the African continent.
+    </p>
+  </div>
+</div>
+
+<!-- Body -->
+<div class="max-w-7xl mx-auto px-4 pb-16">
+  <div class="max-w-4xl mx-auto text-gray-900">
+
+    <!-- About -->
+    <div class="mb-12">
+      <p class="text-lg leading-relaxed mb-4">
+        WiDS at PyCon Africa 2026 creates an inclusive space for women to showcase their work, build skills,
+        and grow networks within the data science ecosystem — from beginners to experienced practitioners.
+      </p>
+      <p class="text-lg leading-relaxed">
+        Our objective is to increase the visibility, participation, and leadership of women in data science
+        and AI across Africa by providing a dedicated platform within PyCon Africa 2026.
+      </p>
+    </div>
+
+    <!-- What to Expect -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-3">What to Expect</h2>
+        <p class="text-gray-600 max-w-xl mx-auto">
+          Sessions and activities designed to empower women at every stage of their data science journey.
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-microphone text-pycon-teal"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Keynotes &amp; Talks</h3>
+          <p class="text-gray-600 text-sm">Inspiring presentations from women data scientists and AI practitioners across Africa</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-laptop-code text-pycon-teal"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Hands-on Workshops</h3>
+          <p class="text-gray-600 text-sm">Practical sessions on data analysis, machine learning, and Python data tools</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-users text-pycon-teal"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Networking &amp; Mentorship</h3>
+          <p class="text-gray-600 text-sm">Connect with mentors, peers, and industry leaders in data science</p>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-heart text-pycon-teal"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Community Building</h3>
+          <p class="text-gray-600 text-sm">Engagement activities to strengthen local WiDS chapters and networks</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Who Should Attend -->
+    <div class="rounded-lg bg-gray-50 border border-gray-200 px-6 py-8 mb-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">Who Should Attend</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
+          <p class="font-medium text-gray-900 text-sm">Women in data science and AI (all levels)</p>
+        </div>
+        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
+          <p class="font-medium text-gray-900 text-sm">Students in statistics, maths, or computing</p>
+        </div>
+        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
+          <p class="font-medium text-gray-900 text-sm">Researchers and academics</p>
+        </div>
+        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
+          <p class="font-medium text-gray-900 text-sm">Career switchers entering data fields</p>
+        </div>
+        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
+          <p class="font-medium text-gray-900 text-sm">Python developers interested in data science</p>
+        </div>
+        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
+          <p class="font-medium text-gray-900 text-sm">Underrepresented groups in tech</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Impact -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Impact</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm text-center">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-chart-line text-pycon-teal"></i>
+          </div>
+          <p class="font-medium text-gray-900">Greater visibility for women in African data science</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm text-center">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-network-wired text-pycon-teal"></i>
+          </div>
+          <p class="font-medium text-gray-900">Stronger WiDS chapters and cross-border networks</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm text-center">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mx-auto mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-seedling text-pycon-teal"></i>
+          </div>
+          <p class="font-medium text-gray-900">New speakers, mentors, and community leaders</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center rounded-lg border border-gray-200 bg-gray-50 px-8 py-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Join WiDS at PyCon Africa 2026</h2>
+      <p class="text-lg text-gray-600 mb-8">
+        Be part of a growing community of women shaping the future of data science in Africa.
+        More details on registration and the programme will be shared soon.
+      </p>
+      <a href="/2026/community/"
+         class="btn-teal">
+        Back to Community Events
+      </a>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

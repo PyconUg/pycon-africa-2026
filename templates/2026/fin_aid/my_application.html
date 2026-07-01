@@ -51,6 +51,59 @@
               </div>
             </div>
 
+            {% if application.status == 'accepted' or application.status == 'waitlist' %}
+              <div>
+                {% if application.user_response == 'P' %}
+                  <div class="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 mb-4">
+                    <p class="text-sm font-medium text-amber-900">
+                      {% if application.has_travel_grant %}
+                        {% blocktrans with amount=application.travel_grant_amount|floatformat:0 %}You have been awarded a complimentary conference ticket and travel support of ${{ amount }}. Please respond to confirm your acceptance.{% endblocktrans %}
+                      {% elif application.status == 'accepted' %}
+                        {% trans "You have been awarded a complimentary conference ticket. Please respond to confirm your acceptance." %}
+                      {% else %}
+                        {% trans "You have been awarded a partial opportunity grant. Please respond to confirm whether you accept." %}
+                      {% endif %}
+                    </p>
+                  </div>
+                  {% fin_aid_respond_url as url_respond %}
+                  {% trans "Respond to grant offer" as respond_label %}
+                  {% include '2026/fin_aid/_opportunity_grant_link_button.html' with href=url_respond label=respond_label btn_class='px-5 py-2.5 text-sm font-semibold text-white bg-pycon-teal hover:bg-teal-700' %}
+                {% elif application.user_response == 'A' %}
+                  <div class="rounded-lg border border-green-200 bg-green-50 px-4 py-3">
+                    <p class="text-sm font-medium text-green-900">
+                      {% trans "You have accepted this opportunity grant. Your grant includes:" %}
+                    </p>
+                    <ul class="text-sm text-green-800 mt-2 list-disc list-inside space-y-1">
+                      <li>{% trans "Complimentary conference ticket" %}</li>
+                      {% if application.has_travel_grant %}
+                      <li>{% blocktrans with amount=application.travel_grant_amount|floatformat:0 %}Travel support: ${{ amount }}{% endblocktrans %}</li>
+                      {% endif %}
+                    </ul>
+                    {% if application.ticket_code %}
+                    <p class="text-sm text-green-800 mt-2">
+                      {% blocktrans with code=application.ticket_code %}Your ticket code: <strong>{{ code }}</strong>{% endblocktrans %}
+                    </p>
+                    {% endif %}
+                  </div>
+                {% elif application.user_response == 'R' %}
+                  <div class="rounded-lg border border-gray-200 bg-gray-50 px-4 py-3">
+                    <p class="text-sm font-medium text-gray-700">
+                      {% trans "You have declined this opportunity grant. The following was included in your award:" %}
+                    </p>
+                    <ul class="text-sm text-gray-600 mt-2 list-disc list-inside space-y-1">
+                      <li>{% trans "Complimentary conference ticket" %}</li>
+                      {% if application.has_travel_grant %}
+                      <li>{% blocktrans with amount=application.travel_grant_amount|floatformat:0 %}Travel support: ${{ amount }}{% endblocktrans %}</li>
+                      {% endif %}
+                    </ul>
+                    <p class="text-sm text-gray-500 mt-2">
+                      {% trans "If your situation changes, please contact us at" %} <a href="mailto:fin-aid@pycon.ug" class="text-pycon-teal hover:underline">fin-aid@pycon.ug</a>.
+                    </p>
+                  </div>
+                {% endif %}
+              </div>
+            {% endif %}
+
             <dl class="space-y-4 text-sm sm:text-base">
               <div>
                 <dt class="text-xs font-semibold uppercase tracking-wide text-gray-500">{% trans "Support requested" %}</dt>
