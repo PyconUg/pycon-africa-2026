@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PyCon Africa {{ year }} — Thank You for Accepting Your Opportunity Grant</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    .content { max-width: 600px; margin: auto; }
+    .header { background-color: #ecc8a4; padding: 10px; text-align: center; }
+    .details { margin: 20px 0; }
+    .details p { line-height: 1.6; }
+    .code-box { margin: 16px 0; padding: 16px 20px; background-color: #f3f4f6; border: 1px solid #d1d5db; border-radius: 8px; text-align: center; }
+    .code-box .code { font-size: 1.25em; font-weight: bold; letter-spacing: 1px; color: #111827; }
+    .steps-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .steps-table td { vertical-align: top; text-align: left; padding: 10px 0 14px 0; line-height: 1.45; }
+    .steps-table td.step-label { width: 92px; max-width: 92px; white-space: nowrap; font-weight: bold; padding-right: 14px; color: #333; }
+    .signature { margin-top: 28px; padding-top: 20px; border-top: 1px solid #e5e5e5; line-height: 1.5; }
+    .signature p { margin: 0 0 6px 0; }
+    .footer { max-width: 600px; margin: 28px auto 0; padding-top: 16px; border-top: 1px solid #e5e5e5; text-align: center; font-size: 0.9em; color: #555; line-height: 1.6; }
+    .footer p { margin: 6px 0; }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <div class="header">
+      <h2>Thank You for Accepting, {{ applicant_name }}!</h2>
+    </div>
+    <div class="details">
+      <p>Dear {{ applicant_name }},</p>
+
+      {% if application.has_travel_grant %}
+      <p>
+        Thank you for accepting your PyCon Africa {{ year }} Conference Ticket and Travel Support Award.
+      </p>
+      <p>
+        Please follow the steps below to complete your conference registration and prepare for your travel support.
+      </p>
+      {% else %}
+      <p>
+        Thank you for accepting your PyCon Africa {{ year }} Conference Ticket Award.
+      </p>
+      {% endif %}
+
+      {% if application.ticket_code %}
+      <h3>Redeem Your Conference Ticket</h3>
+      <p>To redeem your complimentary conference ticket:</p>
+      <table class="steps-table" role="presentation">
+        <tr>
+          <td class="step-label">Step 1:</td>
+          <td>
+            Visit the PyCon Africa tickets page:
+            <a href="https://www.quicket.co.ug/events/361146-pycon-africa-2026/?ref=events-list">PyCon Africa 2026 on Quicket</a>
+          </td>
+        </tr>
+        <tr>
+          <td class="step-label">Step 2:</td>
+          <td>
+            Select the <strong>Individual</strong> ticket type.
+          </td>
+        </tr>
+        <tr>
+          <td class="step-label">Step 3:</td>
+          <td>
+            Enter your unique ticket code:
+            <div class="code-box">
+              <span class="code">{{ application.ticket_code }}</span>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <p>
+        <strong>Please note:</strong>
+      </p>
+      <ul>
+        <li>Your ticket code will only work for the Individual ticket type.</li>
+        <li>Your ticket code is case-sensitive.</li>
+        <li>The code can only be redeemed once.</li>
+      </ul>
+      {% else %}
+      <p>
+        Your conference ticket redemption code will be sent to you in a separate email shortly.
+      </p>
+      {% endif %}
+
+      {% if application.has_travel_grant %}
+      <h3>Travel Support</h3>
+      <p>
+        Your approved travel support amount is:
+        <strong>${{ application.travel_grant_amount|floatformat:0 }}</strong>
+      </p>
+      <p>Please note the following:</p>
+      <ul>
+        <li>No travel support funds will be disbursed prior to the conference.</li>
+        <li>Travel support will be disbursed during the conference.</li>
+      </ul>
+      <p>
+        Further instructions regarding the reimbursement process will be shared via email.
+      </p>
+      {% endif %}
+
+      <p>
+        If you have any questions or require assistance, please contact us at
+        <a href="mailto:fin-aid@pycon.ug">fin-aid@pycon.ug</a>.
+      </p>
+      <p>We look forward to welcoming you to PyCon Africa {{ year }}!</p>
+    </div>
+    <div class="signature">
+      <p>Sincerely,</p>
+      <p><strong>Opportunity Grants Team</strong></p>
+      <p><strong>PyCon Africa {{ year }}</strong></p>
+    </div>
+  </div>
+  <div class="footer">
+    <p>&copy; PyCon Africa {{ year }}. All rights reserved.</p>
+    <p>
+      <a href="https://www.twitter.com/pyconafrica/">Twitter</a> |
+      <a href="https://www.instagram.com/pyconafrica/">Instagram</a>
+    </p>
+  </div>
+</body>
+</html>

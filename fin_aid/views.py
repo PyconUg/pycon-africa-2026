@@ -34,6 +34,7 @@ from .models import (
     FinAidReviewAssignment,
     FinAidReviewer,
     OpportunityGrantApplication,
+    RegionalGrantApplication,
 )
 from talks.models import Proposal
 from .flight_budgets import get_flight_budget, get_review_region
@@ -41,8 +42,17 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from home.models import EventYear
 
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from .email_notifications import send_opportunity_grant_submission_confirmation
-from .forms import Fin_aidForm, OpportunityGrantApplicationForm, FinAidApplicationReviewForm
+from .email_notifications import (
+    send_opportunity_grant_submission_confirmation,
+    send_opportunity_grant_response_confirmation,
+)
+from .forms import (
+    Fin_aidForm,
+    OpportunityGrantApplicationForm,
+    OpportunityGrantResponseForm,
+    FinAidApplicationReviewForm,
+    RegionalGrantApplicationForm,
+)
 
 
 def _public_fin_aid_url(year):
@@ -79,6 +89,12 @@ def _fin_aid_apply_url(year):
     if year == 2026:
         return reverse('pycon2026:fin_aid_apply')
     return reverse('fin_aid:fin_aid_apply', kwargs={'year': year})
+
+
+def _fin_aid_respond_url(year):
+    if year == 2026:
+        return reverse('pycon2026:fin_aid_respond')
+    return reverse('fin_aid:fin_aid_respond', kwargs={'year': year})
 
 
 def _fin_aid_for_event_year(event_year):
@@ -259,6 +275,26 @@ def fin_aid_apply(request, year):
     )
 
 
+def regional_grant_apply(request):
+    if request.method == 'POST':
+        form = RegionalGrantApplicationForm(request.POST)
+        if form.is_valid():
+            application = form.save()
+            messages.success(
+                request,
+                _("Thank you for applying! We'll review your application and get back to you soon."),
+            )
+            return redirect('pycon2026:regional_grant_apply_success')
+    else:
+        form = RegionalGrantApplicationForm()
+
+    return render(request, '2026/fin_aid/regional_apply.html', {'form': form})
+
+
+def regional_grant_apply_success(request):
+    return render(request, '2026/fin_aid/regional_apply_success.html')
+
+
 @login_required
 def fin_aid_my_application(request, year):
     event_year = get_object_or_404(EventYear, year=year)
@@ -356,6 +392,57 @@ def fin_aid_application_edit(request, year):
             'form': form,
             'application': application,
             'fin_aid_obj': fin_aid_obj,
+        },
+    )
+
+
+@login_required
+def fin_aid_respond(request, year):
+    event_year = get_object_or_404(EventYear, year=year)
+    fin_aid_obj = _fin_aid_for_event_year(event_year)
+    template = _fin_aid_subpage_template(year, 'grant_response_form.html')
+
+    if not fin_aid_obj:
+        messages.info(
+            request,
+            _('There is no active opportunity grant program for this event year yet.'),
+        )
+        return redirect(_public_fin_aid_url(year))
+
+    application = OpportunityGrantApplication.objects.filter(
+        fin_aid=fin_aid_obj,
+        user=request.user,
+    ).first()
+    if not application:
+        messages.info(request, _('You have not submitted an application for this round yet.'))
+        return redirect(_fin_aid_apply_url(year))
+
+    if application.status not in (
+        OpportunityGrantApplication.STATUS_ACCEPTED,
+        OpportunityGrantApplication.STATUS_PARTIAL,
+    ):
+        messages.info(request, _('Your application does not have a pending grant offer to respond to.'))
+        return redirect(_fin_aid_my_application_url(year))
+
+    if request.method == 'POST':
+        form = OpportunityGrantResponseForm(request.POST, instance=application)
+        if form.is_valid():
+            user_response = form.cleaned_data['user_response']
+            application.user_response = user_response
+            application.save(update_fields=['user_response', 'updated_at'])
+            send_opportunity_grant_response_confirmation(application, year)
+            messages.success(request, _('Your response has been recorded. Thank you.'))
+            return redirect(_fin_aid_my_application_url(year))
+    else:
+        form = OpportunityGrantResponseForm(instance=application)
+
+    return render(
+        request,
+        template,
+        {
+            'year': year,
+            'application': application,
+            'form': form,
         },
     )
 

@@ -1,0 +1,34 @@
+Dear {{ applicant_name }},
+
+{% if application.has_travel_grant %}Thank you for accepting your PyCon Africa {{ year }} Conference Ticket and Travel Support Award.{% else %}Thank you for accepting your PyCon Africa {{ year }} Conference Ticket Award.{% endif %}
+
+{% if application.ticket_code %}REDEEM YOUR CONFERENCE TICKET
+
+To redeem your complimentary conference ticket:
+1. Visit: https://www.quicket.co.ug/events/361146-pycon-africa-2026/?ref=events-list
+2. Select the Individual ticket type.
+3. Enter your unique ticket code: {{ application.ticket_code }}
+
+Please note:
+- Your ticket code will only work for the Individual ticket type.
+- Your ticket code is case-sensitive.
+- The code can only be redeemed once.
+{% else %}Your conference ticket redemption code will be sent to you in a separate email shortly.
+{% endif %}
+{% if application.has_travel_grant %}PARTIAL TRAVEL SUPPORT
+
+Your approved travel support amount is: ${{ application.travel_grant_amount|floatformat:0 }}
+
+Please note:
+- No travel support funds will be disbursed prior to the conference.
+- Travel support will be disbursed during the conference to recipients.
+
+Further instructions regarding the reimbursement process will be shared via email.
+{% endif %}
+If you have any questions, please contact us at fin-aid@pycon.ug.
+
+We look forward to welcoming you to PyCon Africa {{ year }}!
+
+Sincerely,
+Opportunity Grants Team
+PyCon Africa {{ year }}

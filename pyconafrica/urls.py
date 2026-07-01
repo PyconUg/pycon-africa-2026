@@ -65,11 +65,26 @@ urlpatterns = [
     re_path(r'hitcount/', include('hitcount.urls', namespace='hitcount')),
 
 
-] 
+]
+
+# Serve user-uploaded media in every environment. Django's static() helper is a
+# no-op when DEBUG is False, and WhiteNoise only handles static files (and won't
+# see files uploaded after start-up), so register an explicit route via Django's
+# serve view. This keeps profile pictures and other uploads working when media is
+# stored on the local filesystem (the current MEDIA_ROOT configuration).
+from django.views.static import serve as media_serve
+
+urlpatterns += [
+    re_path(
+        r"^%s(?P<path>.*)$" % settings.MEDIA_URL.lstrip("/"),
+        media_serve,
+        {"document_root": settings.MEDIA_ROOT},
+    ),
+]
+
 if settings.DEBUG:
     from debug_toolbar.toolbar import debug_toolbar_urls
 
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     # Serve from STATICFILES_DIRS and app static/ — not STATIC_ROOT (collectstatic output only).
     urlpatterns += staticfiles_urlpatterns()
     urlpatterns += debug_toolbar_urls()

@@ -42,6 +42,12 @@ urlpatterns = [
     path('health-safety/', view=views.health_safety, name='health_safety'),
     path('opportunity-grants/', fin_aid_views.fin_aid, {'year': 2026}, name='fin_aid'),
     path('opportunity-grants/apply/', fin_aid_views.fin_aid_apply, {'year': 2026}, name='fin_aid_apply'),
+    path('opportunity-grants/regional/apply/', fin_aid_views.regional_grant_apply, name='regional_grant_apply'),
+    path(
+        'opportunity-grants/regional/apply/success/',
+        fin_aid_views.regional_grant_apply_success,
+        name='regional_grant_apply_success',
+    ),
     path(
         'opportunity-grants/my-application/',
         fin_aid_views.fin_aid_my_application,
@@ -53,6 +59,12 @@ urlpatterns = [
         fin_aid_views.fin_aid_application_edit,
         {'year': 2026},
         name='fin_aid_application_edit',
+    ),
+    path(
+        'opportunity-grants/my-application/respond/',
+        fin_aid_views.fin_aid_respond,
+        {'year': 2026},
+        name='fin_aid_respond',
     ),
     path(
         'opportunity-grants/reviews/',
@@ -84,6 +96,10 @@ urlpatterns = [
     path(
         'fin-aid/my-application/edit/',
         RedirectView.as_view(pattern_name='pycon2026:fin_aid_application_edit', permanent=True),
+    ),
+    path(
+        'fin-aid/my-application/respond/',
+        RedirectView.as_view(pattern_name='pycon2026:fin_aid_respond', permanent=True),
     ),
     path(
         'fin-aid/reviews/',

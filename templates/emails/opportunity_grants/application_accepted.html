@@ -22,12 +22,28 @@
     <div class="details">
       <p>Dear {{ applicant_name }},</p>
       <p>Thank you for applying for an Opportunity Grant to attend PyCon Africa {{ year }}.</p>
+      {% if application.has_travel_grant %}
       <p>
-        We're happy to let you know that your application has been successful and that you have been awarded
-        a <strong>full opportunity grant</strong>.
+        We're pleased to inform you that you have been selected to receive a
+        <strong>complimentary conference ticket</strong> and
+        <strong>travel support of ${{ application.travel_grant_amount|floatformat:0 }}</strong>
+        to help offset your travel expenses.
       </p>
       <p>
-        Please confirm your acceptance by <strong>{{ acceptance_deadline }}</strong>.
+        Please note that this travel support is intended to supplement your travel costs and may not
+        cover all expenses associated with attending the conference.
+      </p>
+      {% else %}
+      <p>
+        We're delighted to inform you that you have been selected to receive a
+        <strong>complimentary conference ticket</strong> to PyCon Africa {{ year }}.
+      </p>
+      {% endif %}
+      <p>
+        Please confirm your acceptance by <strong>{{ acceptance_deadline }}</strong> by visiting the link below:
+      </p>
+      <p style="margin: 20px 0;">
+        <a href="{{ response_url }}" style="display: inline-block; background-color: #0d9488; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold;">Respond to your grant offer</a>
       </p>
       <p>
         If we do not hear from you by this date, we may offer the grant to another applicant.
