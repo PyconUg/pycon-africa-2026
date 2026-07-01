@@ -70,6 +70,10 @@ def about_south_sudan_region(request):
     return render(request, '2026/about/south_sudan_region.html', context)
 
 
+def regions(request):
+    return render(request, '2026/regions/regions.html', {})
+
+
 def venue_hotels(request):
     context = {}
     return render(request, '2026/venue-hotels/venue-hotels.html', context)

@@ -245,8 +245,6 @@ REGIONAL_GRANT_COUNTRIES = (
     ('rwanda', 'Rwanda'),
     ('tanzania', 'Tanzania'),
     ('south_sudan', 'South Sudan'),
-    ('drc', 'DRC'),
-    ('uganda', 'Uganda'),
     ('other', 'Other'),
 )
 
