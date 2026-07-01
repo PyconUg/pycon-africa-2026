@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% block meta_title %}{% trans "Regional Communities | PyCon Africa 2026" %}{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<!-- Header -->
+<div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
+  <div class="text-center">
+    <h1 class="text-4xl lg:text-5xl font-bold mb-4">Regional Communities</h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto mt-4">
+      PyCon Africa 2026 is shaped by regional Python communities across East Africa. Explore each region below.
+    </p>
+  </div>
+</div>
+
+<!-- Tabs -->
+<div class="max-w-7xl mx-auto px-4 pb-16" x-data="{ tab: 'kenya' }">
+
+  <div class="flex flex-wrap gap-2 border-b border-gray-200 mb-10">
+    <button @click="tab = 'kenya'"
+      :class="tab === 'kenya' ? 'border-b-2 border-teal-600 text-teal-600 font-semibold' : 'text-gray-500 hover:text-gray-700'"
+      class="px-5 py-3 text-sm transition-colors">
+      Kenya
+    </button>
+    <button @click="tab = 'rwanda'"
+      :class="tab === 'rwanda' ? 'border-b-2 border-teal-600 text-teal-600 font-semibold' : 'text-gray-500 hover:text-gray-700'"
+      class="px-5 py-3 text-sm transition-colors">
+      Rwanda
+    </button>
+    <button @click="tab = 'tanzania'"
+      :class="tab === 'tanzania' ? 'border-b-2 border-teal-600 text-teal-600 font-semibold' : 'text-gray-500 hover:text-gray-700'"
+      class="px-5 py-3 text-sm transition-colors">
+      Tanzania
+    </button>
+    <button @click="tab = 'south_sudan'"
+      :class="tab === 'south_sudan' ? 'border-b-2 border-teal-600 text-teal-600 font-semibold' : 'text-gray-500 hover:text-gray-700'"
+      class="px-5 py-3 text-sm transition-colors">
+      South Sudan
+    </button>
+  </div>
+
+  <!-- Kenya -->
+  <div x-show="tab === 'kenya'" class="max-w-4xl mx-auto space-y-8">
+    <div>
+      <h2 class="text-2xl font-bold text-teal-700 mb-3">About the Kenya Community</h2>
+      <p class="text-gray-700 leading-relaxed">
+        Kenya has one of the most active Python ecosystems in Africa, with strong communities in software development,
+        data science, AI, fintech, health tech, and open-source innovation. The Kenyan Python community plays a key
+        role in shaping regional collaboration for PyCon Africa 2026.
+      </p>
+    </div>
+    <div>
+      <h2 class="text-2xl font-bold text-teal-700 mb-3">Kenya's Role in PyCon Africa 2026</h2>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li>Mobilize the local Python community for PyCon Africa 2026</li>
+        <li>Support speaker engagement, CFP submissions, and community outreach</li>
+        <li>Facilitate cross-border collaboration with Uganda and other regional teams</li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="text-2xl font-bold text-teal-700 mb-3">Kenya Local Team</h2>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li>Allan Kiche</li>
+        <li>Bryan Mwanyumba</li>
+        <li>Ondemo Kelvin</li>
+      </ul>
+      <p class="text-gray-500 text-sm mt-2">Contact details to be added.</p>
+    </div>
+  </div>
+
+  <!-- Rwanda -->
+  <div x-show="tab === 'rwanda'" class="max-w-4xl mx-auto space-y-8">
+    <div>
+      <h2 class="text-2xl font-bold text-teal-700 mb-3">About the Rwanda Community</h2>
+      <p class="text-gray-700 leading-relaxed">
+        Rwanda has positioned itself as a regional technology and innovation hub, with Python playing a growing role
+        in software engineering, AI, data science, and public-sector innovation.
+      </p>
+    </div>
+    <div>
+      <h2 class="text-2xl font-bold text-teal-700 mb-3">Rwanda's Role in PyCon Africa 2026</h2>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li>Encourage speaker submissions and regional participation</li>
+        <li>Connect Python professionals, students, and researchers</li>
+        <li>Strengthen collaboration between East African Python communities</li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="text-2xl font-bold text-teal-700 mb-3">Rwanda Local Team</h2>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li><a href="mailto:delyon.ronnie@gmail.com" class="text-teal-600 hover:underline">delyon.ronnie@gmail.com</a></li>
+        <li><a href="mailto:didas.mbarushi@gmail.com" class="text-teal-600 hover:underline">didas.mbarushi@gmail.com</a></li>
+        <li><a href="mailto:munyankikohussein2@gmail.com" class="text-teal-600 hover:underline">munyankikohussein2@gmail.com</a></li>
+        <li><a href="mailto:sunnexajayi@gmail.com" class="text-teal-600 hover:underline">sunnexajayi@gmail.com</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Tanzania -->
+  <div x-show="tab === 'tanzania'" class="max-w-4xl mx-auto space-y-8">
+    <div>
+      <h2 class="text-2xl font-bold text-teal-700 mb-3">About the Tanzania Community</h2>
+      <p class="text-gray-700 leading-relaxed">
+        Tanzania's Python community continues to grow across academia, startups, data analytics, civic technology,
+        and digital transformation initiatives. PyCon Africa 2026 provides an opportunity to further elevate
+        Tanzanian Python talent on a continental stage.
+      </p>
+    </div>
+    <div>
+      <h2 class="text-2xl font-bold text-teal-700 mb-3">Tanzania's Role in PyCon Africa 2026</h2>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li>Engage developers, students, and tech hubs across Tanzania</li>
+        <li>Promote PyCon Africa participation and regional representation</li>
+        <li>Support workshops, community talks, and volunteer engagement</li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="text-2xl font-bold text-teal-700 mb-3">Tanzania Local Team</h2>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li>Noah Maina</li>
+      </ul>
+      <p class="text-gray-500 text-sm mt-2">Contact details to be added.</p>
+    </div>
+  </div>
+
+  <!-- South Sudan -->
+  <div x-show="tab === 'south_sudan'" class="max-w-4xl mx-auto space-y-8">
+    <div>
+      <h2 class="text-2xl font-bold text-teal-700 mb-3">About the South Sudan Community</h2>
+      <p class="text-gray-700 leading-relaxed">
+        South Sudan's emerging tech ecosystem is steadily embracing open-source technologies like Python to support
+        education, innovation, and digital skills development.
+      </p>
+    </div>
+    <div>
+      <h2 class="text-2xl font-bold text-teal-700 mb-3">South Sudan's Role in PyCon Africa 2026</h2>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li>Promote Python learning and awareness within local communities</li>
+        <li>Encourage participation in PyCon Africa 2026</li>
+        <li>Support regional inclusion and representation at the conference</li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="text-2xl font-bold text-teal-700 mb-3">South Sudan Local Team</h2>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <li>John Marit</li>
+      </ul>
+      <p class="text-gray-500 text-sm mt-2">Contact details to be added.</p>
+    </div>
+  </div>
+
+  <!-- Shared collaboration footer -->
+  <div class="max-w-4xl mx-auto mt-14 text-center rounded-lg border border-gray-200 bg-gray-50 px-8 py-10">
+    <h2 class="text-xl font-bold text-gray-900 mb-3">Pan-African Collaboration</h2>
+    <p class="text-gray-600">
+      These regional teams work closely with the main organizing committee to ensure strong local representation,
+      inclusive participation across borders, and sustainable growth of Python communities in Africa.
+    </p>
+  </div>
+
+</div>
+
+{% endblock %}
