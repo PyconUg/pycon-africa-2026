@@ -121,7 +121,7 @@
         </div>
       </div>
 
-      <!-- Community -->
+      {% comment %}Community nav hidden for now.
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open">
           COMMUNITY
@@ -134,9 +134,9 @@
           <a class="nav-item" href="/2026/co-events/django-girls/">Django Girls</a>
           <a class="nav-item" href="/2026/co-events/persons_of_concern/">Refugee Workshop</a>
           <a class="nav-item" href="/2026/co-events/women_in_data_science/">Women in Data Science (WiDS)</a>
-          <a class="nav-item" href="/2026/co-events/refugee-funding/">Funding for Refugees/POC</a>
         </div>
       </div>
+      {% endcomment %}
 
       {% comment %}Diversity nav hidden for now; keep route accessible directly.{% endcomment %}
       {% comment %}
@@ -346,7 +346,7 @@
           </div>
         </div>
 
-        <!-- Community (dropdown) -->
+        {% comment %}Community (dropdown) hidden for now.
         <div x-data="{ openSection: false }">
           <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection"
             type="button">
@@ -360,9 +360,9 @@
             <a class="nav-item nav-item-indent" href="/2026/co-events/django-girls/">Django Girls</a>
             <a class="nav-item nav-item-indent" href="/2026/co-events/persons_of_concern/">Refugee Workshop</a>
             <a class="nav-item nav-item-indent" href="/2026/co-events/women_in_data_science/">Women in Data Science (WiDS)</a>
-            <a class="nav-item nav-item-indent" href="/2026/co-events/refugee-funding/">Funding for Refugees/POC</a>
           </div>
         </div>
+        {% endcomment %}
 
         <!-- Tickets (dropdown) -->
         <div x-data="{ openSection: false }">
