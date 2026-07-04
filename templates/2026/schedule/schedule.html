@@ -55,6 +55,7 @@
                   {% if cell.title %}
                   <div class="cell-title">{{ cell.title }}</div>
                   {% if cell.speaker %}<div class="cell-speaker"><strong>({{ cell.speaker }})</strong></div>{% endif %}
+                  {% if cell.label %}<div class="cell-label">{{ cell.label }}</div>{% endif %}
                   {% endif %}
                 </td>
                 {% endfor %}
@@ -212,6 +213,19 @@
 
 .cell-speaker strong {
   font-weight: 900 !important;
+}
+
+.cell-label {
+  display: inline-block;
+  font-size: 10px;
+  background: #f0f9ff;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+  border-radius: 4px;
+  padding: 1px 6px;
+  margin-top: 5px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
 /* Spanning cells (shared events) */
