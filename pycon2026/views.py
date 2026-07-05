@@ -275,13 +275,6 @@ def women_in_data_science(request):
     return render(request, '2026/co-events/women_in_data_science.html', context)
 
 
-def refugee_funding(request):
-    context = {
-        'title': 'Funding for Refugees & Persons of Concern',
-    }
-    return render(request, '2026/co-events/refugee_funding.html', context)
-
-
 def past_events(request):
     return render(request, '2026/past_events/past_events.html')
 
