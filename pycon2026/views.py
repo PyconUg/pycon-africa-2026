@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from .schedule_data import SCHEDULE_DATA
 
 SPONSORS_2026 = [
     {
@@ -70,6 +71,10 @@ def about_south_sudan_region(request):
     return render(request, '2026/about/south_sudan_region.html', context)
 
 
+def regions(request):
+    return render(request, '2026/regions/regions.html', {})
+
+
 def venue_hotels(request):
     context = {}
     return render(request, '2026/venue-hotels/venue-hotels.html', context)
@@ -112,7 +117,7 @@ def contact_us(request):
     return render(request, '2026/about/contact_us.html', context)
 
 def scheduIe(request):
-    context = {}
+    context = {"tabs": SCHEDULE_DATA}
     template = '2026/schedule/schedule.html'
     return render(request, template, context)
 
@@ -268,13 +273,6 @@ def women_in_data_science(request):
         'description': 'Inspiring and connecting women in data science across Africa.',
     }
     return render(request, '2026/co-events/women_in_data_science.html', context)
-
-
-def refugee_funding(request):
-    context = {
-        'title': 'Funding for Refugees & Persons of Concern',
-    }
-    return render(request, '2026/co-events/refugee_funding.html', context)
 
 
 def past_events(request):

@@ -32,7 +32,14 @@
         </div>
       </div>
 
-      <!-- Talks -->
+      <!-- Blog -->
+      <a class="nav-item" href="https://pyconafrica.blogspot.com/" target="_blank" rel="noopener noreferrer">BLOG</a>
+
+      <!-- Schedule -->
+      <a class="nav-item" href="/2026/schedule/">SCHEDULE</a>
+
+      {% comment %}Speak at PyCon hidden
+        <!-- Talks -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open">
           SPEAK AT PYCON
@@ -40,17 +47,8 @@
           <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
         </button>
         <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
-          {% comment %}<a class="nav-item" href="/2026/speakers_list/">Our Speakers</a>{% endcomment %}
           <a class="nav-item" href="/2026/talks/proposals/">Proposals</a>
           <a class="nav-item" href="/2026/talks/proposing_a_talk/">Proposing a Talk</a>
-          {% comment %}
-          {% if user.is_authenticated %}
-          <a class="nav-item" href="{% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
-          {% else %}
-          <a class="nav-item" href="{% url 'auth_login' %}?next={% url 'talks:submit_talk' year=2026 %}">Submit a
-            Proposal</a>
-          {% endif %}
-          {% endcomment %}
           {% if user.is_authenticated %}
           <a class="nav-item" href="{% url 'talks:submit_poster' year=2026 %}">Submit a Poster</a>
           {% else %}
@@ -58,9 +56,9 @@
             Poster</a>
           {% endif %}
           <a class="nav-item" href="/2026/talks/recording-release/">Recording Release</a>
-          {% comment %}<a class="nav-item" href="/2026/talks/mentorship/">SPEAKER MENTORSHIP</a>{% endcomment %}
         </div>
       </div>
+      {% endcomment %}
 
       {% comment %}Co-events (hidden)
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
@@ -105,21 +103,19 @@
         </div>
       </div>
 
-      <!-- Regions -->
+      {% comment %}Standalone Regions dropdown replaced by the Community tab.
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open">
           REGIONS
-          <i class="fa fa-chevron-up" aria-hidden="true" x-show="open" style="display: none;"></i>
-          <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
         </button>
         <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
-          <!-- <a class="nav-item" href="/2026/travel/">Travel Guide</a> -->
           <a class="nav-item" href="/2026/region/kenya-region/">PYCON AFRICA 2026 – KENYA REGION</a>
           <a class="nav-item" href="/2026/region/rwanda-region/">PYCON AFRICA 2026 – RWANDA REGION</a>
           <a class="nav-item" href="/2026/region/tanzania-region/">PYCON AFRICA 2026 – TANZANIA REGION</a>
           <a class="nav-item" href="/2026/region/south-sudan-region/">PYCON AFRICA 2026 – SOUTH SUDAN REGION</a>
         </div>
       </div>
+      {% endcomment %}
 
       {% comment %}Community nav hidden for now.
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
@@ -129,6 +125,7 @@
           <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
         </button>
         <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
+          {% comment %}
           <a class="nav-item" href="/2026/community/">All Community Events</a>
           <a class="nav-item" href="/2026/co-events/pyladies/">PyLadiesCon Africa</a>
           <a class="nav-item" href="/2026/co-events/django-girls/">Django Girls</a>
@@ -136,7 +133,6 @@
           <a class="nav-item" href="/2026/co-events/women_in_data_science/">Women in Data Science (WiDS)</a>
         </div>
       </div>
-      {% endcomment %}
 
       {% comment %}Diversity nav hidden for now; keep route accessible directly.{% endcomment %}
       {% comment %}
@@ -283,7 +279,10 @@
         <!-- Blog -->
         <a class="nav-item" href="https://pyconafrica.blogspot.com/" target="_blank" rel="noopener noreferrer">BLOG</a>
 
-        <!-- Speak at PyCon (dropdown) -->
+        <!-- Schedule -->
+        <a class="nav-item" href="/2026/schedule/">SCHEDULE</a>
+
+        {% comment %}Speak at PyCon hidden
         <div x-data="{ openSection: false }">
           <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection"
             type="button">
@@ -292,18 +291,8 @@
             <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
           </button>
           <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
-            {% comment %}<a class="nav-item nav-item-indent" href="/2026/speakers_list/">Our Speakers</a>{% endcomment
-            %}
             <a class="nav-item nav-item-indent" href="/2026/talks/proposals/">Proposals</a>
             <a class="nav-item nav-item-indent" href="/2026/talks/proposing_a_talk/">Proposing a Talk</a>
-            {% comment %}
-            {% if user.is_authenticated %}
-            <a class="nav-item nav-item-indent" href="{% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
-            {% else %}
-            <a class="nav-item nav-item-indent"
-              href="{% url 'auth_login' %}?next={% url 'talks:submit_talk' year=2026 %}">Submit a Proposal</a>
-            {% endif %}
-            {% endcomment %}
             {% if user.is_authenticated %}
             <a class="nav-item nav-item-indent" href="{% url 'talks:submit_poster' year=2026 %}">Submit a Poster</a>
             {% else %}
@@ -313,6 +302,7 @@
             <a class="nav-item nav-item-indent" href="/2026/talks/recording-release/">Recording Release</a>
           </div>
         </div>
+        {% endcomment %}
 
         <!-- Sponsor (dropdown) -->
         <div x-data="{ openSection: false }">
@@ -328,23 +318,20 @@
           </div>
         </div>
 
-        <!-- Regions (dropdown) -->
+        {% comment %}Standalone Regions dropdown replaced by the Community tab.
         <div x-data="{ openSection: false }">
           <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection"
             type="button">
             REGIONS
-            <i class="fa fa-chevron-up" aria-hidden="true" x-show="openSection" style="display:none;"></i>
-            <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
           </button>
           <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
             <a class="nav-item nav-item-indent" href="/2026/region/kenya-region/">PYCON AFRICA 2026 – KENYA REGION</a>
             <a class="nav-item nav-item-indent" href="/2026/region/rwanda-region/">PYCON AFRICA 2026 – RWANDA REGION</a>
-            <a class="nav-item nav-item-indent" href="/2026/region/tanzania-region/">PYCON AFRICA 2026 – TANZANIA
-              REGION</a>
-            <a class="nav-item nav-item-indent" href="/2026/region/south-sudan-region/">PYCON AFRICA 2026 – SOUTH SUDAN
-              REGION</a>
+            <a class="nav-item nav-item-indent" href="/2026/region/tanzania-region/">PYCON AFRICA 2026 – TANZANIA REGION</a>
+            <a class="nav-item nav-item-indent" href="/2026/region/south-sudan-region/">PYCON AFRICA 2026 – SOUTH SUDAN REGION</a>
           </div>
         </div>
+        {% endcomment %}
 
         {% comment %}Community (dropdown) hidden for now.
         <div x-data="{ openSection: false }">
@@ -355,6 +342,7 @@
             <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
           </button>
           <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
+            {% comment %}
             <a class="nav-item nav-item-indent" href="/2026/community/">All Community Events</a>
             <a class="nav-item nav-item-indent" href="/2026/co-events/pyladies/">PyLadiesCon Africa</a>
             <a class="nav-item nav-item-indent" href="/2026/co-events/django-girls/">Django Girls</a>
@@ -362,7 +350,6 @@
             <a class="nav-item nav-item-indent" href="/2026/co-events/women_in_data_science/">Women in Data Science (WiDS)</a>
           </div>
         </div>
-        {% endcomment %}
 
         <!-- Tickets (dropdown) -->
         <div x-data="{ openSection: false }">

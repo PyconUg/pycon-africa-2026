@@ -20,6 +20,7 @@ urlpatterns = [
     path('speaker-guidelines/', view=views.speaker_guidelines, name='speaker_guidelines'),
     path('talks/mentorship/', view=views.mentorship, name='mentorship'),
     path('talks/', include('talks.urls', namespace='talks')),
+    path('region/', view=views.regions, name='regions'),
     path('region/kenya-region/', view=views.about_kenya_region, name='about_kenya_region'),
     path('region/rwanda-region/', view=views.about_rwanda_region, name='about_rwanda_region'),
     path('region/tanzania-region/', view=views.about_tanzania_region, name='about_tanzania_region'),
@@ -132,7 +133,7 @@ urlpatterns = [
     # path('co-events/ngombor/', view=views.ngombor, name='ngombor')
     path('community/', view=views.community, name='community'),
     path('co-events/women_in_data_science/', view=views.women_in_data_science, name='women_in_data_science'),
-    # path('co-events/refugee-funding/', view=views.refugee_funding, name='refugee_funding'),
+    path('co-events/refugee-funding/', view=views.refugee_funding, name='refugee_funding'),
     path('past-events/', view=views.past_events, name='past_events'),
     path('tickets/', view=views.tickets, name='tickets'),
     path('merch/', view=views.merch, name='merch'),
