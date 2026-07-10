@@ -258,11 +258,6 @@ def community(request):
             "description": "Inspiring and connecting women in data science across Africa through talks, networking, and workshops.",
             "url": "/2026/co-events/women_in_data_science/",
         },
-        {
-            "name": "Funding for Refugees & Persons of Concern",
-            "description": "Financial support available for refugees and underserved communities to attend PyCon Africa 2026.",
-            "url": "/2026/co-events/refugee-funding/",
-        },
     ]
     return render(request, '2026/community/community.html', {"co_events": co_events})
 
