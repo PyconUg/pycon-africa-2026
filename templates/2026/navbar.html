@@ -342,7 +342,6 @@
             <i class="fa fa-chevron-down" aria-hidden="true" x-show="!openSection" style="display:none;"></i>
           </button>
           <div x-show="openSection" style="display:none;" class="mt-2 flex flex-col gap-2">
-            {% comment %}
             <a class="nav-item nav-item-indent" href="/2026/community/">All Community Events</a>
             <a class="nav-item nav-item-indent" href="/2026/co-events/pyladies/">PyLadiesCon Africa</a>
             <a class="nav-item nav-item-indent" href="/2026/co-events/django-girls/">Django Girls</a>
@@ -350,6 +349,7 @@
             <a class="nav-item nav-item-indent" href="/2026/co-events/women_in_data_science/">Women in Data Science (WiDS)</a>
           </div>
         </div>
+        {% endcomment %}
 
         <!-- Tickets (dropdown) -->
         <div x-data="{ openSection: false }">

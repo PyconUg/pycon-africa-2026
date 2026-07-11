@@ -133,7 +133,6 @@ urlpatterns = [
     # path('co-events/ngombor/', view=views.ngombor, name='ngombor')
     path('community/', view=views.community, name='community'),
     path('co-events/women_in_data_science/', view=views.women_in_data_science, name='women_in_data_science'),
-    path('co-events/refugee-funding/', view=views.refugee_funding, name='refugee_funding'),
     path('past-events/', view=views.past_events, name='past_events'),
     path('tickets/', view=views.tickets, name='tickets'),
     path('merch/', view=views.merch, name='merch'),
