@@ -173,6 +173,19 @@ class Proposal(models.Model):
         return total_score / reviews.count()
 
 
+class ConfirmedSpeaker(Proposal):
+    """Proxy of Proposal that surfaces only confirmed speakers in the admin.
+
+    A speaker is "confirmed" when the proposal was accepted (status='A') and the
+    speaker accepted the invitation to present (user_response='A').
+    """
+
+    class Meta:
+        proxy = True
+        verbose_name = "Confirmed Speaker"
+        verbose_name_plural = "Confirmed Speakers"
+
+
 class SpeakerInvitation(models.Model):
     STATUS_CHOICES = (
         ('Pending', 'Pending'),

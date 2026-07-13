@@ -12,7 +12,7 @@ from django.urls import path
 from django.utils.html import format_html
 from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, reverse
-from django.http import HttpResponseRedirect, HttpResponse       
+from django.http import HttpResponseRedirect, HttpResponse, FileResponse, Http404
 from django.urls import path, reverse 
 from django.contrib.admin.helpers import ACTION_CHECKBOX_NAME
 from django.contrib.admin.utils import unquote 
@@ -504,6 +504,141 @@ class TalkAdmin(ImportExportModelAdmin):
     list_speakers.short_description = 'Speakers'
 
 admin.site.register(Proposal, TalkAdmin)
+
+
+class ConfirmedSpeakerAdmin(admin.ModelAdmin):
+    """Read-only listing of confirmed speakers (accepted proposal + speaker accepted)."""
+
+    list_display = (
+        "title",
+        "speaker_name",
+        "speaker_username",
+        "speaker_country",
+        "speaker_role",
+        "photo_preview",
+        "photo_download",
+    )
+    list_filter = ("talk_type", "event_year")
+    search_fields = (
+        "title",
+        "user__username",
+        "user__email",
+        "user__user_profile__name",
+        "user__user_profile__surname",
+    )
+
+    def get_queryset(self, request):
+        return (
+            super()
+            .get_queryset(request)
+            .filter(status="A", user_response="A")
+            .select_related("user", "user__user_profile")
+        )
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        # Allow opening the list; there is no per-row change form to edit here.
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def _profile(self, obj):
+        return getattr(obj.user, "user_profile", None)
+
+    def _photo_url(self, obj):
+        profile = self._profile(obj)
+        if not profile:
+            return None
+        if profile.profile_image:
+            return profile.profile_image.url
+        if profile.link_to_speaker_image:
+            return profile.link_to_speaker_image
+        return None
+
+    @admin.display(description="Speaker")
+    def speaker_name(self, obj):
+        profile = self._profile(obj)
+        if profile:
+            full_name = profile.get_full_name().strip()
+            if full_name:
+                return full_name
+        return obj.user.username
+
+    @admin.display(description="Username", ordering="user__username")
+    def speaker_username(self, obj):
+        return obj.user.username
+
+    @admin.display(description="Country")
+    def speaker_country(self, obj):
+        profile = self._profile(obj)
+        if profile and profile.country:
+            return profile.country.name
+        return "—"
+
+    @admin.display(description="Role")
+    def speaker_role(self, obj):
+        profile = self._profile(obj)
+        if profile and profile.profession:
+            return profile.profession
+        return "—"
+
+    @admin.display(description="Photo")
+    def photo_preview(self, obj):
+        url = self._photo_url(obj)
+        if not url:
+            return "—"
+        return format_html(
+            '<img src="{}" style="height:60px;width:60px;object-fit:cover;'
+            'border-radius:4px;" alt="speaker photo" />',
+            url,
+        )
+
+    @admin.display(description="Download")
+    def photo_download(self, obj):
+        if not self._photo_url(obj):
+            return "—"
+        info = self.model._meta.app_label, self.model._meta.model_name
+        download_url = reverse("admin:%s_%s_download_photo" % info, args=[obj.pk])
+        return format_html('<a class="button" href="{}">Download photo</a>', download_url)
+
+    def get_urls(self):
+        info = self.model._meta.app_label, self.model._meta.model_name
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                "<path:object_id>/download-photo/",
+                self.admin_site.admin_view(self.download_photo_view),
+                name="%s_%s_download_photo" % info,
+            ),
+        ]
+        return custom_urls + urls
+
+    def download_photo_view(self, request, object_id):
+        if not self.has_view_permission(request):
+            raise PermissionDenied
+        object_id = unquote(object_id)
+        obj = get_object_or_404(self.get_queryset(request), pk=object_id)
+        profile = self._profile(obj)
+        if profile and profile.profile_image:
+            try:
+                filename = profile.profile_image.name.rsplit("/", 1)[-1]
+                return FileResponse(
+                    profile.profile_image.open("rb"),
+                    as_attachment=True,
+                    filename=filename,
+                )
+            except FileNotFoundError:
+                raise Http404("Speaker photo file is missing.")
+        if profile and profile.link_to_speaker_image:
+            # External image URL — redirect the browser to it.
+            return HttpResponseRedirect(profile.link_to_speaker_image)
+        raise Http404("This speaker has no photo.")
+
+
+admin.site.register(ConfirmedSpeaker, ConfirmedSpeakerAdmin)
 
 
 
