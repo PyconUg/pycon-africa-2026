@@ -511,6 +511,8 @@ class ConfirmedSpeakerAdmin(admin.ModelAdmin):
 
     list_display = (
         "title",
+        "talk_type",
+        "talk_category",
         "speaker_name",
         "speaker_username",
         "speaker_email",
@@ -520,7 +522,7 @@ class ConfirmedSpeakerAdmin(admin.ModelAdmin):
         "photo_preview",
         "photo_download",
     )
-    list_filter = ("talk_type", "event_year")
+    list_filter = ("talk_type", "talk_category", "event_year")
     search_fields = (
         "title",
         "user__username",
