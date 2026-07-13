@@ -513,8 +513,10 @@ class ConfirmedSpeakerAdmin(admin.ModelAdmin):
         "title",
         "speaker_name",
         "speaker_username",
+        "speaker_email",
         "speaker_country",
-        "speaker_role",
+        "speaker_profession",
+        "speaker_organisation",
         "photo_preview",
         "photo_download",
     )
@@ -571,6 +573,10 @@ class ConfirmedSpeakerAdmin(admin.ModelAdmin):
     def speaker_username(self, obj):
         return obj.user.username
 
+    @admin.display(description="Email", ordering="user__email")
+    def speaker_email(self, obj):
+        return obj.user.email or "—"
+
     @admin.display(description="Country")
     def speaker_country(self, obj):
         profile = self._profile(obj)
@@ -578,11 +584,18 @@ class ConfirmedSpeakerAdmin(admin.ModelAdmin):
             return profile.country.name
         return "—"
 
-    @admin.display(description="Role")
-    def speaker_role(self, obj):
+    @admin.display(description="Profession")
+    def speaker_profession(self, obj):
         profile = self._profile(obj)
         if profile and profile.profession:
             return profile.profession
+        return "—"
+
+    @admin.display(description="Organisation")
+    def speaker_organisation(self, obj):
+        profile = self._profile(obj)
+        if profile and profile.organization:
+            return profile.organization
         return "—"
 
     @admin.display(description="Photo")
