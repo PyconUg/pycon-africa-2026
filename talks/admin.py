@@ -513,6 +513,7 @@ class ConfirmedSpeakerAdmin(admin.ModelAdmin):
         "title",
         "speaker_name",
         "speaker_username",
+        "speaker_email",
         "speaker_country",
         "speaker_profession",
         "speaker_organisation",
@@ -571,6 +572,10 @@ class ConfirmedSpeakerAdmin(admin.ModelAdmin):
     @admin.display(description="Username", ordering="user__username")
     def speaker_username(self, obj):
         return obj.user.username
+
+    @admin.display(description="Email", ordering="user__email")
+    def speaker_email(self, obj):
+        return obj.user.email or "—"
 
     @admin.display(description="Country")
     def speaker_country(self, obj):
