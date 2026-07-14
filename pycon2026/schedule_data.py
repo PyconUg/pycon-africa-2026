@@ -10,7 +10,7 @@ SCHEDULE_DATA = [
             {"time": "7:00 – 8:45", "span": True, "title": "Break Tea", "type": "break"},
             {"time": "9:00 – 11:00", "cells": [
                 E,
-                {"title": "The Essence of Data Visualisation: Mapping from Data to Visual Properties", "speaker": "Hassah Kibirige"},
+                {"title": "The Essence of Data Visualisation: Mapping from Data to Visual Properties", "speaker": "Hassan Kibirige"},
                 {"title": "PyData Summit", "speaker": ""},
                 {"title": "Sponsor Workshops", "speaker": ""},
             ]},
@@ -152,7 +152,7 @@ SCHEDULE_DATA = [
                 {"title": "Pyladies Africa", "speaker": ""},
                 {"title": "Posters", "speaker": ""},
             ]},
-            {"time": "12:20 – 13:00", "span": True, "title": "Open Source, Research and Industry Panel (Micheal Nitegeka, Richard Zulu, CK Japheth and Grace Kamulegeya)"},
+            {"time": "12:20 – 13:00", "span": True, "title": "Open Source, Research and Industry Panel"},
             {"time": "13:00 – 14:00", "span": True, "title": "Lunch", "type": "break"},
             {"time": "14:05 – 14:35", "cells": [
                 {"title": "Deterministic Python: Implementing RTOS Design Concepts in MicroPython", "speaker": "Shawal Mbalire", "label": "Short Talk · Core Python"},
