@@ -117,7 +117,7 @@
       </div>
       {% endcomment %}
 
-      {% comment %}Community nav hidden for now.
+      <!-- Community -->
       <div class="nav-dropdown-wrapper" x-data="{open:false}">
         <button class="nav-item" @click="open=!open">
           COMMUNITY
@@ -125,12 +125,12 @@
           <i class="fa fa-chevron-down" aria-hidden="true" x-show="!open" style="display: none;"></i>
         </button>
         <div x-show="open" @click.outside="open = false" class="nav-dropdown-menu" style="display: none;">
-          {% comment %}
           <a class="nav-item" href="/2026/community/">All Community Events</a>
           <a class="nav-item" href="/2026/co-events/pyladies/">PyLadiesCon Africa</a>
           <a class="nav-item" href="/2026/co-events/django-girls/">Django Girls</a>
           <a class="nav-item" href="/2026/co-events/persons_of_concern/">Refugee Workshop</a>
           <a class="nav-item" href="/2026/co-events/women_in_data_science/">Women in Data Science (WiDS)</a>
+          <a class="nav-item" href="/2026/region/">Regional Communities</a>
         </div>
       </div>
 
@@ -333,7 +333,7 @@
         </div>
         {% endcomment %}
 
-        {% comment %}Community (dropdown) hidden for now.
+        <!-- Community (dropdown) -->
         <div x-data="{ openSection: false }">
           <button class="nav-item w-full flex items-center justify-between" @click="openSection = !openSection"
             type="button">
@@ -347,9 +347,9 @@
             <a class="nav-item nav-item-indent" href="/2026/co-events/django-girls/">Django Girls</a>
             <a class="nav-item nav-item-indent" href="/2026/co-events/persons_of_concern/">Refugee Workshop</a>
             <a class="nav-item nav-item-indent" href="/2026/co-events/women_in_data_science/">Women in Data Science (WiDS)</a>
+            <a class="nav-item nav-item-indent" href="/2026/region/">Regional Communities</a>
           </div>
         </div>
-        {% endcomment %}
 
         <!-- Tickets (dropdown) -->
         <div x-data="{ openSection: false }">
