@@ -23,19 +23,28 @@
       {% endfor %}
     {% endif %}
 
-    <p class="text-lg leading-relaxed mb-8">
-      {% trans "Please complete all fields below. You can submit only one application for the Regional Opportunity Grant." %}
-    </p>
-
-    <form method="post" action="" class="space-y-2" x-data="{ loading: false }" @submit="loading = true">
-      {% csrf_token %}
-      {% crispy form %}
-      <div class="pt-6">
-        {% trans "Submit application" as idle_label %}
-        {% trans "Submitting…" as busy_label %}
-        {% include '2026/fin_aid/_opportunity_grant_form_submit.html' %}
+    {% if is_closed %}
+      <div class="rounded-lg border border-red-200 bg-red-50 px-6 py-6" role="alert">
+        <h2 class="text-xl font-bold text-gray-900 mb-2">{% trans "Applications closed" %}</h2>
+        <p class="text-lg leading-relaxed text-gray-700">
+          {% trans "Regional Opportunity Grant applications are now closed. Thank you for your interest." %}
+        </p>
       </div>
-    </form>
+    {% else %}
+      <p class="text-lg leading-relaxed mb-8">
+        {% trans "Please complete all fields below. You can submit only one application for the Regional Opportunity Grant." %}
+      </p>
+
+      <form method="post" action="" class="space-y-2" x-data="{ loading: false }" @submit="loading = true">
+        {% csrf_token %}
+        {% crispy form %}
+        <div class="pt-6">
+          {% trans "Submit application" as idle_label %}
+          {% trans "Submitting…" as busy_label %}
+          {% include '2026/fin_aid/_opportunity_grant_form_submit.html' %}
+        </div>
+      </form>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

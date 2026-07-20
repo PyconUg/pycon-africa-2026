@@ -35,6 +35,7 @@ from .models import (
     FinAidReviewer,
     OpportunityGrantApplication,
     RegionalGrantApplication,
+    is_regional_grant_closed,
 )
 from talks.models import Proposal
 from .flight_budgets import get_flight_budget, get_review_region
@@ -276,19 +277,26 @@ def fin_aid_apply(request, year):
 
 
 def regional_grant_apply(request):
-    if request.method == 'POST':
-        form = RegionalGrantApplicationForm(request.POST)
-        if form.is_valid():
-            application = form.save()
-            messages.success(
-                request,
-                _("Thank you for applying! We'll review your application and get back to you soon."),
-            )
-            return redirect('pycon2026:regional_grant_apply_success')
-    else:
-        form = RegionalGrantApplicationForm()
+    is_closed = is_regional_grant_closed()
+    form = None
+    if not is_closed:
+        if request.method == 'POST':
+            form = RegionalGrantApplicationForm(request.POST)
+            if form.is_valid():
+                application = form.save()
+                messages.success(
+                    request,
+                    _("Thank you for applying! We'll review your application and get back to you soon."),
+                )
+                return redirect('pycon2026:regional_grant_apply_success')
+        else:
+            form = RegionalGrantApplicationForm()
 
-    return render(request, '2026/fin_aid/regional_apply.html', {'form': form})
+    return render(
+        request,
+        '2026/fin_aid/regional_apply.html',
+        {'form': form, 'is_closed': is_closed},
+    )
 
 
 def regional_grant_apply_success(request):
