@@ -240,6 +240,13 @@ class OpportunityGrantApplication(models.Model):
         return self.reviews.exists()
 
 
+REGIONAL_GRANT_CLOSED = True
+
+
+def is_regional_grant_closed():
+    return REGIONAL_GRANT_CLOSED
+
+
 REGIONAL_GRANT_COUNTRIES = (
     ('kenya', 'Kenya'),
     ('rwanda', 'Rwanda'),
