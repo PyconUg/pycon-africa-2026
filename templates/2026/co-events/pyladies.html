@@ -8,7 +8,6 @@
 <!-- Header -->
 <div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
   <div class="text-center">
-    <p class="text-sm font-semibold uppercase tracking-wide text-pycon-teal mb-3">PyLadies Kampala Presents</p>
     <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">PyLadies Conference 2026</h1>
     <p class="text-xl font-semibold text-pycon-teal mb-4">Code. Architect. Scale.</p>
     <p class="text-lg text-gray-600 max-w-2xl mx-auto italic">
@@ -20,6 +19,11 @@
 <!-- Body -->
 <div class="max-w-7xl mx-auto px-4 pb-16">
   <div class="max-w-4xl mx-auto text-gray-900">
+
+    <!-- Hero Photo -->
+    <div class="mb-12 rounded-xl overflow-hidden shadow-sm border border-gray-200">
+      <img src="{% static '2026/img/pyladies/Pyladies1.png' %}" alt="PyLadies Kampala Open-Source Summit group photo" class="w-full h-auto object-cover">
+    </div>
 
     <!-- About -->
     <div class="mb-12">
@@ -45,35 +49,50 @@
             <i class="fas fa-bolt text-pycon-teal"></i>
           </div>
           <h3 class="font-semibold text-gray-900 mb-2">High-Impact Talks</h3>
-          <p class="text-gray-600 text-sm">Gain strategic insights and technical breakthroughs from leading women engineers, researchers, and tech executives driving innovation across Africa.</p>
+          <p class="text-gray-600 text-sm mb-4">Gain strategic insights and technical breakthroughs from leading women engineers, researchers, and tech executives driving innovation across Africa.</p>
+          <div class="rounded-lg overflow-hidden">
+            <img src="{% static '2026/img/pyladies/Pyladies3.jpg' %}" alt="PyLadies Kampala speaker addressing attendees" class="w-full h-64 object-cover" style="object-position: top;">
+          </div>
         </div>
         <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
             <i class="fas fa-laptop-code text-pycon-teal"></i>
           </div>
           <h3 class="font-semibold text-gray-900 mb-2">Hands-On Code Labs</h3>
-          <p class="text-gray-600 text-sm">Interactive, practical workshops tailored for every skill level — from software engineering fundamentals to advanced system architectures.</p>
+          <p class="text-gray-600 text-sm mb-4">Interactive, practical workshops tailored for every skill level — from software engineering fundamentals to advanced system architectures.</p>
+          <div class="rounded-lg overflow-hidden">
+            <img src="{% static '2026/img/pyladies/Pyladies5.jpg' %}" alt="Attendees coding together during a hands-on lab" class="w-full h-64 object-cover">
+          </div>
         </div>
         <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
             <i class="fas fa-handshake text-pycon-teal"></i>
           </div>
           <h3 class="font-semibold text-gray-900 mb-2">Strategic Mentorship &amp; Networking</h3>
-          <p class="text-gray-600 text-sm">Connect directly with industry veterans and peers to unlock career opportunities, navigate engineering ladders, and collaborate on real-world projects.</p>
+          <p class="text-gray-600 text-sm mb-4">Connect directly with industry veterans and peers to unlock career opportunities, navigate engineering ladders, and collaborate on real-world projects.</p>
+          <div class="rounded-lg overflow-hidden">
+            <img src="{% static '2026/img/pyladies/Pyladies6.jpg' %}" alt="PyCon Uganda attendees applauding" class="w-full h-64 object-cover">
+          </div>
         </div>
         <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
             <i class="fas fa-star text-pycon-teal"></i>
           </div>
           <h3 class="font-semibold text-gray-900 mb-2">Visibility &amp; Speaking Pathways</h3>
-          <p class="text-gray-600 text-sm">Step onto the stage. We provide safe spaces and structural support for first-time and seasoned speakers to share their insights, build authority, and contribute to global tech dialogue.</p>
+          <p class="text-gray-600 text-sm mb-4">Step onto the stage. We provide safe spaces and structural support for first-time and seasoned speakers to share their insights, build authority, and contribute to global tech dialogue.</p>
+          <div class="rounded-lg overflow-hidden">
+            <img src="{% static '2026/img/pyladies/Pyladies2.jpg' %}" alt="PyLadies Kampala session with virtual speaker" class="w-full h-64 object-cover">
+          </div>
         </div>
         <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm md:col-span-2">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
             <i class="fas fa-code-branch text-pycon-teal"></i>
           </div>
           <h3 class="font-semibold text-gray-900 mb-2">Deep Dive into Open-Source Contribution</h3>
-          <p class="text-gray-600 text-sm">Celebrate the strength of local ecosystems.</p>
+          <p class="text-gray-600 text-sm mb-4">Celebrate the strength of local ecosystems.</p>
+          <div class="rounded-lg overflow-hidden">
+            <img src="{% static '2026/img/pyladies/Pyladies4.jpg' %}" alt="Attendees at a Why Python session" class="w-full h-64 object-cover">
+          </div>
         </div>
       </div>
     </div>
@@ -161,7 +180,7 @@
 
     <!-- Who to Attend -->
     <div class="rounded-lg bg-gray-50 border border-gray-200 px-6 py-8 mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">Who to Attend?</h2>
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Who Should Attend?</h2>
       <p class="text-gray-700 mb-6">If you are ready to expand your technical horizons, you belong at PyLadies Conference Africa. We actively welcome:</p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
@@ -231,6 +250,11 @@
          class="btn-teal">
         Apply Now
       </a>
+    </div>
+
+    <!-- Community Photo -->
+    <div class="mt-12 rounded-xl overflow-hidden shadow-sm border border-gray-200">
+      <img src="{% static '2026/img/pyladies/Pyladies7.jpg' %}" alt="PyLadies Kampala attendees in a session" class="w-full h-auto object-cover">
     </div>
 
   </div>
