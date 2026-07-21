@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load i18n static markdown_extras %}
-{% block meta_title %}{% trans "PyLadiesCon Africa | PyCon Africa 2026" %}{% endblock %}
+{% block meta_title %}{% trans "PyLadies Conference 2026 | PyCon Africa 2026" %}{% endblock %}
 
 {% block content %}
 {% include '2026/navbar.html' %}
@@ -8,10 +8,11 @@
 <!-- Header -->
 <div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
   <div class="text-center">
-    <h1 class="text-4xl lg:text-5xl font-bold mb-6">PyLadiesCon Africa @ PyCon Africa 2026</h1>
-    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-      A dedicated program within PyCon Africa 2026 designed to empower and support women in the
-      Python ecosystem across the continent.
+    <p class="text-sm font-semibold uppercase tracking-wide text-pycon-teal mb-3">PyLadies Kampala Presents</p>
+    <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">PyLadies Conference 2026</h1>
+    <p class="text-xl font-semibold text-pycon-teal mb-4">Code. Architect. Scale.</p>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto italic">
+      The Ultimate Engineering Gathering for Women in Python.
     </p>
   </div>
 </div>
@@ -23,12 +24,13 @@
     <!-- About -->
     <div class="mb-12">
       <p class="text-lg leading-relaxed mb-4">
-        PyLadiesCon Africa creates a safe, inclusive, and inspiring space for women to learn, connect,
-        and grow through technical sessions, mentorship, and community engagement.
+        Welcome to a high-octane, production-focused Python conference designed for ambitious builders.
+        We are bypassing generic high-level overviews to deliver hard-hitting technical breakdowns, live
+        implementation workflows, and systems-level strategies.
       </p>
       <p class="text-lg leading-relaxed">
-        Our objective is to strengthen women's participation in Python by building confidence, skills,
-        visibility, and leadership within the African tech ecosystem.
+        Whether you are solidifying your foundational engineering patterns or optimizing distributed
+        microservices, this is your laboratory to <strong>Learn, Build, and Lead</strong>.
       </p>
     </div>
 
@@ -36,116 +38,196 @@
     <div class="mb-12">
       <div class="text-center mb-8">
         <h2 class="text-2xl font-bold text-gray-900 mb-3">What to Expect</h2>
-        <p class="text-gray-600 max-w-xl mx-auto">
-          A dedicated program designed to empower, educate, and connect women in the Python ecosystem across Africa.
-        </p>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
-            <i class="fas fa-microphone text-pycon-teal"></i>
+            <i class="fas fa-bolt text-pycon-teal"></i>
           </div>
-          <h3 class="font-semibold text-gray-900 mb-2">Inspiring Talks</h3>
-          <p class="text-gray-600 text-sm">From women in tech across Africa sharing their experiences and insights</p>
+          <h3 class="font-semibold text-gray-900 mb-2">High-Impact Talks</h3>
+          <p class="text-gray-600 text-sm">Gain strategic insights and technical breakthroughs from leading women engineers, researchers, and tech executives driving innovation across Africa.</p>
         </div>
-
         <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
             <i class="fas fa-laptop-code text-pycon-teal"></i>
           </div>
-          <h3 class="font-semibold text-gray-900 mb-2">Hands-on Workshops</h3>
-          <p class="text-gray-600 text-sm">Python workshops for all skill levels, from beginners to advanced practitioners</p>
+          <h3 class="font-semibold text-gray-900 mb-2">Hands-On Code Labs</h3>
+          <p class="text-gray-600 text-sm">Interactive, practical workshops tailored for every skill level — from software engineering fundamentals to advanced system architectures.</p>
         </div>
-
         <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
-            <i class="fas fa-users text-pycon-teal"></i>
+            <i class="fas fa-handshake text-pycon-teal"></i>
           </div>
-          <h3 class="font-semibold text-gray-900 mb-2">Mentorship &amp; Networking</h3>
-          <p class="text-gray-600 text-sm">Connect with mentors and peers in sessions designed for meaningful growth</p>
+          <h3 class="font-semibold text-gray-900 mb-2">Strategic Mentorship &amp; Networking</h3>
+          <p class="text-gray-600 text-sm">Connect directly with industry veterans and peers to unlock career opportunities, navigate engineering ladders, and collaborate on real-world projects.</p>
         </div>
-
-        <div class="md:col-start-1 bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
             <i class="fas fa-star text-pycon-teal"></i>
           </div>
-          <h3 class="font-semibold text-gray-900 mb-2">Speaking Opportunities</h3>
-          <p class="text-gray-600 text-sm">Opportunities to speak, learn, and contribute to the Python ecosystem</p>
+          <h3 class="font-semibold text-gray-900 mb-2">Visibility &amp; Speaking Pathways</h3>
+          <p class="text-gray-600 text-sm">Step onto the stage. We provide safe spaces and structural support for first-time and seasoned speakers to share their insights, build authority, and contribute to global tech dialogue.</p>
         </div>
-
-        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm md:col-span-2">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
-            <i class="fas fa-heart text-pycon-teal"></i>
+            <i class="fas fa-code-branch text-pycon-teal"></i>
           </div>
-          <h3 class="font-semibold text-gray-900 mb-2">Community Showcases</h3>
-          <p class="text-gray-600 text-sm">Engagement and community building activities that highlight local talent</p>
+          <h3 class="font-semibold text-gray-900 mb-2">Deep Dive into Open-Source Contribution</h3>
+          <p class="text-gray-600 text-sm">Celebrate the strength of local ecosystems.</p>
         </div>
       </div>
     </div>
 
-    <!-- Who Should Apply -->
-    <div class="rounded-lg bg-gray-50 border border-gray-200 px-6 py-8 mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Who Should Apply</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
-          <p class="font-medium text-gray-900 text-sm">Women in tech (all experience levels)</p>
-        </div>
-        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
-          <p class="font-medium text-gray-900 text-sm">Beginners interested in Python</p>
-        </div>
-        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
-          <p class="font-medium text-gray-900 text-sm">Students and recent graduates</p>
-        </div>
-        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
-          <p class="font-medium text-gray-900 text-sm">Career switchers</p>
-        </div>
-        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
-          <p class="font-medium text-gray-900 text-sm">PyLadies chapter members</p>
-        </div>
-        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
-          <p class="font-medium text-gray-900 text-sm">Underrepresented groups, including refugees</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Impact -->
+    <!-- The Agenda -->
     <div class="mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Impact</h2>
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-3">The Agenda</h2>
+      </div>
+      <div class="space-y-3">
+        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="flex-shrink-0 w-28 text-center">
+            <span class="text-sm font-semibold text-pycon-teal">08:00 AM</span>
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Engine Start-up: Registration, Networking &amp; Environment Setup Check</p>
+          </div>
+        </div>
+        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="flex-shrink-0 w-28 text-center">
+            <span class="text-sm font-semibold text-pycon-teal">09:00 AM</span>
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Keynote: "The Open-Source Blueprint: Building Modern, Secure Web Architectures with Python"</p>
+          </div>
+        </div>
+        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="flex-shrink-0 w-28 text-center">
+            <span class="text-sm font-semibold text-pycon-teal">11:00 AM</span>
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Foundations of APIs &amp; Views</p>
+          </div>
+        </div>
+        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="flex-shrink-0 w-28 text-center">
+            <span class="text-sm font-semibold text-pycon-teal">12:30 PM</span>
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Technical Mentorship: Logic, Data Processing &amp; Code Quality</p>
+          </div>
+        </div>
+        <div class="flex items-center p-4 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
+          <div class="flex-shrink-0 w-28 text-center">
+            <span class="text-sm font-semibold text-pycon-teal">1:00 PM</span>
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Lunch Break</p>
+          </div>
+        </div>
+        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="flex-shrink-0 w-28 text-center">
+            <span class="text-sm font-semibold text-pycon-teal">02:00 PM</span>
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Hands-On Architectural Sprints &amp; Implementation Workshops: Authentication with JWT, OAuth &amp; Web Security</p>
+          </div>
+        </div>
+        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="flex-shrink-0 w-28 text-center">
+            <span class="text-sm font-semibold text-pycon-teal">03:30 PM</span>
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Special Session: "AI-Driven Web: Integrating LLMs into Modern Python Workflows"</p>
+          </div>
+        </div>
+        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="flex-shrink-0 w-28 text-center">
+            <span class="text-sm font-semibold text-pycon-teal">04:15 PM</span>
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Lightning Talks: 15-Minute Hacks for API Documentation, Testing, and CI/CD Pipelines</p>
+          </div>
+        </div>
+        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="flex-shrink-0 w-28 text-center">
+            <span class="text-sm font-semibold text-pycon-teal">05:00 PM</span>
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Compilation: Closing Address &amp; Large-Scale Group Photo</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Who to Attend -->
+    <div class="rounded-lg bg-gray-50 border border-gray-200 px-6 py-8 mb-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Who to Attend?</h2>
+      <p class="text-gray-700 mb-6">If you are ready to expand your technical horizons, you belong at PyLadies Conference Africa. We actively welcome:</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>Engineers of All Levels:</strong> From junior developers solidifying their stack to Senior Full-Stack Architects and Data Scientists.</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>Tech Aspirants &amp; Career Switchers:</strong> Professionals transitioning into technology looking for a structured, supportive community.</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>Students &amp; Recent Graduates:</strong> Ambitious newcomers aiming to bridge the gap between academic theory and production-ready code.</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>PyLadies Leaders &amp; Members:</strong> Ecosystem builders driving local chapter growth across the continent.</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200 md:col-span-2">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>Underrepresented Communities:</strong> We are fiercely committed to inclusion and actively encourage applications from marginalized groups, including tech enthusiasts in refugee and displaced communities.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Impact We Are Building -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-6">The Impact We Are Building</h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="text-center bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
           <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <i class="fas fa-chart-line text-pycon-teal text-xl"></i>
           </div>
-          <p class="font-medium text-gray-900">Increased participation of women in PyCon Africa</p>
+          <h3 class="font-semibold text-gray-900 mb-2">More Women Technical Speakers</h3>
+          <p class="text-gray-600 text-sm">Drastically increasing the number of women leading advanced, code-heavy sessions and technical panels at PyCon Africa.</p>
         </div>
         <div class="text-center bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
           <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <i class="fas fa-network-wired text-pycon-teal text-xl"></i>
           </div>
-          <p class="font-medium text-gray-900">Stronger PyLadies chapters and networks</p>
+          <h3 class="font-semibold text-gray-900 mb-2">Stronger Local Chapters</h3>
+          <p class="text-gray-600 text-sm">Equipping local PyLadies groups with ready-to-use coding curricula to run high-quality web development and testing bootcamps.</p>
         </div>
         <div class="text-center bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
           <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <i class="fas fa-seedling text-pycon-teal text-xl"></i>
           </div>
-          <p class="font-medium text-gray-900">Growth of future speakers, mentors, and leaders</p>
+          <h3 class="font-semibold text-gray-900 mb-2">Future Engineering Leaders</h3>
+          <p class="text-gray-600 text-sm">Building a pipeline of confident software managers, mentors, and open-source contributors who can lead a project from idea to deployment.</p>
         </div>
       </div>
+    </div>
+
+    <!-- Our Speakers -->
+    <div class="rounded-lg bg-gray-50 border border-gray-200 px-6 py-8 mb-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">Our Speakers</h2>
+      <p class="text-gray-700">To be announced shortly.</p>
     </div>
 
     <!-- Call to Action -->
     <div class="text-center rounded-lg border border-gray-200 bg-gray-50 px-8 py-12">
       <h2 class="text-2xl font-bold text-gray-900 mb-4">Ready to Join Us?</h2>
       <p class="text-lg text-gray-600 mb-8">
-        Apply to join PyLadiesCon Africa and be part of a growing community of women shaping the future of Python in Africa.
+        Apply to join PyLadies Conference Africa and be part of a growing community of women shaping the future of Python in Africa.
       </p>
-      <a href="https://forms.gle/nQz6GeSmDvzw5mrd7" target="_blank" rel="noopener noreferrer"
+      <a href="https://forms.gle/kfxhjNcuSkXR9vMQ6" target="_blank" rel="noopener noreferrer"
          class="btn-teal">
         Apply Now
       </a>
