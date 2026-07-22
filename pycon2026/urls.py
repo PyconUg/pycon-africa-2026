@@ -50,6 +50,21 @@ urlpatterns = [
         name='regional_grant_apply_success',
     ),
     path(
+        'opportunity-grants/regional/reviews/',
+        fin_aid_views.regional_grant_reviews_list,
+        name='regional_grant_reviews',
+    ),
+    path(
+        'opportunity-grants/regional/reviews/success/',
+        fin_aid_views.regional_grant_review_success,
+        name='regional_grant_review_success',
+    ),
+    path(
+        'opportunity-grants/regional/reviews/<int:pk>/',
+        fin_aid_views.regional_grant_review_detail,
+        name='regional_grant_review_detail',
+    ),
+    path(
         'opportunity-grants/my-application/',
         fin_aid_views.fin_aid_my_application,
         {'year': 2026},

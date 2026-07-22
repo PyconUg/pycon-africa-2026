@@ -459,6 +459,162 @@ class RegionalGrantApplication(models.Model):
         return [interest.strip() for interest in self.interests.split(',') if interest.strip()]
 
 
+class RegionalGrantCountryAssignment(models.Model):
+    """Manual assignment of a country to a reviewer for Regional Grant review."""
+
+    reviewer = models.ForeignKey(
+        FinAidReviewer,
+        on_delete=models.CASCADE,
+        related_name='regional_country_assignments',
+    )
+    country = models.CharField(max_length=32, choices=REGIONAL_GRANT_COUNTRIES)
+    assigned_at = models.DateTimeField(auto_now_add=True)
+    assigned_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='regional_grant_country_assignments_made',
+    )
+
+    class Meta:
+        verbose_name = 'Regional grant country assignment'
+        verbose_name_plural = 'Regional grant country assignments'
+        constraints = [
+            models.UniqueConstraint(
+                fields=('reviewer', 'country'),
+                name='unique_regional_grant_country_assignment',
+            ),
+        ]
+
+    def __str__(self):
+        return f'{self.reviewer} → {self.get_country_display()}'
+
+
+class RegionalGrantApplicationReview(models.Model):
+    RECOMMEND_ACCEPT = 'accept'
+    RECOMMEND_PARTIAL = 'partial'
+    RECOMMEND_REJECT = 'reject'
+    RECOMMEND_UNSURE = 'unsure'
+
+    RECOMMENDATION_CHOICES = (
+        (RECOMMEND_ACCEPT, 'Accept / fund'),
+        (RECOMMEND_PARTIAL, 'Partial grant'),
+        (RECOMMEND_REJECT, 'Reject'),
+        (RECOMMEND_UNSURE, 'Unsure / needs discussion'),
+    )
+
+    ALIGNMENT_CHOICES = [(i, str(i)) for i in range(6)]
+
+    application = models.ForeignKey(
+        RegionalGrantApplication,
+        on_delete=models.CASCADE,
+        related_name='reviews',
+    )
+    reviewer = models.ForeignKey(
+        FinAidReviewer,
+        on_delete=models.CASCADE,
+        related_name='regional_grant_application_reviews',
+    )
+    recommendation = models.CharField(
+        max_length=16,
+        choices=RECOMMENDATION_CHOICES,
+        default=RECOMMEND_UNSURE,
+    )
+    comments = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    # Scoring: Community & contribution (raw 0-3, weight x3)
+    is_community_member = models.BooleanField(default=False, verbose_name='Active in a tech community')
+    is_active_contributor = models.BooleanField(default=False, verbose_name='Contributes to the tech community')
+    is_knowledge_sharer = models.BooleanField(default=False, verbose_name='Shares knowledge with others')
+
+    # Scoring: Python engagement (reviewer-confirmed, pre-filled from application; weight x2)
+    python_level = models.CharField(
+        max_length=32,
+        choices=REGIONAL_GRANT_PYTHON_LEVEL_CHOICES,
+        blank=True,
+        default='',
+        verbose_name='Python proficiency level (confirm/override)',
+    )
+    python_duration = models.CharField(
+        max_length=32,
+        choices=REGIONAL_GRANT_PYTHON_DURATION_CHOICES,
+        blank=True,
+        default='',
+        verbose_name='Python experience duration (confirm/override)',
+    )
+
+    # Scoring: Financial need (reviewer-confirmed, pre-filled from application.financial_support; weight x3)
+    financial_need = models.CharField(
+        max_length=32,
+        choices=REGIONAL_GRANT_FINANCIAL_SUPPORT_CHOICES,
+        blank=True,
+        default='',
+        verbose_name='Financial need (confirm/override)',
+    )
+
+    # Scoring: Diversity (raw 0-3 booleans, weight x5)
+    is_woman = models.BooleanField(default=False, verbose_name='Woman')
+    has_disability = models.BooleanField(default=False, verbose_name='Person with disability')
+    is_student = models.BooleanField(default=False, verbose_name='Student')
+
+    # Scoring: Alignment (reviewer's holistic 0-5 judgment)
+    alignment_score = models.IntegerField(
+        choices=ALIGNMENT_CHOICES,
+        default=0,
+        verbose_name='Alignment score (0–5)',
+    )
+
+    # Persisted total score - recomputed on every save()
+    total_score = models.FloatField(default=0, editable=False)
+
+    class Meta:
+        verbose_name = 'Regional grant application review'
+        verbose_name_plural = 'Regional grant application reviews'
+        constraints = [
+            models.UniqueConstraint(
+                fields=('application', 'reviewer'),
+                name='unique_regional_grant_application_review_per_reviewer',
+            ),
+        ]
+
+    def __str__(self):
+        return f'Review by {self.reviewer} on regional application {self.application_id}'
+
+    @property
+    def community_score(self):
+        return sum([self.is_community_member, self.is_active_contributor, self.is_knowledge_sharer]) * 3
+
+    @property
+    def python_engagement_score(self):
+        level_map = {'beginner': 0, 'intermediate': 1, 'advanced': 2}
+        duration_map = {'lt_6m': 0, '6_12m': 1, '1_2y': 2, '2y_plus': 3}
+        level = self.python_level or self.application.python_level
+        duration = self.python_duration or self.application.python_duration
+        return (level_map.get(level, 0) + duration_map.get(duration, 0)) * 2
+
+    @property
+    def financial_need_score(self):
+        mapping = {'travel': 3, 'accommodation': 2, 'conference_ticket': 1, 'none': 0}
+        source = self.financial_need or self.application.financial_support
+        return mapping.get(source, 0) * 3
+
+    @property
+    def diversity_score(self):
+        return sum([self.is_woman, self.has_disability, self.is_student]) * 5
+
+    def save(self, *args, **kwargs):
+        self.total_score = (
+            self.community_score
+            + self.python_engagement_score
+            + self.financial_need_score
+            + self.diversity_score
+            + self.alignment_score
+        )
+        super().save(*args, **kwargs)
+
+
 class FinAidApplicationReview(models.Model):
     RECOMMEND_ACCEPT = 'accept'
     RECOMMEND_PARTIAL = 'partial'

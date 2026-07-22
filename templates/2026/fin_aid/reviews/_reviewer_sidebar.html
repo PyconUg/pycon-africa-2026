@@ -13,7 +13,7 @@
           <span class="text-gray-600">{{ request.user.last_login|date:"M. j, Y" }} · {{ request.user.last_login|time:"g:i a" }}</span>
         </div>
       {% endif %}
-      {% include '2026/account/_account_sidebar_nav.html' with account_nav_active='review_grants' %}
+      {% include '2026/account/_account_sidebar_nav.html' with account_nav_active=account_nav_active|default:'review_grants' %}
     </div>
   </div>
 </aside>

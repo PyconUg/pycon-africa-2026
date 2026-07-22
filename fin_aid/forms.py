@@ -35,6 +35,7 @@ from .models import (
     OpportunityGrantApplication,
     FinAidApplicationReview,
     RegionalGrantApplication,
+    RegionalGrantApplicationReview,
     REGIONAL_GRANT_INTEREST_CHOICES,
 )
 
@@ -303,3 +304,38 @@ class RegionalGrantApplicationForm(forms.ModelForm):
         if not interests:
             raise forms.ValidationError('Please select at least one area of interest.')
         return ', '.join(interests)
+
+
+class RegionalGrantApplicationReviewForm(forms.ModelForm):
+    class Meta:
+        model = RegionalGrantApplicationReview
+        fields = (
+            'is_community_member',
+            'is_active_contributor',
+            'is_knowledge_sharer',
+            'python_level',
+            'python_duration',
+            'financial_need',
+            'is_woman',
+            'has_disability',
+            'is_student',
+            'alignment_score',
+            'recommendation',
+            'comments',
+        )
+        widgets = {
+            'comments': forms.Textarea(attrs={'rows': 5, 'class': TEXT_INPUT_CLASS}),
+            'recommendation': forms.Select(attrs={'class': SELECT_CLASS}),
+            'python_level': forms.Select(attrs={'class': 'w-full max-w-xs rounded-lg border border-gray-300 px-3 py-2'}),
+            'python_duration': forms.Select(attrs={'class': 'w-full max-w-xs rounded-lg border border-gray-300 px-3 py-2'}),
+            'financial_need': forms.Select(attrs={'class': 'w-full max-w-xs rounded-lg border border-gray-300 px-3 py-2'}),
+            'alignment_score': forms.Select(attrs={'class': 'w-full max-w-xs rounded-lg border border-gray-300 px-3 py-2'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['python_level'].required = True
+        self.fields['python_duration'].required = True
+        self.fields['financial_need'].required = True
