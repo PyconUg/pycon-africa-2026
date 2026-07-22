@@ -413,3 +413,53 @@ class RegionalGrantReviewTests(TestCase):
                     application=self.kenya_app, reviewer=self.reviewer
                 )
 
+
+class RegionalGrantReviewerNotificationTests(TestCase):
+    def setUp(self):
+        self.reviewer = User.objects.create_user('notifyme', 'notifyme@example.com', 'testpass123')
+        RegionalGrantCountryAssignment.objects.create(reviewer=self.reviewer, country='kenya')
+        RegionalGrantCountryAssignment.objects.create(reviewer=self.reviewer, country='rwanda')
+
+    @override_settings(
+        EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend',
+        DEFAULT_FROM_EMAIL='noreply@example.com',
+    )
+    def test_send_regional_grant_reviewer_assignment_email(self):
+        from .email_notifications import send_regional_grant_reviewer_assignment_email
+
+        sent = send_regional_grant_reviewer_assignment_email(self.reviewer, ['Kenya', 'Rwanda'])
+        self.assertTrue(sent)
+        self.assertEqual(len(mail.outbox), 1)
+        msg = mail.outbox[0]
+        self.assertEqual(msg.to, ['notifyme@example.com'])
+        self.assertIn('Kenya', msg.body)
+        self.assertIn('Rwanda', msg.body)
+        self.assertIn(reverse('pycon2026:regional_grant_reviews'), msg.body)
+        html_part = msg.alternatives[0][0]
+        self.assertIn('Kenya', html_part)
+
+    @override_settings(
+        EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend',
+        DEFAULT_FROM_EMAIL='noreply@example.com',
+    )
+    def test_admin_action_emails_selected_reviewers(self):
+        staff = User.objects.create_superuser('admin_notify', 'admin_notify@example.com', 'testpass123')
+        client = Client()
+        client.login(username='admin_notify', password='testpass123')
+
+        assignment = RegionalGrantCountryAssignment.objects.filter(reviewer=self.reviewer).first()
+        response = client.post(
+            reverse('admin:fin_aid_regionalgrantcountryassignment_changelist'),
+            {
+                'action': 'notify_reviewers_action',
+                '_selected_action': [str(assignment.pk)],
+            },
+            follow=True,
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(mail.outbox), 1)
+        msg = mail.outbox[0]
+        self.assertEqual(msg.to, ['notifyme@example.com'])
+        self.assertIn('Kenya', msg.body)
+        self.assertIn('Rwanda', msg.body)
+

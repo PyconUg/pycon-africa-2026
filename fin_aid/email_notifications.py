@@ -164,6 +164,63 @@ def send_opportunity_grant_response_confirmation(application, year=None):
         )
 
 
+def send_regional_grant_reviewer_assignment_email(user, countries) -> bool:
+    """Notify a user their Regional Grant reviewer permissions/assignment changed.
+
+    `countries` is a list of human-readable country labels (not raw choice codes).
+    """
+    to_email = (user.email or "").strip()
+    if not to_email:
+        logger.warning(
+            "Skipping regional grant reviewer assignment email: user %s has no email",
+            user.pk,
+        )
+        return False
+
+    raw_from = getattr(settings, "DEFAULT_FROM_EMAIL", "") or ""
+    from_email = raw_from.strip() or None
+    if not from_email:
+        logger.warning("DEFAULT_FROM_EMAIL is not set; cannot send regional grant reviewer assignment email")
+        return False
+
+    site = Site.objects.get_current()
+    domain = site.domain
+    review_url = f"https://{domain}{reverse('pycon2026:regional_grant_reviews')}"
+
+    context = {
+        "user": user,
+        "countries": countries,
+        "review_url": review_url,
+    }
+
+    subject = render_to_string(
+        "emails/regional_grants/reviewer_assigned_subject.txt",
+        context,
+    ).strip()
+    subject = "".join(subject.splitlines())
+
+    html_body = render_to_string("emails/regional_grants/reviewer_assigned.html", context)
+    text_body = render_to_string("emails/regional_grants/reviewer_assigned.txt", context)
+
+    msg = EmailMultiAlternatives(
+        subject,
+        text_body,
+        f"PyCon Africa 2026 Team <{from_email}>",
+        [to_email],
+    )
+    msg.attach_alternative(html_body, "text/html")
+
+    try:
+        msg.send(fail_silently=False)
+        return True
+    except Exception:
+        logger.exception(
+            "Failed to send regional grant reviewer assignment email to %s",
+            to_email,
+        )
+        return False
+
+
 def send_opportunity_grant_status_notification(application_pk, new_status: str) -> bool:
     """Send a status decision email to the applicant.
 
