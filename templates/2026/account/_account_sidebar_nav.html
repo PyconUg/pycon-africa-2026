@@ -42,6 +42,12 @@
     <span>{% trans "Review opportunity grants" %}</span>
   </a>
   {% endif %}
+  {% if request.user|is_regional_grant_reviewer %}
+  <a href="{% url 'pycon2026:regional_grant_reviews' %}" class="profile-nav-link{% if account_nav_active == 'review_regional_grants' %} active{% endif %}">
+    <i class="fa-solid fa-earth-africa w-4 text-center" aria-hidden="true"></i>
+    <span>{% trans "Review regional grants" %}</span>
+  </a>
+  {% endif %}
   {% if request.user.is_superuser or request.user.reviewer_profile %}
   <a href="{% url 'talks:reviewed_talks_by_category' year=y %}" class="profile-nav-link{% if account_nav_active == 'proposals_category' %} active{% endif %}">
     <i class="fa-solid fa-clipboard-list w-4 text-center" aria-hidden="true"></i>

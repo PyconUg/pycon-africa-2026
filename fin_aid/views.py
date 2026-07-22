@@ -35,6 +35,9 @@ from .models import (
     FinAidReviewer,
     OpportunityGrantApplication,
     RegionalGrantApplication,
+    RegionalGrantApplicationReview,
+    RegionalGrantCountryAssignment,
+    REGIONAL_GRANT_COUNTRIES,
     is_regional_grant_closed,
 )
 from talks.models import Proposal
@@ -53,6 +56,7 @@ from .forms import (
     OpportunityGrantResponseForm,
     FinAidApplicationReviewForm,
     RegionalGrantApplicationForm,
+    RegionalGrantApplicationReviewForm,
 )
 
 
@@ -301,6 +305,137 @@ def regional_grant_apply(request):
 
 def regional_grant_apply_success(request):
     return render(request, '2026/fin_aid/regional_apply_success.html')
+
+
+@login_required
+def regional_grant_reviews_list(request):
+    try:
+        reviewer = FinAidReviewer.objects.get(user=request.user)
+    except FinAidReviewer.DoesNotExist:
+        messages.error(
+            request,
+            'You are not registered as a grant reviewer. Contact an administrator if you need access.',
+        )
+        return render(request, '2026/fin_aid/regional_reviews_list.html', {'no_reviewer_rights': True})
+
+    assigned_countries = list(
+        RegionalGrantCountryAssignment.objects.filter(reviewer=reviewer).values_list('country', flat=True)
+    )
+    if not assigned_countries:
+        messages.info(request, 'You have not been assigned any countries to review yet.')
+        return render(
+            request,
+            '2026/fin_aid/regional_reviews_list.html',
+            {'reviewer': reviewer, 'no_countries_assigned': True, 'assigned_countries': []},
+        )
+
+    reviewed_by_me_ids = set(
+        RegionalGrantApplicationReview.objects.filter(reviewer=reviewer).values_list('application_id', flat=True)
+    )
+
+    candidate_applications = RegionalGrantApplication.objects.filter(
+        country__in=assigned_countries,
+    ).exclude(pk__in=reviewed_by_me_ids).prefetch_related('reviews')
+
+    unreviewed_applications = []
+    previously_reviewed_applications = []
+    for app in candidate_applications:
+        if app.reviews.count() == 0:
+            unreviewed_applications.append(app)
+        else:
+            previously_reviewed_applications.append(app)
+
+    unreviewed_applications.sort(key=lambda a: a.created_at)
+    previously_reviewed_applications.sort(key=lambda a: a.reviews.count(), reverse=True)
+
+    my_completed_reviews = RegionalGrantApplication.objects.filter(
+        country__in=assigned_countries,
+        pk__in=reviewed_by_me_ids,
+    )
+    review_by_app_id = {
+        r.application_id: r
+        for r in RegionalGrantApplicationReview.objects.filter(
+            reviewer=reviewer,
+            application__in=my_completed_reviews,
+        )
+    }
+    my_completed_with_reviews = [(app, review_by_app_id[app.pk]) for app in my_completed_reviews]
+
+    return render(
+        request,
+        '2026/fin_aid/regional_reviews_list.html',
+        {
+            'unreviewed_applications': unreviewed_applications,
+            'previously_reviewed_applications': previously_reviewed_applications,
+            'my_completed_reviews': my_completed_with_reviews,
+            'reviewer': reviewer,
+            'assigned_countries': assigned_countries,
+            'assigned_country_labels': [dict(REGIONAL_GRANT_COUNTRIES).get(c, c) for c in assigned_countries],
+        },
+    )
+
+
+@login_required
+def regional_grant_review_detail(request, pk):
+    application = get_object_or_404(RegionalGrantApplication, pk=pk)
+
+    try:
+        reviewer = FinAidReviewer.objects.get(user=request.user)
+    except FinAidReviewer.DoesNotExist:
+        return render(request, '2026/fin_aid/regional_review_detail.html', {'no_reviewer_rights': True})
+
+    assigned_countries = set(
+        RegionalGrantCountryAssignment.objects.filter(reviewer=reviewer).values_list('country', flat=True)
+    )
+    if application.country not in assigned_countries:
+        messages.error(request, "This application's country is not assigned to you for review.")
+        return redirect('pycon2026:regional_grant_reviews')
+
+    existing_review = RegionalGrantApplicationReview.objects.filter(
+        application=application,
+        reviewer=reviewer,
+    ).first()
+    already_reviewed = existing_review is not None
+    editing = already_reviewed and request.GET.get('edit') == '1'
+
+    if request.method == 'POST' and not already_reviewed:
+        form = RegionalGrantApplicationReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.application = application
+            review.reviewer = reviewer
+            review.save()
+            return redirect('pycon2026:regional_grant_review_success')
+    elif request.method == 'POST' and editing:
+        form = RegionalGrantApplicationReviewForm(request.POST, instance=existing_review)
+        if form.is_valid():
+            form.save()
+            return redirect('pycon2026:regional_grant_review_success')
+    elif editing:
+        form = RegionalGrantApplicationReviewForm(instance=existing_review)
+    else:
+        form = RegionalGrantApplicationReviewForm(initial={
+            'python_level': application.python_level,
+            'python_duration': application.python_duration,
+            'financial_need': application.financial_support,
+        })
+
+    return render(
+        request,
+        '2026/fin_aid/regional_review_detail.html',
+        {
+            'application': application,
+            'form': form,
+            'already_reviewed': already_reviewed,
+            'editing': editing,
+            'existing_review': existing_review,
+        },
+    )
+
+
+@login_required
+def regional_grant_review_success(request):
+    return render(request, '2026/fin_aid/regional_review_success.html')
 
 
 @login_required

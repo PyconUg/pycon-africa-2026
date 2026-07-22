@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from django.contrib.auth.models import User
 from django.core import mail
+from django.db import IntegrityError, transaction
 from django.template import Context, Template
 from django.test import Client, RequestFactory, TestCase, override_settings
 from django.urls import reverse
@@ -14,6 +15,9 @@ from .models import (
     FinAidReviewer,
     Fin_aid,
     OpportunityGrantApplication,
+    RegionalGrantApplication,
+    RegionalGrantApplicationReview,
+    RegionalGrantCountryAssignment,
 )
 
 
@@ -298,3 +302,115 @@ class OpportunityGrantMyApplicationTests(TestCase):
         )
         out = tpl.render(Context({'request': request, 'year': 2026}))
         self.assertEqual(out, '')
+
+
+def _make_regional_application(country, email, **overrides):
+    from datetime import date
+
+    fields = {
+        'country': country,
+        'full_name': 'Test Applicant',
+        'email': email,
+        'phone': '+256700000000',
+        'city': 'Kampala',
+        'gender': 'female',
+        'dob': date(1995, 1, 1),
+        'is_18': True,
+        'status': 'student',
+        'field': 'Computer Science',
+        'python_level': 'intermediate',
+        'python_duration': '1_2y',
+        'why_attend': 'To learn and connect.',
+        'hope_to_gain': 'New skills.',
+        'interests': 'ai_ml',
+        'attend_all': True,
+        'represent_professionally': True,
+        'share_publicly': True,
+        'can_cover_expenses_with_ticket': 'yes',
+        'can_attend_with_travel_support': 'yes',
+        'financial_support': 'travel',
+    }
+    fields.update(overrides)
+    return RegionalGrantApplication.objects.create(**fields)
+
+
+class RegionalGrantReviewTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.reviewer_user = User.objects.create_user('regreviewer', 'rr@example.com', 'testpass123')
+        self.reviewer = FinAidReviewer.objects.create(user=self.reviewer_user)
+        RegionalGrantCountryAssignment.objects.create(reviewer=self.reviewer, country='kenya')
+
+        self.kenya_app = _make_regional_application('kenya', 'kenya-applicant@example.com')
+        self.rwanda_app = _make_regional_application('rwanda', 'rwanda-applicant@example.com')
+
+        self.client.login(username='regreviewer', password='testpass123')
+
+    def test_reviewer_only_sees_assigned_country_applications(self):
+        response = self.client.get(reverse('pycon2026:regional_grant_reviews'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.kenya_app.full_name)
+        applications_shown = list(response.context['unreviewed_applications'])
+        self.assertIn(self.kenya_app, applications_shown)
+        self.assertNotIn(self.rwanda_app, applications_shown)
+
+    def test_reviewer_without_country_assignment_sees_empty_state(self):
+        other_user = User.objects.create_user('noassign', 'noassign@example.com', 'testpass123')
+        FinAidReviewer.objects.create(user=other_user)
+        self.client.login(username='noassign', password='testpass123')
+        response = self.client.get(reverse('pycon2026:regional_grant_reviews'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['no_countries_assigned'])
+
+    def test_reviewer_blocked_from_unassigned_country_application(self):
+        response = self.client.get(
+            reverse('pycon2026:regional_grant_review_detail', kwargs={'pk': self.rwanda_app.pk})
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(
+            RegionalGrantApplicationReview.objects.filter(
+                application=self.rwanda_app, reviewer=self.reviewer
+            ).exists()
+        )
+
+    def test_submit_review_persists_weighted_total_score(self):
+        payload = {
+            'is_community_member': 'on',
+            'is_active_contributor': 'on',
+            'is_knowledge_sharer': '',
+            'python_level': 'advanced',
+            'python_duration': '2y_plus',
+            'financial_need': 'travel',
+            'is_woman': 'on',
+            'has_disability': '',
+            'is_student': 'on',
+            'alignment_score': '4',
+            'recommendation': 'accept',
+            'comments': 'Strong applicant',
+        }
+        response = self.client.post(
+            reverse('pycon2026:regional_grant_review_detail', kwargs={'pk': self.kenya_app.pk}),
+            payload,
+        )
+        self.assertEqual(response.status_code, 302)
+        review = RegionalGrantApplicationReview.objects.get(
+            application=self.kenya_app, reviewer=self.reviewer
+        )
+        # community (1+1+0)*3=6, python (2+3)*2=10, financial 3*3=9, diversity (1+0+1)*5=10, alignment 4
+        self.assertEqual(review.total_score, 6 + 10 + 9 + 10 + 4)
+        self.assertEqual(review.recommendation, 'accept')
+
+    def test_duplicate_review_by_same_reviewer_is_rejected_at_db_level(self):
+        RegionalGrantApplicationReview.objects.create(application=self.kenya_app, reviewer=self.reviewer)
+        with self.assertRaises(IntegrityError):
+            with transaction.atomic():
+                RegionalGrantApplicationReview.objects.create(
+                    application=self.kenya_app, reviewer=self.reviewer
+                )
+
+    def test_reviews_list_requires_fin_aid_reviewer(self):
+        plain_user = User.objects.create_user('plain', 'plain@example.com', 'testpass123')
+        self.client.login(username='plain', password='testpass123')
+        response = self.client.get(reverse('pycon2026:regional_grant_reviews'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context['no_reviewer_rights'])
