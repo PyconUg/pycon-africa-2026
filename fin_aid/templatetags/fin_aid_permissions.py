@@ -18,4 +18,4 @@ def is_regional_grant_reviewer(user):
         return False
     from fin_aid.models import RegionalGrantCountryAssignment
 
-    return RegionalGrantCountryAssignment.objects.filter(reviewer__user=user).exists()
+    return RegionalGrantCountryAssignment.objects.filter(reviewer=user).exists()

@@ -337,14 +337,20 @@ def _make_regional_application(country, email, **overrides):
 class RegionalGrantReviewTests(TestCase):
     def setUp(self):
         self.client = Client()
-        self.reviewer_user = User.objects.create_user('regreviewer', 'rr@example.com', 'testpass123')
-        self.reviewer = FinAidReviewer.objects.create(user=self.reviewer_user)
+        # Deliberately NOT a FinAidReviewer — regional grant reviewers can be any user account.
+        self.reviewer = User.objects.create_user('regreviewer', 'rr@example.com', 'testpass123')
         RegionalGrantCountryAssignment.objects.create(reviewer=self.reviewer, country='kenya')
 
         self.kenya_app = _make_regional_application('kenya', 'kenya-applicant@example.com')
         self.rwanda_app = _make_regional_application('rwanda', 'rwanda-applicant@example.com')
 
         self.client.login(username='regreviewer', password='testpass123')
+
+    def test_any_user_can_be_assigned_as_reviewer_without_fin_aid_reviewer_profile(self):
+        self.assertFalse(FinAidReviewer.objects.filter(user=self.reviewer).exists())
+        self.assertTrue(
+            RegionalGrantCountryAssignment.objects.filter(reviewer=self.reviewer, country='kenya').exists()
+        )
 
     def test_reviewer_only_sees_assigned_country_applications(self):
         response = self.client.get(reverse('pycon2026:regional_grant_reviews'))
@@ -354,9 +360,8 @@ class RegionalGrantReviewTests(TestCase):
         self.assertIn(self.kenya_app, applications_shown)
         self.assertNotIn(self.rwanda_app, applications_shown)
 
-    def test_reviewer_without_country_assignment_sees_empty_state(self):
-        other_user = User.objects.create_user('noassign', 'noassign@example.com', 'testpass123')
-        FinAidReviewer.objects.create(user=other_user)
+    def test_user_without_country_assignment_sees_empty_state(self):
+        User.objects.create_user('noassign', 'noassign@example.com', 'testpass123')
         self.client.login(username='noassign', password='testpass123')
         response = self.client.get(reverse('pycon2026:regional_grant_reviews'))
         self.assertEqual(response.status_code, 200)
@@ -408,9 +413,3 @@ class RegionalGrantReviewTests(TestCase):
                     application=self.kenya_app, reviewer=self.reviewer
                 )
 
-    def test_reviews_list_requires_fin_aid_reviewer(self):
-        plain_user = User.objects.create_user('plain', 'plain@example.com', 'testpass123')
-        self.client.login(username='plain', password='testpass123')
-        response = self.client.get(reverse('pycon2026:regional_grant_reviews'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.context['no_reviewer_rights'])

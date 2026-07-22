@@ -40,12 +40,7 @@
             {% endfor %}
           {% endif %}
 
-          {% if no_reviewer_rights %}
-            <div class="rounded-xl border border-red-200 bg-red-50 px-4 py-4 text-red-900">
-              <p class="font-semibold">{% trans "Access required." %}</p>
-              <p class="text-sm mt-2">{% trans "You do not have permission to view this page. Please contact an administrator if you believe this is an error." %}</p>
-            </div>
-          {% elif no_countries_assigned %}
+          {% if no_countries_assigned %}
             <div class="text-center py-8 bg-gray-50 rounded-lg border border-gray-200">
               <h4 class="text-lg font-medium text-gray-900 mb-2">{% trans "No countries assigned yet" %}</h4>
               <p class="text-gray-600">{% trans "Contact an administrator to have countries assigned to you for review." %}</p>

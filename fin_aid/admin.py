@@ -66,13 +66,6 @@ class Fin_aidAdmin(admin.ModelAdmin):
     )
 
 
-class RegionalGrantCountryAssignmentInline(admin.TabularInline):
-    model = RegionalGrantCountryAssignment
-    extra = 1
-    fields = ('country', 'assigned_at', 'assigned_by')
-    readonly_fields = ('assigned_at', 'assigned_by')
-
-
 @admin.register(FinAidReviewer)
 class FinAidReviewerAdmin(admin.ModelAdmin):
     list_display = ('user', 'get_email', 'review_load', 'is_active', 'assignment_count')
@@ -81,15 +74,6 @@ class FinAidReviewerAdmin(admin.ModelAdmin):
     search_fields = ('user__username', 'user__email', 'user__first_name', 'user__last_name')
     autocomplete_fields = ('user',)
     actions = ('run_assignment_for_latest_year_action', 'reassign_for_latest_year_action')
-    inlines = (RegionalGrantCountryAssignmentInline,)
-
-    def save_formset(self, request, form, formset, change):
-        instances = formset.save(commit=False)
-        for obj in instances:
-            if isinstance(obj, RegionalGrantCountryAssignment) and obj.assigned_by_id is None:
-                obj.assigned_by = request.user
-            obj.save()
-        formset.save_m2m()
 
     def get_email(self, obj):
         return obj.user.email
@@ -512,7 +496,7 @@ class RegionalGrantApplicationAdmin(admin.ModelAdmin):
 class RegionalGrantCountryAssignmentAdmin(admin.ModelAdmin):
     list_display = ('reviewer', 'country', 'assigned_at', 'assigned_by')
     list_filter = ('country',)
-    search_fields = ('reviewer__user__username', 'reviewer__user__email')
+    search_fields = ('reviewer__username', 'reviewer__email')
     autocomplete_fields = ('reviewer',)
     readonly_fields = ('assigned_at',)
 
@@ -542,7 +526,7 @@ class RegionalGrantApplicationReviewAdmin(admin.ModelAdmin):
     search_fields = (
         'application__full_name',
         'application__email',
-        'reviewer__user__username',
+        'reviewer__username',
         'comments',
     )
     readonly_fields = ('created_at', 'total_score')
