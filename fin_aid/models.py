@@ -460,10 +460,14 @@ class RegionalGrantApplication(models.Model):
 
 
 class RegionalGrantCountryAssignment(models.Model):
-    """Manual assignment of a country to a reviewer for Regional Grant review."""
+    """Manual assignment of a country to a reviewer for Regional Grant review.
+
+    The reviewer can be any user account — not limited to the Opportunity Grant
+    reviewer pool (FinAidReviewer) — so any user can be picked for this role.
+    """
 
     reviewer = models.ForeignKey(
-        FinAidReviewer,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='regional_country_assignments',
     )
@@ -512,7 +516,7 @@ class RegionalGrantApplicationReview(models.Model):
         related_name='reviews',
     )
     reviewer = models.ForeignKey(
-        FinAidReviewer,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='regional_grant_application_reviews',
     )
