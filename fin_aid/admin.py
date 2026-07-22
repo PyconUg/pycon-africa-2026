@@ -1,6 +1,9 @@
 from django.contrib import admin, messages
+from django.contrib.auth import get_user_model
 from import_export import resources, fields
 from import_export.admin import ImportExportModelAdmin
+
+User = get_user_model()
 
 from .models import (
     Fin_aid,
@@ -499,11 +502,48 @@ class RegionalGrantCountryAssignmentAdmin(admin.ModelAdmin):
     search_fields = ('reviewer__username', 'reviewer__email')
     autocomplete_fields = ('reviewer',)
     readonly_fields = ('assigned_at',)
+    actions = ('notify_reviewers_action',)
 
     def save_model(self, request, obj, form, change):
         if obj.assigned_by_id is None:
             obj.assigned_by = request.user
         super().save_model(request, obj, form, change)
+
+    def notify_reviewers_action(self, request, queryset):
+        """Email each selected reviewer their full, current list of assigned countries."""
+        from .email_notifications import send_regional_grant_reviewer_assignment_email
+
+        reviewer_ids = queryset.values_list('reviewer_id', flat=True).distinct()
+        country_choices = dict(RegionalGrantCountryAssignment._meta.get_field('country').choices)
+        sent = 0
+        skipped = 0
+        for reviewer in User.objects.filter(pk__in=reviewer_ids):
+            assigned_countries = RegionalGrantCountryAssignment.objects.filter(
+                reviewer=reviewer
+            ).values_list('country', flat=True)
+            country_labels = [country_choices.get(c, c) for c in assigned_countries]
+            if not reviewer.email:
+                skipped += 1
+                continue
+            if send_regional_grant_reviewer_assignment_email(reviewer, country_labels):
+                sent += 1
+            else:
+                skipped += 1
+
+        if sent:
+            self.message_user(
+                request,
+                f"Sent assignment notification email to {sent} reviewer(s).",
+                messages.SUCCESS,
+            )
+        if skipped:
+            self.message_user(
+                request,
+                f"{skipped} reviewer(s) skipped — missing email address or send failure.",
+                messages.WARNING,
+            )
+
+    notify_reviewers_action.short_description = "Email selected reviewers about their country assignment(s)"
 
 
 @admin.register(FinAidApplicationReview)
