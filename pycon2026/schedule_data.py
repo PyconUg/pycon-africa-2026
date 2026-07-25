@@ -140,7 +140,7 @@ SCHEDULE_DATA = [
             ]},
             {"time": "11:10 – 11:40", "cells": [
                 {"title": "Working with Audio in Python (Pythonic Approach)", "speaker": "Bashir Kasujja", "label": "Short Talk · Core Python"},
-                {"title": "Detecting Firmware Implants with Python Assisted Bare-Metal Forensics", "speaker": "Victor Ashioya", "label": "Short Talk · AI/Agentic"},
+                {"title": "Detecting Firmware Implants with Python Assisted Bare-Metal Forensics", "speaker": "Arrhat Nag", "label": "Short Talk · AI/Agentic"},
                 {"title": "Enhancing FastMCP Server Security", "speaker": "Mugoya Hillarious", "label": "Short Talk · Security/Web"},
                 {"title": "Django Girls Workshop", "speaker": ""},
                 {"title": "Posters", "speaker": ""},
