@@ -1,3 +1,6 @@
+import os
+import re
+
 E = {"title": "", "speaker": ""}
 
 
@@ -176,7 +179,14 @@ SCHEDULE_DATA = [
                 {"title": "Posters", "speaker": ""},
             ]},
             {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote"},
-            {"time": "16:50 – 17:20", "span": True, "title": "Lightning Talks\nDjango Deployment Isn't What It Used to Be. by victorianyamai\nUsing Python to Automate API Testing in Open Source Projects by Christine\nSecuring Networks with Python: A Deep Dive into Intrusion Detection, Phishing Prevention, and Vulnerability Scoring by Alpha\nWhat Nobody Tells You About Running a Developer Community as a Student by adjanour\nThe Informal Economy Doesn't Have an API by John_iroko\nDesign isn't just for the Frontend: Why backend developers should care about UX. by Miriam-Birungi"},
+            {"time": "16:50 – 17:20", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
+                {"title": "Django Deployment Isn't What It Used to Be.", "speaker": "victorianyamai"},
+                {"title": "Using Python to Automate API Testing in Open Source Projects", "speaker": "Christine"},
+                {"title": "Securing Networks with Python: A Deep Dive into Intrusion Detection, Phishing Prevention, and Vulnerability Scoring", "speaker": "Alpha"},
+                {"title": "What Nobody Tells You About Running a Developer Community as a Student", "speaker": "Bernard Katamanso"},
+                {"title": "The Informal Economy Doesn't Have an API", "speaker": "John_iroko"},
+                {"title": "Design isn't just for the Frontend: Why backend developers should care about UX.", "speaker": "Miriam-Birungi"},
+            ]},
         ],
     },
     {
@@ -236,7 +246,63 @@ SCHEDULE_DATA = [
                 {"title": "Refugee Program", "speaker": ""},
             ]},
             {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote"},
-            {"time": "16:50 – 17:20", "span": True, "title": "Lightning Talks\nYour Code is Great...but Who Knows? by sarahmuwanguzi\nPython for Impact: Building Climate Solutions Rooted in African Communities by Tendai Jack\nOpen Source Is Infrastructure. Why We Must Stop Treating It Like a Hobby by Trudy\nPython for Community Impact: Simple Tech Solutions for Refugee and Rural Communities in Africa by sankara"},
+            {"time": "16:50 – 17:20", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
+                {"title": "Your Code is Great...but Who Knows?", "speaker": "sarahmuwanguzi"},
+                {"title": "Python for Impact: Building Climate Solutions Rooted in African Communities", "speaker": "Tendai Jack"},
+                {"title": "Open Source Is Infrastructure. Why We Must Stop Treating It Like a Hobby", "speaker": "Trudy"},
+                {"title": "Python for Community Impact: Simple Tech Solutions for Refugee and Rural Communities in Africa", "speaker": "sankara"},
+            ]},
         ],
     },
 ]
+
+
+_SPEAKER_IMAGE_STATIC_DIR = "2026/img/speakerImages"
+_SPEAKER_IMAGE_FS_DIR = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "static", *_SPEAKER_IMAGE_STATIC_DIR.split("/"),
+)
+_SPEAKER_IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png")
+
+
+def _normalize_speaker_name(name):
+    name = re.sub(r"[_\-]+", " ", name.strip().lower())
+    return re.sub(r"\s+", " ", name)
+
+
+def _build_speaker_image_lookup():
+    lookup = {}
+    if not os.path.isdir(_SPEAKER_IMAGE_FS_DIR):
+        return lookup
+    for filename in os.listdir(_SPEAKER_IMAGE_FS_DIR):
+        stem, ext = os.path.splitext(filename)
+        if ext.lower() not in _SPEAKER_IMAGE_EXTENSIONS:
+            continue
+        full_path = os.path.join(_SPEAKER_IMAGE_FS_DIR, filename)
+        if os.path.getsize(full_path) == 0:
+            continue
+        lookup[_normalize_speaker_name(stem)] = f"{_SPEAKER_IMAGE_STATIC_DIR}/{filename}"
+    return lookup
+
+
+def _attach_image(entry, lookup):
+    speaker = entry.get("speaker")
+    if not speaker:
+        return
+    image = lookup.get(_normalize_speaker_name(speaker))
+    if image:
+        entry["image"] = image
+
+
+def _attach_speaker_images(schedule_data):
+    lookup = _build_speaker_image_lookup()
+    for day in schedule_data:
+        for slot in day.get("slots", []):
+            for cell in slot.get("cells", []):
+                _attach_image(cell, lookup)
+            for talk in slot.get("talks", []):
+                _attach_image(talk, lookup)
+    return schedule_data
+
+
+_attach_speaker_images(SCHEDULE_DATA)

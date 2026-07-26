@@ -47,14 +47,31 @@
                 <td class="time-cell">{{ slot.time }}</td>
                 {% if slot.span %}
                 <td colspan="{{ tab.rooms|length }}" class="span-cell {% if slot.type == 'break' %}span-break{% endif %}">
+                  {% if slot.talks %}
+                  <div class="lightning-title">{{ slot.title }}</div>
+                  <div class="lightning-list">
+                    {% for talk in slot.talks %}
+                    <div class="lightning-item">
+                      <span class="lightning-text">{{ talk.title }} <strong>by {{ talk.speaker }}</strong></span>
+                      {% if talk.image %}<img class="speaker-avatar" src="{% static talk.image %}" alt="{{ talk.speaker }}">{% endif %}
+                    </div>
+                    {% endfor %}
+                  </div>
+                  {% else %}
                   {{ slot.title|linebreaksbr }}
+                  {% endif %}
                 </td>
                 {% else %}
                 {% for cell in slot.cells %}
                 <td class="{% if cell.title %}has-content{% endif %}">
                   {% if cell.title %}
                   <div class="cell-title">{{ cell.title }}</div>
-                  {% if cell.speaker %}<div class="cell-speaker"><strong>({{ cell.speaker }})</strong></div>{% endif %}
+                  {% if cell.speaker %}
+                  <div class="cell-speaker">
+                    {% if cell.image %}<img class="speaker-avatar" src="{% static cell.image %}" alt="{{ cell.speaker }}">{% endif %}
+                    <strong>{{ cell.speaker }}</strong>
+                  </div>
+                  {% endif %}
                   {% if cell.label %}<div class="cell-label">{{ cell.label }}</div>{% endif %}
                   {% endif %}
                 </td>
@@ -206,13 +223,26 @@
 }
 
 .cell-speaker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   font-size: 13px;
   color: #2d3748;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .cell-speaker strong {
   font-weight: 900 !important;
+}
+
+.speaker-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #e2e8f0;
 }
 
 .cell-label {
@@ -240,6 +270,35 @@
 .span-break {
   color: #1e40af;
   background: #eff6ff;
+}
+
+/* Lightning talks */
+.lightning-title {
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.lightning-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.lightning-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  font-weight: 400;
+}
+
+.lightning-text {
+  line-height: 1.4;
 }
 
 /* Hover */
