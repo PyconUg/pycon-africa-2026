@@ -166,7 +166,7 @@ SCHEDULE_DATA = [
             ]},
             {"time": "14:40 – 15:10", "cells": [
                 {"title": "Building Low-Power IoT Systems with LoRaWAN and Python", "speaker": "Job mbugua", "label": "Short Talk · Core Python"},
-                {"title": "Serving LLMs on a Budget with vLLM", "speaker": "Ifihanagbara Olusheye", "label": "Short Talk · AI/Agentic"},
+                E,
                 {"title": "Async Python and FastAPI: How It Actually Works", "speaker": "Theresa Seyram Agbenyegah", "label": "Short Talk · Security/Web"},
                 {"title": "Django Girls Workshop", "speaker": ""},
                 {"title": "Posters", "speaker": ""},
