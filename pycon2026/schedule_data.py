@@ -133,7 +133,7 @@ SCHEDULE_DATA = [
         "slots": [
             {"time": "7:00 – 8:45", "span": True, "title": "Break Tea", "type": "break"},
             {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks"},
-            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote"},
+            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nBuilding AI-Powered Lending Infrastructure (Chris Orwa)"},
             {"time": "10:20 – 11:05", "cells": [
                 {"title": "Let the Computer Run Your Unit Tests: Property-Based Testing with Hypothesis in Python", "speaker": "Batamye Umar Isabirye", "label": "Talk · Core Python"},
                 {"title": "Building Real-Time Voice Agents That Listen and Respond in Python", "speaker": "Glory Bagai", "label": "Talk · AI/Agentic"},
@@ -155,7 +155,7 @@ SCHEDULE_DATA = [
                 {"title": "Django Girls Workshop", "speaker": ""},
                 {"title": "Posters", "speaker": ""},
             ]},
-            {"time": "12:20 – 13:00", "span": True, "title": "Open Source, Research and Industry Panel (Micheal Nitegeka, Richard Zulu, CK Japheth and Grace Kamulegeya)"},
+            {"time": "12:20 – 13:00", "span": True, "title": "Open Source, Research and Industry Panel"},
             {"time": "13:00 – 14:00", "span": True, "title": "Lunch", "type": "break"},
             {"time": "14:05 – 14:35", "cells": [
                 {"title": "Deterministic Python: Implementing RTOS Design Concepts in MicroPython", "speaker": "Shawal Mbalire", "label": "Short Talk · Core Python"},
@@ -201,7 +201,7 @@ SCHEDULE_DATA = [
         "slots": [
             {"time": "7:00 – 8:45", "span": True, "title": "Break Tea", "type": "break"},
             {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks"},
-            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote"},
+            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nA Decade of Language AI: A Reflection on the Insanity (Jade Abbot)"},
             {"time": "10:20 – 11:05", "cells": [
                 {"title": "Hacking for Good: Cybersecurity and Ethical Hacking with Python", "speaker": "Mvenyi Donald Mbutu", "label": "Talk · Security/Web"},
                 {"title": "The Lazy Wizard's Guide to Federated Learning: Building ML Models in Difficult Places", "speaker": "Johannes Kolbe", "label": "Talk · ML/Data Science"},
