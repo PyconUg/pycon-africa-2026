@@ -247,10 +247,10 @@ SCHEDULE_DATA = [
             ]},
             {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote"},
             {"time": "16:50 – 17:20", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
-                {"title": "Your Code is Great...but Who Knows?", "speaker": "sarahmuwanguzi"},
+                {"title": "Your Code is Great...but Who Knows?", "speaker": "Sarah Muwanguzi"},
                 {"title": "Python for Impact: Building Climate Solutions Rooted in African Communities", "speaker": "Tendai Jack"},
-                {"title": "Open Source Is Infrastructure. Why We Must Stop Treating It Like a Hobby", "speaker": "Trudy"},
-                {"title": "Python for Community Impact: Simple Tech Solutions for Refugee and Rural Communities in Africa", "speaker": "sankara"},
+                {"title": "Open Source Is Infrastructure. Why We Must Stop Treating It Like a Hobby", "speaker": "Gertrude Abagale Abagale"},
+                {"title": "Python for Community Impact: Simple Tech Solutions for Refugee and Rural Communities in Africa", "speaker": "Makala Sankara Anzuruni"},
             ]},
         ],
     },
