@@ -133,7 +133,7 @@ SCHEDULE_DATA = [
         "slots": [
             {"time": "7:00 – 8:45", "span": True, "title": "Break Tea", "type": "break"},
             {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks"},
-            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote"},
+            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nBuilding AI-Powered Lending Infrastructure (Chris Orwa)"},
             {"time": "10:20 – 11:05", "cells": [
                 {"title": "Let the Computer Run Your Unit Tests: Property-Based Testing with Hypothesis in Python", "speaker": "Batamye Umar Isabirye", "label": "Talk · Core Python"},
                 {"title": "Building Real-Time Voice Agents That Listen and Respond in Python", "speaker": "Glory Bagai", "label": "Talk · AI/Agentic"},
@@ -155,7 +155,7 @@ SCHEDULE_DATA = [
                 {"title": "Django Girls Workshop", "speaker": ""},
                 {"title": "Posters", "speaker": ""},
             ]},
-            {"time": "12:20 – 13:00", "span": True, "title": "Open Source, Research and Industry Panel (Micheal Nitegeka, Richard Zulu, CK Japheth and Grace Kamulegeya)"},
+            {"time": "12:20 – 13:00", "span": True, "title": "Open Source, Research and Industry Panel"},
             {"time": "13:00 – 14:00", "span": True, "title": "Lunch", "type": "break"},
             {"time": "14:05 – 14:35", "cells": [
                 {"title": "Deterministic Python: Implementing RTOS Design Concepts in MicroPython", "speaker": "Shawal Mbalire", "label": "Short Talk · Core Python"},
@@ -166,7 +166,7 @@ SCHEDULE_DATA = [
             ]},
             {"time": "14:40 – 15:10", "cells": [
                 {"title": "Building Low-Power IoT Systems with LoRaWAN and Python", "speaker": "Job mbugua", "label": "Short Talk · Core Python"},
-                {"title": "Serving LLMs on a Budget with vLLM", "speaker": "Ifihanagbara Olusheye", "label": "Short Talk · AI/Agentic"},
+                E,
                 {"title": "Async Python and FastAPI: How It Actually Works", "speaker": "Theresa Seyram Agbenyegah", "label": "Short Talk · Security/Web"},
                 {"title": "Django Girls Workshop", "speaker": ""},
                 {"title": "Posters", "speaker": ""},
@@ -201,7 +201,7 @@ SCHEDULE_DATA = [
         "slots": [
             {"time": "7:00 – 8:45", "span": True, "title": "Break Tea", "type": "break"},
             {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks"},
-            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote"},
+            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nA Decade of Language AI: A Reflection on the Insanity (Jade Abbot)"},
             {"time": "10:20 – 11:05", "cells": [
                 {"title": "Hacking for Good: Cybersecurity and Ethical Hacking with Python", "speaker": "Mvenyi Donald Mbutu", "label": "Talk · Security/Web"},
                 {"title": "The Lazy Wizard's Guide to Federated Learning: Building ML Models in Difficult Places", "speaker": "Johannes Kolbe", "label": "Talk · ML/Data Science"},
@@ -247,10 +247,10 @@ SCHEDULE_DATA = [
             ]},
             {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote"},
             {"time": "16:50 – 17:20", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
-                {"title": "Your Code is Great...but Who Knows?", "speaker": "sarahmuwanguzi"},
+                {"title": "Your Code is Great...but Who Knows?", "speaker": "Sarah Muwanguzi"},
                 {"title": "Python for Impact: Building Climate Solutions Rooted in African Communities", "speaker": "Tendai Jack"},
-                {"title": "Open Source Is Infrastructure. Why We Must Stop Treating It Like a Hobby", "speaker": "Trudy"},
-                {"title": "Python for Community Impact: Simple Tech Solutions for Refugee and Rural Communities in Africa", "speaker": "sankara"},
+                {"title": "Open Source Is Infrastructure. Why We Must Stop Treating It Like a Hobby", "speaker": "Gertrude Abagale Abagale"},
+                {"title": "Python for Community Impact: Simple Tech Solutions for Refugee and Rural Communities in Africa", "speaker": "Makala Sankara Anzuruni"},
             ]},
         ],
     },
