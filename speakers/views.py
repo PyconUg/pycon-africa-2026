@@ -1,3 +1,5 @@
+import re
+
 from os import name
 from urllib import request
 from django.shortcuts import render, get_object_or_404, redirect
@@ -142,3 +144,32 @@ class SpeakerDetailView(HitCountDetailView):
             'meta_og_image': meta_og_image,
         })
         return context
+
+
+def _normalize_name(value):
+    value = re.sub(r"[_\-]+", " ", value.strip().lower())
+    return re.sub(r"\s+", " ", value)
+
+
+def speaker_search(request, year):
+    """Look up a Profile by full name (e.g. from a schedule speaker label) and
+    send the visitor to their canonical speaker detail page."""
+    query = request.GET.get('name', '').strip()
+    target = _normalize_name(query) if query else ''
+
+    match = None
+    if target:
+        for profile in Profile.objects.filter(is_visible=True):
+            if _normalize_name(profile.get_full_name()) == target:
+                match = profile
+                break
+
+    if match:
+        return redirect('speakers:speaker_detail', year=year, profile_id=match.profile_id)
+
+    return render(
+        request,
+        f'{year}/speakers/speaker_not_found.html',
+        {'name': query},
+        status=404,
+    )
