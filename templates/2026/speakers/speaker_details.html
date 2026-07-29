@@ -72,7 +72,7 @@
         <div class="session-card">
           <div class="session-title">{{ talk.title }}</div>
           {% if talk.talk_abstract %}
-          <p class="session-abstract">{{ talk.talk_abstract|truncatewords:35 }}</p>
+          <p class="session-abstract">{{ talk.talk_abstract }}</p>
           {% endif %}
           <div class="session-tags">
             {% if talk.talk_type %}<span class="tag tag-type">{{ talk.talk_type }}</span>{% endif %}
