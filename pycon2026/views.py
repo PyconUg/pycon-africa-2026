@@ -117,7 +117,7 @@ def contact_us(request):
     return render(request, '2026/about/contact_us.html', context)
 
 def scheduIe(request):
-    context = {"tabs": SCHEDULE_DATA}
+    context = {"tabs": SCHEDULE_DATA, "year": 2026}
     template = '2026/schedule/schedule.html'
     return render(request, template, context)
 

@@ -1,283 +1,325 @@
 {% extends "base.html" %}
-{% load i18n static  avatar_tags crispy_forms_tags countries markdown_extras embed_video_tags  %}
-
-
-
+{% load i18n static markdown_extras %}
 
 {% block meta_title %}
-    {% if meta_title %}
-        {{ meta_title }}
-    {% else %}
-        Speaker | PyCon Africa
-    {% endif %}
-{% endblock %} 
-
-{% block og_title %}
-    {{ meta_title }}
+    {% if meta_title %}{{ meta_title }}{% else %}{% trans "Speaker" %} | PyCon Africa{% endif %}
 {% endblock %}
 
-{% block og_description %}
-    {{ meta_description }}
-{% endblock %}
+{% block og_title %}{{ meta_title }}{% endblock %}
+{% block og_description %}{{ meta_description }}{% endblock %}
+{% block og_image %}{{ meta_og_image }}{% endblock %}
+{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}
+{% block og_type %}website{% endblock %}
+{% block og_site_name %}PyCon Africa{% endblock %}
+{% block twitter_title %}{{ meta_title }}{% endblock %}
+{% block twitter_description %}{{ meta_description }}{% endblock %}
+{% block twitter_image %}{{ meta_og_image }}{% endblock %}
+{% block twitter_site %}@pyconafrica{% endblock %}
 
-{% block og_image %}
-    {{ meta_og_image }}
-{% endblock %}
-
-{% block og_url %}
-    {{ request.build_absolute_uri }}
-{% endblock %}
-
-{% block og_type %}
-    website
-{% endblock %}
-
-{% block og_site_name %}
-    PyCon Africa
-{% endblock %}
-
-{% block twitter_title %}
-    {{ meta_title }}
-{% endblock %}
-
-{% block twitter_description %}
-    {{ meta_description }}
-{% endblock %}
-
-{% block twitter_image %}
-    {{ meta_og_image }}
-{% endblock %}
-
-{% block twitter_site %}
-    @pyconafrica
-{% endblock %}
-
-
-
-
-
-
-
-{% block content %} 
+{% block content %}
 {% include '2026/navbar.html' %}
 
+<section class="speaker-detail-section">
+  <div class="max-w-4xl mx-auto px-4">
+    <a href="{% url 'pycon2026:schedule' %}" class="schedule-back-link"><i class="fa-solid fa-arrow-left"></i> {% trans "Back to Schedule" %}</a>
+  </div>
+  <div class="max-w-4xl mx-auto px-4 speaker-detail-grid">
 
-    <!-- Breadcrumbs -->
-    <section class="g-bg-gray-light-v5 g-py-80 g-pt-150">
-      <div class="max-w-7xl mx-auto px-4 text-center">
-        <h2 class="h2 g-color-black g-font-weight-600">{{ speaker.name|capfirst }}'s Profile</h2>
+    <div class="speaker-main">
+      <div class="speaker-profile-card">
+        {% if speaker.profile_image %}
+        <img class="speaker-photo" src="{{ speaker.profile_image.url }}" alt="{{ speaker.name|capfirst }} profile picture">
+        {% else %}
+        <img class="speaker-photo" src="{% static '2026/img/speakers/speaker.png' %}" alt="{{ speaker.name|capfirst }} profile picture">
+        {% endif %}
 
-        <ul class="u-list-inline">
-          <li class="list-inline-item g-mr-5">
-            <a class="u-link-v5 g-color-gray-dark-v1 g-color-primary--hover" href="/">Home</a>
-            <i class="g-color-gray-light-v2 g-ml-5">/</i>
-          </li>  
-          <li class="list-inline-item g-mr-5">
-            <a class="u-link-v5 g-color-gray-dark-v1 g-color-primary--hover" href="/2026/speakers/">Speakers</a>
-            <i class="g-color-gray-light-v2 g-ml-5">/</i>
-          </li>  
-          <li class="list-inline-item g-color-primary">
-            <span>{{ speaker.name|capfirst }}</span>
-          </li>
-        </ul><br> 
-        <i class="fa-regular fa-keynote" style="font-size:41px;"></i>
+        <div class="speaker-info">
+          <h2 class="speaker-name">{{ speaker.name|capfirst }} {{ speaker.surname|capfirst }}</h2>
+
+          {% if speaker.profession or speaker.organization %}
+          <p class="speaker-role">
+            {{ speaker.profession }}{% if speaker.profession and speaker.organization %} at {% endif %}{{ speaker.organization }}
+          </p>
+          {% endif %}
+
+          {% if speaker.website or speaker.twitter_handle or speaker.github_username or speaker.linkedin %}
+          <div class="speaker-social">
+            {% if speaker.website %}
+            <a href="{{ speaker.website }}" target="_blank" rel="noopener" title="{% trans 'Website' %}"><i class="fa-solid fa-globe"></i></a>
+            {% endif %}
+            {% if speaker.twitter_handle %}
+            <a href="https://twitter.com/{{ speaker.twitter_handle }}" target="_blank" rel="noopener" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+            {% endif %}
+            {% if speaker.github_username %}
+            <a href="https://github.com/{{ speaker.github_username }}" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github"></i></a>
+            {% endif %}
+            {% if speaker.linkedin %}
+            <a href="{{ speaker.linkedin }}" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+            {% endif %}
+          </div>
+          {% endif %}
+        </div>
       </div>
-      
-    </section>
-    <!-- End Breadcrumbs --> 
- 
 
-  <div class="max-w-7xl mx-auto px-4 g-pt-50"> 
-      <div class="row justify-content-between">
-        <div class="col-lg-9 g-mb-80">
-          <div class="g-pr-20--lg"> 
-              <!-- Figure -->
-              <section class="max-w-7xl mx-auto px-4 g-pt-20 g-pb-40">
-                <figure class="flex flex-wrap gap-4">
-                    <!-- Figure Image -->
-                    <div class="col-md-8 offset-md-2 col-lg-4 offset-lg-0 g-mb-30">
-                        {% if speaker.profile_image %}
-                        <img class="w-100" src="{{ speaker.profile_image.url }}" alt="{{ speaker.name|capfirst }} Profile Picture">
-                        {% else %}
-                        <img class="w-100" src="{% static '/2026/img/speakers/speaker.png' %}" alt="{{ speaker.profile_image }}">
-                        {% endif %}
-                    </div>
-                    <!-- End Figure Image -->
+      {% if speaker.biography %}
+      <div class="speaker-bio">{{ speaker.biography|markdown|safe|truncatechars:1300 }}</div>
+      {% endif %}
 
-                    <!-- Figure Body -->
-                    <div class="col-lg-8">
-                        <div class="d-flex justify-content-between g-mb-10">
-                            <div class="g-mb-20">
-                                <h4 class="h3 g-mb-5">{{ speaker.name|capfirst }} {{ speaker.surname|capfirst }}</h4>
-                                <em class="d-block g-font-style-normal g-font-size-default text-uppercase g-color-primary">
-                                    {% if speaker.profession %}{{ speaker.profession }}{% endif %}
-                                    {% if speaker.organization %} at {{ speaker.organization }}{% endif %}.
-                                </em>
-                                <div>{{ speaker.city }}, {{ speaker.country.name }}.<i class="{{ speaker.country.flag_css }}"></i></div>
-                            </div>
-
-                            <!-- Figure Social Icons -->
-                            <ul class="list-inline">
-                                {% if speaker.website %}
-                                <li class="list-inline-item g-mx-2">
-                                    <a class="u-icon-v1 u-icon-size--sm u-icon-slide-up--hover g-color-gray-light-v1 g-bg-gray-light-v5 g-color-gray-light-v1--hover rounded-circle" href="{{ speaker.website }}" target="_blank" data-toggle="tooltip" data-placement="top" title="Visit {{ speaker.name|capfirst }}'s website">
-                                        <i class="g-font-size-default g-line-height-1 u-icon__elem-regular fa fa-globe"></i>
-                                        <i class="g-font-size-default g-line-height-0_8 u-icon__elem-hover fa fa-globe"></i>
-                                    </a>
-                                </li>
-                                {% endif %}
-                                {% if speaker.twitter_handle %}
-                                <li class="list-inline-item g-mx-2">
-                                    <a class="u-icon-v1 u-icon-size--sm u-icon-slide-up--hover g-color-gray-light-v1 g-bg-gray-light-v5 g-color-gray-light-v1--hover rounded-circle" href="https://www.twitter.com/{{ speaker.twitter_handle }}" target="_blank" data-toggle="tooltip" data-placement="top" title="Follow {{ speaker.name|capfirst }} on Twitter">
-                                        <i class="g-font-size-default g-line-height-1 u-icon__elem-regular fab fa-twitter"></i>
-                                        <i class="g-font-size-default g-line-height-0_8 u-icon__elem-hover fab fa-twitter"></i>
-                                    </a>
-                                </li>
-                                {% endif %}
-                                {% if speaker.github_username %}
-                                <li class="list-inline-item g-mx-2">
-                                    <a class="u-icon-v1 u-icon-size--sm u-icon-slide-up--hover g-color-gray-light-v1 g-bg-gray-light-v5 g-color-gray-light-v1--hover rounded-circle" href="https://www.github.com/{{ speaker.github_username }}" target="_blank" data-toggle="tooltip" data-placement="top" title="Follow {{ speaker.name|capfirst }} on GitHub">
-                                        <i class="g-font-size-default g-line-height-1 u-icon__elem-regular fab fa-github"></i>
-                                        <i class="g-font-size-default g-line-height-0_8 u-icon__elem-hover fab fa-github"></i>
-                                    </a>
-                                </li>
-                                {% endif %}
-                                {% if speaker.linkedin %}
-                                <li class="list-inline-item g-mx-2">
-                                    <a class="u-icon-v1 u-icon-size--sm u-icon-slide-up--hover g-color-gray-light-v1 g-bg-gray-light-v5 g-color-gray-light-v1--hover rounded-circle" href="{{ speaker.linkedin }}" target="_blank" data-toggle="tooltip" data-placement="top" title="Connect with {{ speaker.name|capfirst }} on Linkedin">
-                                        <i class="g-font-size-default g-line-height-1 u-icon__elem-regular fab fa-linkedin"></i>
-                                        <i class="g-font-size-default g-line-height-0_8 u-icon__elem-hover fab fa-linkedin"></i>
-                                    </a>
-                                </li>
-                                {% endif %}
-                            </ul>
-                            <!-- End Figure Social Icons -->
-                        </div>
-                        <!-- Figure Info -->
-                        <div class="g-mb-60">
-                            <p class="markdownx-preview">{{ speaker.biography | markdown | safe | truncatechars:1300 }}</p>
-                        </div>
-                        <!-- End Info -->
-                    </div>
-                    <!-- End Figure Body -->
-                </figure>
-            </section>
-            <!-- End Figure -->
-
-            <div class="content-element  g-pb-40">
-                {% if talks %}
-                <h3>Session(s) by {{ speaker.name|capfirst }}</h3>
-                <ul class="list-unstyled">
-                    {% for talk in talks %}
-                    <li class="media g-brd-around g-brd-gray-light-v4 g-brd-left-3 g-brd-gray-left g-rounded-3 g-pa-20 g-mb-7">
-                        <div class="d-flex g-mt-2 g-mr-15">
-                            {% if talk.talk_type == "Tutorial" %}
-                            <img class="g-width-40 g-height-40 rounded-circle" src="https://res.cloudinary.com/pycon-africa/image/upload/v1722881110/website_storage_location/media/workshop.png" alt="Tutorial Icon">
-                            {% elif talk.talk_type == "Keynote Speaker" %}
-                            <img class="g-width-40 g-height-40 rounded-circle" src="https://res.cloudinary.com/pycon-africa/image/upload/v1722881110/website_storage_location/media/keynote-speaker.png" alt="Keynote Icon">
-                            {% else %}
-                            <img class="g-width-40 g-height-40 rounded-circle" src="https://res.cloudinary.com/pycon-africa/image/upload/v1722881110/website_storage_location/media/speaker.png" alt="Speaker's Image">
-                            {% endif %}
-                        </div>
-                        <div class="media-body">
-                            <div class="d-flex justify-content-between">
-                                <h5 class="h4 g-font-weight-600 g-color-black">
-                                    <a href="/2026/talks/{{ talk.proposal_id }}/detail/">{{ talk.title }}</a>
-                                </h5>
-                                <span class="small text-nowrap g-color-black">{{  schedules.start_time.time|time:"h:iA" }}</span>
-                            </div>
-                            <p>{{ talk.talk_abstract|truncatewords:35 }}</p>
-                            {% if talk.talk_type %}
-                            <span class="u-label u-label--sm g-bg-primary g-rounded-20 g-px-10">{{ talk.talk_type }}</span>
-                            {% endif %}
-                            {% if talk.intended_audience == "BGN-L" %}
-                            <span class="u-label u-label--sm g-bg-deeporange g-rounded-20 g-px-10">Beginner</span>
-                            {% elif talk.intended_audience == "INT-L" %}
-                            <span class="u-label u-label--sm g-bg-yellow g-color-black g-rounded-20 g-px-10">Intermediate</span>
-                            {% elif talk.intended_audience == "EXP-L" %}
-                            <span class="u-label u-label--sm g-bg-teal g-rounded-20 g-px-10">Expert</span>
-                            {% endif %}
-                        </div>
-                    </li>
-                    {% endfor %}
-                </ul>
-                {% endif %}
- 
-            </div>
-
-            <hr>
-            <a onclick="goBack()" class="btn u-btn-darkgray g-mr-10 g-mb-15 g-color-white">
-                <i class="fa-sharp fa-solid fa-rotate-left"></i> GO BACK
-            </a>
+      {% if talks %}
+      <div class="speaker-sessions">
+        <h3>{% trans "Abstract" %}</h3>
+        {% for talk in talks %}
+        <div class="session-card">
+          <div class="session-title">{{ talk.title }}</div>
+          {% if talk.talk_abstract %}
+          <p class="session-abstract">{{ talk.talk_abstract|truncatewords:35 }}</p>
+          {% endif %}
+          <div class="session-tags">
+            {% if talk.talk_type %}<span class="tag tag-type">{{ talk.talk_type }}</span>{% endif %}
+            {% if talk.intended_audience == "BGN-L" %}
+            <span class="tag tag-beginner">{% trans "Beginner" %}</span>
+            {% elif talk.intended_audience == "INT-L" %}
+            <span class="tag tag-intermediate">{% trans "Intermediate" %}</span>
+            {% elif talk.intended_audience == "EXP-L" %}
+            <span class="tag tag-expert">{% trans "Expert" %}</span>
+            {% endif %}
           </div>
         </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
 
-        <div class="col-lg-3 g-brd-left--lg g-brd-gray-light-v4 g-mb-80">
-          <div class="g-pl-20--lg">
-            <hr class="g-brd-gray-light-v4 g-mt-50 mb-0">
-            <div id="stickyblock-start">
-                <div class="js-sticky-block g-sticky-block--lg g-pt-50" data-start-point="#stickyblock-start" data-end-point="#stickyblock-end">
-                    <!-- Publications -->
-                    <div class="g-mb-50">
-                        <h3 class="h5 g-color-black g-font-weight-600 mb-4">Other Speakers</h3>
-                        {% if related_speakers %}
-                        {% for speaker in related_speakers.all|slice:"0:5" %}
-                        <li class="d-flex justify-content-start g-brd-around g-brd-gray-light-v4 g-pa-20 g-mb-10">
-                            <div class="g-mt-2">
-                                {% if speaker.profile_image %}
-                                <img class="g-width-50 g-height-50 rounded-circle" src="{{ speaker.profile_image.url }}" alt="{{ speaker.name }}">
-                                {% else %}
-                                <img class="g-width-50 g-height-50 rounded-circle" src="{% static '/2026/img/speakers/speaker.png' %}" alt="{{ speaker.name }}">
-                                {% endif %}
-                            </div>
-                            <div class="align-self-center g-px-10">
-                                <h5 class="h6 g-font-weight-600 g-color-black g-mb-3">
-                                    <span class="g-mr-5"><a href="{% url 'speakers:speaker_detail' year=2026 profile_id=speaker.profile_id %}">{{ speaker.name }} {{ speaker.surname }}</a></span>
-                                </h5>
-                                <small class="g-font-size-12 g-color-black">{{ speaker.profession|truncatewords:2 }}</small>
-                            </div>
-                        </li>
-                        {% endfor %}
-                        {% else %}
-                        <li>No related speakers available.</li>
-                        {% endif %}
-                    </div>
-                    <!-- End Publications -->
+    <aside class="speaker-sidebar">
+      <h3>{% trans "Other Talks" %}</h3>
+      {% if other_talks %}
+      <div class="related-speakers">
+        {% for talk in other_talks %}
+        <a class="related-talk" href="{% url 'speakers:speaker_detail' year=2026 profile_id=talk.user.user_profile.profile_id %}">
+          {% if talk.user.user_profile.profile_image %}
+          <img src="{{ talk.user.user_profile.profile_image.url }}" alt="{{ talk.user.user_profile.name|capfirst }}">
+          {% else %}
+          <img src="{% static '2026/img/speakers/speaker.png' %}" alt="{{ talk.user.user_profile.name|capfirst }}">
+          {% endif %}
+          <span>
+            <strong class="related-talk-title">{{ talk.title }}</strong>
+            <small>by {{ talk.user.user_profile.name|capfirst }} {{ talk.user.user_profile.surname|capfirst }}</small>
+          </span>
+        </a>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p class="no-related">{% trans "No other talks available." %}</p>
+      {% endif %}
+    </aside>
 
-                    <hr class="g-brd-gray-light-v4 g-my-50">
-
-                    <!-- Tags -->
-                    <div class="g-mb-40">
-                        <h3 class="h5 g-color-black g-font-weight-600 mb-4"></h3>
-                        <ul></ul>
-                    </div>
-                    <!-- End Tags -->
-
-                    <hr class="g-brd-gray-light-v4 g-my-50">
-                </div>
-            </div>
-        </div>
-        </div>
-      </div> 
   </div>
+</section>
 
- 
-            
-         
+<style>
+.speaker-detail-section {
+  padding: 32px 0 80px;
+}
 
-  <br><br><br>
-    <!-- End Schedule Background Overlay Blocks -->
+.schedule-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  color: #177e89;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
 
+.schedule-back-link:hover {
+  text-decoration: underline;
+}
 
+.speaker-detail-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
 
+.speaker-profile-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 24px;
+}
 
+.speaker-photo {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
 
+.speaker-info {
+  flex: 1;
+  min-width: 220px;
+}
 
+.speaker-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 4px;
+}
 
+.speaker-role {
+  color: #177e89;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 14px;
+}
 
- 
+.speaker-social {
+  display: flex;
+  gap: 10px;
+}
 
- 
+.speaker-social a {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #4a5568;
+  transition: background 0.2s ease, color 0.2s ease;
+}
 
+.speaker-social a:hover {
+  background: #177e89;
+  color: #fff;
+}
 
+.speaker-bio {
+  color: #2d3748;
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+
+.speaker-sessions h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 16px;
+}
+
+.session-card {
+  border: 1px solid #e2e8f0;
+  border-left: 3px solid #177e89;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 14px;
+}
+
+.session-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.session-abstract {
+  color: #4a5568;
+  font-size: 14px;
+  margin: 8px 0 10px;
+  line-height: 1.6;
+}
+
+.session-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 20px;
+  color: #fff;
+}
+
+.tag-type { background: #2d3748; }
+.tag-beginner { background: #dd6b20; }
+.tag-intermediate { background: #d69e2e; }
+.tag-expert { background: #0d9488; }
+
+.speaker-sidebar h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 16px;
+}
+
+.related-speakers {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.related-talk {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: border-color 0.2s ease;
+}
+
+.related-talk:hover {
+  border-color: #177e89;
+}
+
+.related-talk img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.related-talk-title {
+  display: block;
+  color: #177e89;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.related-talk small {
+  display: block;
+  color: #718096;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.no-related {
+  color: #718096;
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .speaker-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .speaker-photo {
+    width: 120px;
+    height: 120px;
+  }
+}
+</style>
 {% endblock %}
