@@ -67,7 +67,7 @@
                 {% for cell in slot.cells %}
                 <td class="{% if cell.title %}has-content{% endif %}">
                   {% if cell.title %}
-                  <div class="cell-title">{{ cell.title }}</div>
+                  <div class="cell-title">{% if cell.link %}<a href="{{ cell.link }}">{{ cell.title }}</a>{% else %}{{ cell.title }}{% endif %}</div>
                   {% if cell.speaker %}
                   <div class="cell-speaker">
                     {% if cell.image %}<img class="speaker-avatar" src="{% static cell.image %}" alt="{{ cell.speaker }}">{% endif %}
@@ -222,6 +222,15 @@
   font-weight: 500;
   color: #1a202c;
   line-height: 1.4;
+}
+
+.cell-title a {
+  color: #177e89;
+  text-decoration: none;
+}
+
+.cell-title a:hover {
+  text-decoration: underline;
 }
 
 .cell-speaker {
