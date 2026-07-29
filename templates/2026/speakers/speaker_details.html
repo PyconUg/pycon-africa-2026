@@ -20,6 +20,9 @@
 {% include '2026/navbar.html' %}
 
 <section class="speaker-detail-section">
+  <div class="max-w-4xl mx-auto px-4">
+    <a href="{% url 'pycon2026:schedule' %}" class="schedule-back-link"><i class="fa-solid fa-arrow-left"></i> {% trans "Back to Schedule" %}</a>
+  </div>
   <div class="max-w-4xl mx-auto px-4 speaker-detail-grid">
 
     <div class="speaker-main">
@@ -115,7 +118,22 @@
 
 <style>
 .speaker-detail-section {
-  padding: 48px 0 80px;
+  padding: 32px 0 80px;
+}
+
+.schedule-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  color: #177e89;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.schedule-back-link:hover {
+  text-decoration: underline;
 }
 
 .speaker-detail-grid {
