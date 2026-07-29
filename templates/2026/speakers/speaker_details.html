@@ -39,13 +39,6 @@
           </p>
           {% endif %}
 
-          {% if speaker.city or speaker.country %}
-          <p class="speaker-location">
-            <i class="fa-solid fa-location-dot"></i>
-            {{ speaker.city }}{% if speaker.city and speaker.country %}, {% endif %}{{ speaker.country.name }}
-          </p>
-          {% endif %}
-
           {% if speaker.website or speaker.twitter_handle or speaker.github_username or speaker.linkedin %}
           <div class="speaker-social">
             {% if speaker.website %}
@@ -71,12 +64,10 @@
 
       {% if talks %}
       <div class="speaker-sessions">
-        <h3>{% trans "Session" %}{{ talks|length|pluralize }} by {{ speaker.name|capfirst }}</h3>
+        <h3>{% trans "Abstract" %}</h3>
         {% for talk in talks %}
         <div class="session-card">
-          <div class="session-title">
-            <a href="/2026/talks/{{ talk.proposal_id }}/detail/">{{ talk.title }}</a>
-          </div>
+          <div class="session-title">{{ talk.title }}</div>
           {% if talk.talk_abstract %}
           <p class="session-abstract">{{ talk.talk_abstract|truncatewords:35 }}</p>
           {% endif %}
@@ -97,25 +88,25 @@
     </div>
 
     <aside class="speaker-sidebar">
-      <h3>{% trans "Other Speakers" %}</h3>
-      {% if related_speakers %}
+      <h3>{% trans "Other Talks" %}</h3>
+      {% if other_talks %}
       <div class="related-speakers">
-        {% for related in related_speakers.all|slice:":5" %}
-        <a class="related-speaker" href="{% url 'speakers:speaker_detail' year=2026 profile_id=related.profile_id %}">
-          {% if related.profile_image %}
-          <img src="{{ related.profile_image.url }}" alt="{{ related.name|capfirst }}">
+        {% for talk in other_talks %}
+        <a class="related-talk" href="{% url 'speakers:speaker_detail' year=2026 profile_id=talk.user.user_profile.profile_id %}">
+          {% if talk.user.user_profile.profile_image %}
+          <img src="{{ talk.user.user_profile.profile_image.url }}" alt="{{ talk.user.user_profile.name|capfirst }}">
           {% else %}
-          <img src="{% static '2026/img/speakers/speaker.png' %}" alt="{{ related.name|capfirst }}">
+          <img src="{% static '2026/img/speakers/speaker.png' %}" alt="{{ talk.user.user_profile.name|capfirst }}">
           {% endif %}
           <span>
-            <strong>{{ related.name|capfirst }} {{ related.surname|capfirst }}</strong>
-            {% if related.profession %}<small>{{ related.profession|truncatewords:2 }}</small>{% endif %}
+            <strong class="related-talk-title">{{ talk.title }}</strong>
+            <small>by {{ talk.user.user_profile.name|capfirst }} {{ talk.user.user_profile.surname|capfirst }}</small>
           </span>
         </a>
         {% endfor %}
       </div>
       {% else %}
-      <p class="no-related">{% trans "No related speakers available." %}</p>
+      <p class="no-related">{% trans "No other talks available." %}</p>
       {% endif %}
     </aside>
 
@@ -168,12 +159,6 @@
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  margin-bottom: 6px;
-}
-
-.speaker-location {
-  color: #718096;
-  font-size: 14px;
   margin-bottom: 14px;
 }
 
@@ -220,16 +205,10 @@
   margin-bottom: 14px;
 }
 
-.session-title a {
+.session-title {
   font-size: 1.05rem;
   font-weight: 600;
   color: #1a202c;
-  text-decoration: none;
-}
-
-.session-title a:hover {
-  color: #177e89;
-  text-decoration: underline;
 }
 
 .session-abstract {
@@ -272,9 +251,9 @@
   gap: 12px;
 }
 
-.related-speaker {
+.related-talk {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
   padding: 12px;
   border: 1px solid #e2e8f0;
@@ -283,11 +262,11 @@
   transition: border-color 0.2s ease;
 }
 
-.related-speaker:hover {
+.related-talk:hover {
   border-color: #177e89;
 }
 
-.related-speaker img {
+.related-talk img {
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -295,16 +274,18 @@
   flex-shrink: 0;
 }
 
-.related-speaker strong {
+.related-talk-title {
   display: block;
-  color: #1a202c;
+  color: #177e89;
   font-size: 14px;
+  line-height: 1.4;
 }
 
-.related-speaker small {
+.related-talk small {
   display: block;
   color: #718096;
   font-size: 12px;
+  margin-top: 4px;
 }
 
 .no-related {

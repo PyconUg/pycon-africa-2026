@@ -121,6 +121,13 @@ class SpeakerDetailView(HitCountDetailView):
             )
         ).filter(user_accepted=True).exclude(profile_id=self.object.profile_id).distinct()
 
+        # Other accepted talks (with their speaker) to feature in the sidebar
+        other_talks = Proposal.objects.filter(
+            status='A',
+            user_response='A',
+            event_year=event_year,
+        ).exclude(user=self.object.user).select_related('user__user_profile')[:5]
+
         # Truncate biography to 30 words
         truncated_biography = Truncator(self.object.biography).words(50, truncate='...')
 
@@ -135,6 +142,7 @@ class SpeakerDetailView(HitCountDetailView):
         context.update({
             'talks': talks,
             'related_speakers': related_speakers,
+            'other_talks': other_talks,
             'events': Event.objects.all(),
             'speakers': Profile.objects.filter(is_visible=True),
             'schedule': Schedule.objects.all(),
