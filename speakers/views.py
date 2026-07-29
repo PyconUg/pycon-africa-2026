@@ -167,7 +167,11 @@ def speaker_search(request, year):
 
     match = None
     if target:
-        for profile in Profile.objects.filter(is_visible=True):
+        confirmed_speakers = Profile.objects.filter(
+            Q(user__proposals__status='A', user__proposals__user_response='A') |
+            Q(user__speaking_proposals__status='A', user__speaking_proposals__user_response='A')
+        ).distinct()
+        for profile in confirmed_speakers:
             if _normalize_name(profile.get_full_name()) == target:
                 match = profile
                 break
