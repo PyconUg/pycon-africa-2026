@@ -1,6 +1,7 @@
 """Service layer for the fin_aid app.
 
-Provides the opportunity grant review assignment algorithm.
+Provides the opportunity grant review assignment algorithm and the lookup that
+flags regional grant applicants who already hold an opportunity grant.
 """
 
 from collections import defaultdict
@@ -8,6 +9,7 @@ from typing import Iterable, Optional
 
 from django.db import transaction
 from django.db.models import Count, Exists, OuterRef
+from django.db.models.functions import Lower, Trim
 
 from .models import (
     FinAidApplicationReview,
@@ -15,6 +17,61 @@ from .models import (
     FinAidReviewer,
     OpportunityGrantApplication,
 )
+
+
+#: An opportunity grant counts as awarded once it is accepted, in full or in part.
+AWARDED_OPPORTUNITY_GRANT_STATUSES = (
+    OpportunityGrantApplication.STATUS_ACCEPTED,
+    OpportunityGrantApplication.STATUS_WAITLIST,
+)
+
+
+def _normalise_email(email: Optional[str]) -> str:
+    return (email or '').strip().lower()
+
+
+def opportunity_grant_awards_by_email(emails: Iterable[str]) -> dict:
+    """Map normalised email -> the applicant's awarded opportunity grant.
+
+    Awarded means accepted or partially accepted. Only emails present in
+    ``emails`` are returned. Emails are compared with an explicit
+    Lower(Trim(...)) rather than ``__iexact``, which stays case-insensitive
+    regardless of database collation and avoids ``__iexact`` compiling to LIKE
+    on SQLite (where "_" and "%" would act as wildcards). When someone has been
+    awarded in more than one round, the latest wins.
+    """
+    wanted = {_normalise_email(email) for email in emails}
+    wanted.discard('')
+    if not wanted:
+        return {}
+
+    awarded = (
+        OpportunityGrantApplication.objects.annotate(
+            _grantee_email=Lower(Trim('user__email')),
+        )
+        .filter(
+            _grantee_email__in=wanted,
+            status__in=AWARDED_OPPORTUNITY_GRANT_STATUSES,
+        )
+        .select_related('user', 'fin_aid__event_year')
+        .order_by('submitted_at')
+    )
+
+    return {application._grantee_email: application for application in awarded}
+
+
+def attach_opportunity_grant_awards(applications: Iterable) -> list:
+    """Set ``opportunity_grant_award`` on each regional grant application.
+
+    Regional grant applications need no login, so the applicant's email address
+    is the only link back to an opportunity grant application. The attribute is
+    ``None`` when the applicant holds no awarded opportunity grant.
+    """
+    applications = list(applications)
+    awards = opportunity_grant_awards_by_email(a.email for a in applications)
+    for application in applications:
+        application.opportunity_grant_award = awards.get(_normalise_email(application.email))
+    return applications
 
 
 def _eligible_applications_for(

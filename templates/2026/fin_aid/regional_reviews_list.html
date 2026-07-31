@@ -23,7 +23,11 @@
             </nav>
           </div>
           <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-1">{% trans "Review regional grant applications" %}</h2>
-          <p class="text-sm text-gray-600 mb-4">{% trans "Applications for the countries assigned to you." %}</p>
+          <p class="text-sm text-gray-600 mb-2">{% trans "Applications for the countries assigned to you." %}</p>
+          <p class="text-sm text-gray-600 mb-4">
+            <span aria-hidden="true">★</span>
+            {% trans "A star marks an applicant who has already been awarded an opportunity grant, matched on email address." %}
+          </p>
 
           {% if assigned_country_labels %}
             <div class="flex flex-wrap items-center gap-2 mb-6">
@@ -68,6 +72,7 @@
                     <thead class="bg-gray-50">
                       <tr>
                         <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Applicant" %}</th>
+                        <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="grant">{% trans "Opportunity grant" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
                         <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="country">{% trans "Country" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
                         <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="support">{% trans "Financial support needed" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
                         <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="submitted">{% trans "Submitted" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
@@ -76,9 +81,12 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100 bg-white">
                       {% for app in unreviewed_applications %}
-                        <tr class="hover:bg-gray-50" data-filterable="true" data-country="{{ app.get_country_display }}" data-support="{{ app.get_financial_support_display }}" data-submitted="{{ app.created_at|date:'Y-m-d' }}">
+                        <tr class="hover:bg-gray-50" data-filterable="true" data-country="{{ app.get_country_display }}" data-support="{{ app.get_financial_support_display }}" data-submitted="{{ app.created_at|date:'Y-m-d' }}" data-grant="{% if app.opportunity_grant_award %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}">
                           <td class="px-3 sm:px-4 py-2.5 align-top">
                             <a href="{% url 'pycon2026:regional_grant_review_detail' pk=app.pk %}" class="font-medium text-pycon-teal hover:underline">{{ app.full_name }}</a>
+                          </td>
+                          <td class="px-3 sm:px-4 py-2.5 align-top">
+                            {% include '2026/fin_aid/reviews/_opportunity_grant_award_badge.html' with award=app.opportunity_grant_award %}
                           </td>
                           <td class="px-3 sm:px-4 py-2.5 align-top text-gray-700">{{ app.get_country_display }}</td>
                           <td class="px-3 sm:px-4 py-2.5 align-top text-gray-700">{{ app.get_financial_support_display }}</td>
@@ -129,6 +137,7 @@
                       <thead class="bg-gray-50">
                         <tr>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Applicant" %}</th>
+                          <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="grant">{% trans "Opportunity grant" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="country">{% trans "Country" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="support">{% trans "Financial support needed" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Actions" %}</th>
@@ -136,10 +145,13 @@
                       </thead>
                       <tbody class="divide-y divide-gray-100 bg-white">
                         {% for app in previously_reviewed_applications %}
-                          <tr class="hover:bg-gray-50" data-filterable="true" data-country="{{ app.get_country_display }}" data-support="{{ app.get_financial_support_display }}">
+                          <tr class="hover:bg-gray-50" data-filterable="true" data-country="{{ app.get_country_display }}" data-support="{{ app.get_financial_support_display }}" data-grant="{% if app.opportunity_grant_award %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}">
                             <td class="px-3 sm:px-4 py-2.5 align-top">
                               <a href="{% url 'pycon2026:regional_grant_review_detail' pk=app.pk %}" class="font-medium text-pycon-teal hover:underline">{{ app.full_name }}</a>
                               <div class="text-xs text-gray-500 mt-0.5">{{ app.reviews.count }} review{{ app.reviews.count|pluralize }} by others</div>
+                            </td>
+                            <td class="px-3 sm:px-4 py-2.5 align-top">
+                              {% include '2026/fin_aid/reviews/_opportunity_grant_award_badge.html' with award=app.opportunity_grant_award %}
                             </td>
                             <td class="px-3 sm:px-4 py-2.5 align-top text-gray-700">{{ app.get_country_display }}</td>
                             <td class="px-3 sm:px-4 py-2.5 align-top text-gray-700">{{ app.get_financial_support_display }}</td>
@@ -189,6 +201,7 @@
                       <thead class="bg-gray-50">
                         <tr>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Applicant" %}</th>
+                          <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="grant">{% trans "Opportunity grant" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="country">{% trans "Country" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700 cursor-pointer select-none sortable-header" data-sort="recommendation">{% trans "Your recommendation" %} <span class="sort-icon text-gray-400 text-xs">⇅</span></th>
                           <th class="px-3 sm:px-4 py-2 text-left font-semibold text-gray-700">{% trans "Actions" %}</th>
@@ -196,8 +209,11 @@
                       </thead>
                       <tbody class="divide-y divide-gray-100 bg-white">
                         {% for app, rev in my_completed_reviews %}
-                          <tr class="hover:bg-gray-50" data-country="{{ app.get_country_display }}" data-recommendation="{{ rev.get_recommendation_display }}">
+                          <tr class="hover:bg-gray-50" data-country="{{ app.get_country_display }}" data-recommendation="{{ rev.get_recommendation_display }}" data-grant="{% if app.opportunity_grant_award %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}">
                             <td class="px-3 sm:px-4 py-2.5 text-gray-900">{{ app.full_name }}</td>
+                            <td class="px-3 sm:px-4 py-2.5">
+                              {% include '2026/fin_aid/reviews/_opportunity_grant_award_badge.html' with award=app.opportunity_grant_award %}
+                            </td>
                             <td class="px-3 sm:px-4 py-2.5 text-gray-700">{{ app.get_country_display }}</td>
                             <td class="px-3 sm:px-4 py-2.5 text-gray-700">{{ rev.get_recommendation_display }}</td>
                             <td class="px-3 sm:px-4 py-2.5">

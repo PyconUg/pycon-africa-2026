@@ -41,6 +41,7 @@ from .models import (
     is_regional_grant_closed,
 )
 from talks.models import Proposal
+from .services import attach_opportunity_grant_awards
 from .flight_budgets import get_flight_budget, get_review_region
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from home.models import EventYear
@@ -352,6 +353,12 @@ def regional_grant_reviews_list(request):
     }
     my_completed_with_reviews = [(app, review_by_app_id[app.pk]) for app in my_completed_reviews]
 
+    attach_opportunity_grant_awards(
+        unreviewed_applications
+        + previously_reviewed_applications
+        + [app for app, _review in my_completed_with_reviews]
+    )
+
     return render(
         request,
         '2026/fin_aid/regional_reviews_list.html',
@@ -375,6 +382,8 @@ def regional_grant_review_detail(request, pk):
     if application.country not in assigned_countries:
         messages.error(request, "This application's country is not assigned to you for review.")
         return redirect('pycon2026:regional_grant_reviews')
+
+    attach_opportunity_grant_awards([application])
 
     existing_review = RegionalGrantApplicationReview.objects.filter(
         application=application,
