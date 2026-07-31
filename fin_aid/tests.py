@@ -414,6 +414,118 @@ class RegionalGrantReviewTests(TestCase):
                 )
 
 
+class RegionalGrantOpportunityGrantFlagTests(TestCase):
+    """Regional grant reviewers must be able to spot applicants who already hold
+    an opportunity grant. The two application types share no foreign key, so the
+    flag is matched on email address."""
+
+    def setUp(self):
+        self.client = Client()
+        self.reviewer = User.objects.create_user('flagreviewer', 'fr@example.com', 'testpass123')
+        RegionalGrantCountryAssignment.objects.create(reviewer=self.reviewer, country='kenya')
+
+        self.event_year, _ = EventYear.objects.get_or_create(
+            year=2026,
+            defaults={'home_info': 'test'},
+        )
+        self.fin_aid = Fin_aid.objects.create(
+            title='Opportunity grants 2026',
+            event_year=self.event_year,
+            fin_open_date=timezone.now() - timedelta(days=10),
+            fin_close_date=timezone.now() + timedelta(days=10),
+        )
+        self.client.login(username='flagreviewer', password='testpass123')
+
+    def _make_opportunity_grant(self, email, status):
+        user = User.objects.create_user(email.split('@')[0], email, 'testpass123')
+        return OpportunityGrantApplication.objects.create(
+            fin_aid=self.fin_aid,
+            user=user,
+            legal_name='Grant Holder',
+            country='UG',
+            support_type=OpportunityGrantApplication.SUPPORT_TRAVEL,
+            budget_narrative='Flights',
+            why_need_support='Need',
+            community_contribution='Contribute',
+            status=status,
+        )
+
+    def test_awarded_applicant_is_flagged_and_unawarded_is_not(self):
+        self._make_opportunity_grant('awarded@example.com', OpportunityGrantApplication.STATUS_ACCEPTED)
+        awarded_app = _make_regional_application('kenya', 'awarded@example.com')
+        plain_app = _make_regional_application('kenya', 'noone@example.com')
+
+        response = self.client.get(reverse('pycon2026:regional_grant_reviews'))
+        by_pk = {a.pk: a for a in response.context['unreviewed_applications']}
+        self.assertIsNotNone(by_pk[awarded_app.pk].opportunity_grant_award)
+        self.assertIsNone(by_pk[plain_app.pk].opportunity_grant_award)
+
+    def test_email_match_is_case_insensitive(self):
+        self._make_opportunity_grant('mixedcase@example.com', OpportunityGrantApplication.STATUS_ACCEPTED)
+        regional_app = _make_regional_application('kenya', 'MixedCase@Example.com')
+
+        response = self.client.get(reverse('pycon2026:regional_grant_reviews'))
+        flagged = response.context['unreviewed_applications'][0]
+        self.assertEqual(flagged.pk, regional_app.pk)
+        self.assertIsNotNone(flagged.opportunity_grant_award)
+
+    def test_underscore_in_email_is_not_treated_as_a_wildcard(self):
+        # "_" is a LIKE wildcard; matching must be exact equality, not LIKE.
+        self._make_opportunity_grant('johnXdoe@example.com', OpportunityGrantApplication.STATUS_ACCEPTED)
+        regional_app = _make_regional_application('kenya', 'john_doe@example.com')
+
+        response = self.client.get(reverse('pycon2026:regional_grant_reviews'))
+        by_pk = {a.pk: a for a in response.context['unreviewed_applications']}
+        self.assertIsNone(by_pk[regional_app.pk].opportunity_grant_award)
+
+    def test_partially_accepted_counts_as_awarded_but_submitted_does_not(self):
+        self._make_opportunity_grant('partial@example.com', OpportunityGrantApplication.STATUS_WAITLIST)
+        self._make_opportunity_grant('pending@example.com', OpportunityGrantApplication.STATUS_SUBMITTED)
+        partial_app = _make_regional_application('kenya', 'partial@example.com')
+        pending_app = _make_regional_application('kenya', 'pending@example.com')
+
+        response = self.client.get(reverse('pycon2026:regional_grant_reviews'))
+        by_pk = {a.pk: a for a in response.context['unreviewed_applications']}
+        self.assertIsNotNone(by_pk[partial_app.pk].opportunity_grant_award)
+        self.assertIsNone(by_pk[pending_app.pk].opportunity_grant_award)
+
+    def test_admin_column_flags_awarded_applicants_without_like_wildcard_matches(self):
+        from django.contrib.admin.sites import AdminSite
+
+        from .admin import RegionalGrantApplicationAdmin
+
+        self._make_opportunity_grant('johnXdoe@example.com', OpportunityGrantApplication.STATUS_ACCEPTED)
+        self._make_opportunity_grant('exact@example.com', OpportunityGrantApplication.STATUS_ACCEPTED)
+        # "_" is a LIKE wildcard — this email must NOT match johnXdoe@example.com.
+        wildcard_app = _make_regional_application('kenya', 'john_doe@example.com')
+        exact_app = _make_regional_application('kenya', 'exact@example.com')
+
+        model_admin = RegionalGrantApplicationAdmin(RegionalGrantApplication, AdminSite())
+        request = RequestFactory().get('/admin/')
+        request.user = self.reviewer
+        by_pk = {a.pk: a for a in model_admin.get_queryset(request)}
+
+        self.assertFalse(model_admin.has_opportunity_grant(by_pk[wildcard_app.pk]))
+        self.assertTrue(model_admin.has_opportunity_grant(by_pk[exact_app.pk]))
+
+    def test_review_detail_shows_award_notice_only_for_awarded_applicant(self):
+        self._make_opportunity_grant('detail@example.com', OpportunityGrantApplication.STATUS_ACCEPTED)
+        awarded_app = _make_regional_application('kenya', 'detail@example.com')
+        plain_app = _make_regional_application('kenya', 'plain@example.com')
+
+        awarded_response = self.client.get(
+            reverse('pycon2026:regional_grant_review_detail', kwargs={'pk': awarded_app.pk})
+        )
+        self.assertIsNotNone(awarded_response.context['application'].opportunity_grant_award)
+        self.assertContains(awarded_response, 'already holds an opportunity grant')
+
+        plain_response = self.client.get(
+            reverse('pycon2026:regional_grant_review_detail', kwargs={'pk': plain_app.pk})
+        )
+        self.assertIsNone(plain_response.context['application'].opportunity_grant_award)
+        self.assertNotContains(plain_response, 'already holds an opportunity grant')
+
+
 class RegionalGrantReviewerNotificationTests(TestCase):
     def setUp(self):
         self.reviewer = User.objects.create_user('notifyme', 'notifyme@example.com', 'testpass123')

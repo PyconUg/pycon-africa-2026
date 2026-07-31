@@ -1,5 +1,7 @@
 from django.contrib import admin, messages
 from django.contrib.auth import get_user_model
+from django.db.models import Exists, OuterRef
+from django.db.models.functions import Lower, Trim
 from import_export import resources, fields
 from import_export.admin import ImportExportModelAdmin
 
@@ -15,6 +17,9 @@ from .models import (
     RegionalGrantApplicationReview,
     RegionalGrantCountryAssignment,
 )
+from .services import AWARDED_OPPORTUNITY_GRANT_STATUSES
+
+
 class OpportunityGrantApplicationResource(resources.ModelResource):
     user_email = fields.Field(attribute='user__email', column_name='Email', readonly=True)
     applicant_name = fields.Field(attribute='legal_name', column_name='Name', readonly=True)
@@ -485,6 +490,7 @@ class RegionalGrantApplicationAdmin(admin.ModelAdmin):
         'gender',
         'application_status',
         'financial_support',
+        'has_opportunity_grant',
         'created_at',
     )
     list_editable = ('application_status',)
@@ -493,6 +499,30 @@ class RegionalGrantApplicationAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'updated_at')
     ordering = ('-created_at',)
     inlines = (RegionalGrantApplicationReviewInline,)
+
+    def get_queryset(self, request):
+        # Compared with Lower(Trim(...)) rather than __iexact: on SQLite __iexact
+        # compiles to LIKE, which would treat "_" and "%" in an applicant's email
+        # as wildcards. This also matches how services.py normalises emails.
+        return super().get_queryset(request).annotate(
+            _has_opportunity_grant=Exists(
+                OpportunityGrantApplication.objects.annotate(
+                    _grantee_email=Lower(Trim('user__email')),
+                ).filter(
+                    _grantee_email=Lower(Trim(OuterRef('email'))),
+                    status__in=AWARDED_OPPORTUNITY_GRANT_STATUSES,
+                )
+            )
+        )
+
+    @admin.display(
+        boolean=True,
+        description='Opportunity grant',
+        ordering='_has_opportunity_grant',
+    )
+    def has_opportunity_grant(self, obj):
+        """Whether this applicant already holds an awarded opportunity grant."""
+        return obj._has_opportunity_grant
 
 
 @admin.register(RegionalGrantCountryAssignment)

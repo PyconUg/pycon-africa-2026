@@ -42,7 +42,10 @@
           <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-4 sm:p-6 mb-4">
             <div class="flex flex-wrap items-start justify-between gap-3">
               <div>
-                <h2 class="text-xl font-semibold text-gray-900">{{ application.full_name }}</h2>
+                <h2 class="text-xl font-semibold text-gray-900">
+                  {{ application.full_name }}
+                  {% include '2026/fin_aid/reviews/_opportunity_grant_award_badge.html' with award=application.opportunity_grant_award %}
+                </h2>
                 <p class="text-sm text-gray-500 mt-0.5">{{ application.email }}</p>
               </div>
               <span class="text-xs font-medium px-2.5 py-1 rounded-full
@@ -54,6 +57,22 @@
                 {{ application.get_application_status_display }}
               </span>
             </div>
+
+            {% if application.opportunity_grant_award %}
+              {% with award=application.opportunity_grant_award %}
+                <div class="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900" role="note">
+                  <p class="font-semibold">{% trans "This applicant already holds an opportunity grant" %}</p>
+                  <p class="mt-1">
+                    {% blocktrans with status=award.get_status_display support=award.get_support_type_display year=award.fin_aid.event_year.year %}{{ year }} opportunity grant application: {{ status }} — {{ support }}.{% endblocktrans %}
+                    {% if award.has_travel_grant %}
+                      {% blocktrans with amount=award.travel_grant_amount %}Travel support awarded: ${{ amount }}.{% endblocktrans %}
+                    {% endif %}
+                    {% if award.ticket_code %}{% trans "A conference ticket code has been issued." %}{% endif %}
+                  </p>
+                  <p class="mt-1 text-xs text-amber-800">{% trans "Matched on email address. Consider this when recommending additional funding." %}</p>
+                </div>
+              {% endwith %}
+            {% endif %}
 
             {# Key meta grid #}
             <dl class="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-3 text-sm border-t border-gray-100 pt-4">

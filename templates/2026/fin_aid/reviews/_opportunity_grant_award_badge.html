@@ -1,0 +1,14 @@
+{# Flags a regional grant applicant who already holds an opportunity grant. #}
+{# Expects: award = an accepted/partially accepted OpportunityGrantApplication. #}
+{% load i18n %}
+{% if award %}
+  <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[11px] font-semibold align-middle whitespace-nowrap"
+        title="{% blocktrans with status=award.get_status_display support=award.get_support_type_display %}Opportunity grant: {{ status }} ({{ support }}){% endblocktrans %}">
+    <span aria-hidden="true">★</span>
+    {% if award.status == 'accepted' %}
+      {% trans "Has opportunity grant" %}
+    {% else %}
+      {% trans "Has partial opportunity grant" %}
+    {% endif %}
+  </span>
+{% endif %}
