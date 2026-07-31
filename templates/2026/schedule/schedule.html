@@ -71,7 +71,7 @@
                   {% if cell.speaker %}
                   <div class="cell-speaker">
                     {% if cell.image %}<img class="speaker-avatar" src="{% static cell.image %}" alt="{{ cell.speaker }}">{% endif %}
-                    <a href="{% url 'speakers:speaker_search' year=year %}?name={{ cell.speaker|urlencode }}"><strong>{{ cell.speaker }}</strong></a>
+                    {% if cell.no_link %}<strong>{{ cell.speaker }}</strong>{% else %}<a href="{% url 'speakers:speaker_search' year=year %}?name={{ cell.speaker|urlencode }}"><strong>{{ cell.speaker }}</strong></a>{% endif %}
                   </div>
                   {% endif %}
                   {% if cell.label %}<div class="cell-label">{{ cell.label }}</div>{% endif %}
