@@ -4,25 +4,25 @@ from .schedule_data import SCHEDULE_DATA
 SPONSORS_2026 = [
     {
         "id": "bronze",
-        "label": "Bronze Sponsors",
+        "label": "Bronze Sponsor",
         "sponsors": [
             {
                 "name": "JetBrains",
                 "logo": "2026/img/sponsors/jetbrains.png",
                 "website": "https://www.jetbrains.com/",
-                "description": "JetBrains creates intelligent developer tools used by software teams around the world.",
+                "description": "JetBrains builds intelligent developer tools used by software teams around the world, including IntelliJ IDEA, PyCharm, and a growing family of language-specific IDEs, alongside collaboration and productivity tools that help teams ship better software faster.\n\nFor Python developers, PyCharm has long been a go-to IDE, offering smart code completion, debugging, and testing support that makes working in Python more productive whether you're building a small script or a large-scale application.\n\nJetBrains has a long history of supporting the Python community through free licenses for open source maintainers, students, and educators, and by sponsoring conferences and meetups across the globe. We're grateful to have them supporting PyCon Africa 2026 as we grow the Python community on the continent.",
             },
         ],
     },
     {
         "id": "inkind",
-        "label": "In-Kind Sponsors",
+        "label": "In-Kind Sponsor",
         "sponsors": [
             {
                 "name": "O'Reilly",
                 "logo": "2026/img/sponsors/oreilly.jpg",
                 "website": "https://www.oreilly.com/",
-                "description": "O'Reilly provides technology and business training through books, videos, and online courses.",
+                "description": "O'Reilly has spent decades helping people learn the skills and ideas that shape the technology industry, first through its widely recognised technical books and now through an online learning platform offering live courses, books, videos, and interactive content covering everything from Python fundamentals to advanced data engineering.\n\nMany Python developers got their start with an O'Reilly book on their desk, and that tradition of practical, in-depth technical learning continues today through the platform's expanding library of Python and data science content.\n\nWe're thankful for O'Reilly's in-kind support of PyCon Africa 2026, helping us equip attendees with resources to keep learning long after the conference ends.",
             },
         ],
     },
