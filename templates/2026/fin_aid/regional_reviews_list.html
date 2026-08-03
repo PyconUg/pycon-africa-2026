@@ -51,6 +51,24 @@
             </div>
           {% else %}
 
+            <div class="mb-6">
+              <label for="applicant-search-input" class="sr-only">{% trans "Search by applicant name or email" %}</label>
+              <div class="relative max-w-md">
+                <span class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </span>
+                <input
+                  type="search"
+                  id="applicant-search-input"
+                  class="w-full rounded-lg border border-gray-300 pl-9 pr-3 py-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-pycon-teal focus:border-pycon-teal"
+                  placeholder="{% trans 'Search by applicant name or email' %}"
+                  autocomplete="off"
+                >
+              </div>
+            </div>
+
             <!-- SECTION 1: Unreviewed Applications (Main Priority) -->
             <div class="mb-8">
               <div class="flex items-center justify-between mb-4">
@@ -81,7 +99,7 @@
                     </thead>
                     <tbody class="divide-y divide-gray-100 bg-white">
                       {% for app in unreviewed_applications %}
-                        <tr class="hover:bg-gray-50" data-filterable="true" data-country="{{ app.get_country_display }}" data-support="{{ app.get_financial_support_display }}" data-submitted="{{ app.created_at|date:'Y-m-d' }}" data-grant="{% if app.opportunity_grant_award %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}">
+                        <tr class="hover:bg-gray-50" data-filterable="true" data-name="{{ app.full_name|lower }}" data-email="{{ app.email|lower }}" data-country="{{ app.get_country_display }}" data-support="{{ app.get_financial_support_display }}" data-submitted="{{ app.created_at|date:'Y-m-d' }}" data-grant="{% if app.opportunity_grant_award %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}">
                           <td class="px-3 sm:px-4 py-2.5 align-top">
                             <a href="{% url 'pycon2026:regional_grant_review_detail' pk=app.pk %}" class="font-medium text-pycon-teal hover:underline">{{ app.full_name }}</a>
                           </td>
@@ -96,6 +114,9 @@
                           </td>
                         </tr>
                       {% endfor %}
+                      <tr class="search-no-results hidden">
+                        <td colspan="6" class="px-3 sm:px-4 py-6 text-center text-gray-500">{% trans "No applicants match your search." %}</td>
+                      </tr>
                     </tbody>
                   </table>
                 </div>
@@ -145,7 +166,7 @@
                       </thead>
                       <tbody class="divide-y divide-gray-100 bg-white">
                         {% for app in previously_reviewed_applications %}
-                          <tr class="hover:bg-gray-50" data-filterable="true" data-country="{{ app.get_country_display }}" data-support="{{ app.get_financial_support_display }}" data-grant="{% if app.opportunity_grant_award %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}">
+                          <tr class="hover:bg-gray-50" data-filterable="true" data-name="{{ app.full_name|lower }}" data-email="{{ app.email|lower }}" data-country="{{ app.get_country_display }}" data-support="{{ app.get_financial_support_display }}" data-grant="{% if app.opportunity_grant_award %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}">
                             <td class="px-3 sm:px-4 py-2.5 align-top">
                               <a href="{% url 'pycon2026:regional_grant_review_detail' pk=app.pk %}" class="font-medium text-pycon-teal hover:underline">{{ app.full_name }}</a>
                               <div class="text-xs text-gray-500 mt-0.5">{{ app.reviews.count }} review{{ app.reviews.count|pluralize }} by others</div>
@@ -160,6 +181,9 @@
                             </td>
                           </tr>
                         {% endfor %}
+                        <tr class="search-no-results hidden">
+                          <td colspan="5" class="px-3 sm:px-4 py-6 text-center text-gray-500">{% trans "No applicants match your search." %}</td>
+                        </tr>
                       </tbody>
                     </table>
                   {% else %}
@@ -209,7 +233,7 @@
                       </thead>
                       <tbody class="divide-y divide-gray-100 bg-white">
                         {% for app, rev in my_completed_reviews %}
-                          <tr class="hover:bg-gray-50" data-country="{{ app.get_country_display }}" data-recommendation="{{ rev.get_recommendation_display }}" data-grant="{% if app.opportunity_grant_award %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}">
+                          <tr class="hover:bg-gray-50" data-name="{{ app.full_name|lower }}" data-email="{{ app.email|lower }}" data-country="{{ app.get_country_display }}" data-recommendation="{{ rev.get_recommendation_display }}" data-grant="{% if app.opportunity_grant_award %}{% trans "Yes" %}{% else %}{% trans "No" %}{% endif %}">
                             <td class="px-3 sm:px-4 py-2.5 text-gray-900">{{ app.full_name }}</td>
                             <td class="px-3 sm:px-4 py-2.5">
                               {% include '2026/fin_aid/reviews/_opportunity_grant_award_badge.html' with award=app.opportunity_grant_award %}
@@ -221,6 +245,9 @@
                             </td>
                           </tr>
                         {% endfor %}
+                        <tr class="search-no-results hidden">
+                          <td colspan="5" class="px-3 sm:px-4 py-6 text-center text-gray-500">{% trans "No applicants match your search." %}</td>
+                        </tr>
                       </tbody>
                     </table>
                   {% else %}
@@ -286,6 +313,65 @@ function toggleSection(sectionId, btnId) {
       });
     });
   });
+})();
+
+(function () {
+  const searchInput = document.getElementById('applicant-search-input');
+  if (!searchInput) return;
+
+  const collapsibleSections = [
+    { sectionId: 'previously-reviewed-section', btnId: 'toggle-prev-btn' },
+    { sectionId: 'my-reviews-section', btnId: 'toggle-my-btn' },
+  ];
+
+  function setSectionExpanded(sectionId, btnId, expand) {
+    const section = document.getElementById(sectionId);
+    if (!section) return;
+    const btn = document.getElementById(btnId);
+    const button = section.previousElementSibling;
+    section.classList.toggle('hidden', !expand);
+    if (btn) btn.textContent = expand ? '▲' : '▼';
+    if (button) button.setAttribute('aria-expanded', expand ? 'true' : 'false');
+  }
+
+  function filterApplicants() {
+    const query = searchInput.value.trim().toLowerCase();
+
+    document.querySelectorAll('tbody').forEach(tbody => {
+      const rows = [...tbody.querySelectorAll('tr[data-name]')];
+      if (rows.length === 0) return;
+
+      let visibleCount = 0;
+      rows.forEach(row => {
+        const name = row.dataset.name || '';
+        const email = row.dataset.email || '';
+        const matches = !query || name.includes(query) || email.includes(query);
+        row.classList.toggle('hidden', !matches);
+        if (matches) visibleCount += 1;
+      });
+
+      const noResultsRow = tbody.querySelector('tr.search-no-results');
+      if (noResultsRow) {
+        tbody.appendChild(noResultsRow);
+        noResultsRow.classList.toggle('hidden', visibleCount !== 0);
+      }
+    });
+
+    collapsibleSections.forEach(({ sectionId, btnId }) => {
+      const section = document.getElementById(sectionId);
+      if (!section) return;
+      if (!query) {
+        setSectionExpanded(sectionId, btnId, false);
+        return;
+      }
+      const hasMatch = [...section.querySelectorAll('tr[data-name]')].some(
+        row => !row.classList.contains('hidden')
+      );
+      setSectionExpanded(sectionId, btnId, hasMatch);
+    });
+  }
+
+  searchInput.addEventListener('input', filterApplicants);
 })();
 </script>
 {% endblock %}
