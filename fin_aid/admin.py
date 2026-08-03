@@ -16,6 +16,7 @@ from .models import (
     RegionalGrantApplication,
     RegionalGrantApplicationReview,
     RegionalGrantCountryAssignment,
+    RegionalGrantReviewAssignment,
 )
 from .services import AWARDED_OPPORTUNITY_GRANT_STATUSES
 
@@ -574,6 +575,32 @@ class RegionalGrantCountryAssignmentAdmin(admin.ModelAdmin):
             )
 
     notify_reviewers_action.short_description = "Email selected reviewers about their country assignment(s)"
+
+
+@admin.register(RegionalGrantReviewAssignment)
+class RegionalGrantReviewAssignmentAdmin(admin.ModelAdmin):
+    list_display = ('reviewer', 'application', 'assigned_at', 'assigned_by', 'has_review')
+    list_filter = ('assigned_at',)
+    search_fields = (
+        'reviewer__username',
+        'reviewer__email',
+        'application__full_name',
+        'application__email',
+    )
+    autocomplete_fields = ('reviewer', 'application', 'assigned_by')
+    readonly_fields = ('assigned_at',)
+
+    def save_model(self, request, obj, form, change):
+        if obj.assigned_by_id is None:
+            obj.assigned_by = request.user
+        super().save_model(request, obj, form, change)
+
+    def has_review(self, obj):
+        return RegionalGrantApplicationReview.objects.filter(
+            reviewer=obj.reviewer, application=obj.application
+        ).exists()
+    has_review.boolean = True
+    has_review.short_description = 'Reviewed?'
 
 
 @admin.register(FinAidApplicationReview)

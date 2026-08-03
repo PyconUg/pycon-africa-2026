@@ -37,6 +37,7 @@ from .models import (
     RegionalGrantApplication,
     RegionalGrantApplicationReview,
     RegionalGrantCountryAssignment,
+    RegionalGrantReviewAssignment,
     REGIONAL_GRANT_COUNTRIES,
     is_regional_grant_closed,
 )
@@ -313,8 +314,11 @@ def regional_grant_reviews_list(request):
     assigned_countries = list(
         RegionalGrantCountryAssignment.objects.filter(reviewer=request.user).values_list('country', flat=True)
     )
-    if not assigned_countries:
-        messages.info(request, 'You have not been assigned any countries to review yet.')
+    assigned_application_ids = list(
+        RegionalGrantReviewAssignment.objects.filter(reviewer=request.user).values_list('application_id', flat=True)
+    )
+    if not assigned_countries and not assigned_application_ids:
+        messages.info(request, 'You have not been assigned any countries or applications to review yet.')
         return render(
             request,
             '2026/fin_aid/regional_reviews_list.html',
@@ -326,7 +330,7 @@ def regional_grant_reviews_list(request):
     )
 
     candidate_applications = RegionalGrantApplication.objects.filter(
-        country__in=assigned_countries,
+        Q(country__in=assigned_countries) | Q(pk__in=assigned_application_ids),
     ).exclude(pk__in=reviewed_by_me_ids).prefetch_related('reviews')
 
     unreviewed_applications = []
@@ -341,7 +345,7 @@ def regional_grant_reviews_list(request):
     previously_reviewed_applications.sort(key=lambda a: a.reviews.count(), reverse=True)
 
     my_completed_reviews = RegionalGrantApplication.objects.filter(
-        country__in=assigned_countries,
+        Q(country__in=assigned_countries) | Q(pk__in=assigned_application_ids),
         pk__in=reviewed_by_me_ids,
     )
     review_by_app_id = {
@@ -379,8 +383,11 @@ def regional_grant_review_detail(request, pk):
     assigned_countries = set(
         RegionalGrantCountryAssignment.objects.filter(reviewer=request.user).values_list('country', flat=True)
     )
-    if application.country not in assigned_countries:
-        messages.error(request, "This application's country is not assigned to you for review.")
+    individually_assigned = RegionalGrantReviewAssignment.objects.filter(
+        reviewer=request.user, application=application,
+    ).exists()
+    if application.country not in assigned_countries and not individually_assigned:
+        messages.error(request, "This application is not assigned to you for review.")
         return redirect('pycon2026:regional_grant_reviews')
 
     attach_opportunity_grant_awards([application])
