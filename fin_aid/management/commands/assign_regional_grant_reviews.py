@@ -14,7 +14,9 @@ class Command(BaseCommand):
         "Give a user a lot of N Regional Grant applications total, independent of "
         "country-based access. N is a target total, not an increment: if the user "
         "already holds some assignments, only the shortfall is added, and re-running "
-        "with the same N is a no-op once they've reached it. Never removes assignments."
+        "with the same N is a no-op once they've reached it. Never removes assignments. "
+        "When --country is given, N is the target within those countries specifically, "
+        "not the user's global total across all countries."
     )
 
     def add_arguments(self, parser):

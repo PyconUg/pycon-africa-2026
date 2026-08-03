@@ -273,12 +273,21 @@ def assign_regional_grant_reviews(
 ) -> dict:
     """Give ``reviewer`` a lot of ``count`` applications total (target, not an increment), independent of RegionalGrantCountryAssignment.
 
+    ``count`` is scoped to ``countries`` when given: it's the target among those
+    countries specifically, not the reviewer's global total across all countries.
+
     Candidates are ordered by existing assignment count (fewest first) to spread load evenly.
     """
     already_assigned_ids = RegionalGrantReviewAssignment.objects.filter(
         reviewer=reviewer,
     ).values_list('application_id', flat=True)
-    current_total = len(already_assigned_ids)
+
+    if countries is not None:
+        current_total = RegionalGrantReviewAssignment.objects.filter(
+            reviewer=reviewer, application__country__in=list(countries),
+        ).count()
+    else:
+        current_total = len(already_assigned_ids)
     needed = count - current_total
 
     if needed <= 0:
