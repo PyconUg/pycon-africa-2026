@@ -16,6 +16,9 @@ from .models import (
     FinAidReviewAssignment,
     FinAidReviewer,
     OpportunityGrantApplication,
+    RegionalGrantApplication,
+    RegionalGrantApplicationReview,
+    RegionalGrantReviewAssignment,
 )
 
 
@@ -257,4 +260,60 @@ def assign_applications(
         'reviews_per_application': reviews_target,
         'unassignable': unassignable,
         'per_reviewer': dict(per_reviewer_counts),
+    }
+
+
+@transaction.atomic
+def assign_regional_grant_reviews(
+    reviewer,
+    count,
+    *,
+    countries: Optional[Iterable[str]] = None,
+    assigned_by=None,
+) -> dict:
+    """Assign up to ``count`` applications to ``reviewer``, independent of RegionalGrantCountryAssignment.
+
+    Candidates are ordered by existing assignment count (fewest first) to spread load evenly.
+    """
+    if count <= 0:
+        return {'created': 0, 'assigned_application_ids': [], 'available': 0}
+
+    already_reviewed_ids = RegionalGrantApplicationReview.objects.filter(
+        reviewer=reviewer,
+    ).values_list('application_id', flat=True)
+    already_assigned_ids = RegionalGrantReviewAssignment.objects.filter(
+        reviewer=reviewer,
+    ).values_list('application_id', flat=True)
+
+    candidate_qs = RegionalGrantApplication.objects.exclude(
+        pk__in=already_reviewed_ids,
+    ).exclude(
+        pk__in=already_assigned_ids,
+    )
+    if countries is not None:
+        candidate_qs = candidate_qs.filter(country__in=list(countries))
+
+    candidates = list(
+        candidate_qs.annotate(
+            _assignment_count=Count('review_assignments'),
+        ).order_by('_assignment_count', 'created_at')
+    )
+
+    chosen = candidates[:count]
+
+    new_assignments = [
+        RegionalGrantReviewAssignment(
+            reviewer=reviewer,
+            application=application,
+            assigned_by=assigned_by,
+        )
+        for application in chosen
+    ]
+    if new_assignments:
+        RegionalGrantReviewAssignment.objects.bulk_create(new_assignments, ignore_conflicts=True)
+
+    return {
+        'created': len(new_assignments),
+        'assigned_application_ids': [a.pk for a in chosen],
+        'available': len(candidates),
     }

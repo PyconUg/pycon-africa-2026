@@ -18,7 +18,9 @@ from .models import (
     RegionalGrantApplication,
     RegionalGrantApplicationReview,
     RegionalGrantCountryAssignment,
+    RegionalGrantReviewAssignment,
 )
+from .services import assign_regional_grant_reviews
 
 
 class OpportunityGrantApplyTests(TestCase):
@@ -412,6 +414,81 @@ class RegionalGrantReviewTests(TestCase):
                 RegionalGrantApplicationReview.objects.create(
                     application=self.kenya_app, reviewer=self.reviewer
                 )
+
+
+class RegionalGrantReviewAssignmentTests(TestCase):
+    """Per-application assignment (assign_regional_grant_reviews), independent of country access."""
+
+    def setUp(self):
+        self.client = Client()
+        self.reviewer = User.objects.create_user('countless', 'countless@example.com', 'testpass123')
+        self.apps = [
+            _make_regional_application('kenya', f'app{i}@example.com')
+            for i in range(5)
+        ]
+
+    def test_restricts_to_given_countries(self):
+        rwanda_app = _make_regional_application('rwanda', 'rwanda-app@example.com')
+        result = assign_regional_grant_reviews(self.reviewer, 10, countries=['rwanda'])
+        self.assertEqual(result['created'], 1)
+        assigned_ids = list(
+            RegionalGrantReviewAssignment.objects.filter(reviewer=self.reviewer).values_list(
+                'application_id', flat=True
+            )
+        )
+        self.assertEqual(assigned_ids, [rwanda_app.pk])
+
+    def test_assigns_exactly_count_applications(self):
+        result = assign_regional_grant_reviews(self.reviewer, 3)
+        self.assertEqual(result['created'], 3)
+        self.assertEqual(
+            RegionalGrantReviewAssignment.objects.filter(reviewer=self.reviewer).count(), 3
+        )
+
+    def test_caps_at_available_applications(self):
+        result = assign_regional_grant_reviews(self.reviewer, 100)
+        self.assertEqual(result['created'], 5)
+        self.assertEqual(result['available'], 5)
+
+    def test_is_idempotent_and_skips_already_assigned(self):
+        assign_regional_grant_reviews(self.reviewer, 3)
+        result = assign_regional_grant_reviews(self.reviewer, 3)
+        self.assertEqual(result['created'], 2)
+        self.assertEqual(
+            RegionalGrantReviewAssignment.objects.filter(reviewer=self.reviewer).count(), 5
+        )
+
+    def test_skips_applications_already_reviewed_by_reviewer(self):
+        RegionalGrantApplicationReview.objects.create(application=self.apps[0], reviewer=self.reviewer)
+        result = assign_regional_grant_reviews(self.reviewer, 5)
+        self.assertEqual(result['created'], 4)
+        self.assertNotIn(
+            self.apps[0].pk,
+            RegionalGrantReviewAssignment.objects.filter(reviewer=self.reviewer).values_list(
+                'application_id', flat=True
+            ),
+        )
+
+    def test_zero_or_negative_count_assigns_nothing(self):
+        result = assign_regional_grant_reviews(self.reviewer, 0)
+        self.assertEqual(result['created'], 0)
+        self.assertEqual(RegionalGrantReviewAssignment.objects.count(), 0)
+
+    def test_individually_assigned_application_visible_without_country_access(self):
+        # Reviewer has NO RegionalGrantCountryAssignment at all.
+        assign_regional_grant_reviews(self.reviewer, 1)
+        assigned_app = RegionalGrantReviewAssignment.objects.get(reviewer=self.reviewer).application
+
+        self.client.login(username='countless', password='testpass123')
+        response = self.client.get(reverse('pycon2026:regional_grant_reviews'))
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context.get('no_countries_assigned', False))
+        self.assertContains(response, assigned_app.full_name)
+
+        detail_response = self.client.get(
+            reverse('pycon2026:regional_grant_review_detail', kwargs={'pk': assigned_app.pk})
+        )
+        self.assertEqual(detail_response.status_code, 200)
 
 
 class RegionalGrantOpportunityGrantFlagTests(TestCase):

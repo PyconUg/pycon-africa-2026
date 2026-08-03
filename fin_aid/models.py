@@ -495,6 +495,42 @@ class RegionalGrantCountryAssignment(models.Model):
         return f'{self.reviewer} → {self.get_country_display()}'
 
 
+class RegionalGrantReviewAssignment(models.Model):
+    """Per-application assignment, independent of RegionalGrantCountryAssignment's per-country grant."""
+
+    reviewer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='regional_grant_review_assignments',
+    )
+    application = models.ForeignKey(
+        RegionalGrantApplication,
+        on_delete=models.CASCADE,
+        related_name='review_assignments',
+    )
+    assigned_at = models.DateTimeField(auto_now_add=True)
+    assigned_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='regional_grant_review_assignments_made',
+    )
+
+    class Meta:
+        verbose_name = 'Regional grant review assignment'
+        verbose_name_plural = 'Regional grant review assignments'
+        constraints = [
+            models.UniqueConstraint(
+                fields=('reviewer', 'application'),
+                name='unique_regional_grant_review_assignment',
+            ),
+        ]
+
+    def __str__(self):
+        return f'{self.reviewer} → application {self.application_id}'
+
+
 class RegionalGrantApplicationReview(models.Model):
     RECOMMEND_ACCEPT = 'accept'
     RECOMMEND_PARTIAL = 'partial'
