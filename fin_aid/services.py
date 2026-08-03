@@ -271,17 +271,20 @@ def assign_regional_grant_reviews(
     countries: Optional[Iterable[str]] = None,
     assigned_by=None,
 ) -> dict:
-    """Assign up to ``count`` applications to ``reviewer``, independent of RegionalGrantCountryAssignment.
+    """Give ``reviewer`` a lot of ``count`` applications total (target, not an increment), independent of RegionalGrantCountryAssignment.
 
     Candidates are ordered by existing assignment count (fewest first) to spread load evenly.
     """
-    if count <= 0:
-        return {'created': 0, 'assigned_application_ids': [], 'available': 0}
-
-    already_reviewed_ids = RegionalGrantApplicationReview.objects.filter(
+    already_assigned_ids = RegionalGrantReviewAssignment.objects.filter(
         reviewer=reviewer,
     ).values_list('application_id', flat=True)
-    already_assigned_ids = RegionalGrantReviewAssignment.objects.filter(
+    current_total = len(already_assigned_ids)
+    needed = count - current_total
+
+    if needed <= 0:
+        return {'created': 0, 'assigned_application_ids': [], 'available': 0, 'current_total': current_total}
+
+    already_reviewed_ids = RegionalGrantApplicationReview.objects.filter(
         reviewer=reviewer,
     ).values_list('application_id', flat=True)
 
@@ -299,7 +302,7 @@ def assign_regional_grant_reviews(
         ).order_by('_assignment_count', 'created_at')
     )
 
-    chosen = candidates[:count]
+    chosen = candidates[:needed]
 
     new_assignments = [
         RegionalGrantReviewAssignment(
@@ -316,4 +319,5 @@ def assign_regional_grant_reviews(
         'created': len(new_assignments),
         'assigned_application_ids': [a.pk for a in chosen],
         'available': len(candidates),
+        'current_total': current_total + len(new_assignments),
     }
