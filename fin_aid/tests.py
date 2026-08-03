@@ -438,6 +438,23 @@ class RegionalGrantReviewAssignmentTests(TestCase):
         )
         self.assertEqual(assigned_ids, [rwanda_app.pk])
 
+    def test_country_scoped_target_ignores_assignments_from_other_countries(self):
+        rwanda_apps = [
+            _make_regional_application('rwanda', f'rwanda-app{i}@example.com')
+            for i in range(3)
+        ]
+        # Reviewer already holds 5 kenya-only assignments — a country-scoped
+        # target for rwanda must not be short-circuited by that unrelated total.
+        assign_regional_grant_reviews(self.reviewer, 5, countries=['kenya'])
+        result = assign_regional_grant_reviews(self.reviewer, 3, countries=['rwanda'])
+        self.assertEqual(result['created'], 3)
+        assigned_rwanda_ids = set(
+            RegionalGrantReviewAssignment.objects.filter(
+                reviewer=self.reviewer, application__country='rwanda',
+            ).values_list('application_id', flat=True)
+        )
+        self.assertEqual(assigned_rwanda_ids, {a.pk for a in rwanda_apps})
+
     def test_assigns_exactly_count_applications(self):
         result = assign_regional_grant_reviews(self.reviewer, 3)
         self.assertEqual(result['created'], 3)
