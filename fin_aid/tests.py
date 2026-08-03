@@ -450,10 +450,26 @@ class RegionalGrantReviewAssignmentTests(TestCase):
         self.assertEqual(result['created'], 5)
         self.assertEqual(result['available'], 5)
 
-    def test_is_idempotent_and_skips_already_assigned(self):
+    def test_rerunning_with_same_target_is_a_noop(self):
         assign_regional_grant_reviews(self.reviewer, 3)
         result = assign_regional_grant_reviews(self.reviewer, 3)
+        self.assertEqual(result['created'], 0)
+        self.assertEqual(
+            RegionalGrantReviewAssignment.objects.filter(reviewer=self.reviewer).count(), 3
+        )
+
+    def test_raising_the_target_adds_only_the_shortfall(self):
+        assign_regional_grant_reviews(self.reviewer, 3)
+        result = assign_regional_grant_reviews(self.reviewer, 5)
         self.assertEqual(result['created'], 2)
+        self.assertEqual(
+            RegionalGrantReviewAssignment.objects.filter(reviewer=self.reviewer).count(), 5
+        )
+
+    def test_lowering_the_target_does_not_remove_existing_assignments(self):
+        assign_regional_grant_reviews(self.reviewer, 5)
+        result = assign_regional_grant_reviews(self.reviewer, 2)
+        self.assertEqual(result['created'], 0)
         self.assertEqual(
             RegionalGrantReviewAssignment.objects.filter(reviewer=self.reviewer).count(), 5
         )
@@ -475,7 +491,6 @@ class RegionalGrantReviewAssignmentTests(TestCase):
         self.assertEqual(RegionalGrantReviewAssignment.objects.count(), 0)
 
     def test_individually_assigned_application_visible_without_country_access(self):
-        # Reviewer has NO RegionalGrantCountryAssignment at all.
         assign_regional_grant_reviews(self.reviewer, 1)
         assigned_app = RegionalGrantReviewAssignment.objects.get(reviewer=self.reviewer).application
 

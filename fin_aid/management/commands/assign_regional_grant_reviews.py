@@ -11,9 +11,10 @@ User = get_user_model()
 
 class Command(BaseCommand):
     help = (
-        "Assign up to N Regional Grant applications to a specific user, "
-        "independent of country-based access. Skips applications the user "
-        "has already reviewed or already been assigned."
+        "Give a user a lot of N Regional Grant applications total, independent of "
+        "country-based access. N is a target total, not an increment: if the user "
+        "already holds some assignments, only the shortfall is added, and re-running "
+        "with the same N is a no-op once they've reached it. Never removes assignments."
     )
 
     def add_arguments(self, parser):
@@ -28,7 +29,7 @@ class Command(BaseCommand):
             type=int,
             required=True,
             metavar="N",
-            help="Number of applications to assign (e.g. --count=15).",
+            help="Target total number of applications this user should hold (e.g. --count=15).",
         )
         parser.add_argument(
             "--country",
@@ -68,15 +69,19 @@ class Command(BaseCommand):
 
         result = assign_regional_grant_reviews(reviewer, count, countries=country_codes)
 
-        self.stdout.write(
-            self.style.SUCCESS(
-                f"Assigned {result['created']} new application(s) to {username}."
+        if result["created"] == 0 and result["available"] == 0 and result["current_total"] >= count:
+            self.stdout.write(f"{username} already holds {result['current_total']}/{count}; nothing to do.")
+        else:
+            self.stdout.write(
+                self.style.SUCCESS(
+                    f"Assigned {result['created']} new application(s) to {username} "
+                    f"({result['current_total']}/{count} total)."
+                )
             )
-        )
-        if result["created"] < count:
+        if result["current_total"] < count:
             self.stdout.write(
                 self.style.WARNING(
                     f"Only {result['available']} eligible application(s) were "
-                    f"available (requested {count})."
+                    f"available — could not reach the target of {count}."
                 )
             )
