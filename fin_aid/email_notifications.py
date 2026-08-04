@@ -221,6 +221,79 @@ def send_regional_grant_reviewer_assignment_email(user, countries) -> bool:
         return False
 
 
+def send_regional_grant_status_notification(application_pk, new_status: str) -> bool:
+    """Send a status decision email to a regional grant applicant.
+
+    Called from signals (auto) and admin resend action (manual).
+    Returns True if SMTP accepted the message.
+    """
+    from .models import RegionalGrantApplication  # avoid circular import
+
+    try:
+        application = RegionalGrantApplication.objects.get(pk=application_pk)
+    except RegionalGrantApplication.DoesNotExist:
+        logger.warning("RegionalGrantApplication %s missing for status email", application_pk)
+        return False
+
+    to_email = (application.email or "").strip()
+    if not to_email:
+        logger.warning(
+            "Skipping regional grant status email: application %s has no email", application.pk
+        )
+        return False
+
+    raw_from = getattr(settings, "DEFAULT_FROM_EMAIL", "") or ""
+    from_email = raw_from.strip() or None
+    if not from_email:
+        logger.warning("DEFAULT_FROM_EMAIL is not set; cannot send regional grant status email")
+        return False
+
+    subject_map = {
+        RegionalGrantApplication.STATUS_ACCEPTED: "Congratulations! Your PyCon Africa 2026 Travel Opportunity Grant",
+        RegionalGrantApplication.STATUS_REJECTED: "Update on Your PyCon Africa 2026 Travel Opportunity Grant Application",
+    }
+    template_map = {
+        RegionalGrantApplication.STATUS_ACCEPTED: "emails/regional_grants/application_accepted.html",
+        RegionalGrantApplication.STATUS_REJECTED: "emails/regional_grants/application_rejected.html",
+    }
+
+    subject = subject_map.get(new_status, "PyCon Africa 2026 — Regional Grant Status Update")
+    html_template = template_map.get(new_status, "emails/regional_grants/status_changed_body.txt")
+
+    context = {
+        "application": application,
+        "applicant_name": application.full_name,
+    }
+
+    html_content = render_to_string(html_template, context)
+    text_body = render_to_string("emails/regional_grants/status_changed_body.txt", {
+        **context,
+        "new_status_display": application.get_application_status_display(),
+        "old_status_display": "",
+    })
+
+    msg = EmailMultiAlternatives(
+        subject,
+        text_body,
+        f"PyCon Africa 2026 Team <{from_email}>",
+        [to_email],
+        cc=list(EMAIL_CC),
+    )
+    msg.attach_alternative(html_content, "text/html")
+
+    try:
+        msg.send(fail_silently=False)
+        return True
+    except Exception:
+        logger.exception(
+            "Failed to send regional grant status email (pk=%s, status=%s, to=%s)",
+            application_pk,
+            new_status,
+            to_email,
+        )
+        return False
+
+
 def send_opportunity_grant_status_notification(application_pk, new_status: str) -> bool:
     """Send a status decision email to the applicant.
 

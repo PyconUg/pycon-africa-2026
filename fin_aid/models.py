@@ -295,13 +295,6 @@ REGIONAL_GRANT_YES_NO_CHOICES = (
     ('no', 'No'),
 )
 
-REGIONAL_GRANT_APPLICATION_STATUS_CHOICES = (
-    ('submitted', 'Submitted'),
-    ('reviewed', 'Reviewed'),
-    ('accepted', 'Accepted'),
-    ('rejected', 'Rejected'),
-)
-
 REGIONAL_GRANT_GENDER_CHOICES = (
     ('female', 'Female'),
     ('male', 'Male'),
@@ -315,6 +308,18 @@ class RegionalGrantApplication(models.Model):
     Mirrors the public, login-free application form previously hosted on pssu.ug
     (the diversity_applications app), now hosted directly on this site.
     """
+
+    STATUS_SUBMITTED = 'submitted'
+    STATUS_REVIEWED = 'reviewed'
+    STATUS_ACCEPTED = 'accepted'
+    STATUS_REJECTED = 'rejected'
+
+    STATUS_CHOICES = (
+        (STATUS_SUBMITTED, 'Submitted'),
+        (STATUS_REVIEWED, 'Reviewed'),
+        (STATUS_ACCEPTED, 'Accepted'),
+        (STATUS_REJECTED, 'Rejected'),
+    )
 
     country = models.CharField(
         max_length=32,
@@ -442,8 +447,8 @@ class RegionalGrantApplication(models.Model):
     )
     application_status = models.CharField(
         max_length=20,
-        choices=REGIONAL_GRANT_APPLICATION_STATUS_CHOICES,
-        default='submitted',
+        choices=STATUS_CHOICES,
+        default=STATUS_SUBMITTED,
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
