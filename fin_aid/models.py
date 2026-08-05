@@ -295,13 +295,6 @@ REGIONAL_GRANT_YES_NO_CHOICES = (
     ('no', 'No'),
 )
 
-REGIONAL_GRANT_APPLICATION_STATUS_CHOICES = (
-    ('submitted', 'Submitted'),
-    ('reviewed', 'Reviewed'),
-    ('accepted', 'Accepted'),
-    ('rejected', 'Rejected'),
-)
-
 REGIONAL_GRANT_GENDER_CHOICES = (
     ('female', 'Female'),
     ('male', 'Male'),
@@ -315,6 +308,28 @@ class RegionalGrantApplication(models.Model):
     Mirrors the public, login-free application form previously hosted on pssu.ug
     (the diversity_applications app), now hosted directly on this site.
     """
+
+    STATUS_SUBMITTED = 'submitted'
+    STATUS_REVIEWED = 'reviewed'
+    STATUS_ACCEPTED = 'accepted'
+    STATUS_REJECTED = 'rejected'
+
+    STATUS_CHOICES = (
+        (STATUS_SUBMITTED, 'Submitted'),
+        (STATUS_REVIEWED, 'Reviewed'),
+        (STATUS_ACCEPTED, 'Accepted'),
+        (STATUS_REJECTED, 'Rejected'),
+    )
+
+    USER_RESPONSE_PENDING = 'P'
+    USER_RESPONSE_ACCEPTED = 'A'
+    USER_RESPONSE_REJECTED = 'R'
+
+    USER_RESPONSE_CHOICES = (
+        (USER_RESPONSE_PENDING, 'Pending'),
+        (USER_RESPONSE_ACCEPTED, 'Accepted'),
+        (USER_RESPONSE_REJECTED, 'Declined'),
+    )
 
     country = models.CharField(
         max_length=32,
@@ -442,8 +457,24 @@ class RegionalGrantApplication(models.Model):
     )
     application_status = models.CharField(
         max_length=20,
-        choices=REGIONAL_GRANT_APPLICATION_STATUS_CHOICES,
-        default='submitted',
+        choices=STATUS_CHOICES,
+        default=STATUS_SUBMITTED,
+    )
+    user_response = models.CharField(
+        max_length=1,
+        choices=USER_RESPONSE_CHOICES,
+        default=USER_RESPONSE_PENDING,
+    )
+    proof_of_ticket = models.FileField(
+        upload_to='regional_grant_proofs/',
+        blank=True,
+        null=True,
+        help_text='Proof of PyCon Africa conference ticket registration (PDF or image).',
+    )
+    status_email_sent_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text='When the accept/reject notification email for the current status was last sent successfully.',
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

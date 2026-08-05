@@ -474,6 +474,23 @@ class OpportunityGrantApplicationAdmin(ImportExportModelAdmin):
     send_ticket_code_email_action.short_description = "Send ticket code email to accepted applicants (selected)"
 
 
+class StatusEmailSentFilter(admin.SimpleListFilter):
+    title = 'status email sent'
+    parameter_name = 'status_email_sent'
+
+    def lookups(self, request, model_admin):
+        return [
+            ('yes', 'Sent'),
+            ('no', 'Not sent'),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == 'yes':
+            return queryset.filter(status_email_sent_at__isnull=False)
+        if self.value() == 'no':
+            return queryset.filter(status_email_sent_at__isnull=True)
+
+
 class RegionalGrantApplicationReviewInline(admin.TabularInline):
     model = RegionalGrantApplicationReview
     extra = 0
@@ -490,16 +507,137 @@ class RegionalGrantApplicationAdmin(admin.ModelAdmin):
         'country',
         'gender',
         'application_status',
+        'user_response',
+        'has_proof_of_ticket',
+        'status_email_sent',
         'financial_support',
         'has_opportunity_grant',
         'created_at',
     )
     list_editable = ('application_status',)
-    list_filter = ('application_status', 'country', 'gender', 'financial_support')
+    list_filter = (
+        'application_status',
+        'user_response',
+        StatusEmailSentFilter,
+        'country',
+        'gender',
+        'financial_support',
+    )
     search_fields = ('full_name', 'email', 'phone', 'city')
-    readonly_fields = ('created_at', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at', 'status_email_sent_at')
     ordering = ('-created_at',)
     inlines = (RegionalGrantApplicationReviewInline,)
+    actions = (
+        'accept_and_notify_action',
+        'reject_and_notify_action',
+        'resend_status_notification_action',
+    )
+
+    # --- status + notify actions ---
+
+    def accept_and_notify_action(self, request, queryset):
+        """Set application_status to Accepted and trigger the applicant notification email."""
+        updated = 0
+        already = 0
+        for pk in queryset.values_list('pk', flat=True):
+            app = RegionalGrantApplication.objects.get(pk=pk)
+            if app.application_status == RegionalGrantApplication.STATUS_ACCEPTED:
+                already += 1
+                continue
+            app.application_status = RegionalGrantApplication.STATUS_ACCEPTED
+            app.save()
+            updated += 1
+        if updated:
+            self.message_user(
+                request,
+                f"Accepted {updated} application(s). Notifications send when SMTP succeeds.",
+                messages.SUCCESS,
+            )
+        if already:
+            self.message_user(
+                request,
+                f"{already} application(s) were already accepted (skipped). "
+                "Use 'Resend status notification' to email them again without changing status.",
+                messages.INFO,
+            )
+        if not updated and not already:
+            self.message_user(request, "No applications to update.", messages.WARNING)
+
+    accept_and_notify_action.short_description = "Accept & notify applicant (selected)"
+
+    def reject_and_notify_action(self, request, queryset):
+        """Set application_status to Rejected and trigger the applicant notification email."""
+        updated = 0
+        already = 0
+        for pk in queryset.values_list('pk', flat=True):
+            app = RegionalGrantApplication.objects.get(pk=pk)
+            if app.application_status == RegionalGrantApplication.STATUS_REJECTED:
+                already += 1
+                continue
+            app.application_status = RegionalGrantApplication.STATUS_REJECTED
+            app.save()
+            updated += 1
+        if updated:
+            self.message_user(
+                request,
+                f"Rejected {updated} application(s). Notifications send when SMTP succeeds.",
+                messages.SUCCESS,
+            )
+        if already:
+            self.message_user(
+                request,
+                f"{already} application(s) were already rejected (skipped). "
+                "Use 'Resend status notification' to email them again without changing status.",
+                messages.INFO,
+            )
+        if not updated and not already:
+            self.message_user(request, "No applications to update.", messages.WARNING)
+
+    reject_and_notify_action.short_description = "Reject & notify applicant (selected)"
+
+    def resend_status_notification_action(self, request, queryset):
+        """Re-send the status email matching each application's current application_status."""
+        from .email_notifications import send_regional_grant_status_notification
+
+        NOTIFY_STATUSES = {
+            RegionalGrantApplication.STATUS_ACCEPTED,
+            RegionalGrantApplication.STATUS_REJECTED,
+        }
+
+        sent = 0
+        skipped = 0
+        failed = 0
+        for pk, status in queryset.values_list('pk', 'application_status'):
+            if status not in NOTIFY_STATUSES:
+                skipped += 1
+                continue
+            if send_regional_grant_status_notification(pk, status):
+                sent += 1
+            else:
+                failed += 1
+
+        if sent:
+            self.message_user(
+                request,
+                f"Resent status notification for {sent} application(s).",
+                messages.SUCCESS,
+            )
+        if skipped:
+            self.message_user(
+                request,
+                f"{skipped} application(s) skipped — only accepted and rejected "
+                "applications trigger a notification email.",
+                messages.INFO,
+            )
+        if failed:
+            self.message_user(
+                request,
+                f"{failed} application(s) could not be emailed "
+                "(missing email, SMTP error, or missing DEFAULT_FROM_EMAIL). See server logs.",
+                messages.WARNING,
+            )
+
+    resend_status_notification_action.short_description = "Resend status notification email (selected)"
 
     def get_queryset(self, request):
         # Compared with Lower(Trim(...)) rather than __iexact: on SQLite __iexact
@@ -524,6 +662,15 @@ class RegionalGrantApplicationAdmin(admin.ModelAdmin):
     def has_opportunity_grant(self, obj):
         """Whether this applicant already holds an awarded opportunity grant."""
         return obj._has_opportunity_grant
+
+    @admin.display(boolean=True, description='Proof uploaded')
+    def has_proof_of_ticket(self, obj):
+        return bool(obj.proof_of_ticket)
+
+    @admin.display(boolean=True, description='Email sent', ordering='status_email_sent_at')
+    def status_email_sent(self, obj):
+        """Whether the accept/reject notification for the current status was delivered."""
+        return obj.status_email_sent_at is not None
 
 
 @admin.register(RegionalGrantCountryAssignment)
