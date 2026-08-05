@@ -39,6 +39,7 @@
   #grant-response-submit.is-loading {
     pointer-events: none;
     opacity: 0.85;
+    cursor: wait;
   }
 </style>
 
@@ -113,12 +114,15 @@
             </label>
             {{ form.proof_of_ticket }}
             <p class="mt-1 text-xs text-gray-500">{{ form.proof_of_ticket.help_text }}</p>
+            <p id="proof-required-hint" class="mt-2 text-xs text-red-600 hidden">
+              {% trans "Please upload proof of your ticket registration to accept this grant." %}
+            </p>
           </div>
 
           <button
             type="submit"
             id="grant-response-submit"
-            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm hover:shadow disabled:opacity-70 disabled:cursor-wait"
+            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-pycon-teal"
             data-loading-text="{% trans 'Submitting…' %}"
           >
             <span class="grant-response-submit__label">{% trans "Submit response" %}</span>
@@ -145,7 +149,34 @@
   if (!form) return;
   var btn = document.getElementById("grant-response-submit");
   if (!btn) return;
-  form.addEventListener("submit", function () {
+
+  var acceptRadio = form.querySelector('input[name="user_response"][value="A"]');
+  var responseRadios = form.querySelectorAll('input[name="user_response"]');
+  var fileInput = document.getElementById("id_proof_of_ticket");
+  var hint = document.getElementById("proof-required-hint");
+
+  function proofRequiredAndMissing() {
+    return !!(acceptRadio && acceptRadio.checked && fileInput && fileInput.files.length === 0);
+  }
+
+  function updateSubmitState() {
+    var blocked = proofRequiredAndMissing();
+    btn.disabled = blocked;
+    if (hint) hint.classList.toggle("hidden", !blocked);
+  }
+
+  responseRadios.forEach(function (radio) {
+    radio.addEventListener("change", updateSubmitState);
+  });
+  if (fileInput) fileInput.addEventListener("change", updateSubmitState);
+  updateSubmitState();
+
+  form.addEventListener("submit", function (event) {
+    if (proofRequiredAndMissing()) {
+      event.preventDefault();
+      updateSubmitState();
+      return;
+    }
     if (btn.disabled) return;
     btn.disabled = true;
     btn.classList.add("is-loading");
