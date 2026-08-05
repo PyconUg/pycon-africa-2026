@@ -471,6 +471,11 @@ class RegionalGrantApplication(models.Model):
         null=True,
         help_text='Proof of PyCon Africa conference ticket registration (PDF or image).',
     )
+    status_email_sent_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text='When the accept/reject notification email for the current status was last sent successfully.',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

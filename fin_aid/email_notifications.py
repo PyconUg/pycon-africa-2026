@@ -6,6 +6,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
@@ -350,6 +351,7 @@ def send_regional_grant_status_notification(application_pk, new_status: str) -> 
 
     try:
         msg.send(fail_silently=False)
+        RegionalGrantApplication.objects.filter(pk=application_pk).update(status_email_sent_at=timezone.now())
         return True
     except Exception:
         logger.exception(

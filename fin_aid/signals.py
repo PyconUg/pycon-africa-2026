@@ -80,6 +80,10 @@ def rg_application_queue_status_change_email(sender, instance, created, **kwargs
 
     application_pk = instance.pk
     new_status = instance.application_status
+    # Clear any stale timestamp from a previous decision so the admin "email sent"
+    # indicator doesn't show a stale success while this new send is pending/failing.
+    # Uses .update() (not instance.save()) to avoid re-triggering this signal.
+    sender.objects.filter(pk=application_pk).update(status_email_sent_at=None)
     transaction.on_commit(
         partial(send_regional_grant_status_notification, application_pk, new_status)
     )
