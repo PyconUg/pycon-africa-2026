@@ -50,6 +50,11 @@ urlpatterns = [
         name='regional_grant_apply_success',
     ),
     path(
+        'opportunity-grants/regional/respond/',
+        fin_aid_views.regional_grant_respond,
+        name='regional_grant_respond',
+    ),
+    path(
         'opportunity-grants/regional/reviews/',
         fin_aid_views.regional_grant_reviews_list,
         name='regional_grant_reviews',

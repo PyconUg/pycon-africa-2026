@@ -51,6 +51,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from .email_notifications import (
     send_opportunity_grant_submission_confirmation,
     send_opportunity_grant_response_confirmation,
+    send_regional_grant_response_confirmation,
 )
 from .forms import (
     Fin_aidForm,
@@ -59,6 +60,7 @@ from .forms import (
     FinAidApplicationReviewForm,
     RegionalGrantApplicationForm,
     RegionalGrantApplicationReviewForm,
+    RegionalGrantResponseForm,
 )
 
 
@@ -307,6 +309,57 @@ def regional_grant_apply(request):
 
 def regional_grant_apply_success(request):
     return render(request, '2026/fin_aid/regional_apply_success.html')
+
+
+@login_required
+def regional_grant_respond(request):
+    from django.db.models.functions import Lower, Trim
+
+    template = '2026/fin_aid/regional_grant_response_form.html'
+    user_email = (request.user.email or '').strip().lower()
+    application = None
+    if user_email:
+        application = (
+            RegionalGrantApplication.objects.annotate(
+                _applicant_email=Lower(Trim('email')),
+            )
+            .filter(_applicant_email=user_email)
+            .order_by('-created_at')
+            .first()
+        )
+
+    if not application:
+        messages.info(
+            request,
+            _(
+                'We could not find a regional grant application matching your account email. '
+                'Please make sure you are signed in with the same email address you used to apply.'
+            ),
+        )
+        return redirect('pycon2026:regional_grant_apply')
+
+    if application.application_status != RegionalGrantApplication.STATUS_ACCEPTED:
+        messages.info(request, _('Your application does not have a pending grant offer to respond to.'))
+        return redirect('profiles:profile_home')
+
+    if request.method == 'POST':
+        form = RegionalGrantResponseForm(request.POST, request.FILES, instance=application)
+        if form.is_valid():
+            form.save()
+            send_regional_grant_response_confirmation(application)
+            messages.success(request, _('Your response has been recorded. Thank you.'))
+            return redirect('pycon2026:regional_grant_respond')
+    else:
+        form = RegionalGrantResponseForm(instance=application)
+
+    return render(
+        request,
+        template,
+        {
+            'application': application,
+            'form': form,
+        },
+    )
 
 
 @login_required

@@ -490,12 +490,14 @@ class RegionalGrantApplicationAdmin(admin.ModelAdmin):
         'country',
         'gender',
         'application_status',
+        'user_response',
+        'has_proof_of_ticket',
         'financial_support',
         'has_opportunity_grant',
         'created_at',
     )
     list_editable = ('application_status',)
-    list_filter = ('application_status', 'country', 'gender', 'financial_support')
+    list_filter = ('application_status', 'user_response', 'country', 'gender', 'financial_support')
     search_fields = ('full_name', 'email', 'phone', 'city')
     readonly_fields = ('created_at', 'updated_at')
     ordering = ('-created_at',)
@@ -635,6 +637,10 @@ class RegionalGrantApplicationAdmin(admin.ModelAdmin):
     def has_opportunity_grant(self, obj):
         """Whether this applicant already holds an awarded opportunity grant."""
         return obj._has_opportunity_grant
+
+    @admin.display(boolean=True, description='Proof uploaded')
+    def has_proof_of_ticket(self, obj):
+        return bool(obj.proof_of_ticket)
 
 
 @admin.register(RegionalGrantCountryAssignment)

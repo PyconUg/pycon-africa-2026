@@ -321,6 +321,16 @@ class RegionalGrantApplication(models.Model):
         (STATUS_REJECTED, 'Rejected'),
     )
 
+    USER_RESPONSE_PENDING = 'P'
+    USER_RESPONSE_ACCEPTED = 'A'
+    USER_RESPONSE_REJECTED = 'R'
+
+    USER_RESPONSE_CHOICES = (
+        (USER_RESPONSE_PENDING, 'Pending'),
+        (USER_RESPONSE_ACCEPTED, 'Accepted'),
+        (USER_RESPONSE_REJECTED, 'Declined'),
+    )
+
     country = models.CharField(
         max_length=32,
         choices=REGIONAL_GRANT_COUNTRIES,
@@ -449,6 +459,17 @@ class RegionalGrantApplication(models.Model):
         max_length=20,
         choices=STATUS_CHOICES,
         default=STATUS_SUBMITTED,
+    )
+    user_response = models.CharField(
+        max_length=1,
+        choices=USER_RESPONSE_CHOICES,
+        default=USER_RESPONSE_PENDING,
+    )
+    proof_of_ticket = models.FileField(
+        upload_to='regional_grant_proofs/',
+        blank=True,
+        null=True,
+        help_text='Proof of PyCon Africa conference ticket registration (PDF or image).',
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

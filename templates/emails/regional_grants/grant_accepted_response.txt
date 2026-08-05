@@ -1,0 +1,11 @@
+Dear {{ applicant_name }},
+
+Thank you for confirming your acceptance of the PyCon Africa 2026 Travel Opportunity Grant and for uploading your proof of ticket registration.
+
+Our team will verify your registration and be in touch with next steps shortly.
+
+If you have any questions, please contact us at fin-aid@pycon.ug.
+
+Kind regards,
+Regional Grants Team
+PyCon Africa 2026
