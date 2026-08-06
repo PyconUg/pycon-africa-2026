@@ -173,7 +173,7 @@ SCHEDULE_DATA = [
             ]},
             {"time": "15:15 – 15:45", "cells": [
                 {"title": "Back to the Fixtures", "speaker": "Steve Yonkeu", "label": "Short Talk · Core Python"},
-                E,
+                {"title": "Advanced Design Patterns for ML Systems", "speaker": "Victor Ashioya", "label": "Short Talk · AI/Agentic"},
                 {"title": "Delivering with Django: Boring Tech, Real Impact in Africa's Startups", "speaker": "Bernard Katamanso", "label": "Short Talk · Security/Web"},
                 {"title": "Pyladies Africa", "speaker": "Jonathan Ssali and Jamil Lutaaya", "link": "/2026/co-events/pyladies/", "no_link": True},
                 {"title": "Posters", "speaker": ""},
