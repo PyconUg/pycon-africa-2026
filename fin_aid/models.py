@@ -207,6 +207,11 @@ class OpportunityGrantApplication(models.Model):
     )
     submitted_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    status_email_sent_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text='When the accept/reject notification email for the current status was last sent successfully.',
+    )
 
     class Meta:
         verbose_name = 'Opportunity grant application'
