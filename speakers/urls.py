@@ -6,9 +6,10 @@ from .views import *
 
 
 app_name = 'speakers'
-urlpatterns = [ 
+urlpatterns = [
     path('', Speakers.as_view(), name='speakers'),
-    path('<profile_id>/', SpeakerDetailView.as_view(), name='speaker_detail'), 
+    path('search/', views.speaker_search, name='speaker_search'),
+    path('<profile_id>/', SpeakerDetailView.as_view(), name='speaker_detail'),
     path('hitcount/', include(('hitcount.urls', 'hitcount'), namespace='hitcount')),
 ]
 

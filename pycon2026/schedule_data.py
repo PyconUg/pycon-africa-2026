@@ -1,3 +1,6 @@
+import os
+import re
+
 E = {"title": "", "speaker": ""}
 
 
@@ -130,26 +133,26 @@ SCHEDULE_DATA = [
         "slots": [
             {"time": "7:00 – 8:45", "span": True, "title": "Break Tea", "type": "break"},
             {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks"},
-            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote"},
+            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nBuilding AI-Powered Lending Infrastructure (Chris Orwa)"},
             {"time": "10:20 – 11:05", "cells": [
                 {"title": "Let the Computer Run Your Unit Tests: Property-Based Testing with Hypothesis in Python", "speaker": "Batamye Umar Isabirye", "label": "Talk · Core Python"},
                 {"title": "Building Real-Time Voice Agents That Listen and Respond in Python", "speaker": "Glory Bagai", "label": "Talk · AI/Agentic"},
                 {"title": "Python in the Browser: No install, No barrier", "speaker": "Hypolit Zeuchieu", "label": "Talk · Security/Web"},
-                {"title": "Pyladies Africa", "speaker": ""},
+                {"title": "Pyladies Africa", "speaker": "Jonathan Ssali and Jamil Lutaaya", "link": "/2026/co-events/pyladies/", "no_link": True},
                 {"title": "Posters", "speaker": ""},
             ]},
             {"time": "11:10 – 11:40", "cells": [
                 {"title": "Working with Audio in Python (Pythonic Approach)", "speaker": "Bashir Kasujja", "label": "Short Talk · Core Python"},
-                {"title": "Detecting Firmware Implants with Python Assisted Bare-Metal Forensics", "speaker": "Victor Ashioya", "label": "Short Talk · AI/Agentic"},
+                {"title": "Detecting Firmware Implants with Python Assisted Bare-Metal Forensics", "speaker": "Arrhat Nag", "label": "Short Talk · AI/Agentic"},
                 {"title": "Enhancing FastMCP Server Security", "speaker": "Mugoya Hillarious", "label": "Short Talk · Security/Web"},
-                {"title": "Pyladies Africa", "speaker": ""},
+                {"title": "Pyladies Africa", "speaker": "Jonathan Ssali and Jamil Lutaaya", "link": "/2026/co-events/pyladies/", "no_link": True},
                 {"title": "Posters", "speaker": ""},
             ]},
             {"time": "11:45 – 12:15", "cells": [
                 {"title": "Python for Microcontrollers: Introduction to MicroPython & Wokwi Simulator", "speaker": "Samuel Lunghe", "label": "Short Talk · Core Python"},
                 {"title": "Building Event-Driven Systems in Python That Survive Production", "speaker": "Abdulmateen Tairu", "label": "Short Talk · AI/Agentic"},
                 {"title": "Python at Scale: A Practical Guide to Serving 1 Million Users with FastAPI and Flask", "speaker": "Moses Daudu", "label": "Short Talk · Security/Web"},
-                {"title": "Pyladies Africa", "speaker": ""},
+                {"title": "Pyladies Africa", "speaker": "Jonathan Ssali and Jamil Lutaaya", "link": "/2026/co-events/pyladies/", "no_link": True},
                 {"title": "Posters", "speaker": ""},
             ]},
             {"time": "12:20 – 13:00", "span": True, "title": "Open Source, Research and Industry Panel"},
@@ -158,25 +161,32 @@ SCHEDULE_DATA = [
                 {"title": "Deterministic Python: Implementing RTOS Design Concepts in MicroPython", "speaker": "Shawal Mbalire", "label": "Short Talk · Core Python"},
                 {"title": "Designing Python APIs for Data You Don't Control", "speaker": "Saurav Jain", "label": "Short Talk · AI/Agentic"},
                 {"title": "When Step 3 Fails: Reliable Multi-Step Workflows in Celery Using the Saga Pattern", "speaker": "Douglas Amoo-Sargon", "label": "Short Talk · Security/Web"},
-                {"title": "Pyladies Africa", "speaker": ""},
+                {"title": "Pyladies Africa", "speaker": "Jonathan Ssali and Jamil Lutaaya", "link": "/2026/co-events/pyladies/", "no_link": True},
                 {"title": "Posters", "speaker": ""},
             ]},
             {"time": "14:40 – 15:10", "cells": [
                 {"title": "Building Low-Power IoT Systems with LoRaWAN and Python", "speaker": "Job mbugua", "label": "Short Talk · Core Python"},
-                {"title": "Serving LLMs on a Budget with vLLM", "speaker": "Ifihanagbara Olusheye", "label": "Short Talk · AI/Agentic"},
+                E,
                 {"title": "Async Python and FastAPI: How It Actually Works", "speaker": "Theresa Seyram Agbenyegah", "label": "Short Talk · Security/Web"},
-                {"title": "Pyladies Africa", "speaker": ""},
+                {"title": "Pyladies Africa", "speaker": "Jonathan Ssali and Jamil Lutaaya", "link": "/2026/co-events/pyladies/", "no_link": True},
                 {"title": "Posters", "speaker": ""},
             ]},
             {"time": "15:15 – 15:45", "cells": [
                 {"title": "Back to the Fixtures", "speaker": "Steve Yonkeu", "label": "Short Talk · Core Python"},
                 {"title": "Advanced Design Patterns for ML Systems", "speaker": "Victor Ashioya", "label": "Short Talk · AI/Agentic"},
                 {"title": "Delivering with Django: Boring Tech, Real Impact in Africa's Startups", "speaker": "Bernard Katamanso", "label": "Short Talk · Security/Web"},
-                {"title": "Pyladies Africa", "speaker": ""},
+                {"title": "Pyladies Africa", "speaker": "Jonathan Ssali and Jamil Lutaaya", "link": "/2026/co-events/pyladies/", "no_link": True},
                 {"title": "Posters", "speaker": ""},
             ]},
             {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote"},
-            {"time": "16:50 – 17:20", "span": True, "title": "Lightning Talks\nDjango Deployment Isn't What It Used to Be. by victorianyamai\nUsing Python to Automate API Testing in Open Source Projects by Christine\nSecuring Networks with Python: A Deep Dive into Intrusion Detection, Phishing Prevention, and Vulnerability Scoring by Alpha\nWhat Nobody Tells You About Running a Developer Community as a Student by adjanour\nThe Informal Economy Doesn't Have an API by John_iroko\nDesign isn't just for the Frontend: Why backend developers should care about UX. by Miriam-Birungi"},
+            {"time": "16:50 – 17:20", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
+                {"title": "Django Deployment Isn't What It Used to Be.", "speaker": "Victoria Nyamai"},
+                {"title": "Using Python to Automate API Testing in Open Source Projects", "speaker": "Clency Christine"},
+                {"title": "Securing Networks with Python: A Deep Dive into Intrusion Detection, Phishing Prevention, and Vulnerability Scoring", "speaker": "Alpha Lee Munene"},
+                {"title": "What Nobody Tells You About Running a Developer Community as a Student", "speaker": "Bernard Katamanso"},
+                {"title": "The Informal Economy Doesn't Have an API", "speaker": "John Pangara"},
+                {"title": "Design isn't just for the Frontend: Why backend developers should care about UX.", "speaker": "Angella Miriam Birungi"},
+            ]},
         ],
     },
     {
@@ -191,7 +201,7 @@ SCHEDULE_DATA = [
         "slots": [
             {"time": "7:00 – 8:45", "span": True, "title": "Break Tea", "type": "break"},
             {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks"},
-            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote"},
+            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nA Decade of Language AI: A Reflection on the Insanity (Jade Abbot)"},
             {"time": "10:20 – 11:05", "cells": [
                 {"title": "Hacking for Good: Cybersecurity and Ethical Hacking with Python", "speaker": "Mvenyi Donald Mbutu", "label": "Talk · Security/Web"},
                 {"title": "The Lazy Wizard's Guide to Federated Learning: Building ML Models in Difficult Places", "speaker": "Johannes Kolbe", "label": "Talk · ML/Data Science"},
@@ -210,7 +220,12 @@ SCHEDULE_DATA = [
                 {"title": "Speech Synthesis Unpacked: Building a Voice Cloning TTS Model with Python", "speaker": "Nunsi Shiaki", "label": "Short Talk · AI/Agentic"},
                 {"title": "Refugee Program", "speaker": ""},
             ]},
-            {"time": "12:20 – 13:00", "span": True, "title": "Dedicated Expo Hall Time"},
+            {"time": "12:20 – 13:00", "cells": [
+                {"title": "Dedicated Expo Hall Time", "speaker": ""},
+                {"title": "Dedicated Expo Hall Time", "speaker": ""},
+                {"title": "Dedicated Expo Hall Time", "speaker": ""},
+                {"title": "Refugee Program", "speaker": ""},
+            ]},
             {"time": "13:00 – 14:00", "span": True, "title": "Lunch", "type": "break"},
             {"time": "14:05 – 14:35", "cells": [
                 {"title": "Delivering with Django: Boring Tech, Real Impact in Africa's Startups", "speaker": "Bernard Katamanso", "label": "Short Talk · Security/Web"},
@@ -221,17 +236,73 @@ SCHEDULE_DATA = [
             {"time": "14:40 – 15:10", "cells": [
                 {"title": "PaSSw0rdVib3s!: Finding Passwords in Digital Evidence", "speaker": "Anne Fleur van Luenen", "label": "Short Talk · Security/Web"},
                 {"title": "Building Clinical Tools in Data-Constrained Environments: Python, ML, and the Human Spine", "speaker": "Christine Akoto-Nimoh", "label": "Short Talk · ML/Data Science"},
-                {"title": "Cyber Security Workshop", "speaker": ""},
+                {"title": "Cyber Security Workshop", "speaker": "", "label": "Tutorial"},
                 {"title": "Refugee Program", "speaker": ""},
             ]},
             {"time": "15:15 – 15:45", "cells": [
                 {"title": "Background Jobs at Scale: Designing Reliable Python Worker Systems", "speaker": "Efe Omoregie", "label": "Short Talk · Security/Web"},
                 {"title": "Building Civic Tech with Python: APIs, Data, and Systems for Public Good", "speaker": "Alamin Magaga", "label": "Short Talk · ML/Data Science"},
-                {"title": "Cyber Security Workshop", "speaker": ""},
+                {"title": "Cyber Security Workshop", "speaker": "", "label": "Tutorial"},
                 {"title": "Refugee Program", "speaker": ""},
             ]},
-            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote"},
-            {"time": "16:50 – 17:20", "span": True, "title": "Lightning Talks\nYour Code is Great...but Who Knows? by sarahmuwanguzi\nPython for Impact: Building Climate Solutions Rooted in African Communities by Tendai Jack\nOpen Source Is Infrastructure. Why We Must Stop Treating It Like a Hobby by Trudy\nPython for Community Impact: Simple Tech Solutions for Refugee and Rural Communities in Africa by sankara"},
+            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote\nThe Evolution of Python: Lessons from Its Creator (Guido van Rossum)"},
+            {"time": "16:50 – 17:20", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
+                {"title": "Your Code is Great...but Who Knows?", "speaker": "Sarah Muwanguzi"},
+                {"title": "Python for Impact: Building Climate Solutions Rooted in African Communities", "speaker": "Tendai Jack"},
+                {"title": "Open Source Is Infrastructure. Why We Must Stop Treating It Like a Hobby", "speaker": "Gertrude Abagale Abagale"},
+                {"title": "Python for Community Impact: Simple Tech Solutions for Refugee and Rural Communities in Africa", "speaker": "Makala Sankara Anzuruni"},
+            ]},
         ],
     },
 ]
+
+
+_SPEAKER_IMAGE_STATIC_DIR = "2026/img/speakerImages"
+_SPEAKER_IMAGE_FS_DIR = os.path.join(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+    "static", *_SPEAKER_IMAGE_STATIC_DIR.split("/"),
+)
+_SPEAKER_IMAGE_EXTENSIONS = (".jpg", ".jpeg", ".png")
+
+
+def _normalize_speaker_name(name):
+    name = re.sub(r"[_\-]+", " ", name.strip().lower())
+    return re.sub(r"\s+", " ", name)
+
+
+def _build_speaker_image_lookup():
+    lookup = {}
+    if not os.path.isdir(_SPEAKER_IMAGE_FS_DIR):
+        return lookup
+    for filename in os.listdir(_SPEAKER_IMAGE_FS_DIR):
+        stem, ext = os.path.splitext(filename)
+        if ext.lower() not in _SPEAKER_IMAGE_EXTENSIONS:
+            continue
+        full_path = os.path.join(_SPEAKER_IMAGE_FS_DIR, filename)
+        if os.path.getsize(full_path) == 0:
+            continue
+        lookup[_normalize_speaker_name(stem)] = f"{_SPEAKER_IMAGE_STATIC_DIR}/{filename}"
+    return lookup
+
+
+def _attach_image(entry, lookup):
+    speaker = entry.get("speaker")
+    if not speaker:
+        return
+    image = lookup.get(_normalize_speaker_name(speaker))
+    if image:
+        entry["image"] = image
+
+
+def _attach_speaker_images(schedule_data):
+    lookup = _build_speaker_image_lookup()
+    for day in schedule_data:
+        for slot in day.get("slots", []):
+            for cell in slot.get("cells", []):
+                _attach_image(cell, lookup)
+            for talk in slot.get("talks", []):
+                _attach_image(talk, lookup)
+    return schedule_data
+
+
+_attach_speaker_images(SCHEDULE_DATA)

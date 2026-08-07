@@ -1,6 +1,7 @@
 """Service layer for the fin_aid app.
 
-Provides the opportunity grant review assignment algorithm.
+Provides the opportunity grant review assignment algorithm and the lookup that
+flags regional grant applicants who already hold an opportunity grant.
 """
 
 from collections import defaultdict
@@ -8,13 +9,72 @@ from typing import Iterable, Optional
 
 from django.db import transaction
 from django.db.models import Count, Exists, OuterRef
+from django.db.models.functions import Lower, Trim
 
 from .models import (
     FinAidApplicationReview,
     FinAidReviewAssignment,
     FinAidReviewer,
     OpportunityGrantApplication,
+    RegionalGrantApplication,
+    RegionalGrantApplicationReview,
+    RegionalGrantReviewAssignment,
 )
+
+
+#: An opportunity grant counts as awarded once it is accepted, in full or in part.
+AWARDED_OPPORTUNITY_GRANT_STATUSES = (
+    OpportunityGrantApplication.STATUS_ACCEPTED,
+    OpportunityGrantApplication.STATUS_WAITLIST,
+)
+
+
+def _normalise_email(email: Optional[str]) -> str:
+    return (email or '').strip().lower()
+
+
+def opportunity_grant_awards_by_email(emails: Iterable[str]) -> dict:
+    """Map normalised email -> the applicant's awarded opportunity grant.
+
+    Awarded means accepted or partially accepted. Only emails present in
+    ``emails`` are returned. Emails are compared with an explicit
+    Lower(Trim(...)) rather than ``__iexact``, which stays case-insensitive
+    regardless of database collation and avoids ``__iexact`` compiling to LIKE
+    on SQLite (where "_" and "%" would act as wildcards). When someone has been
+    awarded in more than one round, the latest wins.
+    """
+    wanted = {_normalise_email(email) for email in emails}
+    wanted.discard('')
+    if not wanted:
+        return {}
+
+    awarded = (
+        OpportunityGrantApplication.objects.annotate(
+            _grantee_email=Lower(Trim('user__email')),
+        )
+        .filter(
+            _grantee_email__in=wanted,
+            status__in=AWARDED_OPPORTUNITY_GRANT_STATUSES,
+        )
+        .select_related('user', 'fin_aid__event_year')
+        .order_by('submitted_at')
+    )
+
+    return {application._grantee_email: application for application in awarded}
+
+
+def attach_opportunity_grant_awards(applications: Iterable) -> list:
+    """Set ``opportunity_grant_award`` on each regional grant application.
+
+    Regional grant applications need no login, so the applicant's email address
+    is the only link back to an opportunity grant application. The attribute is
+    ``None`` when the applicant holds no awarded opportunity grant.
+    """
+    applications = list(applications)
+    awards = opportunity_grant_awards_by_email(a.email for a in applications)
+    for application in applications:
+        application.opportunity_grant_award = awards.get(_normalise_email(application.email))
+    return applications
 
 
 def _eligible_applications_for(
@@ -200,4 +260,73 @@ def assign_applications(
         'reviews_per_application': reviews_target,
         'unassignable': unassignable,
         'per_reviewer': dict(per_reviewer_counts),
+    }
+
+
+@transaction.atomic
+def assign_regional_grant_reviews(
+    reviewer,
+    count,
+    *,
+    countries: Optional[Iterable[str]] = None,
+    assigned_by=None,
+) -> dict:
+    """Give ``reviewer`` a lot of ``count`` applications total (target, not an increment), independent of RegionalGrantCountryAssignment.
+
+    ``count`` is scoped to ``countries`` when given: it's the target among those
+    countries specifically, not the reviewer's global total across all countries.
+
+    Candidates are ordered by existing assignment count (fewest first) to spread load evenly.
+    """
+    already_assigned_ids = RegionalGrantReviewAssignment.objects.filter(
+        reviewer=reviewer,
+    ).values_list('application_id', flat=True)
+
+    if countries is not None:
+        current_total = RegionalGrantReviewAssignment.objects.filter(
+            reviewer=reviewer, application__country__in=list(countries),
+        ).count()
+    else:
+        current_total = len(already_assigned_ids)
+    needed = count - current_total
+
+    if needed <= 0:
+        return {'created': 0, 'assigned_application_ids': [], 'available': 0, 'current_total': current_total}
+
+    already_reviewed_ids = RegionalGrantApplicationReview.objects.filter(
+        reviewer=reviewer,
+    ).values_list('application_id', flat=True)
+
+    candidate_qs = RegionalGrantApplication.objects.exclude(
+        pk__in=already_reviewed_ids,
+    ).exclude(
+        pk__in=already_assigned_ids,
+    )
+    if countries is not None:
+        candidate_qs = candidate_qs.filter(country__in=list(countries))
+
+    candidates = list(
+        candidate_qs.annotate(
+            _assignment_count=Count('review_assignments'),
+        ).order_by('_assignment_count', 'created_at')
+    )
+
+    chosen = candidates[:needed]
+
+    new_assignments = [
+        RegionalGrantReviewAssignment(
+            reviewer=reviewer,
+            application=application,
+            assigned_by=assigned_by,
+        )
+        for application in chosen
+    ]
+    if new_assignments:
+        RegionalGrantReviewAssignment.objects.bulk_create(new_assignments, ignore_conflicts=True)
+
+    return {
+        'created': len(new_assignments),
+        'assigned_application_ids': [a.pk for a in chosen],
+        'available': len(candidates),
+        'current_total': current_total + len(new_assignments),
     }

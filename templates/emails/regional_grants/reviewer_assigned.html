@@ -1,0 +1,35 @@
+{% load i18n %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>{% trans "PyCon Africa 2026 — Regional Grant reviewer access" %}</title>
+</head>
+<body>
+  <br>
+  {% blocktrans %}Greetings{% endblocktrans %} {% if user.get_full_name %}{{ user.get_full_name }}{% else %}{{ user.get_username }}{% endif %},
+  <br><br>
+  {% blocktrans %}Your reviewer permissions have been updated. You have been assigned to review Regional Opportunity Grant applications for the following countries:{% endblocktrans %}
+  <br><br>
+  <ul>
+    {% for country in countries %}
+      <li>{{ country }}</li>
+    {% endfor %}
+  </ul>
+  {% blocktrans %}You can start reviewing applications using the link below.{% endblocktrans %}
+  <br><br>
+  {% trans "Start reviewing:" %}
+  <br>
+  <a rel="noreferrer" href="{{ review_url }}">{{ review_url }}</a>
+  <br><br>
+  <p>
+    {% blocktrans %}Best regards,<br>
+    PyCon Africa 2026 Team{% endblocktrans %}
+  </p>
+  <p>
+    <a href="https://www.twitter.com/pyconafrica/">Twitter</a> |
+    <a href="https://www.instagram.com/pyconafrica/">Instagram</a><br>
+    <a href="https://africa.python.org/">website</a>
+  </p>
+</body>
+</html>

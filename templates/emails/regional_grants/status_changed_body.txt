@@ -1,0 +1,9 @@
+Hello {{ applicant_name }},
+
+The status of your Regional Opportunity Grant application for PyCon Africa 2026 has been updated.
+
+Current status: {{ new_status_display }}
+
+If you have any questions, please contact us at fin-aid@pycon.ug.
+
+— PyCon Africa 2026 Team

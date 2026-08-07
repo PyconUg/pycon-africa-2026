@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.venv/bin/python -c \"import playwright\")",
+      "Bash(node /private/tmp/claude-502/-Users-pamelanatukunda-Documents-GitHub-pycon-uganda/7a0ae562-294f-41fe-be14-64e8686ff27e/scratchpad/shot.js)"
+    ]
+  }
+}

@@ -35,6 +35,7 @@ from .models import (
     OpportunityGrantApplication,
     FinAidApplicationReview,
     RegionalGrantApplication,
+    RegionalGrantApplicationReview,
     REGIONAL_GRANT_INTEREST_CHOICES,
 )
 
@@ -303,3 +304,91 @@ class RegionalGrantApplicationForm(forms.ModelForm):
         if not interests:
             raise forms.ValidationError('Please select at least one area of interest.')
         return ', '.join(interests)
+
+
+REGIONAL_GRANT_PROOF_ALLOWED_EXTENSIONS = {'pdf', 'png', 'jpg', 'jpeg'}
+REGIONAL_GRANT_PROOF_ALLOWED_EXTENSIONS_DISPLAY = 'PDF, PNG, JPG, JPEG'
+
+
+class RegionalGrantResponseForm(forms.ModelForm):
+    class Meta:
+        model = RegionalGrantApplication
+        fields = ('user_response', 'proof_of_ticket')
+        widgets = {
+            'proof_of_ticket': forms.FileInput(attrs={
+                'class': 'block w-full text-sm text-gray-700 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none file:mr-4 file:py-2 file:px-4 file:rounded-l-lg file:border-0 file:text-sm file:font-semibold file:bg-pycon-teal file:text-white hover:file:bg-teal-700 p-2',
+                'accept': '.pdf,.png,.jpg,.jpeg',
+            }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['user_response'].widget = forms.RadioSelect()
+        self.fields['user_response'].choices = [
+            ('A', _('I accept — I will attend PyCon Africa with this grant.')),
+            ('R', _('I decline — I cannot accept this grant.')),
+        ]
+        self.fields['user_response'].label = _('Your response')
+        self.fields['user_response'].required = True
+        self.fields['user_response'].initial = None
+        self.fields['proof_of_ticket'].required = False
+        self.fields['proof_of_ticket'].help_text = (
+            f'Required when accepting. Accepted formats: {REGIONAL_GRANT_PROOF_ALLOWED_EXTENSIONS_DISPLAY}.'
+        )
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = True
+
+    def clean_proof_of_ticket(self):
+        attachment = self.cleaned_data.get('proof_of_ticket')
+        if attachment and hasattr(attachment, 'name'):
+            ext = attachment.name.rsplit('.', 1)[-1].lower() if '.' in attachment.name else ''
+            if ext not in REGIONAL_GRANT_PROOF_ALLOWED_EXTENSIONS:
+                raise forms.ValidationError(
+                    f'Unsupported file type ".{ext}". '
+                    f'Please upload one of: {REGIONAL_GRANT_PROOF_ALLOWED_EXTENSIONS_DISPLAY}.'
+                )
+        return attachment
+
+    def clean(self):
+        cleaned_data = super().clean()
+        user_response = cleaned_data.get('user_response')
+        proof_of_ticket = cleaned_data.get('proof_of_ticket') or getattr(self.instance, 'proof_of_ticket', None)
+        if user_response == RegionalGrantApplication.USER_RESPONSE_ACCEPTED and not proof_of_ticket:
+            raise forms.ValidationError('Please upload proof of your PyCon Africa ticket registration to accept this grant.')
+        return cleaned_data
+
+
+class RegionalGrantApplicationReviewForm(forms.ModelForm):
+    class Meta:
+        model = RegionalGrantApplicationReview
+        fields = (
+            'is_community_member',
+            'is_active_contributor',
+            'is_knowledge_sharer',
+            'python_level',
+            'python_duration',
+            'financial_need',
+            'is_woman',
+            'has_disability',
+            'is_student',
+            'alignment_score',
+            'recommendation',
+            'comments',
+        )
+        widgets = {
+            'comments': forms.Textarea(attrs={'rows': 5, 'class': TEXT_INPUT_CLASS}),
+            'recommendation': forms.Select(attrs={'class': SELECT_CLASS}),
+            'python_level': forms.Select(attrs={'class': 'w-full max-w-xs rounded-lg border border-gray-300 px-3 py-2'}),
+            'python_duration': forms.Select(attrs={'class': 'w-full max-w-xs rounded-lg border border-gray-300 px-3 py-2'}),
+            'financial_need': forms.Select(attrs={'class': 'w-full max-w-xs rounded-lg border border-gray-300 px-3 py-2'}),
+            'alignment_score': forms.Select(attrs={'class': 'w-full max-w-xs rounded-lg border border-gray-300 px-3 py-2'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.fields['python_level'].required = True
+        self.fields['python_duration'].required = True
+        self.fields['financial_need'].required = True

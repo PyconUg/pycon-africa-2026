@@ -1,0 +1,1 @@
+{% load i18n %}{% trans "PyCon Africa 2026 — You've been assigned Regional Grant applications to review" %}

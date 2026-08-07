@@ -1,6 +1,11 @@
 from django.contrib import admin, messages
+from django.contrib.auth import get_user_model
+from django.db.models import Exists, OuterRef
+from django.db.models.functions import Lower, Trim
 from import_export import resources, fields
 from import_export.admin import ImportExportModelAdmin
+
+User = get_user_model()
 
 from .models import (
     Fin_aid,
@@ -9,7 +14,13 @@ from .models import (
     FinAidReviewer,
     OpportunityGrantApplication,
     RegionalGrantApplication,
+    RegionalGrantApplicationReview,
+    RegionalGrantCountryAssignment,
+    RegionalGrantReviewAssignment,
 )
+from .services import AWARDED_OPPORTUNITY_GRANT_STATUSES
+
+
 class OpportunityGrantApplicationResource(resources.ModelResource):
     user_email = fields.Field(attribute='user__email', column_name='Email', readonly=True)
     applicant_name = fields.Field(attribute='legal_name', column_name='Name', readonly=True)
@@ -463,6 +474,30 @@ class OpportunityGrantApplicationAdmin(ImportExportModelAdmin):
     send_ticket_code_email_action.short_description = "Send ticket code email to accepted applicants (selected)"
 
 
+class StatusEmailSentFilter(admin.SimpleListFilter):
+    title = 'status email sent'
+    parameter_name = 'status_email_sent'
+
+    def lookups(self, request, model_admin):
+        return [
+            ('yes', 'Sent'),
+            ('no', 'Not sent'),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == 'yes':
+            return queryset.filter(status_email_sent_at__isnull=False)
+        if self.value() == 'no':
+            return queryset.filter(status_email_sent_at__isnull=True)
+
+
+class RegionalGrantApplicationReviewInline(admin.TabularInline):
+    model = RegionalGrantApplicationReview
+    extra = 0
+    fields = ('reviewer', 'recommendation', 'total_score', 'comments', 'created_at')
+    readonly_fields = ('reviewer', 'recommendation', 'total_score', 'comments', 'created_at')
+
+
 @admin.register(RegionalGrantApplication)
 class RegionalGrantApplicationAdmin(admin.ModelAdmin):
     list_display = (
@@ -472,14 +507,247 @@ class RegionalGrantApplicationAdmin(admin.ModelAdmin):
         'country',
         'gender',
         'application_status',
+        'user_response',
+        'has_proof_of_ticket',
+        'status_email_sent',
         'financial_support',
+        'has_opportunity_grant',
         'created_at',
     )
     list_editable = ('application_status',)
-    list_filter = ('application_status', 'country', 'gender', 'financial_support')
+    list_filter = (
+        'application_status',
+        'user_response',
+        StatusEmailSentFilter,
+        'country',
+        'gender',
+        'financial_support',
+    )
     search_fields = ('full_name', 'email', 'phone', 'city')
-    readonly_fields = ('created_at', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at', 'status_email_sent_at')
     ordering = ('-created_at',)
+    inlines = (RegionalGrantApplicationReviewInline,)
+    actions = (
+        'accept_and_notify_action',
+        'reject_and_notify_action',
+        'resend_status_notification_action',
+    )
+
+    # --- status + notify actions ---
+
+    def accept_and_notify_action(self, request, queryset):
+        """Set application_status to Accepted and trigger the applicant notification email."""
+        updated = 0
+        already = 0
+        for pk in queryset.values_list('pk', flat=True):
+            app = RegionalGrantApplication.objects.get(pk=pk)
+            if app.application_status == RegionalGrantApplication.STATUS_ACCEPTED:
+                already += 1
+                continue
+            app.application_status = RegionalGrantApplication.STATUS_ACCEPTED
+            app.save()
+            updated += 1
+        if updated:
+            self.message_user(
+                request,
+                f"Accepted {updated} application(s). Notifications send when SMTP succeeds.",
+                messages.SUCCESS,
+            )
+        if already:
+            self.message_user(
+                request,
+                f"{already} application(s) were already accepted (skipped). "
+                "Use 'Resend status notification' to email them again without changing status.",
+                messages.INFO,
+            )
+        if not updated and not already:
+            self.message_user(request, "No applications to update.", messages.WARNING)
+
+    accept_and_notify_action.short_description = "Accept & notify applicant (selected)"
+
+    def reject_and_notify_action(self, request, queryset):
+        """Set application_status to Rejected and trigger the applicant notification email."""
+        updated = 0
+        already = 0
+        for pk in queryset.values_list('pk', flat=True):
+            app = RegionalGrantApplication.objects.get(pk=pk)
+            if app.application_status == RegionalGrantApplication.STATUS_REJECTED:
+                already += 1
+                continue
+            app.application_status = RegionalGrantApplication.STATUS_REJECTED
+            app.save()
+            updated += 1
+        if updated:
+            self.message_user(
+                request,
+                f"Rejected {updated} application(s). Notifications send when SMTP succeeds.",
+                messages.SUCCESS,
+            )
+        if already:
+            self.message_user(
+                request,
+                f"{already} application(s) were already rejected (skipped). "
+                "Use 'Resend status notification' to email them again without changing status.",
+                messages.INFO,
+            )
+        if not updated and not already:
+            self.message_user(request, "No applications to update.", messages.WARNING)
+
+    reject_and_notify_action.short_description = "Reject & notify applicant (selected)"
+
+    def resend_status_notification_action(self, request, queryset):
+        """Re-send the status email matching each application's current application_status."""
+        from .email_notifications import send_regional_grant_status_notification
+
+        NOTIFY_STATUSES = {
+            RegionalGrantApplication.STATUS_ACCEPTED,
+            RegionalGrantApplication.STATUS_REJECTED,
+        }
+
+        sent = 0
+        skipped = 0
+        failed = 0
+        for pk, status in queryset.values_list('pk', 'application_status'):
+            if status not in NOTIFY_STATUSES:
+                skipped += 1
+                continue
+            if send_regional_grant_status_notification(pk, status):
+                sent += 1
+            else:
+                failed += 1
+
+        if sent:
+            self.message_user(
+                request,
+                f"Resent status notification for {sent} application(s).",
+                messages.SUCCESS,
+            )
+        if skipped:
+            self.message_user(
+                request,
+                f"{skipped} application(s) skipped — only accepted and rejected "
+                "applications trigger a notification email.",
+                messages.INFO,
+            )
+        if failed:
+            self.message_user(
+                request,
+                f"{failed} application(s) could not be emailed "
+                "(missing email, SMTP error, or missing DEFAULT_FROM_EMAIL). See server logs.",
+                messages.WARNING,
+            )
+
+    resend_status_notification_action.short_description = "Resend status notification email (selected)"
+
+    def get_queryset(self, request):
+        # Compared with Lower(Trim(...)) rather than __iexact: on SQLite __iexact
+        # compiles to LIKE, which would treat "_" and "%" in an applicant's email
+        # as wildcards. This also matches how services.py normalises emails.
+        return super().get_queryset(request).annotate(
+            _has_opportunity_grant=Exists(
+                OpportunityGrantApplication.objects.annotate(
+                    _grantee_email=Lower(Trim('user__email')),
+                ).filter(
+                    _grantee_email=Lower(Trim(OuterRef('email'))),
+                    status__in=AWARDED_OPPORTUNITY_GRANT_STATUSES,
+                )
+            )
+        )
+
+    @admin.display(
+        boolean=True,
+        description='Opportunity grant',
+        ordering='_has_opportunity_grant',
+    )
+    def has_opportunity_grant(self, obj):
+        """Whether this applicant already holds an awarded opportunity grant."""
+        return obj._has_opportunity_grant
+
+    @admin.display(boolean=True, description='Proof uploaded')
+    def has_proof_of_ticket(self, obj):
+        return bool(obj.proof_of_ticket)
+
+    @admin.display(boolean=True, description='Email sent', ordering='status_email_sent_at')
+    def status_email_sent(self, obj):
+        """Whether the accept/reject notification for the current status was delivered."""
+        return obj.status_email_sent_at is not None
+
+
+@admin.register(RegionalGrantCountryAssignment)
+class RegionalGrantCountryAssignmentAdmin(admin.ModelAdmin):
+    list_display = ('reviewer', 'country', 'assigned_at', 'assigned_by')
+    list_filter = ('country',)
+    search_fields = ('reviewer__username', 'reviewer__email')
+    autocomplete_fields = ('reviewer',)
+    readonly_fields = ('assigned_at',)
+    actions = ('notify_reviewers_action',)
+
+    def save_model(self, request, obj, form, change):
+        if obj.assigned_by_id is None:
+            obj.assigned_by = request.user
+        super().save_model(request, obj, form, change)
+
+    def notify_reviewers_action(self, request, queryset):
+        """Email each selected reviewer their full, current list of assigned countries."""
+        from .email_notifications import send_regional_grant_reviewer_assignment_email
+
+        reviewer_ids = queryset.values_list('reviewer_id', flat=True).distinct()
+        country_choices = dict(RegionalGrantCountryAssignment._meta.get_field('country').choices)
+        sent = 0
+        skipped = 0
+        for reviewer in User.objects.filter(pk__in=reviewer_ids):
+            assigned_countries = RegionalGrantCountryAssignment.objects.filter(
+                reviewer=reviewer
+            ).values_list('country', flat=True)
+            country_labels = [country_choices.get(c, c) for c in assigned_countries]
+            if not reviewer.email:
+                skipped += 1
+                continue
+            if send_regional_grant_reviewer_assignment_email(reviewer, country_labels):
+                sent += 1
+            else:
+                skipped += 1
+
+        if sent:
+            self.message_user(
+                request,
+                f"Sent assignment notification email to {sent} reviewer(s).",
+                messages.SUCCESS,
+            )
+        if skipped:
+            self.message_user(
+                request,
+                f"{skipped} reviewer(s) skipped — missing email address or send failure.",
+                messages.WARNING,
+            )
+
+    notify_reviewers_action.short_description = "Email selected reviewers about their country assignment(s)"
+
+
+@admin.register(RegionalGrantReviewAssignment)
+class RegionalGrantReviewAssignmentAdmin(admin.ModelAdmin):
+    list_display = ('reviewer', 'application', 'assigned_at', 'assigned_by', 'has_review')
+    list_filter = ('assigned_at',)
+    search_fields = (
+        'reviewer__username',
+        'reviewer__email',
+        'application__full_name',
+        'application__email',
+    )
+    autocomplete_fields = ('reviewer', 'application', 'assigned_by')
+    readonly_fields = ('assigned_at',)
+
+    def save_model(self, request, obj, form, change):
+        if obj.assigned_by_id is None:
+            obj.assigned_by = request.user
+        super().save_model(request, obj, form, change)
+
+    def has_review(self, obj):
+        return RegionalGrantApplicationReview.objects.filter(
+            reviewer=obj.reviewer, application=obj.application
+        ).exists()
+    has_review.boolean = True
+    has_review.short_description = 'Reviewed?'
 
 
 @admin.register(FinAidApplicationReview)
@@ -492,4 +760,18 @@ class FinAidApplicationReviewAdmin(admin.ModelAdmin):
         'comments',
     )
     readonly_fields = ('created_at',)
+    autocomplete_fields = ('application', 'reviewer')
+
+
+@admin.register(RegionalGrantApplicationReview)
+class RegionalGrantApplicationReviewAdmin(admin.ModelAdmin):
+    list_display = ('application', 'reviewer', 'recommendation', 'total_score', 'created_at')
+    list_filter = ('recommendation',)
+    search_fields = (
+        'application__full_name',
+        'application__email',
+        'reviewer__username',
+        'comments',
+    )
+    readonly_fields = ('created_at', 'total_score')
     autocomplete_fields = ('application', 'reviewer')

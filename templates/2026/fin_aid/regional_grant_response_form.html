@@ -1,0 +1,192 @@
+{% extends "base.html" %}
+{% load i18n static crispy_forms_tags %}
+{% block meta_title %}{% trans "Respond to regional grant offer | PyCon Africa 2026" %}{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<style>
+  .response-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .response-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-size: 0.9375rem;
+    color: #374151;
+    padding: 1rem 1.25rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    transition: border-color 0.15s, background-color 0.15s;
+  }
+  .response-option:hover {
+    border-color: #0d9488;
+  }
+  .response-option:has(input:checked) {
+    background-color: #f0fdfa;
+    border-color: #0d9488;
+  }
+  .response-option input[type="radio"] {
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: #0d9488;
+    flex-shrink: 0;
+  }
+  #grant-response-submit.is-loading {
+    pointer-events: none;
+    opacity: 0.85;
+    cursor: wait;
+  }
+</style>
+
+<div class="auth-page-content min-h-screen bg-gray-50">
+  <section class="max-w-3xl mx-auto px-4 py-6 sm:py-8 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-4 sm:p-6 lg:p-8">
+      <div class="mb-6">
+        <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">{% trans "Respond to your regional grant offer" %}</h1>
+      </div>
+
+      {% if messages %}
+        {% for message in messages %}
+          <div class="mb-6 rounded-lg px-4 py-3 {% if message.tags == 'success' %}bg-green-50 border border-green-200 text-green-900{% elif message.tags == 'warning' %}bg-amber-50 border border-amber-200 text-amber-900{% elif message.tags == 'info' %}bg-sky-50 border border-sky-200 text-sky-900{% else %}bg-gray-50 border border-gray-200{% endif %}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <div class="mb-6">
+        <div class="rounded-lg border border-gray-100 bg-gray-50 px-4 py-3">
+          <p class="text-sm text-gray-600">
+            <span class="font-medium text-gray-900">{{ application.full_name }}</span>
+            &middot;
+            {{ application.get_application_status_display }}
+          </p>
+        </div>
+      </div>
+
+      {% if application.user_response == 'P' %}
+        <h2 class="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
+          {% trans "Please confirm your response" %}
+        </h2>
+        <p class="text-sm text-gray-600 mb-6 leading-relaxed">
+          {% trans "Congratulations! You have been awarded a Travel Opportunity Grant. Please let us know whether you can attend PyCon Africa with this grant. To accept, you'll need to upload proof of your PyCon Africa conference ticket registration." %}
+        </p>
+
+        <form method="post" enctype="multipart/form-data" action="{% url 'pycon2026:regional_grant_respond' %}" class="grant-response-form space-y-4">
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+          <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+            <ul class="list-disc list-inside space-y-1">
+              {% for error in form.non_field_errors %}
+              <li>{{ error }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+          {% for field in form %}
+            {% if field.errors %}
+            <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-2 text-sm text-red-800">
+              <strong>{{ field.label }}:</strong> {{ field.errors|striptags }}
+            </div>
+            {% endif %}
+          {% endfor %}
+
+          <div class="grant-response-radios">
+            <p class="block text-sm font-medium text-gray-700 mb-4">{% trans "Your response" %} <span class="text-red-500">*</span></p>
+            <div class="response-options">
+              {% for radio in form.user_response %}
+              <label class="response-option">
+                {{ radio.tag }}
+                <span>{{ radio.choice_label }}</span>
+              </label>
+              {% endfor %}
+            </div>
+          </div>
+
+          <div>
+            <label for="{{ form.proof_of_ticket.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">
+              {% trans "Proof of ticket registration" %}
+            </label>
+            {{ form.proof_of_ticket }}
+            <p class="mt-1 text-xs text-gray-500">{{ form.proof_of_ticket.help_text }}</p>
+            <p id="proof-required-hint" class="mt-2 text-xs text-red-600 hidden">
+              {% trans "Please upload proof of your ticket registration to accept this grant." %}
+            </p>
+          </div>
+
+          <button
+            type="submit"
+            id="grant-response-submit"
+            class="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold rounded-lg bg-pycon-teal text-white hover:bg-teal-700 shadow-sm hover:shadow disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-pycon-teal"
+            data-loading-text="{% trans 'Submitting…' %}"
+          >
+            <span class="grant-response-submit__label">{% trans "Submit response" %}</span>
+          </button>
+        </form>
+      {% else %}
+        <div class="rounded-lg border border-gray-100 bg-gray-50 px-4 py-3 text-sm text-gray-700">
+          <p class="font-medium text-gray-900 mb-1">{% trans "Your response" %}</p>
+          <p>{{ application.get_user_response_display }}</p>
+          {% if application.user_response == 'A' %}
+          <p class="mt-3 text-gray-600">
+            {% trans "Thank you for accepting! The grants team will be in touch with next steps." %}
+          </p>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  var form = document.querySelector("form.grant-response-form");
+  if (!form) return;
+  var btn = document.getElementById("grant-response-submit");
+  if (!btn) return;
+
+  var acceptRadio = form.querySelector('input[name="user_response"][value="A"]');
+  var responseRadios = form.querySelectorAll('input[name="user_response"]');
+  var fileInput = document.getElementById("id_proof_of_ticket");
+  var hint = document.getElementById("proof-required-hint");
+
+  function proofRequiredAndMissing() {
+    return !!(acceptRadio && acceptRadio.checked && fileInput && fileInput.files.length === 0);
+  }
+
+  function updateSubmitState() {
+    var blocked = proofRequiredAndMissing();
+    btn.disabled = blocked;
+    if (hint) hint.classList.toggle("hidden", !blocked);
+  }
+
+  responseRadios.forEach(function (radio) {
+    radio.addEventListener("change", updateSubmitState);
+  });
+  if (fileInput) fileInput.addEventListener("change", updateSubmitState);
+  updateSubmitState();
+
+  form.addEventListener("submit", function (event) {
+    if (proofRequiredAndMissing()) {
+      event.preventDefault();
+      updateSubmitState();
+      return;
+    }
+    if (btn.disabled) return;
+    btn.disabled = true;
+    btn.classList.add("is-loading");
+    btn.setAttribute("aria-busy", "true");
+    var loadingText = btn.getAttribute("data-loading-text") || "Submitting…";
+    btn.innerHTML =
+      '<span class="inline-flex items-center justify-center gap-2">' +
+      '<i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>' +
+      "<span>" + loadingText + "</span></span>";
+  });
+})();
+</script>
+{% endblock %}
