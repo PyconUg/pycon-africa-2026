@@ -247,6 +247,23 @@ class GrantTypeFilter(admin.SimpleListFilter):
             return queryset.filter(ticket_code='', travel_grant_amount__isnull=True)
 
 
+class StatusEmailSentFilter(admin.SimpleListFilter):
+    title = 'status email sent'
+    parameter_name = 'status_email_sent'
+
+    def lookups(self, request, model_admin):
+        return [
+            ('yes', 'Sent'),
+            ('no', 'Not sent'),
+        ]
+
+    def queryset(self, request, queryset):
+        if self.value() == 'yes':
+            return queryset.filter(status_email_sent_at__isnull=False)
+        if self.value() == 'no':
+            return queryset.filter(status_email_sent_at__isnull=True)
+
+
 class FinAidApplicationReviewInline(admin.TabularInline):
     model = FinAidApplicationReview
     extra = 0
@@ -254,8 +271,15 @@ class FinAidApplicationReviewInline(admin.TabularInline):
     readonly_fields = ('reviewer', 'recommendation', 'total_score', 'comments', 'created_at')
 
 
+class StatusEmailSentDisplayMixin:
+    @admin.display(boolean=True, description='Email sent', ordering='status_email_sent_at')
+    def status_email_sent(self, obj):
+        """Whether the accept/reject notification for the current status was delivered."""
+        return obj.status_email_sent_at is not None
+
+
 @admin.register(OpportunityGrantApplication)
-class OpportunityGrantApplicationAdmin(ImportExportModelAdmin):
+class OpportunityGrantApplicationAdmin(StatusEmailSentDisplayMixin, ImportExportModelAdmin):
     resource_class = OpportunityGrantApplicationResource
     list_display = (
         'id',
@@ -267,17 +291,18 @@ class OpportunityGrantApplicationAdmin(ImportExportModelAdmin):
         'support_type',
         'ticket_code',
         'travel_grant_amount',
+        'status_email_sent',
         'submitted_at',
     )
     list_editable = ('ticket_code', 'travel_grant_amount')
-    list_filter = ('status', 'user_response', 'support_type', 'fin_aid', GrantTypeFilter, TicketCodeFilter, TravelGrantFilter)
+    list_filter = ('status', 'user_response', 'support_type', 'fin_aid', GrantTypeFilter, TicketCodeFilter, TravelGrantFilter, StatusEmailSentFilter)
     search_fields = (
         'user__username',
         'user__email',
         'legal_name',
         'country',
     )
-    readonly_fields = ('submitted_at', 'updated_at')
+    readonly_fields = ('submitted_at', 'updated_at', 'status_email_sent_at')
     inlines = (FinAidApplicationReviewInline,)
     autocomplete_fields = ('user', 'fin_aid')
     actions = (
@@ -325,7 +350,7 @@ class OpportunityGrantApplicationAdmin(ImportExportModelAdmin):
         ),
         (
             'Timestamps',
-            {'fields': ('submitted_at', 'updated_at')},
+            {'fields': ('submitted_at', 'updated_at', 'status_email_sent_at')},
         ),
     )
 
@@ -474,23 +499,6 @@ class OpportunityGrantApplicationAdmin(ImportExportModelAdmin):
     send_ticket_code_email_action.short_description = "Send ticket code email to accepted applicants (selected)"
 
 
-class StatusEmailSentFilter(admin.SimpleListFilter):
-    title = 'status email sent'
-    parameter_name = 'status_email_sent'
-
-    def lookups(self, request, model_admin):
-        return [
-            ('yes', 'Sent'),
-            ('no', 'Not sent'),
-        ]
-
-    def queryset(self, request, queryset):
-        if self.value() == 'yes':
-            return queryset.filter(status_email_sent_at__isnull=False)
-        if self.value() == 'no':
-            return queryset.filter(status_email_sent_at__isnull=True)
-
-
 class RegionalGrantApplicationReviewInline(admin.TabularInline):
     model = RegionalGrantApplicationReview
     extra = 0
@@ -499,7 +507,7 @@ class RegionalGrantApplicationReviewInline(admin.TabularInline):
 
 
 @admin.register(RegionalGrantApplication)
-class RegionalGrantApplicationAdmin(admin.ModelAdmin):
+class RegionalGrantApplicationAdmin(StatusEmailSentDisplayMixin, admin.ModelAdmin):
     list_display = (
         'id',
         'full_name',
@@ -666,11 +674,6 @@ class RegionalGrantApplicationAdmin(admin.ModelAdmin):
     @admin.display(boolean=True, description='Proof uploaded')
     def has_proof_of_ticket(self, obj):
         return bool(obj.proof_of_ticket)
-
-    @admin.display(boolean=True, description='Email sent', ordering='status_email_sent_at')
-    def status_email_sent(self, obj):
-        """Whether the accept/reject notification for the current status was delivered."""
-        return obj.status_email_sent_at is not None
 
 
 @admin.register(RegionalGrantCountryAssignment)

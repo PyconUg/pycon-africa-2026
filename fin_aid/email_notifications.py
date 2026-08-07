@@ -468,6 +468,7 @@ def send_opportunity_grant_status_notification(application_pk, new_status: str) 
 
     try:
         msg.send(fail_silently=False)
+        OpportunityGrantApplication.objects.filter(pk=application_pk).update(status_email_sent_at=timezone.now())
         return True
     except Exception:
         logger.exception(
