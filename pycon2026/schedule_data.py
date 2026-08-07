@@ -245,7 +245,7 @@ SCHEDULE_DATA = [
                 {"title": "Cyber Security Workshop", "speaker": "", "label": "Tutorial"},
                 {"title": "Refugee Program", "speaker": ""},
             ]},
-            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote"},
+            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote\nThe Evolution of Python: Lessons from Its Creator (Guido van Rossum)"},
             {"time": "16:50 – 17:20", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
                 {"title": "Your Code is Great...but Who Knows?", "speaker": "Sarah Muwanguzi"},
                 {"title": "Python for Impact: Building Climate Solutions Rooted in African Communities", "speaker": "Tendai Jack"},
