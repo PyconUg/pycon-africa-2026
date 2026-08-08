@@ -32,9 +32,9 @@
       {% for tier in sponsors_data %}
         {% for sponsor in tier.sponsors %}
           <div id="{{ sponsor.name|slugify }}" class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden mb-8">
-            <div class="bg-amber-50 border-b border-gray-200 flex items-center justify-center px-8 py-10">
+            <div class="bg-amber-50 border-b border-gray-200 flex items-center justify-center px-8 py-8">
               <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer">
-                <img src="{% static sponsor.logo %}" alt="{{ sponsor.name }}" class="max-h-14 max-w-[220px] w-auto object-contain" />
+                <img src="{% static sponsor.logo %}" alt="{{ sponsor.name }}" class="max-h-16 max-w-[220px] w-auto object-contain" />
               </a>
             </div>
             <div class="p-8">
