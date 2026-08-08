@@ -8,28 +8,57 @@
 
 <div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
   <h1 class="text-5xl font-bold text-gray-900 text-center">Our Sponsors</h1>
+  <p class="text-gray-600 text-center max-w-2xl mx-auto mt-4">
+    PyCon Africa 2026 is made possible by the support of organisations who share our
+    work growing the Python community across Africa.
+  </p>
 </div>
 
 <div class="max-w-7xl mx-auto px-4 pb-16">
   <div class="max-w-4xl mx-auto">
 
     {% if has_sponsors %}
+      <!-- Quick jump to sponsor -->
+      <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-12 pb-6 border-b border-gray-200">
+        {% for tier in sponsors_data %}
+          {% for sponsor in tier.sponsors %}
+            <a href="#{{ sponsor.name|slugify }}" class="text-sm font-medium text-gray-700 hover:text-pycon-teal">
+              &raquo; {{ sponsor.name }}
+            </a>
+          {% endfor %}
+        {% endfor %}
+      </div>
+
       {% for tier in sponsors_data %}
-        {% if tier.sponsors %}
-          <div class="mb-16">
-            <h2 class="text-2xl font-bold text-gray-900 text-center mb-8">{{ tier.label }}</h2>
-            <div class="flex flex-wrap justify-center gap-8">
-              {% for sponsor in tier.sponsors %}
-                <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer"
-                   class="flex items-center justify-center bg-white border border-gray-200 rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow"
-                   style="min-width: 200px; max-width: 280px;">
-                  <img src="{% static sponsor.logo %}" alt="{{ sponsor.name }}"
-                       class="max-h-24 w-auto object-contain" />
-                </a>
-              {% endfor %}
+        {% for sponsor in tier.sponsors %}
+          <div id="{{ sponsor.name|slugify }}" class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden mb-8">
+            <div class="bg-amber-50 border-b border-gray-200 flex items-center justify-center px-8 py-8">
+              <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer">
+                <img src="{% static sponsor.logo %}" alt="{{ sponsor.name }}" class="max-h-16 max-w-[220px] w-auto object-contain" />
+              </a>
+            </div>
+            <div class="p-8">
+              <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                <h2 class="text-2xl font-bold text-gray-900">
+                  <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer" class="hover:text-pycon-teal">
+                    {{ sponsor.name }}
+                  </a>
+                </h2>
+                <span class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-white rounded-full px-4 py-1.5 whitespace-nowrap" style="background-color: #177e89;">
+                  <i class="fa fa-star" aria-hidden="true"></i>
+                  {{ tier.label }}
+                </span>
+              </div>
+              {% if sponsor.description %}
+                <div class="text-gray-700 text-base leading-relaxed mb-6 space-y-4">{{ sponsor.description|linebreaks }}</div>
+              {% endif %}
+              <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer"
+                 class="inline-flex items-center justify-center font-semibold py-2 px-6 rounded-lg text-white hover:shadow-md transition-shadow" style="background-color: #177e89;">
+                Visit {{ sponsor.name }}
+              </a>
             </div>
           </div>
-        {% endif %}
+        {% endfor %}
       {% endfor %}
 
       <div class="text-center border-t border-gray-200 pt-12 mt-4">
