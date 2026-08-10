@@ -11,59 +11,6 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static '2026/css/custom.css' %}">
-<style>
-  .home-bottom-sponsors {
-    background: #ffffff;
-    padding: 56px 16px 44px;
-    border-top: 1px solid #e5e7eb;
-    text-align: center;
-  }
-
-  .home-bottom-sponsors-inner {
-    max-width: 760px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .home-bottom-sponsors-title {
-    color: #9ca3af;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 28px;
-  }
-
-  .home-bottom-sponsors-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 20px 28px;
-  }
-
-  .home-bottom-sponsor-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    transition: transform 0.2s ease;
-  }
-
-  .home-bottom-sponsor-link:hover {
-    transform: translateY(-2px);
-  }
-
-  .home-bottom-sponsor-logo {
-    height: 72px;
-    width: auto;
-    max-width: 240px;
-    object-fit: contain;
-    display: block;
-  }
-
-  .home-bottom-sponsors-cta {
-    margin-top: 24px;
-  }
-</style>
 {% endblock %}
 
 {% block content %}
@@ -90,9 +37,10 @@
         height="auto" />
     </div>
 
-    <div class="flex justify-center flex-col text-center hero-text-container" style="margin-top: -2rem !important;">
+    <div class="flex justify-center flex-col text-center hero-text-container">
       <!-- <h1 class="hero-title">PyCon Africa 2026</h1> -->
-      <h2 class="hero-subtitle mt-10">Code Community and Opportunity</h2>
+      <h2 class="hero-subtitle">Python Powering African Innovation</h2>
+      <h3 class="hero-tagline">Code Community and Opportunity</h3>
       <p class="hero-description">Build and Lead the Future with Python</p>
     </div>
 
@@ -112,7 +60,7 @@
 
       <!-- Venue Section -->
       <div class="flex items-center gap-4">
-        <i class="far fa-map-marker-alt text-white" style="font-size: 50px;" aria-hidden="true"></i>
+        <i class="fas fa-map-marker-alt text-white" style="font-size: 50px;" aria-hidden="true"></i>
         <div class="flex flex-col leading-tight">
           <span class="font-medium whitespace-nowrap" style="font-size: 18px;">Speke Resort Munyonyo</span>
           <span class="font-medium whitespace-nowrap" style="font-size: 18px;">Kampala Uganda</span>
@@ -359,35 +307,6 @@
     </div>
 </section>
 
-
-<section class="home-bottom-sponsors">
-  <div class="home-bottom-sponsors-inner">
-    <h2 class="home-bottom-sponsors-title">Our Sponsors</h2>
-
-    <div class="home-bottom-sponsors-grid">
-      {% for tier in sponsors_data %}
-        {% for sponsor in tier.sponsors %}
-          <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer" class="home-bottom-sponsor-link">
-            <img src="{% static sponsor.logo %}" alt="{{ sponsor.name }}" class="home-bottom-sponsor-logo" />
-          </a>
-        {% endfor %}
-      {% endfor %}
-    </div>
-
-  </div>
-</section>
-
-<section class="py-10">
-  <div class="max-w-3xl mx-auto px-4 text-center">
-    <p class="text-gray-700 text-lg mb-2 font-medium">Interested in sponsoring PyCon Africa 2026?</p>
-    <a href="/2026/sponsor-us/"
-       class="inline-flex items-center gap-2 font-semibold py-3 px-8 rounded-lg text-white hover:shadow-md transition-shadow"
-       style="background-color: #177e89; text-decoration: none;">
-      <i class="fa fa-handshake" aria-hidden="true"></i>
-      Become a Sponsor
-    </a>
-  </div>
-</section>
 
 <!-- Commented out sections: About, Tickets, and Sponsors -->
 <!--

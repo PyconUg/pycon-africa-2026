@@ -1,6 +1,57 @@
 {% load static %}
 
 <style>
+  .footer-sponsors {
+    background: #ffffff;
+    padding: 56px 16px 44px;
+    text-align: center;
+  }
+
+  .footer-sponsors-inner {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .footer-sponsors-title {
+    color: #9ca3af;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 28px;
+  }
+
+  .footer-sponsors-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px 28px;
+  }
+
+  .footer-sponsor-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+
+  .footer-sponsor-link:hover {
+    transform: translateY(-2px);
+  }
+
+  .footer-sponsor-logo {
+    height: 72px;
+    width: auto;
+    max-width: 240px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .footer-sponsors-cta {
+    margin-top: 24px;
+  }
+
   @media (max-width: 768px) {
     .copyright {
       flex-direction: column !important;
@@ -19,6 +70,35 @@
   }
 </style>
 <footer class="footer">
+  {% if has_sponsors %}
+  <section class="footer-sponsors">
+    <div class="footer-sponsors-inner">
+      <h2 class="footer-sponsors-title">Our Sponsors</h2>
+
+      <div class="footer-sponsors-grid">
+        {% for tier in sponsors_data %}
+          {% for sponsor in tier.sponsors %}
+            <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer" class="footer-sponsor-link">
+              <img src="{% static sponsor.logo %}" alt="{{ sponsor.name }}" class="footer-sponsor-logo" />
+            </a>
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="footer-sponsors-cta py-10">
+    <div class="max-w-3xl mx-auto px-4 text-center">
+      <p class="text-gray-700 text-lg mb-2 font-medium">Interested in sponsoring PyCon Africa 2026?</p>
+      <a href="/2026/sponsor-us/"
+         class="inline-flex items-center gap-2 font-semibold py-3 px-8 rounded-lg text-white hover:shadow-md transition-shadow"
+         style="background-color: #177e89; text-decoration: none;">
+        <i class="fa fa-handshake" aria-hidden="true"></i>
+        Become a Sponsor
+      </a>
+    </div>
+  </section>
+  {% endif %}
   <!-- <div class="footer-container">
     <div class="footer-grid" style="display: flex; flex-direction: row; align-items: flex-start; gap: 2.5rem; flex-wrap: wrap; padding: 1rem 0;">
       <div class="footer-section footer-about" style="flex-shrink: 0;">

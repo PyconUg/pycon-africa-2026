@@ -163,6 +163,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "pycon2026.context_processors.sponsors",
             ],
         },
     },
