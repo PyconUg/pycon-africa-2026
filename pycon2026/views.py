@@ -8,7 +8,7 @@ SPONSORS_2026 = [
         "sponsors": [
             {
                 "name": "Google",
-                "logo": "2026/img/sponsors/google.png",
+                "logo": "2026/img/sponsors/google-for-developers.png",
                 "website": "https://www.google.com/",
                 "description": "Google has long supported the Python language and its community, from core contributions to CPython to backing community programs like Google Summer of Code that bring new contributors into open source projects.\n\nMany of the tools Python developers rely on day to day, from TensorFlow to gRPC to Google Cloud's Python client libraries, come out of Google's broader investment in developer tooling and open source.\n\nWe're grateful for Google's support of PyCon Africa 2026 as we grow the Python community across the continent.",
             },
