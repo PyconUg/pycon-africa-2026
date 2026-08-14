@@ -252,8 +252,8 @@ def django_girls(request):
 
 def persons_of_concern(request):
     context = {
-        'title': 'Refugee Persons of Concern @ PyCon Africa 2026',
-        'description': 'Refugee Persons of Concern is a program within PyCon Africa 2026 that supports refugees and migrants in the Python ecosystem across the continent.',
+        'title': 'Python Without Borders @ PyCon Africa 2026',
+        'description': 'Python Without Borders is a dedicated Python and Django workshop for refugees and persons of concern at PyCon Africa 2026, organised by PyLadies Kampala.',
     }
     template = '2026/co-events/persons_of_concern.html'
     return render(request, template, context)  
@@ -291,8 +291,8 @@ def community(request):
             "url": "/2026/co-events/django-girls/",
         },
         {
-            "name": "PyLadies Arua Refugee Workshop",
-            "description": "A full-day hands-on Python and web development workshop for refugees and underserved youth, organised by PyLadies Kampala.",
+            "name": "Python Without Borders",
+            "description": "A dedicated Python and Django workshop for refugees and persons of concern, organised by PyLadies Kampala.",
             "url": "/2026/co-events/persons_of_concern/",
         },
         {

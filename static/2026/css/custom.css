@@ -685,6 +685,18 @@ header[class*="bg-black"] {
     color: #ffffff !important;
 }
 
+.btn-teal-disabled {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #9ca3af !important;
+    background-color: #e5e7eb !important;
+    border-radius: 0.5rem;
+    text-decoration: none !important;
+    cursor: not-allowed;
+}
+
 .promo-buttons {
     display: flex;
     flex-direction: column;
