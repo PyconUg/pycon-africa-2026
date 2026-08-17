@@ -22,6 +22,11 @@
         <i class="fas fa-map-marker-alt text-pycon-teal"></i> Speke Resort Munyonyo, Kampala, Uganda
       </span>
     </div>
+    <div class="flex flex-wrap items-center justify-center gap-3 mt-6">
+      <!-- Donate button hidden until a donation link is available: <a href="#support-the-program" class="btn-teal-sm">Donate</a> -->
+      <a href="#donate-an-old-laptop" class="btn-teal-sm">Give an Old Laptop</a>
+      <a href="https://docs.google.com/forms/d/1sFK3X03-8Vra_uHSwJL8H9D4_dwNpupdOtEYbvDk7pA/viewform?edit_requested=true" target="_blank" rel="noopener noreferrer" class="btn-teal-sm">Partner with Us</a>
+    </div>
   </div>
 </div>
 
@@ -37,6 +42,40 @@
         connect with the wider technology community.
       </p>
       <p class="text-lg leading-relaxed font-semibold">Participation is free for selected participants.</p>
+    </div>
+
+    <!-- Donate an Old Laptop -->
+    <div id="donate-an-old-laptop" class="mb-12 rounded-lg bg-gray-50 border border-gray-200 px-6 py-8">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Donate an Old Laptop</h2>
+        <p class="text-gray-600">Give a Laptop, Give an Opportunity</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-4">
+        A huge thank you to our friends at the Recurse Center who have already donated several
+        laptops to support this program!
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        We&rsquo;re still accepting more machines to help expand the program and support learners
+        beyond the current cohort.
+      </p>
+      <p class="text-lg leading-relaxed mb-6">
+        Many of the refugees participating in our programs come from refugee camps and do not have
+        access to laptops or other devices they can use for learning. Your old laptop could give
+        someone the opportunity to learn, build skills and create a new future.
+      </p>
+
+      <div class="rounded-lg overflow-hidden border border-gray-200 mb-6">
+        <img src="{% static '2026/img/diversity/refugee1.jpg' %}" alt="Participants learning on donated laptops during a training session" class="w-full max-h-96 object-cover">
+      </div>
+
+      <div class="text-center rounded-lg border border-gray-200 bg-white px-8 py-8">
+        <p class="text-gray-700 mb-3">Have a laptop you no longer use? Please consider donating it.</p>
+        <p class="text-gray-900 font-semibold mb-1">
+          <i class="fas fa-envelope text-pycon-teal mr-1"></i>
+          Email <a href="mailto:kampala@pyladies.com" class="text-pycon-teal hover:underline">kampala@pyladies.com</a> for instructions on how to send your machine.
+        </p>
+        <p class="text-gray-500 text-sm mt-3">Every device makes a difference.</p>
+      </div>
     </div>
 
     <!-- About the Program -->
@@ -93,17 +132,15 @@
       </p>
 
       <!-- Photo: Participants during a practical coding session -->
-      <!--
       <p class="font-semibold text-gray-900 mb-3">Participants during a practical coding session.</p>
       <div class="grid grid-cols-2 gap-3 mb-6">
         <div class="rounded-lg overflow-hidden border border-gray-200">
-          <img src="{% static '2026/img/persons_of_concern/Arua1.jpg' %}" alt="Participants during the Arua Web Development Bootcamp" class="w-full h-40 object-cover">
+          <img src="{% static '2026/img/diversity/refugee2.jpg' %}" alt="Participants during the Arua Web Development Bootcamp" class="w-full h-40 object-cover">
         </div>
         <div class="rounded-lg overflow-hidden border border-gray-200">
-          <img src="{% static '2026/img/persons_of_concern/Arua2.jpg' %}" alt="A participant coding during the Arua bootcamp" class="w-full h-40 object-cover">
+          <img src="{% static '2026/img/diversity/refugee3.jpg' %}" alt="A participant coding during the Arua bootcamp" class="w-full h-40 object-cover">
         </div>
       </div>
-      -->
 
       <p class="text-sm">
         <a href="https://medium.com/@asiobrenda01/pyladies-kampala-annual-report-2025-c7135351f111"
@@ -312,10 +349,7 @@
       </p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-          <!-- <img src="{% static '2026/img/persons_of_concern/JonathanSsali.jpg' %}" alt="Jonathan Ssali" class="w-16 h-16 rounded-full object-cover mb-4"> -->
-          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-            <i class="fas fa-user text-pycon-teal text-xl"></i>
-          </div>
+          <img src="{% static '2026/img/diversity/Ssali.png' %}" alt="Jonathan Ssali" class="w-16 h-16 rounded-full object-cover mb-4">
           <h3 class="font-semibold text-gray-900 mb-1">Jonathan Ssali</h3>
           <p class="text-pycon-teal text-sm font-medium mb-3">Workshop Facilitator</p>
           <p class="text-gray-600 text-sm mb-3">Jonathan will lead practical sessions covering:</p>
@@ -328,10 +362,7 @@
           </ul>
         </div>
         <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
-          <!-- <img src="{% static '2026/img/persons_of_concern/JamilLutaaya.jpg' %}" alt="Jamil Lutaaya" class="w-16 h-16 rounded-full object-cover mb-4"> -->
-          <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-            <i class="fas fa-user text-pycon-teal text-xl"></i>
-          </div>
+          <img src="{% static '2026/img/diversity/Jamil.jpg' %}" alt="Jamil Lutaaya" class="w-16 h-16 rounded-full object-cover mb-4">
           <h3 class="font-semibold text-gray-900 mb-1">Jamil Lutaaya</h3>
           <p class="text-pycon-teal text-sm font-medium mb-3">Workshop Facilitator</p>
           <p class="text-gray-600 text-sm mb-3">Jamil will lead practical sessions covering:</p>
@@ -432,7 +463,7 @@
     </div>
 
     <!-- Support the Program -->
-    <div class="mb-12">
+    <div id="support-the-program" class="mb-12">
       <div class="text-center mb-6">
         <h2 class="text-2xl font-bold text-gray-900 mb-1">Support the Program</h2>
         <p class="text-gray-600">Help Us Make Participation Possible</p>
@@ -481,11 +512,13 @@
           <p class="text-gray-900 text-sm">Future learning activities</p>
         </div>
       </div>
+      <!-- Donate CTA hidden until a donation link is available:
       <div class="text-center rounded-lg border border-gray-200 bg-gray-50 px-8 py-10">
         <p class="text-gray-700 mb-6">Every contribution helps us make the workshop more accessible to the people it is designed for.</p>
         <span class="btn-teal-disabled" aria-disabled="true">Donate to the Program</span>
         <p class="text-gray-500 text-xs mt-3">Donations open soon.</p>
       </div>
+      -->
     </div>
 
     <!-- Your Support Can Continue the Work -->
@@ -513,7 +546,7 @@
     </div>
 
     <!-- Sponsor the Program -->
-    <div class="mb-12">
+    <div id="sponsor-the-program" class="mb-12">
       <div class="text-center mb-6">
         <h2 class="text-2xl font-bold text-gray-900 mb-1">Sponsor the Program</h2>
         <p class="text-gray-600">Partner With Python Without Borders</p>
@@ -630,8 +663,10 @@
         </div>
       </div>
       <div class="text-center">
-        <span class="btn-teal-disabled" aria-disabled="true">Become a Partner</span>
-        <p class="text-gray-500 text-xs mt-3">Partnership applications open soon.</p>
+        <a href="https://docs.google.com/forms/d/1sFK3X03-8Vra_uHSwJL8H9D4_dwNpupdOtEYbvDk7pA/viewform?edit_requested=true"
+           target="_blank" rel="noopener noreferrer" class="btn-teal">
+          Become a Partner
+        </a>
       </div>
     </div>
 
@@ -646,32 +681,48 @@
         who have helped us connect with and create learning opportunities for refugee communities.
       </p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <div class="bg-white rounded-lg p-5 border border-gray-200">
-          <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-1">Organizing Community</p>
-          <p class="font-semibold text-gray-900">PyLadies Kampala</p>
+        <div class="bg-white rounded-lg p-5 border border-gray-200 flex flex-col">
+          <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-3">Organizing Community</p>
+          <a href="https://pyladies.com/locations/kampala/" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center">
+            <img src="{% static '2026/img/diversity/pyladies_logo.png' %}" alt="PyLadies Kampala" class="max-h-16 w-full object-contain">
+          </a>
         </div>
         <div class="bg-white rounded-lg p-5 border border-gray-200">
           <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-1">Conference</p>
           <p class="font-semibold text-gray-900">PyCon Africa 2026</p>
         </div>
-        <div class="bg-white rounded-lg p-5 border border-gray-200">
-          <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-1">Community &amp; Mobilization</p>
-          <p class="font-semibold text-gray-900">WENDA</p>
+        <div class="bg-white rounded-lg p-5 border border-gray-200 flex flex-col">
+          <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-3">Community &amp; Mobilization</p>
+          <a href="https://www.wendawestnile.org/" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center">
+            <img src="{% static '2026/img/diversity/wenda.jpg' %}" alt="WENDA" class="max-h-16 w-full object-contain">
+          </a>
         </div>
-        <div class="bg-white rounded-lg p-5 border border-gray-200">
+        <div class="bg-white rounded-lg p-5 border border-gray-200 flex flex-col">
           <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-1">Previous Program Partners</p>
-          <p class="font-semibold text-gray-900">CodeStar West Nile &middot; Muni University</p>
+          <p class="font-semibold text-gray-900 mb-3">CodeStar West Nile</p>
+          <a href="https://www.muni.ac.ug/index.php/en/" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center">
+            <img src="{% static '2026/img/diversity/muni.png' %}" alt="Muni University" class="max-h-16 w-full object-contain">
+          </a>
         </div>
         <div class="bg-white rounded-lg p-5 border border-gray-200 md:col-span-2">
-          <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-1">Refugee Community Organizations</p>
-          <p class="font-semibold text-gray-900">SSURA &middot; CORA &middot; REDNET &middot; ISC SCORE</p>
+          <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-3">Refugee Community Organizations</p>
+          <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
+            <a href="https://ssuraug.org/" target="_blank" rel="noopener noreferrer">
+              <img src="{% static '2026/img/diversity/ssura_logo.png' %}" alt="SSURA" class="h-10 w-auto object-contain">
+            </a>
+            <a href="http://www.corasupport.org" target="_blank" rel="noopener noreferrer">
+              <img src="{% static '2026/img/diversity/CORA_Logo.png' %}" alt="CORA" class="h-10 w-auto object-contain">
+            </a>
+            <a href="https://i-scoreenterprise.com/" target="_blank" rel="noopener noreferrer">
+              <img src="{% static '2026/img/diversity/I-score-sback.webp' %}" alt="ISC SCORE" class="h-10 w-auto object-contain">
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61562410214376&amp;locale=en_GB" target="_blank" rel="noopener noreferrer" class="font-semibold text-gray-900 hover:text-pycon-teal hover:underline">REDNET</a>
+          </div>
         </div>
       </div>
-      <p class="text-gray-500 text-sm italic">Partner logos will be displayed where permission has been confirmed.</p>
     </div>
 
     <!-- Photo Gallery -->
-    <!--
     <div class="mb-12">
       <div class="text-center mb-8">
         <h2 class="text-2xl font-bold text-gray-900 mb-1">Photo Gallery</h2>
@@ -680,23 +731,22 @@
       </div>
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
         <div class="rounded-lg overflow-hidden border border-gray-200">
-          <img src="{% static '2026/img/persons_of_concern/Community1.jpg' %}" alt="Participants during a session" class="w-full h-48 object-cover">
+          <img src="{% static '2026/img/diversity/refugee1.jpg' %}" alt="Participants during a session" class="w-full h-48 object-cover">
         </div>
         <div class="rounded-lg overflow-hidden border border-gray-200">
-          <img src="{% static '2026/img/persons_of_concern/Community2.jpg' %}" alt="A facilitator presenting to participants" class="w-full h-48 object-cover">
+          <img src="{% static '2026/img/diversity/refugee2.jpg' %}" alt="A facilitator presenting to participants" class="w-full h-48 object-cover">
         </div>
         <div class="rounded-lg overflow-hidden border border-gray-200">
-          <img src="{% static '2026/img/persons_of_concern/Community3.jpg' %}" alt="Hands-on learning during the bootcamp" class="w-full h-48 object-cover">
+          <img src="{% static '2026/img/diversity/refugee3.jpg' %}" alt="Hands-on learning during the bootcamp" class="w-full h-48 object-cover">
         </div>
         <div class="rounded-lg overflow-hidden border border-gray-200">
-          <img src="{% static '2026/img/persons_of_concern/Community4.jpg' %}" alt="Participants networking" class="w-full h-48 object-cover">
+          <img src="{% static '2026/img/diversity/refugee4.jpg' %}" alt="Participants networking" class="w-full h-48 object-cover">
         </div>
         <div class="rounded-lg overflow-hidden border border-gray-200 col-span-2 md:col-span-1">
-          <img src="{% static '2026/img/persons_of_concern/Community5.jpg' %}" alt="Group photograph of participants" class="w-full h-48 object-cover">
+          <img src="{% static '2026/img/diversity/refugee5.jpg' %}" alt="Group photograph of participants" class="w-full h-48 object-cover">
         </div>
       </div>
     </div>
-    -->
 
     <!-- Get Involved -->
     <div class="mb-12 rounded-lg bg-gray-50 border border-gray-200 px-6 py-8">
