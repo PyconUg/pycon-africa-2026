@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load i18n static markdown_extras %}
-{% block meta_title %}{% trans "Women in Data Science (WiDS) | PyCon Africa 2026" %}{% endblock %}
+{% block meta_title %}{% trans "Women in Data Science (WiDS) Uganda 2026 | PyCon Africa 2026" %}{% endblock %}
 
 {% block content %}
 {% include '2026/navbar.html' %}
@@ -8,7 +8,25 @@
 <!-- Header -->
 <div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
   <div class="text-center">
-    <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">Women in Data Science (WiDS) Workshop &ndash; PyCon Africa 2026</h1>
+    <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Women in Data Science (WiDS) Uganda 2026</h1>
+    <p class="text-xl font-semibold text-pycon-teal mb-4">Women. Data. Technology. Community.</p>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+      Join us for a day of learning, sharing and connecting around data and technology.
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-3 mt-6 text-sm font-semibold text-gray-700">
+      <span class="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
+        <i class="far fa-calendar-alt text-pycon-teal"></i> Thursday, 8 October 2026
+      </span>
+      <span class="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
+        <i class="fas fa-map-marker-alt text-pycon-teal"></i> Speke Resort Munyonyo, Kampala, Uganda
+      </span>
+      <span class="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
+        <i class="fas fa-handshake text-pycon-teal"></i> In partnership with PyData Uganda
+      </span>
+      <span class="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
+        <i class="fas fa-globe-africa text-pycon-teal"></i> Part of PyCon Africa 2026
+      </span>
+    </div>
   </div>
 </div>
 
@@ -16,175 +34,481 @@
 <div class="max-w-7xl mx-auto px-4 pb-16">
   <div class="max-w-4xl mx-auto text-gray-900">
 
-    <!-- Welcome -->
+    <!-- Intro -->
     <div class="mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Welcome</h2>
       <p class="text-lg leading-relaxed mb-4">
-        If you are a woman who has ever been curious about data, how numbers tell stories, or
-        how technology is used to solve real problems in the world, this workshop is for you.
+        Women in Data Science (WiDS) Uganda is bringing women working, learning and exploring data
+        together during PyCon Africa 2026 in Kampala.
       </p>
       <p class="text-lg leading-relaxed mb-4">
-        We are excited to welcome you to the Women in Data Science (WiDS) Workshop at
-        PyCon Africa 2026, taking place at Speke Resort Munyonyo in Kampala, Uganda.
-      </p>
-      <p class="text-lg leading-relaxed mb-4">
-        This is a beginner friendly workshop. You do not need any background in data science or
-        programming. You only need curiosity and willingness to learn.
-      </p>
-      <p class="text-lg leading-relaxed mb-4">
-        During this workshop, you will be introduced to the world of data science in a simple and
-        practical way. You will see how data is used in everyday life, from understanding trends
-        in business to solving problems in health, sports, education, and more.
+        The program will create a space for participants to learn from experienced practitioners,
+        explore practical applications of data and technology, share experiences and connect with
+        others working across the data ecosystem.
       </p>
       <p class="text-lg leading-relaxed">
-        You will also meet other women who are starting their journey in technology and those
-        who are already working in the field. It is a space to learn, connect, and grow together.
+        This year&rsquo;s WiDS Uganda program is being organized in partnership with PyData Uganda,
+        bringing together the communities around data, Python and open-source technology.
       </p>
     </div>
 
-    <!-- What You Will Experience -->
+    <!-- About WiDS Uganda -->
     <div class="mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">What You Will Experience</h2>
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">About WiDS Uganda</h2>
+        <p class="text-gray-600">Creating Space for Women in Data</p>
+      </div>
       <p class="text-lg leading-relaxed mb-4">
-        This is not a lecture where you only listen. It is a hands on and interactive workshop
-        designed to help you understand by doing.
+        Women in Data Science (WiDS) Uganda is a community that brings together women interested
+        in data, technology and the opportunities created by data-driven work.
       </p>
-      <p class="text-lg leading-relaxed mb-4">By the end of the day, you will have:</p>
+      <p class="text-lg leading-relaxed mb-4">
+        The community provides a space for women to learn from one another, share knowledge,
+        build practical skills and connect with people working in different areas of the data
+        ecosystem.
+      </p>
+      <p class="text-lg leading-relaxed">
+        Through workshops, talks, community activities and networking, WiDS Uganda encourages more
+        women to participate, contribute and grow in data-related fields.
+      </p>
+    </div>
+
+    <!-- WiDS at PyCon Africa 2026 -->
+    <div class="mb-12 rounded-lg bg-gray-50 border border-gray-200 px-6 py-8">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">WiDS at PyCon Africa 2026</h2>
+        <p class="text-gray-600">Bringing Women in Data Together</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-4">
+        PyCon Africa brings together developers, data practitioners, researchers, students and
+        open-source contributors from across Africa and beyond.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        WiDS Uganda will be part of this wider gathering, creating a dedicated space for women
+        interested in data and technology to learn, share and connect.
+      </p>
+      <p class="text-lg leading-relaxed">
+        The program will bring together participants at different stages of their journey&mdash;from
+        those beginning to explore data to experienced practitioners looking to share their
+        knowledge and connect with the wider community.
+      </p>
+    </div>
+
+    <!-- Program at a Glance -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">The Program at a Glance</h2>
+        <p class="text-gray-600">Learning, Sharing &amp; Connecting</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="text-center bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+          <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-calendar-day text-pycon-teal text-xl"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">1 Day</h3>
+          <p class="text-gray-600 text-sm">Practical learning, conversations and community.</p>
+        </div>
+        <div class="text-center bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+          <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-venus text-pycon-teal text-xl"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Women in Technology</h3>
+          <p class="text-gray-600 text-sm">A space to learn, share and grow together.</p>
+        </div>
+        <div class="text-center bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+          <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-chalkboard-teacher text-pycon-teal text-xl"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Talks &amp; Workshops</h3>
+          <p class="text-gray-600 text-sm">Practical sessions, discussions and shared experiences.</p>
+        </div>
+        <div class="text-center bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+          <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-globe-africa text-pycon-teal text-xl"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">PyCon Africa 2026</h3>
+          <p class="text-gray-600 text-sm">Connecting with the wider Python community.</p>
+        </div>
+        <div class="text-center bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+          <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="fas fa-map-marker-alt text-pycon-teal text-xl"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Kampala</h3>
+          <p class="text-gray-600 text-sm">Speke Resort Munyonyo.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- What to Expect -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">What to Expect</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-book-open text-pycon-teal"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Learn</h3>
+          <p class="text-gray-600 text-sm">Take part in practical sessions and talks covering different areas of technology.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-users text-pycon-teal"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Connect</h3>
+          <p class="text-gray-600 text-sm">Meet women from Uganda and beyond who are learning, working and building in technology.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-comments text-pycon-teal"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Share</h3>
+          <p class="text-gray-600 text-sm">Hear from experienced practitioners and community members about their work, experiences and journeys.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-tools text-pycon-teal"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Build</h3>
+          <p class="text-gray-600 text-sm">Strengthen your technical skills through practical, hands-on sessions.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm md:col-span-2">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-seedling text-pycon-teal"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Grow</h3>
+          <p class="text-gray-600 text-sm">Discover new opportunities, meet potential mentors and collaborators, and become more involved in the wider technology community.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Program Schedule -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Program Schedule</h2>
+        <p class="text-gray-600">Learning, Exploring &amp; Building Together</p>
+      </div>
+      <div class="space-y-3">
+        <div class="flex items-start p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="flex-shrink-0 w-32">
+            <span class="text-sm font-semibold text-pycon-teal">8:30 &ndash; 10:00 AM</span>
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Automating Data Collection: Web Scraping and APIs 101</p>
+            <p class="text-gray-500 text-sm">Facilitator: Mercy S. Birungi</p>
+          </div>
+        </div>
+        <div class="flex items-start p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="flex-shrink-0 w-32">
+            <span class="text-sm font-semibold text-pycon-teal">10:15 &ndash; 12:00 PM</span>
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Machine Learning, Demystified: Build Your First Model</p>
+            <p class="text-gray-500 text-sm">Facilitator: Linda Nalweyiso</p>
+          </div>
+        </div>
+        <div class="flex items-start p-4 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
+          <div class="flex-shrink-0 w-32">
+            <span class="text-sm font-semibold text-pycon-teal">12:00 &ndash; 1:30 PM</span>
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Lunch &amp; Networking</p>
+          </div>
+        </div>
+        <div class="flex items-start p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="flex-shrink-0 w-32">
+            <span class="text-sm font-semibold text-pycon-teal">1:30 &ndash; 2:45 PM</span>
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Reading the Earth: Hands-on Remote Sensing with Python</p>
+            <p class="text-gray-500 text-sm">Facilitator: Lydia Tasia</p>
+          </div>
+        </div>
+        <div class="flex items-start p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+          <div class="flex-shrink-0 w-32">
+            <span class="text-sm font-semibold text-pycon-teal">3:00 &ndash; 4:30 PM</span>
+          </div>
+          <div class="ml-4">
+            <p class="font-medium text-gray-900">Building Your First Interactive AI App in Python</p>
+            <p class="text-gray-500 text-sm">Facilitator: Jael Nantamu</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Speakers & Facilitators -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Speakers &amp; Facilitators</h2>
+        <p class="text-gray-600">Meet the People Sharing Their Knowledge</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <img src="{% static '2026/img/wids/1.Mercy.S.Birungi.jpg' %}" alt="Mercy S. Birungi" class="w-16 h-16 rounded-full object-cover mb-4">
+          <h3 class="font-semibold text-gray-900 mb-1">Mercy S. Birungi</h3>
+          <p class="text-pycon-teal text-sm font-medium mb-3">Automating Data Collection: Web Scraping and APIs 101</p>
+          <p class="text-gray-600 text-sm">
+            With rich expertise in the telecommunications sector, she is passionate and experienced
+            in using data to turn questions into answers and challenges into opportunities. Having
+            worked with large-scale data systems, she understands that every insight has the
+            potential to improve lives, strengthen businesses and shape the future. She believes that
+            when diverse voices are empowered in data and technology, innovation becomes more
+            meaningful and impactful.
+          </p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <img src="{% static '2026/img/wids/2. Linda Nalweyiso .PNG' %}" alt="Linda Nalweyiso" class="w-16 h-16 rounded-full object-cover mb-4">
+          <h3 class="font-semibold text-gray-900 mb-1">Linda Nalweyiso</h3>
+          <p class="text-pycon-teal text-sm font-medium mb-3">Machine Learning, Demystified: Build Your First Model</p>
+          <p class="text-gray-600 text-sm">
+            Linda is a data scientist at Stanbic Bank Uganda, where she builds machine learning
+            systems that generate revenue, improve efficiency and manage risk. With over 8 years&rsquo;
+            experience in banking, she has worked across the full lifecycle of applied ML: from
+            predictive modelling to collaborating with cross-functional teams through model
+            deployment and adoption. She currently works with the risk analytics team at Stanbic Bank
+            and is passionate about making machine learning practical and accessible to newcomers.
+            Linda holds a master&rsquo;s in data science from the International University of Applied
+            Sciences and a bachelor&rsquo;s in statistics from Makerere University.
+          </p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <img src="{% static '2026/img/wids/3.Lydia Tasia.jpg' %}" alt="Lydia Tasia" class="w-16 h-16 rounded-full object-cover mb-4">
+          <h3 class="font-semibold text-gray-900 mb-1">Lydia Tasia</h3>
+          <p class="text-pycon-teal text-sm font-medium mb-3">Reading the Earth: Hands-on Remote Sensing with Python</p>
+          <p class="text-gray-600 text-sm">
+            Tasia is an enthusiastic geospatial data scientist who has spent the last 10 years
+            creating tools and solutions that tackle real-world challenges in GIS, remote sensing and
+            machine learning. She is passionate about using satellite imagery and spatial data to
+            generate insights that are both technically sound and practical for decision-making in
+            agriculture and environmental systems. Her work combines geospatial analysis, programming
+            and machine learning &mdash; using tools like QGIS and ArcMap alongside Python, she develops
+            models for biomass measurement, crop mapping and yield estimation. She currently works
+            with One Acre Fund, supporting geospatial and remote sensing projects through analysis,
+            visualization and research into emerging agricultural technologies.
+          </p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <img src="{% static '2026/img/wids/4.Jael Nantamu.png' %}" alt="Jael Nantamu" class="w-16 h-16 rounded-full object-cover mb-4">
+          <h3 class="font-semibold text-gray-900 mb-1">Jael Nantamu</h3>
+          <p class="text-pycon-teal text-sm font-medium mb-3">Building Your First Interactive AI App in Python</p>
+          <p class="text-gray-600 text-sm">
+            Jael is the Founder and CEO of TEGU Systems, a Uganda-based tech startup building data
+            infrastructure for African markets. She holds an M.Sc. in Data Analytics Engineering from
+            George Mason University and previously worked at Capital One in the U.S. Her focus is on
+            building responsible, production-ready data and AI systems for real-world impact.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Women in Data, Beyond the Event -->
+    <div class="mb-12">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Women in Data, Beyond the Event</h2>
+        <p class="text-gray-600">Building Community Beyond PyCon Africa</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-4">
+        WiDS Uganda is not only about what happens during one event.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        The goal is to create opportunities for women to continue learning, sharing knowledge and
+        connecting with others beyond the conference.
+      </p>
+      <p class="text-lg leading-relaxed">
+        Through community activities and partnerships, we hope to continue creating spaces where
+        women can explore data, build practical skills and find support from others on similar
+        journeys.
+      </p>
+    </div>
+
+    <!-- PyData Uganda -->
+    <div class="mb-12 rounded-lg bg-gray-50 border border-gray-200 px-6 py-8">
+      <div class="flex items-center justify-center mb-6">
+        <img src="{% static '2026/img/wids/pydata-logo.png' %}" alt="PyData Uganda logo" class="h-14 w-auto">
+      </div>
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">PyData Uganda</h2>
+        <p class="text-gray-600">Connecting with the Open-Source Data Community</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-4">
+        This year's WiDS Uganda program is being held in partnership with PyData Uganda.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        PyData Uganda connects people interested in using Python and other open-source tools for
+        data analysis, machine learning, scientific computing and related applications.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        The partnership brings together two communities with a shared interest in learning,
+        open-source technology and creating opportunities for people to engage with data.
+      </p>
+      <p class="text-lg leading-relaxed">
+        Together, WiDS Uganda and PyData Uganda are creating a space where participants can learn
+        from practitioners, discover open-source tools and connect with the wider data community.
+      </p>
+    </div>
+
+    <!-- Photos -->
+    <!--
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Photos</h2>
+        <p class="text-gray-600">Moments From the Community</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="rounded-lg overflow-hidden border border-gray-200">
+          <img src="{% static '2026/img/wids/Wids1.jpg' %}" alt="Participants during a WiDS Uganda session" class="w-full h-48 object-cover">
+        </div>
+        <div class="rounded-lg overflow-hidden border border-gray-200">
+          <img src="{% static '2026/img/wids/Wids2.jpg' %}" alt="A speaker or facilitator presenting at WiDS Uganda" class="w-full h-48 object-cover">
+        </div>
+        <div class="rounded-lg overflow-hidden border border-gray-200">
+          <img src="{% static '2026/img/wids/Wids3.jpg' %}" alt="Hands-on learning at WiDS Uganda" class="w-full h-48 object-cover">
+        </div>
+        <div class="rounded-lg overflow-hidden border border-gray-200">
+          <img src="{% static '2026/img/wids/Wids4.jpg' %}" alt="Networking at WiDS Uganda" class="w-full h-48 object-cover">
+        </div>
+        <div class="rounded-lg overflow-hidden border border-gray-200 col-span-2 md:col-span-1">
+          <img src="{% static '2026/img/wids/Wids5.jpg' %}" alt="WiDS Uganda group photograph" class="w-full h-48 object-cover">
+        </div>
+      </div>
+    </div>
+    -->
+
+    <!-- Why Join WiDS Uganda -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Why Join WiDS Uganda?</h2>
+        <p class="text-gray-600">Come Curious. Leave Connected.</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-6">
+        WiDS Uganda is an opportunity to learn something new, meet people working in data and
+        discover where your own journey can take you. You can come to:
+      </p>
       <ul class="space-y-3 mb-6">
         <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
           <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
-          <p class="text-gray-900 text-sm">Understood what data science means in simple terms</p>
+          <p class="text-gray-900 text-sm">Learn from experienced practitioners</p>
         </div>
         <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
           <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
-          <p class="text-gray-900 text-sm">Seen how data is collected and used to make decisions</p>
+          <p class="text-gray-900 text-sm">Explore new areas of data and technology</p>
         </div>
         <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
           <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
-          <p class="text-gray-900 text-sm">Tried simple beginner friendly activities using real examples</p>
+          <p class="text-gray-900 text-sm">Ask questions and exchange ideas</p>
         </div>
         <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
           <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
-          <p class="text-gray-900 text-sm">Explored how data is used in real life situations</p>
+          <p class="text-gray-900 text-sm">Meet other women interested in data</p>
         </div>
         <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
           <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
-          <p class="text-gray-900 text-sm">Connected with other women who are interested in technology</p>
+          <p class="text-gray-900 text-sm">Discover open-source tools and communities</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm">Build your professional network</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm">Find opportunities to learn, contribute and collaborate</p>
         </div>
       </ul>
-      <p class="text-lg leading-relaxed">
-        The goal is not to make you an expert in one day. The goal is to help you understand the
-        basics and feel confident enough to continue learning.
+      <p class="text-lg leading-relaxed mb-2">
+        You do not need to be an expert in data to take part.
+      </p>
+      <p class="text-lg leading-relaxed font-semibold text-pycon-teal">
+        Come curious. Come ready to learn. Come ready to connect.
       </p>
     </div>
 
-    <!-- Workshop Schedule -->
+    <!-- Our Partners -->
     <div class="mb-12">
       <div class="text-center mb-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-3">Workshop Schedule</h2>
-        <p class="text-gray-600">Saturday &ndash; Main Workshop Day</p>
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Our Partners</h2>
+        <p class="text-gray-600">Building Together</p>
       </div>
-      <div class="space-y-3">
-        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-          <div class="flex-shrink-0 w-24 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">7:00 AM</span>
-          </div>
-          <div class="ml-4">
-            <p class="font-medium text-gray-900">Registration, breakfast, and settling in</p>
-          </div>
-        </div>
-        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-          <div class="flex-shrink-0 w-24 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">8:00 AM</span>
-          </div>
-          <div class="ml-4">
-            <p class="font-medium text-gray-900">Welcome session and introductions from organizers and participants</p>
+      <p class="text-lg leading-relaxed mb-6 text-center max-w-2xl mx-auto">
+        WiDS Uganda is made possible through collaboration between communities, volunteers,
+        speakers and partners who support opportunities for women in data and technology.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white rounded-lg p-5 border border-gray-200 flex flex-col">
+          <div class="flex-1 flex items-center justify-center">
+            <img src="{% static '2026/img/wids/WiDS Uganda Logo 2.png' %}" alt="Women in Data Science (WiDS) Uganda" class="max-h-16 w-full object-contain">
           </div>
         </div>
-        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-          <div class="flex-shrink-0 w-24 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">9:00 AM</span>
-          </div>
-          <div class="ml-4">
-            <p class="font-medium text-gray-900">Introduction to Data Science and why it matters</p>
+        <div class="bg-white rounded-lg p-5 border border-gray-200 flex flex-col">
+          <div class="flex-1 flex items-center justify-center">
+            <img src="{% static '2026/img/wids/pydata-logo.png' %}" alt="PyData Uganda" class="max-h-16 w-full object-contain">
           </div>
         </div>
-        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-          <div class="flex-shrink-0 w-24 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">9:45 AM</span>
-          </div>
-          <div class="ml-4">
-            <p class="font-medium text-gray-900">Beginner friendly session where we explore data together</p>
-          </div>
-        </div>
-        <div class="flex items-center p-4 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
-          <div class="flex-shrink-0 w-24 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">12:30 PM</span>
-          </div>
-          <div class="ml-4">
-            <p class="font-medium text-gray-900">Lunch break and networking</p>
-          </div>
-        </div>
-        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-          <div class="flex-shrink-0 w-24 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">1:30 PM</span>
-          </div>
-          <div class="ml-4">
-            <p class="font-medium text-gray-900">Hands on session where you will try simple data activities</p>
-          </div>
-        </div>
-        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-          <div class="flex-shrink-0 w-24 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">4:30 PM</span>
-          </div>
-          <div class="ml-4">
-            <p class="font-medium text-gray-900">Group activity where participants share what they have learned</p>
-          </div>
-        </div>
-        <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
-          <div class="flex-shrink-0 w-24 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">6:00 PM</span>
-          </div>
-          <div class="ml-4">
-            <p class="font-medium text-gray-900">Closing session, group photos, and final networking</p>
+        <div class="bg-white rounded-lg p-5 border border-gray-200 flex flex-col">
+          <div class="flex-1 flex items-center justify-center">
+            <img src="{% static '2026/img/wids/pycon fliers (2).png' %}" alt="PyCon Africa 2026" class="max-h-16 w-full object-contain">
           </div>
         </div>
       </div>
     </div>
 
-    <!-- FAQ -->
-    <div class="mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 text-center mb-8">Frequently Asked Questions</h2>
-      <div class="space-y-4">
-        <div class="bg-white rounded-lg p-5 border border-gray-200">
-          <h4 class="font-semibold text-gray-900 mb-2">Do I need any experience in data science?</h4>
-          <p class="text-gray-600 text-sm">No, you do not need any experience at all. This workshop is designed for complete beginners.</p>
+    <!-- Get Involved -->
+    <div class="mb-12 rounded-lg bg-gray-50 border border-gray-200 px-6 py-8">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Get Involved</h2>
+        <p class="text-gray-600">Be Part of the Community</p>
+      </div>
+      <p class="text-gray-700 mb-6">There are many ways to contribute to the WiDS Uganda community.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>Participate</strong> &mdash; Join the program, learn and connect with other women in data.</p>
         </div>
-        <div class="bg-white rounded-lg p-5 border border-gray-200">
-          <h4 class="font-semibold text-gray-900 mb-2">Do I need to bring a laptop?</h4>
-          <p class="text-gray-600 text-sm">Yes, please bring a laptop if you have one. It will help you take part in the hands on activities.</p>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>Speak</strong> &mdash; Share your knowledge, experience and journey.</p>
         </div>
-        <div class="bg-white rounded-lg p-5 border border-gray-200">
-          <h4 class="font-semibold text-gray-900 mb-2">Who is this workshop for?</h4>
-          <p class="text-gray-600 text-sm">This workshop is for any woman who is interested in learning about data science, whether you are a student, a beginner, or already working but new to the field.</p>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>Volunteer</strong> &mdash; Help create a welcoming and engaging experience for participants.</p>
         </div>
-        <div class="bg-white rounded-lg p-5 border border-gray-200">
-          <h4 class="font-semibold text-gray-900 mb-2">Will I be left behind if I have never done anything technical before?</h4>
-          <p class="text-gray-600 text-sm">No. Everything will be explained step by step in a very simple way. You will be guided throughout the workshop.</p>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>Partner</strong> &mdash; Work with WiDS Uganda to create more opportunities for women in data.</p>
         </div>
-        <div class="bg-white rounded-lg p-5 border border-gray-200">
-          <h4 class="font-semibold text-gray-900 mb-2">What is the main goal of this workshop?</h4>
-          <p class="text-gray-600 text-sm">The goal is to introduce you to data science in a friendly and practical way and help you understand how you can start your journey in this field.</p>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200 md:col-span-2">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>Support</strong> &mdash; Help us continue creating learning and community opportunities beyond this event.</p>
         </div>
       </div>
+      <p class="text-gray-700 text-sm text-center">
+        If you would like to get involved or explore a partnership, please
+        <a href="/2026/about/contact-us/" class="text-pycon-teal font-semibold hover:underline">get in touch with the organizing team</a>.
+      </p>
     </div>
 
-    <!-- CTA -->
+    <!-- From the Community -->
+    <div class="mb-12 text-center">
+      <h2 class="text-2xl font-bold text-gray-900 mb-1">From the Community</h2>
+      <p class="text-gray-600 mb-6">Women Learning. Women Sharing. Women Building.</p>
+      <p class="text-lg leading-relaxed mb-4 max-w-2xl mx-auto">
+        Data is being used to understand problems, make decisions and build solutions across many
+        parts of society. WiDS Uganda is about making sure women have a place in those conversations.
+      </p>
+      <p class="text-lg leading-relaxed mb-6 max-w-2xl mx-auto">
+        By creating opportunities to learn, share experiences and connect with one another, we hope
+        to build a stronger and more connected community of women working with data.
+      </p>
+        </div>
+
+    <!-- Call to Action -->
     <div class="text-center rounded-lg border border-gray-200 bg-gray-50 px-8 py-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">Join WiDS at PyCon Africa 2026</h2>
-      <p class="text-lg text-gray-600 mb-8">
-        Be part of a growing community of women shaping the future of data science in Africa.
-        More details on registration and the programme will be shared soon.
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">Women in Data Science (WiDS) Uganda 2026</h2>
+      <p class="text-gray-600 mb-1">Thursday, 8 October 2026</p>
+      <p class="text-gray-600 mb-1">Speke Resort Munyonyo, Kampala, Uganda</p>
+      <p class="text-gray-600 mb-1">In partnership with PyData Uganda</p>
+      <p class="text-gray-600 mb-6">Part of PyCon Africa 2026</p>
+      <p class="text-lg text-gray-700 mb-8">
+        Join us for a day of learning, sharing and connecting around data and technology.
       </p>
       <a href="https://forms.gle/T6MeisrdFywkvvPVA"
          target="_blank"

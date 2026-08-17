@@ -69,7 +69,14 @@
                 <td class="{% if cell.title %}has-content{% endif %}">
                   {% if cell.title %}
                   <div class="cell-title">{% if cell.link %}<a href="{{ cell.link }}">{{ cell.title }}</a>{% else %}{{ cell.title }}{% endif %}</div>
-                  {% if cell.speaker %}
+                  {% if cell.speakers %}
+                  {% for sp in cell.speakers %}
+                  <div class="cell-speaker">
+                    {% if sp.image %}<img class="speaker-avatar" src="{% static sp.image %}" alt="{{ sp.name }}">{% endif %}
+                    {% if sp.no_link %}<strong>{{ sp.name }}</strong>{% else %}<a href="{% url 'speakers:speaker_search' year=year %}?name={{ sp.name|urlencode }}"><strong>{{ sp.name }}</strong></a>{% endif %}
+                  </div>
+                  {% endfor %}
+                  {% elif cell.speaker %}
                   <div class="cell-speaker">
                     {% if cell.image %}<img class="speaker-avatar" src="{% static cell.image %}" alt="{{ cell.speaker }}">{% endif %}
                     {% if cell.no_link %}<strong>{{ cell.speaker }}</strong>{% else %}<a href="{% url 'speakers:speaker_search' year=year %}?name={{ cell.speaker|urlencode }}"><strong>{{ cell.speaker }}</strong></a>{% endif %}

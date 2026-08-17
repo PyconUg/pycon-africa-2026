@@ -236,13 +236,13 @@ SCHEDULE_DATA = [
             {"time": "14:40 – 15:10", "cells": [
                 {"title": "PaSSw0rdVib3s!: Finding Passwords in Digital Evidence", "speaker": "Anne Fleur van Luenen", "label": "Short Talk · Security/Web"},
                 {"title": "Building Clinical Tools in Data-Constrained Environments: Python, ML, and the Human Spine", "speaker": "Christine Akoto-Nimoh", "label": "Short Talk · ML/Data Science"},
-                {"title": "Cyber Security Workshop", "speaker": "", "label": "Tutorial"},
+                {"title": "Trust Is a Dependency: Securing the Modern Software Supply Chain", "speakers": [{"name": "Famious Orishaba"}, {"name": "Tabitha Namwone"}], "label": "Tutorial"},
                 {"title": "Refugee Program", "speaker": ""},
             ]},
             {"time": "15:15 – 15:45", "cells": [
                 {"title": "Background Jobs at Scale: Designing Reliable Python Worker Systems", "speaker": "Efe Omoregie", "label": "Short Talk · Security/Web"},
                 {"title": "Building Civic Tech with Python: APIs, Data, and Systems for Public Good", "speaker": "Alamin Magaga", "label": "Short Talk · ML/Data Science"},
-                {"title": "Cyber Security Workshop", "speaker": "", "label": "Tutorial"},
+                {"title": "Trust Is a Dependency: Securing the Modern Software Supply Chain", "speakers": [{"name": "Famious Orishaba"}, {"name": "Tabitha Namwone"}], "label": "Tutorial"},
                 {"title": "Refugee Program", "speaker": ""},
             ]},
             {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote\nThe Evolution of Python: Lessons from Its Creator (Guido van Rossum)", "label": "Remote"},
@@ -285,11 +285,11 @@ def _build_speaker_image_lookup():
     return lookup
 
 
-def _attach_image(entry, lookup):
-    speaker = entry.get("speaker")
-    if not speaker:
+def _attach_image(entry, lookup, name_key="speaker"):
+    name = entry.get(name_key)
+    if not name:
         return
-    image = lookup.get(_normalize_speaker_name(speaker))
+    image = lookup.get(_normalize_speaker_name(name))
     if image:
         entry["image"] = image
 
@@ -300,6 +300,8 @@ def _attach_speaker_images(schedule_data):
         for slot in day.get("slots", []):
             for cell in slot.get("cells", []):
                 _attach_image(cell, lookup)
+                for speaker in cell.get("speakers", []):
+                    _attach_image(speaker, lookup, name_key="name")
             for talk in slot.get("talks", []):
                 _attach_image(talk, lookup)
     return schedule_data

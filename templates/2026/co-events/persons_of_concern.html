@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load i18n static markdown_extras %}
-{% block meta_title %}{% trans "Persons of Concern Program | PyCon Africa 2026" %}{% endblock %}
+{% block meta_title %}{% trans "Python Without Borders | PyCon Africa 2026" %}{% endblock %}
 
 {% block content %}
 {% include '2026/navbar.html' %}
@@ -8,8 +8,25 @@
 <!-- Header -->
 <div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
   <div class="text-center">
-    <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Persons of Concern Program</h1>
-    <p class="text-2xl font-semibold text-pycon-teal mb-4">PyLadies Kampala Refugee Python Workshop</p>
+    <h1 class="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">Python Without Borders</h1>
+    <p class="text-xl font-semibold text-pycon-teal mb-4">Refugee &amp; Persons of Concern Program</p>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+      A day of learning, building and connecting for refugees and persons of concern during
+      PyCon Africa 2026.
+    </p>
+    <div class="flex flex-wrap items-center justify-center gap-3 mt-6 text-sm font-semibold text-gray-700">
+      <span class="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
+        <i class="far fa-calendar-alt text-pycon-teal"></i> Sunday, 11 October 2026
+      </span>
+      <span class="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
+        <i class="fas fa-map-marker-alt text-pycon-teal"></i> Speke Resort Munyonyo, Kampala, Uganda
+      </span>
+    </div>
+    <div class="flex flex-wrap items-center justify-center gap-3 mt-6">
+      <!-- Donate button hidden until a donation link is available: <a href="#support-the-program" class="btn-teal-sm">Donate</a> -->
+      <a href="#donate-an-old-laptop" class="btn-teal-sm">Give an Old Laptop</a>
+      <a href="https://docs.google.com/forms/d/1sFK3X03-8Vra_uHSwJL8H9D4_dwNpupdOtEYbvDk7pA/viewform?edit_requested=true" target="_blank" rel="noopener noreferrer" class="btn-teal-sm">Partner with Us</a>
+    </div>
   </div>
 </div>
 
@@ -20,213 +37,217 @@
     <!-- Intro -->
     <div class="mb-12">
       <p class="text-lg leading-relaxed mb-4">
-        As part of PyCon Africa 2026's commitment to making technology education more accessible, the
-        Persons of Concern Program will host a dedicated Python and Django workshop for refugees and other
-        undeserved communities.
+        The program will bring together selected refugee participants, coaches, mentors and members
+        of the Python community for a practical Python and Django workshop and an opportunity to
+        connect with the wider technology community.
       </p>
-      <p class="text-lg leading-relaxed mb-4">
-        Organized by <strong>PyLadies Kampala</strong>, this initiative provides participants with an opportunity to develop
-        practical software development skills through a hands-on learning experience led by experienced
-        Python developers, mentors, and community leaders.
-      </p>
-      <p class="text-lg leading-relaxed mb-4">
-        Building on the success of previous PyLadies outreach programs — including the Arua Refugee Python
-        Web Development Bootcamp that introduced more than 100 participants to Python and web development —
-        this workshop continues our mission of creating inclusive pathways into technology.
-      </p>
-      <p class="text-lg leading-relaxed">
-        Whether participants are taking their first steps in programming or looking to strengthen existing skills,
-        the workshop offers an encouraging environment focused on learning, collaboration, and community.
-      </p>
+      <p class="text-lg leading-relaxed font-semibold">Participation is free for selected participants.</p>
     </div>
 
-    <!-- Event Information -->
-    <div class="mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Event Information</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div class="flex items-center gap-4 bg-white rounded-xl border border-gray-200 shadow-sm px-6 py-5">
-          <div class="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: rgba(23,126,137,0.1);">
-            <i class="fas fa-calendar-day text-pycon-teal text-lg"></i>
-          </div>
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-0.5">Date</p>
-            <p class="font-semibold text-gray-900">11 October, 2026</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-4 bg-white rounded-xl border border-gray-200 shadow-sm px-6 py-5">
-          <div class="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: rgba(23,126,137,0.1);">
-            <i class="fas fa-map-marker-alt text-pycon-teal text-lg"></i>
-          </div>
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-0.5">Venue</p>
-            <p class="font-semibold text-gray-900">Speke Resort Munyonyo, Kampala, Uganda</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-4 bg-white rounded-xl border border-gray-200 shadow-sm px-6 py-5">
-          <div class="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: rgba(23,126,137,0.1);">
-            <i class="fas fa-clock text-pycon-teal text-lg"></i>
-          </div>
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-0.5">Duration</p>
-            <p class="font-semibold text-gray-900">Full-Day Workshop</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-4 bg-white rounded-xl border border-gray-200 shadow-sm px-6 py-5">
-          <div class="w-11 h-11 rounded-lg flex items-center justify-center flex-shrink-0" style="background-color: rgba(23,126,137,0.1);">
-            <i class="fas fa-tag text-pycon-teal text-lg"></i>
-          </div>
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-0.5">Cost</p>
-            <p class="font-semibold text-gray-900">Free for selected participants</p>
-          </div>
-        </div>
+    <!-- Donate an Old Laptop -->
+    <div id="donate-an-old-laptop" class="mb-12 rounded-lg bg-gray-50 border border-gray-200 px-6 py-8">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Donate an Old Laptop</h2>
+        <p class="text-gray-600">Give a Laptop, Give an Opportunity</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-4">
+        A huge thank you to our friends at the Recurse Center who have already donated several
+        laptops to support this program!
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        We&rsquo;re still accepting more machines to help expand the program and support learners
+        beyond the current cohort.
+      </p>
+      <p class="text-lg leading-relaxed mb-6">
+        Many of the refugees participating in our programs come from refugee camps and do not have
+        access to laptops or other devices they can use for learning. Your old laptop could give
+        someone the opportunity to learn, build skills and create a new future.
+      </p>
+
+      <div class="rounded-lg overflow-hidden border border-gray-200 mb-6">
+        <img src="{% static '2026/img/diversity/refugee1.jpg' %}" alt="Participants learning on donated laptops during a training session" class="w-full max-h-96 object-cover">
+      </div>
+
+      <div class="text-center rounded-lg border border-gray-200 bg-white px-8 py-8">
+        <p class="text-gray-700 mb-3">Have a laptop you no longer use? Please consider donating it.</p>
+        <p class="text-gray-900 font-semibold mb-1">
+          <i class="fas fa-envelope text-pycon-teal mr-1"></i>
+          Email <a href="mailto:kampala@pyladies.com" class="text-pycon-teal hover:underline">kampala@pyladies.com</a> for instructions on how to send your machine.
+        </p>
+        <p class="text-gray-500 text-sm mt-3">Every device makes a difference.</p>
       </div>
     </div>
 
-    <!-- About the Workshop -->
+    <!-- About the Program -->
     <div class="mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">About the Workshop</h2>
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">About the Program</h2>
+        <p class="text-gray-600">Creating More Opportunities to Learn</p>
+      </div>
       <p class="text-lg leading-relaxed mb-4">
-        This workshop introduces participants to modern Python web development using Django through
-        practical, instructor-led sessions.
+        Python Without Borders is a dedicated program at PyCon Africa 2026 for refugees and persons
+        of concern.
       </p>
       <p class="text-lg leading-relaxed mb-4">
-        Rather than focusing on theory alone, attendees will work through real coding exercises, build a
-        functioning web application, and gain exposure to tools commonly used by software developers.
+        The program provides selected participants with an opportunity to learn Python and Django,
+        work alongside coaches and mentors, and connect with the wider Python community.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        The workshop builds on the experience of the 8-week Web Development Bootcamp held in Arua
+        in 2025, where PyLadies Kampala worked with refugee communities to introduce participants
+        to Python, Django and web development.
       </p>
       <p class="text-lg leading-relaxed">
-        Throughout the day, mentors will provide one-on-one guidance, helping participants build confidence
-        while developing problem-solving skills and practical programming experience.
+        This year, we are taking that learning journey to PyCon Africa.
       </p>
     </div>
 
-    <!-- What Participants Will Learn -->
+    <!-- From Arua to PyCon Africa -->
+    <div class="mb-12 rounded-lg bg-gray-50 border border-gray-200 px-6 py-8">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">From Arua to PyCon Africa</h2>
+        <p class="text-gray-600">This journey started in Arua.</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-4">
+        In 2025, PyLadies Kampala, in partnership with CodeStar West Nile and Muni University,
+        organized an 8-week Web Development Bootcamp in Arua.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        More than 100 participants took part in the program, including refugees and students.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        Throughout the eight weeks, participants learned Python, Django, Git, web development and
+        deployment through practical sessions and project work. They worked with coaches, asked
+        questions, solved problems and built projects that they were able to showcase at the end of
+        the program.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        For us, the experience showed the value of creating spaces where refugee communities can
+        access technology learning, mentorship and supportive communities.
+      </p>
+      <p class="text-lg leading-relaxed mb-6">
+        Python Without Borders continues from that experience. The program will give selected
+        participants an opportunity to continue their learning and connect with a much wider Python
+        community at PyCon Africa.
+      </p>
+
+      <!-- Photo: Participants during a practical coding session -->
+      <p class="font-semibold text-gray-900 mb-3">Participants during a practical coding session.</p>
+      <div class="grid grid-cols-2 gap-3 mb-6">
+        <div class="rounded-lg overflow-hidden border border-gray-200">
+          <img src="{% static '2026/img/diversity/refugee2.jpg' %}" alt="Participants during the Arua Web Development Bootcamp" class="w-full h-40 object-cover">
+        </div>
+        <div class="rounded-lg overflow-hidden border border-gray-200">
+          <img src="{% static '2026/img/diversity/refugee3.jpg' %}" alt="A participant coding during the Arua bootcamp" class="w-full h-40 object-cover">
+        </div>
+      </div>
+
+      <p class="text-sm">
+        <a href="https://medium.com/@asiobrenda01/pyladies-kampala-annual-report-2025-c7135351f111"
+           target="_blank" rel="noopener noreferrer"
+           class="text-pycon-teal font-semibold hover:underline">
+          Read the PyLadies Kampala 2025 Annual Report &rarr;
+        </a>
+      </p>
+    </div>
+
+    <!-- The Program at a Glance -->
     <div class="mb-12">
       <div class="text-center mb-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-3">What Participants Will Learn</h2>
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">The Program at a Glance</h2>
+        <p class="text-gray-600">A quick look at the journey so far and what we are bringing to PyCon Africa 2026.</p>
       </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="text-center bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+          <h3 class="text-2xl font-bold text-pycon-teal mb-1">100+</h3>
+          <p class="text-gray-900 text-sm font-medium">Participants reached</p>
+          <p class="text-gray-500 text-xs mt-1">Through our Arua bootcamp</p>
+        </div>
+        <div class="text-center bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+          <h3 class="text-2xl font-bold text-pycon-teal mb-1">8 Weeks</h3>
+          <p class="text-gray-900 text-sm font-medium">Practical learning in Arua</p>
+          <p class="text-gray-500 text-xs mt-1">Web development training</p>
+        </div>
+        <div class="text-center bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+          <h3 class="text-2xl font-bold text-pycon-teal mb-1">30</h3>
+          <p class="text-gray-900 text-sm font-medium">Refugee participants targeted</p>
+          <p class="text-gray-500 text-xs mt-1">For the 2026 workshop</p>
+        </div>
+        <div class="text-center bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+          <h3 class="text-2xl font-bold text-pycon-teal mb-1">1 Day</h3>
+          <p class="text-gray-900 text-sm font-medium">Python &amp; Django workshop</p>
+          <p class="text-gray-500 text-xs mt-1">Learning, building &amp; connecting</p>
+        </div>
+        <div class="text-center bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
+          <h3 class="text-2xl font-bold text-pycon-teal mb-1">2026</h3>
+          <p class="text-gray-900 text-sm font-medium">PyCon Africa</p>
+          <p class="text-gray-500 text-xs mt-1">Connecting to a wider community</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Workshop -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">The Workshop</h2>
+        <p class="text-gray-600">Learn. Build. Connect.</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-4">
+        This will be a practical workshop where participants learn by doing.
+      </p>
+      <p class="text-lg leading-relaxed mb-8">
+        Participants will work alongside coaches and mentors throughout the day, with time to ask
+        questions, work through challenges and apply what they learn.
+      </p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
             <i class="fas fa-code text-pycon-teal"></i>
           </div>
           <h3 class="font-semibold text-gray-900 mb-2">Python Fundamentals</h3>
-          <p class="text-gray-600 text-sm">Learn programming fundamentals including variables, data types, functions, loops, and control flow.</p>
+          <p class="text-gray-600 text-sm">Participants will work through the basics of Python and strengthen their understanding of programming and problem solving.</p>
         </div>
         <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
             <i class="fas fa-globe text-pycon-teal"></i>
           </div>
-          <h3 class="font-semibold text-gray-900 mb-2">Introduction to Django</h3>
-          <p class="text-gray-600 text-sm">Understand how Django helps developers build secure and scalable web applications.</p>
+          <h3 class="font-semibold text-gray-900 mb-2">Django</h3>
+          <p class="text-gray-600 text-sm">Participants will be introduced to Django and learn how Python can be used to build web applications.</p>
         </div>
         <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
             <i class="fas fa-laptop-code text-pycon-teal"></i>
           </div>
-          <h3 class="font-semibold text-gray-900 mb-2">Build a Web Application</h3>
-          <p class="text-gray-600 text-sm">Create a simple web application from scratch using Django.</p>
+          <h3 class="font-semibold text-gray-900 mb-2">Build a Project</h3>
+          <p class="text-gray-600 text-sm">Participants will apply what they learn by working on a practical project during the workshop.</p>
         </div>
         <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
             <i class="fab fa-github text-pycon-teal"></i>
           </div>
-          <h3 class="font-semibold text-gray-900 mb-2">Version Control with Git</h3>
-          <p class="text-gray-600 text-sm">Learn how developers use Git and GitHub to manage and share projects.</p>
+          <h3 class="font-semibold text-gray-900 mb-2">Git &amp; GitHub</h3>
+          <p class="text-gray-600 text-sm">Participants will learn the basics of version control and how developers use Git and GitHub to manage and collaborate on projects.</p>
         </div>
         <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm md:col-span-2">
           <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
             <i class="fas fa-users text-pycon-teal"></i>
           </div>
-          <h3 class="font-semibold text-gray-900 mb-2">Collaborative Learning</h3>
-          <p class="text-gray-600 text-sm">Work alongside mentors and fellow participants in an inclusive learning environment.</p>
+          <h3 class="font-semibold text-gray-900 mb-2">Learn Together</h3>
+          <p class="text-gray-600 text-sm">Participants will work alongside other refugee learners, coaches and mentors, creating an environment where they can ask questions, share ideas and learn from one another.</p>
         </div>
       </div>
     </div>
 
-    <!-- Who Should Attend -->
-    <div class="rounded-lg bg-gray-50 border border-gray-200 px-6 py-8 mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">Who Should Attend</h2>
-      <p class="text-gray-700 mb-6">The workshop is intended for:</p>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
-        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
-          <p class="font-medium text-gray-900 text-sm">Refugees and displaced persons</p>
-        </div>
-        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
-          <p class="font-medium text-gray-900 text-sm">Undeserved youth interested in technology</p>
-        </div>
-        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
-          <p class="font-medium text-gray-900 text-sm">Beginners with little or no programming experience</p>
-        </div>
-        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
-          <p class="font-medium text-gray-900 text-sm">Students interested in software development</p>
-        </div>
-        <div class="flex items-center gap-3 bg-white rounded-lg p-4 border border-gray-200 md:col-span-2">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0"></i>
-          <p class="font-medium text-gray-900 text-sm">Women and underrepresented groups in technology</p>
-        </div>
-      </div>
-      <p class="text-gray-600 text-sm italic">No previous programming experience is required.</p>
-    </div>
-
-    <!-- Why This Program Matters -->
-    <div class="mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Why This Program Matters</h2>
-      <p class="text-lg leading-relaxed mb-4">
-        Access to quality technology education remains limited for many displaced and undeserved communities.
-      </p>
-      <p class="text-lg leading-relaxed mb-4">
-        By providing practical software development training, mentorship, and access to the wider Python community,
-        this program seeks to reduce barriers to digital skills development while creating opportunities for continued
-        learning, employment, entrepreneurship, and participation in open source communities.
-      </p>
-      <p class="text-lg leading-relaxed">
-        The workshop also reflects PyCon Africa's commitment to diversity, inclusion, and community empowerment
-        across the continent.
-      </p>
-    </div>
-
-    <!-- Expected Outcomes -->
-    <div class="rounded-lg bg-gray-50 border border-gray-200 px-6 py-8 mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">Expected Outcomes</h2>
-      <p class="text-gray-700 mb-6">Participants will:</p>
-      <div class="space-y-3">
-        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
-          <p class="text-gray-900 text-sm">Gain foundational Python programming skills</p>
-        </div>
-        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
-          <p class="text-gray-900 text-sm">Build and deploy their first Django application</p>
-        </div>
-        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
-          <p class="text-gray-900 text-sm">Learn collaborative software development practices using Git and GitHub</p>
-        </div>
-        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
-          <p class="text-gray-900 text-sm">Connect with mentors from the African Python community</p>
-        </div>
-        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
-          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
-          <p class="text-gray-900 text-sm">Join local technology communities for continued learning beyond the workshop</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tentative Schedule -->
+    <!-- Workshop Schedule -->
     <div class="mb-12">
       <div class="text-center mb-8">
-        <h2 class="text-2xl font-bold text-gray-900 mb-3">Tentative Schedule</h2>
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Workshop Schedule</h2>
+        <p class="text-gray-600">A Full Day of Learning</p>
       </div>
       <div class="space-y-3">
         <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
           <div class="flex-shrink-0 w-32 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">09:00 – 09:30</span>
+            <span class="text-sm font-semibold text-pycon-teal">09:00 &ndash; 09:30</span>
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-900">Registration &amp; Welcome</p>
@@ -234,7 +255,7 @@
         </div>
         <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
           <div class="flex-shrink-0 w-32 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">09:30 – 10:00</span>
+            <span class="text-sm font-semibold text-pycon-teal">09:30 &ndash; 10:00</span>
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-900">Opening Remarks &amp; Workshop Overview</p>
@@ -242,7 +263,7 @@
         </div>
         <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
           <div class="flex-shrink-0 w-32 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">10:00 – 11:00</span>
+            <span class="text-sm font-semibold text-pycon-teal">10:00 &ndash; 11:00</span>
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-900">Python Fundamentals</p>
@@ -250,7 +271,7 @@
         </div>
         <div class="flex items-center p-4 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
           <div class="flex-shrink-0 w-32 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">11:00 – 11:15</span>
+            <span class="text-sm font-semibold text-pycon-teal">11:00 &ndash; 11:15</span>
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-900">Break</p>
@@ -258,7 +279,7 @@
         </div>
         <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
           <div class="flex-shrink-0 w-32 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">11:15 – 12:30</span>
+            <span class="text-sm font-semibold text-pycon-teal">11:15 &ndash; 12:30</span>
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-900">Introduction to Django</p>
@@ -266,7 +287,7 @@
         </div>
         <div class="flex items-center p-4 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
           <div class="flex-shrink-0 w-32 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">12:30 – 13:30</span>
+            <span class="text-sm font-semibold text-pycon-teal">12:30 &ndash; 13:30</span>
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-900">Lunch</p>
@@ -274,7 +295,7 @@
         </div>
         <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
           <div class="flex-shrink-0 w-32 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">13:30 – 15:00</span>
+            <span class="text-sm font-semibold text-pycon-teal">13:30 &ndash; 15:00</span>
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-900">Building Your First Django Application</p>
@@ -282,7 +303,7 @@
         </div>
         <div class="flex items-center p-4 bg-gray-50 rounded-lg shadow-sm border border-gray-200">
           <div class="flex-shrink-0 w-32 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">15:00 – 15:15</span>
+            <span class="text-sm font-semibold text-pycon-teal">15:00 &ndash; 15:15</span>
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-900">Break</p>
@@ -290,7 +311,7 @@
         </div>
         <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
           <div class="flex-shrink-0 w-32 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">15:15 – 16:30</span>
+            <span class="text-sm font-semibold text-pycon-teal">15:15 &ndash; 16:30</span>
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-900">Extending the Application</p>
@@ -298,7 +319,7 @@
         </div>
         <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
           <div class="flex-shrink-0 w-32 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">16:30 – 17:00</span>
+            <span class="text-sm font-semibold text-pycon-teal">16:30 &ndash; 17:00</span>
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-900">Git, GitHub &amp; Project Showcase</p>
@@ -306,7 +327,7 @@
         </div>
         <div class="flex items-center p-4 bg-white rounded-lg shadow-sm border border-gray-200">
           <div class="flex-shrink-0 w-32 text-center">
-            <span class="text-sm font-semibold text-pycon-teal">17:00 – 17:30</span>
+            <span class="text-sm font-semibold text-pycon-teal">17:00 &ndash; 17:30</span>
           </div>
           <div class="ml-4">
             <p class="font-medium text-gray-900">Closing Session &amp; Certificates</p>
@@ -315,55 +336,512 @@
       </div>
     </div>
 
-    <!-- Speakers & Mentors -->
-    <div class="rounded-lg bg-gray-50 border border-gray-200 px-6 py-8 mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Speakers &amp; Mentors</h2>
-      <p class="text-gray-700 leading-relaxed mb-4">Speaker announcements will be made soon.</p>
-      <p class="text-gray-700 leading-relaxed">
-        Our mentors will include experienced Python developers, Django practitioners, educators, and members
-        of the PyLadies Kampala and wider Python community.
-      </p>
-    </div>
-
-    <!-- Registration -->
-    <div class="rounded-lg bg-gray-50 border border-gray-200 px-6 py-8 mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Registration</h2>
-      <p class="text-gray-700 leading-relaxed mb-3">Participation is free.</p>
-      <p class="text-gray-700 leading-relaxed mb-3">
-        Applications will open soon, with priority given to refugees, displaced persons, and undeserved communities.
-      </p>
-      <p class="text-gray-700 font-semibold">Registration opens soon.</p>
-    </div>
-
-    <!-- Partners -->
+    <!-- Speakers, Coaches & Mentors -->
     <div class="mb-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-6">Partners</h2>
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Speakers, Coaches &amp; Mentors</h2>
+        <p class="text-gray-600">Meet the people leading the workshop</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-8">
+        The workshop will be led by experienced Python and Django practitioners who will guide
+        participants through practical sessions, from the fundamentals of Django to building and
+        deploying applications.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <img src="{% static '2026/img/diversity/Ssali.png' %}" alt="Jonathan Ssali" class="w-16 h-16 rounded-full object-cover mb-4">
+          <h3 class="font-semibold text-gray-900 mb-1">Jonathan Ssali</h3>
+          <p class="text-pycon-teal text-sm font-medium mb-3">Workshop Facilitator</p>
+          <p class="text-gray-600 text-sm mb-3">Jonathan will lead practical sessions covering:</p>
+          <ul class="text-gray-600 text-sm space-y-1 list-disc list-inside">
+            <li>Introduction to Django</li>
+            <li>Django Models &amp; the Admin Site</li>
+            <li>Django Controllers &amp; Views</li>
+            <li>Customising CSS</li>
+            <li>Master Templates &amp; Template Inheritance</li>
+          </ul>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <img src="{% static '2026/img/diversity/Jamil.jpg' %}" alt="Jamil Lutaaya" class="w-16 h-16 rounded-full object-cover mb-4">
+          <h3 class="font-semibold text-gray-900 mb-1">Jamil Lutaaya</h3>
+          <p class="text-pycon-teal text-sm font-medium mb-3">Workshop Facilitator</p>
+          <p class="text-gray-600 text-sm mb-3">Jamil will lead practical sessions covering:</p>
+          <ul class="text-gray-600 text-sm space-y-1 list-disc list-inside">
+            <li>Advanced Topics in Django Web Development</li>
+            <li>Deploying Django Applications</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Who Is This Program For -->
+    <div class="mb-12 rounded-lg bg-gray-50 border border-gray-200 px-6 py-8">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Who Is This Program For?</h2>
+        <p class="text-gray-600">A Workshop for Refugee Learners</p>
+      </div>
       <p class="text-lg leading-relaxed mb-4">
-        This program is organised by PyLadies Kampala as part of PyCon Africa 2026.
+        Python Without Borders is specifically designed for refugees and persons of concern. The
+        participant group will include:
+      </p>
+      <div class="grid grid-cols-1 gap-3 mb-4">
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm">Selected participants from the previous Arua Web Development Bootcamp</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm">New refugee participants who meet the program's selection criteria</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm">Refugees and persons of concern interested in developing their Python and technology skills</p>
+        </div>
+      </div>
+      <p class="text-gray-700 text-sm mb-3">
+        The majority of places will be available to new participants, while returning participants
+        from the Arua bootcamp will also have an opportunity to continue their learning journey and
+        build on the skills they developed during the previous program.
+      </p>
+      <p class="text-gray-600 text-sm italic">
+        Participants do not need to be experienced programmers. The workshop is designed to provide
+        practical and supportive learning for refugees and persons of concern at different stages of
+        their technology journey.
+      </p>
+    </div>
+
+    <!-- Why This Program Matters -->
+    <div class="mb-12">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Why This Program Matters</h2>
+        <p class="text-gray-600">Creating Access to Opportunity</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-4">
+        For many refugees, access to technology education, mentorship, reliable internet, computers
+        and professional networks can be limited.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        The Arua bootcamp gave participants an opportunity to learn in a supportive environment and
+        work on practical projects with the help of coaches. Python Without Borders is an
+        opportunity to continue that work.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        By bringing participants to PyCon Africa, we are giving them the chance to learn alongside a
+        wider community of developers, meet people working in technology and see what is possible
+        beyond the workshop itself.
+      </p>
+      <p class="text-lg leading-relaxed mb-2">
+        We want participants to leave with more than just a day's worth of lessons.
+      </p>
+      <p class="text-lg leading-relaxed font-semibold text-pycon-teal">
+        We want them to leave with new skills, new connections and the confidence to keep learning.
+      </p>
+    </div>
+
+    <!-- Beyond the Workshop -->
+    <div class="mb-12 rounded-lg bg-gray-50 border border-gray-200 px-6 py-8">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Beyond the Workshop</h2>
+        <p class="text-gray-600">The Learning Doesn't End at PyCon Africa</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-4">
+        The workshop is one part of a longer learning journey.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        Our hope is that participants will continue practising, building projects, connecting with
+        other developers and taking part in future community activities.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        The experience from Arua has shown us the value of continued access to learning and
+        community.
       </p>
       <p class="text-lg leading-relaxed">
-        We welcome organizations interested in supporting inclusive technology education through mentorship,
-        sponsorship, or community partnerships.
+        Python Without Borders gives us a chance to build on that experience and create another
+        opportunity for refugee participants to stay connected to technology and the wider Python
+        community.
       </p>
     </div>
 
-    <!-- CTA -->
-    <div class="text-center rounded-lg border border-gray-200 bg-gray-50 px-8 py-12">
-      <h2 class="text-2xl font-bold text-gray-900 mb-4">Apply or Get Involved</h2>
-      <p class="text-lg text-gray-600 mb-8">
-        Participation is free for selected attendees, with priority given to refugees and underserved communities.
-        Partners and supporters are also welcome to reach out.
+    <!-- Support the Program -->
+    <div id="support-the-program" class="mb-12">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Support the Program</h2>
+        <p class="text-gray-600">Help Us Make Participation Possible</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-4">
+        For participants coming from refugee communities, attending a technology workshop can
+        involve costs beyond the training itself.
       </p>
-      <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <!-- <a href="{% url 'pycon2026:regional_grant_apply' %}"
+      <p class="text-lg leading-relaxed mb-6">
+        Transportation, meals, internet access and learning materials can all become barriers to
+        participation. Support for Python Without Borders will help us reduce some of these barriers
+        and make it possible for selected participants to fully take part in the program.
+      </p>
+      <p class="text-gray-700 font-semibold mb-4">Your support can help provide:</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm">Transportation support</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm">Meals and refreshments</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm">Internet connectivity</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm">Learning materials</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm">Technical resources</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm">Support for coaches and speakers</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm">Accommodation where necessary</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm">Future learning activities</p>
+        </div>
+      </div>
+      <!-- Donate CTA hidden until a donation link is available:
+      <div class="text-center rounded-lg border border-gray-200 bg-gray-50 px-8 py-10">
+        <p class="text-gray-700 mb-6">Every contribution helps us make the workshop more accessible to the people it is designed for.</p>
+        <span class="btn-teal-disabled" aria-disabled="true">Donate to the Program</span>
+        <p class="text-gray-500 text-xs mt-3">Donations open soon.</p>
+      </div>
+      -->
+    </div>
+
+    <!-- Your Support Can Continue the Work -->
+    <div class="mb-12 rounded-lg bg-gray-50 border border-gray-200 px-6 py-8">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Your Support Can Continue the Work</h2>
+        <p class="text-gray-600">Supporting More Than One Workshop</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-4">
+        Our goal is not to stop at PyCon Africa.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        Where funding allows, part of the support received will also help us organize future
+        learning activities and technology workshops for refugee communities.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        This means that support for Python Without Borders can contribute not only to the workshop
+        at PyCon Africa, but also to opportunities that come after it.
+      </p>
+      <p class="text-lg leading-relaxed mb-2">
+        We want to keep creating spaces where refugees can learn, build and connect through
+        technology.
+      </p>
+      <p class="text-lg leading-relaxed font-semibold text-pycon-teal">Your support can help us keep that work going.</p>
+    </div>
+
+    <!-- Sponsor the Program -->
+    <div id="sponsor-the-program" class="mb-12">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Sponsor the Program</h2>
+        <p class="text-gray-600">Partner With Python Without Borders</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-4">
+        Organizations can support the program through financial sponsorship, learning resources,
+        technology, mentorship or other forms of partnership.
+      </p>
+      <p class="text-lg leading-relaxed mb-6">
+        We have created different sponsorship options so organizations can support the program at a
+        level that works for them.
+      </p>
+
+      <h3 class="font-semibold text-gray-900 mb-3">Sponsorship Packages</h3>
+      <div class="overflow-x-auto mb-6 rounded-lg border border-gray-200">
+        <table class="w-full text-sm text-left">
+          <thead class="bg-gray-50 text-gray-700">
+            <tr>
+              <th class="px-4 py-3 font-semibold">Package</th>
+              <th class="px-4 py-3 font-semibold">Contribution</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 bg-white">
+            <tr>
+              <td class="px-4 py-3 font-medium text-gray-900">Impact Partner</td>
+              <td class="px-4 py-3 text-pycon-teal font-semibold">$2,000</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 font-medium text-gray-900">Champion</td>
+              <td class="px-4 py-3 text-pycon-teal font-semibold">$1,500</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 font-medium text-gray-900">Community Partner</td>
+              <td class="px-4 py-3 text-pycon-teal font-semibold">$1,000</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 font-medium text-gray-900">Workshop Sponsor</td>
+              <td class="px-4 py-3 text-pycon-teal font-semibold">$500</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 font-medium text-gray-900">Learning Supporter</td>
+              <td class="px-4 py-3 text-pycon-teal font-semibold">$250</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 font-medium text-gray-900">Community Supporter</td>
+              <td class="px-4 py-3 text-pycon-teal font-semibold">$100</td>
+            </tr>
+            <tr>
+              <td class="px-4 py-3 font-medium text-gray-900">Flexible Contribution</td>
+              <td class="px-4 py-3 text-pycon-teal font-semibold">Any amount</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex flex-col items-center text-center gap-4">
+        <a href="https://drive.google.com/file/d/1UKvMmIbFxXAb-9N40f17vLY9EME6ZhGX/view"
+           target="_blank" rel="noopener noreferrer"
            class="btn-teal">
-          Apply for the Workshop
-        </a> -->
-        <a href="{% url 'pycon2026:contact_us' %}"
-           class="btn-teal-outline">
-          Contact the Organisers
+          View Full Sponsorship Prospectus
+        </a>
+        <p class="text-gray-600 text-sm">
+          Organizations interested in supporting a specific part of the program can also
+          <a href="{% url 'pycon2026:contact_us' %}" class="text-pycon-teal font-semibold hover:underline">get in touch with the organizing team</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Other Ways to Support -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Other Ways to Support</h2>
+        <p class="text-gray-600">Not Every Contribution Looks the Same</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-8">
+        Financial support is one way to contribute, but there are other ways to help make the
+        program possible.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-laptop text-pycon-teal"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Technology</h3>
+          <p class="text-gray-600 text-sm">Support participants with computers, internet connectivity, software or other technical resources.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-book-open text-pycon-teal"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Learning Resources</h3>
+          <p class="text-gray-600 text-sm">Provide training materials, books or other resources participants can use during and after the workshop.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-hands-helping text-pycon-teal"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Mentorship</h3>
+          <p class="text-gray-600 text-sm">Volunteer your time to guide participants and share practical experience.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-microphone text-pycon-teal"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Speaking</h3>
+          <p class="text-gray-600 text-sm">Share your experience and journey in technology with the participants.</p>
+        </div>
+        <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm md:col-span-2">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style="background-color: rgba(23,126,137,0.1);">
+            <i class="fas fa-users text-pycon-teal"></i>
+          </div>
+          <h3 class="font-semibold text-gray-900 mb-2">Community Support</h3>
+          <p class="text-gray-600 text-sm">Help us reach and support more refugee learners.</p>
+        </div>
+      </div>
+      <div class="text-center">
+        <a href="https://docs.google.com/forms/d/1sFK3X03-8Vra_uHSwJL8H9D4_dwNpupdOtEYbvDk7pA/viewform?edit_requested=true"
+           target="_blank" rel="noopener noreferrer" class="btn-teal">
+          Become a Partner
         </a>
       </div>
+    </div>
+
+    <!-- Our Partners -->
+    <div class="mb-12 rounded-lg bg-gray-50 border border-gray-200 px-6 py-8">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Our Partners</h2>
+        <p class="text-gray-600">This Is a Community Effort</p>
+      </div>
+      <p class="text-lg leading-relaxed mb-8">
+        Python Without Borders is organized as part of PyCon Africa 2026, with support from partners
+        who have helped us connect with and create learning opportunities for refugee communities.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div class="bg-white rounded-lg p-5 border border-gray-200 flex flex-col">
+          <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-3">Organizing Community</p>
+          <a href="https://pyladies.com/locations/kampala/" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center">
+            <img src="{% static '2026/img/diversity/pyladies_logo.png' %}" alt="PyLadies Kampala" class="max-h-16 w-full object-contain">
+          </a>
+        </div>
+        <div class="bg-white rounded-lg p-5 border border-gray-200">
+          <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-1">Conference</p>
+          <p class="font-semibold text-gray-900">PyCon Africa 2026</p>
+        </div>
+        <div class="bg-white rounded-lg p-5 border border-gray-200 flex flex-col">
+          <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-3">Community &amp; Mobilization</p>
+          <a href="https://www.wendawestnile.org/" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center">
+            <img src="{% static '2026/img/diversity/wenda.jpg' %}" alt="WENDA" class="max-h-16 w-full object-contain">
+          </a>
+        </div>
+        <div class="bg-white rounded-lg p-5 border border-gray-200 flex flex-col">
+          <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-1">Previous Program Partners</p>
+          <p class="font-semibold text-gray-900 mb-3">CodeStar West Nile</p>
+          <a href="https://www.muni.ac.ug/index.php/en/" target="_blank" rel="noopener noreferrer" class="flex-1 flex items-center justify-center">
+            <img src="{% static '2026/img/diversity/muni.png' %}" alt="Muni University" class="max-h-16 w-full object-contain">
+          </a>
+        </div>
+        <div class="bg-white rounded-lg p-5 border border-gray-200 md:col-span-2">
+          <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-3">Refugee Community Organizations</p>
+          <div class="flex flex-wrap items-center gap-x-8 gap-y-4">
+            <a href="https://ssuraug.org/" target="_blank" rel="noopener noreferrer">
+              <img src="{% static '2026/img/diversity/ssura_logo.png' %}" alt="SSURA" class="h-10 w-auto object-contain">
+            </a>
+            <a href="http://www.corasupport.org" target="_blank" rel="noopener noreferrer">
+              <img src="{% static '2026/img/diversity/CORA_Logo.png' %}" alt="CORA" class="h-10 w-auto object-contain">
+            </a>
+            <a href="https://i-scoreenterprise.com/" target="_blank" rel="noopener noreferrer">
+              <img src="{% static '2026/img/diversity/I-score-sback.webp' %}" alt="ISC SCORE" class="h-10 w-auto object-contain">
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61562410214376&amp;locale=en_GB" target="_blank" rel="noopener noreferrer" class="font-semibold text-gray-900 hover:text-pycon-teal hover:underline">REDNET</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Photo Gallery -->
+    <div class="mb-12">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Photo Gallery</h2>
+        <p class="text-gray-600">From the Community</p>
+        <p class="text-gray-600 max-w-2xl mx-auto mt-2">A look back at the people, learning and community that inspired Python Without Borders.</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="rounded-lg overflow-hidden border border-gray-200">
+          <img src="{% static '2026/img/diversity/refugee1.jpg' %}" alt="Participants during a session" class="w-full h-48 object-cover">
+        </div>
+        <div class="rounded-lg overflow-hidden border border-gray-200">
+          <img src="{% static '2026/img/diversity/refugee2.jpg' %}" alt="A facilitator presenting to participants" class="w-full h-48 object-cover">
+        </div>
+        <div class="rounded-lg overflow-hidden border border-gray-200">
+          <img src="{% static '2026/img/diversity/refugee3.jpg' %}" alt="Hands-on learning during the bootcamp" class="w-full h-48 object-cover">
+        </div>
+        <div class="rounded-lg overflow-hidden border border-gray-200">
+          <img src="{% static '2026/img/diversity/refugee4.jpg' %}" alt="Participants networking" class="w-full h-48 object-cover">
+        </div>
+        <div class="rounded-lg overflow-hidden border border-gray-200 col-span-2 md:col-span-1">
+          <img src="{% static '2026/img/diversity/refugee5.jpg' %}" alt="Group photograph of participants" class="w-full h-48 object-cover">
+        </div>
+      </div>
+    </div>
+
+    <!-- Get Involved -->
+    <div class="mb-12 rounded-lg bg-gray-50 border border-gray-200 px-6 py-8">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Get Involved</h2>
+        <p class="text-gray-600">Be Part of the Journey</p>
+      </div>
+      <p class="text-gray-700 mb-6">
+        Python Without Borders is about creating opportunities for refugees and persons of concern
+        to learn, build and connect through technology. There are several ways to support the
+        program.
+      </p>
+      <div class="grid grid-cols-1 gap-3 mb-6">
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>Participate</strong> &mdash; Take part in the workshop and continue your learning alongside other participants, coaches and mentors.</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>Coach or Speak</strong> &mdash; Share your skills, experience and journey in technology with the participants.</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>Sponsor</strong> &mdash; Help us cover the costs of making the workshop accessible to selected participants.</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>Donate</strong> &mdash; Contribute towards the workshop and, where funding allows, future learning activities for refugee communities.</p>
+        </div>
+        <div class="flex items-start gap-3 bg-white rounded-lg p-4 border border-gray-200">
+          <i class="fas fa-check text-pycon-teal flex-shrink-0 mt-0.5"></i>
+          <p class="text-gray-900 text-sm"><strong>Partner</strong> &mdash; Work with us to create more opportunities for refugees to learn and participate in technology.</p>
+        </div>
+      </div>
+      <p class="text-gray-700 text-sm text-center">
+        If you would like to support the program, sponsor a specific part of the workshop, or
+        explore a partnership, please
+        <a href="{% url 'pycon2026:contact_us' %}" class="text-pycon-teal font-semibold hover:underline">get in touch with the organizing team</a>.
+      </p>
+    </div>
+
+    <!-- Final Call to Action -->
+    <div class="mb-12 text-center">
+      <h2 class="text-2xl font-bold text-gray-900 mb-1">From Arua to PyCon Africa</h2>
+      <p class="text-lg leading-relaxed mb-4 max-w-2xl mx-auto">
+        The journey that began with an 8-week Web Development Bootcamp in Arua continues at PyCon
+        Africa 2026.
+      </p>
+      <p class="text-lg leading-relaxed mb-4 max-w-2xl mx-auto">
+        This time, selected refugees and persons of concern will have the opportunity to learn
+        alongside developers, coaches and members of the wider Python community from across Africa.
+      </p>
+      <p class="text-lg leading-relaxed mb-6 max-w-2xl mx-auto">
+        We hope to create a welcoming space where participants can build their skills, make new
+        connections and leave feeling encouraged to continue their journey in technology.
+      </p>
+      <p class="text-lg font-semibold text-pycon-teal">Learn. Build. Connect. Continue.</p>
+    </div>
+
+    <!-- Event Information / CTA -->
+    <div class="text-center rounded-lg border border-gray-200 bg-gray-50 px-8 py-12">
+      <h2 class="text-2xl font-bold text-gray-900 mb-2">Python Without Borders</h2>
+      <p class="text-gray-600 mb-1">Refugee &amp; Persons of Concern Program</p>
+      <p class="text-gray-600 mb-1">Sunday, 11 October 2026</p>
+      <p class="text-gray-600 mb-1">Speke Resort Munyonyo, Kampala, Uganda</p>
+      <p class="text-gray-600 mb-6">Participation: Free for selected participants</p>
+
+      <div class="max-w-md mx-auto text-left bg-white rounded-lg border border-gray-200 p-5 mb-8">
+        <p class="text-xs font-semibold uppercase tracking-wide text-pycon-teal mb-3">Useful Links</p>
+        <ul class="text-sm space-y-2">
+          <li>
+            <a href="https://www.pssu.ug/events/persons-of-concern/" target="_blank" rel="noopener noreferrer" class="text-gray-900 hover:text-pycon-teal">Program Information</a>
+          </li>
+          <li>
+            <a href="https://africa.pycon.org/2026/" target="_blank" rel="noopener noreferrer" class="text-gray-900 hover:text-pycon-teal">PyCon Africa 2026</a>
+          </li>
+          <li>
+            <a href="{% url 'pycon2026:schedule' %}" class="text-gray-900 hover:text-pycon-teal">PyCon Africa 2026 Schedule</a>
+          </li>
+          <li>
+            <a href="https://medium.com/@asiobrenda01/pyladies-kampala-annual-report-2025-c7135351f111" target="_blank" rel="noopener noreferrer" class="text-gray-900 hover:text-pycon-teal">PyLadies Kampala Annual Report 2025</a>
+          </li>
+          <li>
+            <a href="mailto:kampala@pyladies.com" class="text-gray-900 hover:text-pycon-teal">kampala@pyladies.com</a>
+          </li>
+        </ul>
+      </div>
+
+      <p class="text-lg text-gray-600 mb-8">
+        If you would like to support the program or explore ways to contribute, please get in touch
+        with the organizing team.
+      </p>
+      <a href="{% url 'pycon2026:contact_us' %}" class="btn-teal">
+        Contact the Organizing Team
+      </a>
     </div>
 
   </div>
