@@ -60,7 +60,7 @@
                     {% endfor %}
                   </div>
                   {% else %}
-                  {{ slot.title|linebreaksbr }}
+                  {{ slot.title|linebreaksbr }}{% if slot.star %}<sup class="cell-star">★</sup>{% endif %}
                   {% if slot.label %}<div class="cell-label">{{ slot.label }}</div>{% endif %}
                   {% endif %}
                 </td>
@@ -92,6 +92,7 @@
             </tbody>
           </table>
         </div>
+        {% if tab.footnote %}<div class="schedule-footnote">{{ tab.footnote }}</div>{% endif %}
       </div>
       {% endfor %}
     </div>
@@ -273,6 +274,20 @@
   object-fit: cover;
   flex-shrink: 0;
   border: 1px solid #e2e8f0;
+}
+
+.cell-star {
+  color: #d97706;
+  font-size: 0.85em;
+  margin-left: 2px;
+}
+
+.schedule-footnote {
+  margin-top: 10px;
+  padding: 0 4px;
+  font-size: 12px;
+  color: #666;
+  text-align: left;
 }
 
 .cell-label {
