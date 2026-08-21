@@ -192,6 +192,7 @@ SCHEDULE_DATA = [
     {
         "id": "day5",
         "label": "Sun, Oct 11 — Conference Day 3",
+        "footnote": "★ Remote session",
         "rooms": [
             "Victoria Ball Room",
             "Majestic Hall",
@@ -245,7 +246,7 @@ SCHEDULE_DATA = [
                 {"title": "Trust Is a Dependency: Securing the Modern Software Supply Chain", "speakers": [{"name": "Famious Orishaba"}, {"name": "Tabitha Namwone"}], "label": "Tutorial"},
                 {"title": "Refugee Program", "speaker": ""},
             ]},
-            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote\nThe Evolution of Python: Lessons from Its Creator (Guido van Rossum)", "label": "Remote"},
+            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote\nThe Evolution of Python: Lessons from Its Creator (Guido van Rossum)", "star": True},
             {"time": "16:50 – 17:20", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
                 {"title": "Your Code is Great...but Who Knows?", "speaker": "Sarah Muwanguzi"},
                 {"title": "Python for Impact: Building Climate Solutions Rooted in African Communities", "speaker": "Tendai Jack"},
