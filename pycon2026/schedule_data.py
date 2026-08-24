@@ -19,7 +19,7 @@ SCHEDULE_DATA = [
             ]},
             {"time": "11:00 – 13:00", "cells": [
                 E,
-                {"title": "GDE Workshop", "speaker": ""},
+                {"title": "Build and deploy an ADK agent on Cloud Run", "speaker": "Alouzeh Brandone Mahbuh, Samuel Macharia"},
                 {"title": "PyData Summit", "speaker": ""},
                 {"title": "Sponsor Workshops", "speaker": ""},
             ]},
