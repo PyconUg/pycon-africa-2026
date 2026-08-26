@@ -42,6 +42,15 @@ SPONSORS_2026 = [
                 "website": "https://posit.co/",
                 "description": "Posit builds open-source and professional tools for data science, including RStudio and Posit tools that support both R and Python workflows for analysis, visualisation, and reporting.\n\nWith products like Positron, Posit Connect, and Quarto, the company backs many of the data science tools that Python developers on the data and analytics side already rely on day to day.\n\nWe're thankful for Posit's support of PyCon Africa 2026, helping us bring more data science resources to our community.",
             },
+            {
+                "name": "Django Software Foundation",
+                # Sponsoring at both the Bronze and Diversity levels, so this
+                # entry overrides the tier label rather than being listed twice.
+                "label": "Bronze & Diversity Sponsor",
+                "logo": "2026/img/sponsors/django.svg",
+                "website": "https://www.djangoproject.com/foundation/",
+                "description": "The Django Software Foundation is the nonprofit organisation behind the Django web framework, responsible for stewarding the project, funding a Django Fellow to maintain the framework, and supporting the wider community through grants and sponsorships.\n\nDjango remains one of the most widely used Python web frameworks, and the Foundation's ongoing investment in the project and its community has helped Django developers around the world, including many here in Africa, build on a solid, well-supported foundation.\n\nThe Foundation is supporting PyCon Africa 2026 as both a Bronze and a Diversity sponsor, with the diversity contribution going directly towards making the conference reachable for attendees who would otherwise be unable to join us. We're grateful for their support as we grow the Python community across the continent.",
+            },
         ],
     },
     {
@@ -54,13 +63,6 @@ SPONSORS_2026 = [
                 "website": "https://www.oreilly.com/",
                 "description": "O'Reilly has spent decades helping people learn the skills and ideas that shape the technology industry, first through its widely recognised technical books and now through an online learning platform offering live courses, books, videos, and interactive content covering everything from Python fundamentals to advanced data engineering.\n\nMany Python developers got their start with an O'Reilly book on their desk, and that tradition of practical, in-depth technical learning continues today through the platform's expanding library of Python and data science content.\n\nWe're thankful for O'Reilly's in-kind support of PyCon Africa 2026, helping us equip attendees with resources to keep learning long after the conference ends.",
             },
-            # Django Software Foundation - sponsorship not yet confirmed. Uncomment once confirmed.
-            # {
-            #     "name": "Django Software Foundation",
-            #     "logo": "2026/img/sponsors/django-software-foundation.svg",
-            #     "website": "https://www.djangoproject.com/foundation/",
-            #     "description": "The Django Software Foundation is the nonprofit organisation behind the Django web framework, responsible for stewarding the project, funding a Django Fellow to maintain the framework, and supporting the wider community through grants and sponsorships.\n\nDjango remains one of the most widely used Python web frameworks, and the Foundation's ongoing investment in the project and its community has helped Django developers around the world, including many here in Africa, build on a solid, well-supported foundation.\n\nWe're grateful for the Django Software Foundation's support of PyCon Africa 2026 as we grow the Python community across the continent.",
-            # },
         ],
     },
 ]
