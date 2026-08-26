@@ -46,7 +46,7 @@
                 </h2>
                 <span class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-white rounded-full px-4 py-1.5 whitespace-nowrap" style="background-color: #177e89;">
                   <i class="fa fa-star" aria-hidden="true"></i>
-                  {{ tier.label }}
+                  {{ sponsor.label|default:tier.label }}
                 </span>
               </div>
               {% if sponsor.description %}
