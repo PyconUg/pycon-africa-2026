@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block meta_title %}{% trans "Accepted Posters | PyCon Africa 2026" %}{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
+  <h1 class="text-5xl font-bold text-gray-900 text-center">Accepted Posters</h1>
+  <p class="text-gray-600 text-center max-w-2xl mx-auto mt-4">
+    Meet the poster presenters joining us at PyCon Africa 2026.
+  </p>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 pb-16">
+  {% if posters %}
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+    {% for poster in posters %}
+      <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-6">
+        <span class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-white rounded-full px-3 py-1 mb-3" style="background-color: #177e89;">
+          {{ poster.talk_category_label }}
+        </span>
+        <h2 class="text-lg font-bold text-gray-900 mb-3">{{ poster.name }}</h2>
+        <div class="text-gray-700 text-sm">{{ poster.elevator_pitch|linebreaks }}</div>
+      </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-16">
+    <h3 class="text-xl text-gray-500 font-normal mb-3">No accepted posters yet</h3>
+    <p class="text-gray-400">Accepted posters will be announced here once the review process is complete.</p>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}
