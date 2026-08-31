@@ -1,5 +1,8 @@
+import re
+
 from django.shortcuts import render, get_object_or_404
 from .schedule_data import SCHEDULE_DATA
+from registration.models import Profile
 
 TALK_CATEGORY_LABELS = {
     "GP / Web": "General Python, Web/DevOps",
@@ -88,7 +91,7 @@ ACCEPTED_POSTERS_2026 = [
     {
         "name": "Justice Ohene Amofa",
         "talk_category": "ET",
-        "talk_abstract": "Machine learning is increasingly used in medical diagnostics, but many models remain difficult to reproduce, interpret, or deploy in real-world systems.\nThis work presents a Python-based deep learning pipeline for tuberculosis detection using chest X-ray images combined with multivariate patient data, including age, comorbidities, socioeconomic indicators, and radiological features.\nThe system is implemented using a modular Python ML stack and integrates transfer learning, classical machine learning models, and explainable AI techniques.\nKey components include:\nA deep learning pipeline built on a pre-trained ResNet50 backbone with custom classification layers\nClassical ML models (SVM, decision trees) for comparative evaluation\nA dataset of 4,800 chest X-ray images used for training and validation\nPerformance metrics including Accuracy (~99%), Precision (100% TB class), F1-score (~0.9787), and AUC (~0.9989)\nExplainable AI methods to improve interpretability and clinical trust\nA Streamlit-based interface for interactive inference and deployment\nThe architecture follows a standard Python ML workflow:\nData preprocessing and normalization\nFeature integration across clinical and imaging modalities\nModel training, evaluation, and validation\nLightweight deployment using Python web tooling\nBeyond the current system, the project is designed to be modular and extensible for multimodal expansion, including the incorporation of additional imaging modalities such as ocular/eye-based visual biomarkers in future iterations. This reflects a broader direction toward multi-source diagnostic intelligence systems.\nWe also discuss important real-world limitations, particularly domain shift in TB presentation across regions (e.g., Mycobacterium africanum prevalence in West Africa), emphasizing the need for regionally representative datasets and retraining strategies.\nOverall, the work focuses on:\nReproducible ML pipeline design in Python\nBridging research-grade models and deployable tools\nExplainable AI for healthcare trust and usability\nPractical constraints in low-resource deployment environments\nProject Links\nGitHub: https://github.com/iamamofa/TB-detection",
+        "talk_abstract": "Can a Python-based deep learning pipeline reliably support tuberculosis detection using heterogeneous clinical and imaging data?\nThis work presents a reproducible machine learning system built in Python that integrates chest X-ray imaging and multivariate patient data, including age, comorbidities, socioeconomic indicators, and radiological features.\nThe system is implemented using a modular Python ML stack and integrates transfer learning, classical machine learning models, and explainable AI techniques.\nKey components include:\nA deep learning pipeline built on a pre-trained ResNet50 backbone with custom classification layers\nClassical ML models (SVM, decision trees) for comparative evaluation\nA dataset of 4,800 chest X-ray images used for training and validation\nPerformance metrics including Accuracy (~99%), Precision (100% TB class), F1-score (~0.9787), and AUC (~0.9989)\nExplainable AI methods to improve interpretability and clinical trust\nA Streamlit-based interface for interactive inference and deployment\nThe architecture follows a standard Python ML workflow:\nData preprocessing and normalization\nFeature integration across clinical and imaging modalities\nModel training, evaluation, and validation\nLightweight deployment using Python web tooling\nBeyond the current system, the project is designed to be modular and extensible for multimodal expansion, including the incorporation of additional imaging modalities such as ocular/eye-based visual biomarkers in future iterations. This reflects a broader direction toward multi-source diagnostic intelligence systems.\nWe also discuss important real-world limitations, particularly domain shift in TB presentation across regions (e.g., Mycobacterium africanum prevalence in West Africa), emphasizing the need for regionally representative datasets and retraining strategies.\nOverall, the work focuses on:\nReproducible ML pipeline design in Python\nBridging research-grade models and deployable tools\nExplainable AI for healthcare trust and usability\nPractical constraints in low-resource deployment environments\nProject Links\nGitHub: https://github.com/iamamofa/TB-detection",
     },
 ]
 
@@ -252,11 +255,27 @@ def scheduIe(request):
     return render(request, template, context)
 
 
+def _normalize_name(value):
+    value = re.sub(r"[_\-]+", " ", value.strip().lower())
+    return re.sub(r"\s+", " ", value)
+
+
 def accepted_posters(request):
-    posters = [
-        {**poster, "talk_category_label": TALK_CATEGORY_LABELS[poster["talk_category"]]}
-        for poster in ACCEPTED_POSTERS_2026
-    ]
+    profiles_by_name = {}
+    for profile in Profile.objects.all():
+        key = _normalize_name(profile.get_full_name())
+        if key and key not in profiles_by_name:
+            profiles_by_name[key] = profile
+
+    posters = []
+    for poster in ACCEPTED_POSTERS_2026:
+        profile = profiles_by_name.get(_normalize_name(poster["name"]))
+        posters.append({
+            **poster,
+            "talk_category_label": TALK_CATEGORY_LABELS[poster["talk_category"]],
+            "photo_url": profile.profile_image.url if profile and profile.profile_image else "",
+        })
+
     context = {"posters": posters, "year": 2026}
     template = '2026/schedule/accepted_posters.html'
     return render(request, template, context)
