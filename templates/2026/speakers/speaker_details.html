@@ -21,7 +21,11 @@
 
 <section class="speaker-detail-section">
   <div class="max-w-4xl mx-auto px-4">
+    {% if is_poster_speaker %}
+    <a href="{% url 'pycon2026:accepted_posters' %}" class="schedule-back-link"><i class="fa-solid fa-arrow-left"></i> {% trans "Back to Posters" %}</a>
+    {% else %}
     <a href="{% url 'pycon2026:schedule' %}" class="schedule-back-link"><i class="fa-solid fa-arrow-left"></i> {% trans "Back to Schedule" %}</a>
+    {% endif %}
   </div>
   <div class="max-w-4xl mx-auto px-4 speaker-detail-grid">
 
@@ -84,7 +88,11 @@
     </div>
 
     <aside class="speaker-sidebar">
+      {% if is_poster_speaker %}
+      <h3>{% trans "Other Posters" %}</h3>
+      {% else %}
       <h3>{% trans "Other Talks" %}</h3>
+      {% endif %}
       {% if other_talks %}
       <div class="related-speakers">
         {% for talk in other_talks %}
@@ -102,7 +110,11 @@
         {% endfor %}
       </div>
       {% else %}
+      {% if is_poster_speaker %}
+      <p class="no-related">{% trans "No other posters available." %}</p>
+      {% else %}
       <p class="no-related">{% trans "No other talks available." %}</p>
+      {% endif %}
       {% endif %}
     </aside>
 

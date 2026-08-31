@@ -105,6 +105,7 @@ class SpeakerDetailView(HitCountDetailView):
 
         # Get accepted talks for the speaker
         talks = Proposal.objects.filter(user=self.object.user, status="A", event_year=event_year)
+        is_poster_speaker = talks.filter(talk_type='Poster').exists()
 
         # Collect related speakers without duplication
         related_speakers = Profile.objects.filter( 
@@ -121,12 +122,18 @@ class SpeakerDetailView(HitCountDetailView):
             )
         ).filter(user_accepted=True).exclude(profile_id=self.object.profile_id).distinct()
 
-        # Other accepted talks (with their speaker) to feature in the sidebar
+        # Other accepted talks (with their speaker) to feature in the sidebar.
+        # Poster presenters see other posters; talk speakers see other talks.
         other_talks = Proposal.objects.filter(
             status='A',
             user_response='A',
             event_year=event_year,
-        ).exclude(user=self.object.user).select_related('user__user_profile')[:5]
+        ).exclude(user=self.object.user).select_related('user__user_profile')
+        if is_poster_speaker:
+            other_talks = other_talks.filter(talk_type='Poster')
+        else:
+            other_talks = other_talks.exclude(talk_type='Poster')
+        other_talks = other_talks[:5]
 
         # Truncate biography to 30 words
         truncated_biography = Truncator(self.object.biography).words(50, truncate='...')
@@ -141,6 +148,7 @@ class SpeakerDetailView(HitCountDetailView):
 
         context.update({
             'talks': talks,
+            'is_poster_speaker': is_poster_speaker,
             'related_speakers': related_speakers,
             'other_talks': other_talks,
             'events': Event.objects.all(),
