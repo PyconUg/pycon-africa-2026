@@ -76,13 +76,6 @@
           {% endif %}
           <div class="session-tags">
             {% if talk.talk_type %}<span class="tag tag-type">{{ talk.talk_type }}</span>{% endif %}
-            {% if talk.intended_audience == "BGN-L" %}
-            <span class="tag tag-beginner">{% trans "Beginner" %}</span>
-            {% elif talk.intended_audience == "INT-L" %}
-            <span class="tag tag-intermediate">{% trans "Intermediate" %}</span>
-            {% elif talk.intended_audience == "EXP-L" %}
-            <span class="tag tag-expert">{% trans "Expert" %}</span>
-            {% endif %}
           </div>
         </div>
         {% endfor %}
