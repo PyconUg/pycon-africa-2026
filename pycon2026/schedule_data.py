@@ -116,7 +116,7 @@ SCHEDULE_DATA = [
                 {"title": "Django Girls Workshop", "speaker": ""},
                 {"title": "Community Summit", "speaker": ""},
             ]},
-            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote"},
+            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote\nJohn Kimani"},
             {"time": "16:50 – 17:20", "span": True, "title": "Lightning Talks"},
         ],
     },
@@ -178,7 +178,7 @@ SCHEDULE_DATA = [
                 {"title": "Pyladies Africa", "speaker": "Ruvimbo Delia Hakata, Adeline Makokha, Blossom Dugbatey", "link": "/2026/co-events/pyladies/", "no_link": True},
                 {"title": "Posters", "speaker": "", "link": "/2026/schedule/accepted-posters/"},
             ]},
-            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote\nJohn Kimani"},
+            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote"},
             {"time": "16:50 – 17:20", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
                 {"title": "Django Deployment Isn't What It Used to Be.", "speaker": "Victoria Nyamai"},
                 {"title": "Using Python to Automate API Testing in Open Source Projects", "speaker": "Clency Christine"},
