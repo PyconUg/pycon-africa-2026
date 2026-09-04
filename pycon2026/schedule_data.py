@@ -116,7 +116,7 @@ SCHEDULE_DATA = [
                 {"title": "Django Girls Workshop", "speaker": ""},
                 {"title": "Community Summit", "speaker": ""},
             ]},
-            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote\nBuilding the Agentic Future with Google Antigravity\nJohn Kimani, Developer Ecosystem Lead for Sub-Saharan Africa, Google"},
+            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote\nBuilding the Agentic Future with Google Antigravity\n(John Kimani - Developer Ecosystem Lead for Sub-Saharan Africa, Google)"},
             {"time": "16:50 – 17:20", "span": True, "title": "Lightning Talks"},
         ],
     },
