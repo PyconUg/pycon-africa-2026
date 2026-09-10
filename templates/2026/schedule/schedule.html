@@ -61,6 +61,10 @@
                   </div>
                   {% else %}
                   {{ slot.title|linebreaksbr }}{% if slot.star %}<sup class="cell-star">★</sup>{% endif %}
+                  {% if slot.speaker %}
+                  <br>
+                  {% if slot.speaker_link %}<a class="span-speaker-link" href="{{ slot.speaker_link }}"><strong>{{ slot.speaker }}</strong></a>{% else %}<strong>{{ slot.speaker }}</strong>{% endif %}
+                  {% endif %}
                   {% if slot.label %}<div class="cell-label">{{ slot.label }}</div>{% endif %}
                   {% endif %}
                 </td>
@@ -257,13 +261,15 @@
 }
 
 .cell-speaker a,
-.lightning-text a {
+.lightning-text a,
+.span-speaker-link {
   color: #177e89;
   text-decoration: none;
 }
 
 .cell-speaker a:hover,
-.lightning-text a:hover {
+.lightning-text a:hover,
+.span-speaker-link:hover {
   text-decoration: underline;
 }
 
