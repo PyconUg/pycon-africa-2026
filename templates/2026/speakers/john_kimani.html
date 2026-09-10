@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% block meta_title %}{{ meta_title }}{% endblock %}
+{% block og_title %}{{ meta_title }}{% endblock %}
+{% block og_description %}{{ meta_description }}{% endblock %}
+{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}
+{% block og_type %}website{% endblock %}
+{% block og_site_name %}PyCon Africa{% endblock %}
+{% block twitter_title %}{{ meta_title }}{% endblock %}
+{% block twitter_description %}{{ meta_description }}{% endblock %}
+{% block twitter_site %}@pyconafrica{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<section class="speaker-detail-section">
+  <div class="max-w-4xl mx-auto px-4">
+    <a href="{% url 'pycon2026:schedule' %}" class="schedule-back-link"><i class="fa-solid fa-arrow-left"></i> {% trans "Back to Schedule" %}</a>
+  </div>
+  <div class="max-w-4xl mx-auto px-4 speaker-detail-grid">
+
+    <div class="speaker-main">
+      <div class="speaker-profile-card">
+        <img class="speaker-photo" src="{% static image %}" alt="{{ name }} profile picture">
+
+        <div class="speaker-info">
+          <h2 class="speaker-name">{{ name }}</h2>
+          <p class="speaker-role">{{ role }}{% if organization %} at {{ organization }}{% endif %}</p>
+        </div>
+      </div>
+
+      {% if biography %}
+      <div class="speaker-bio">{{ biography }}</div>
+      {% endif %}
+
+      <div class="speaker-sessions">
+        <h3>{% trans "Abstract" %}</h3>
+        <div class="session-card">
+          <div class="session-title">{{ talk_title }}</div>
+          <p class="session-abstract">{{ talk_abstract }}</p>
+          <div class="session-tags">
+            <span class="tag tag-type">{{ talk_type }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="speaker-sidebar">
+      <h3>{% trans "Other Talks" %}</h3>
+      <p class="no-related">
+        <a href="{% url 'pycon2026:schedule' %}">{% trans "See the full schedule" %}</a>
+      </p>
+    </aside>
+
+  </div>
+</section>
+
+<style>
+.speaker-detail-section {
+  padding: 32px 0 80px;
+}
+
+.schedule-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  color: #177e89;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.schedule-back-link:hover {
+  text-decoration: underline;
+}
+
+.speaker-detail-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+.speaker-profile-card {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.speaker-photo {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  flex-shrink: 0;
+}
+
+.speaker-info {
+  flex: 1;
+  min-width: 220px;
+}
+
+.speaker-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 4px;
+}
+
+.speaker-role {
+  color: #177e89;
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 14px;
+}
+
+.speaker-bio {
+  color: #2d3748;
+  line-height: 1.7;
+  margin-bottom: 36px;
+}
+
+.speaker-sessions h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 16px;
+}
+
+.session-card {
+  border: 1px solid #e2e8f0;
+  border-left: 3px solid #177e89;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 14px;
+}
+
+.session-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.session-abstract {
+  color: #4a5568;
+  font-size: 14px;
+  margin: 8px 0 10px;
+  line-height: 1.6;
+}
+
+.session-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 20px;
+  color: #fff;
+}
+
+.tag-type { background: #2d3748; }
+
+.speaker-sidebar h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 16px;
+}
+
+.no-related {
+  color: #718096;
+  font-size: 14px;
+}
+
+.no-related a {
+  color: #177e89;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .speaker-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .speaker-photo {
+    width: 120px;
+    height: 120px;
+  }
+}
+</style>
+{% endblock %}

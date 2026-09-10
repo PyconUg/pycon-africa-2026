@@ -193,3 +193,47 @@ def speaker_search(request, year):
         {'name': query},
         status=404,
     )
+
+
+def john_kimani_detail(request, year):
+    """Static profile page for a keynote speaker who has no account/Profile
+    in the system yet."""
+    context = {
+        'name': 'John Kimani',
+        'role': 'Developer Ecosystem Lead for Sub-Saharan Africa',
+        'organization': 'Google',
+        'image': '2026/img/speakerImages/John Kimani.JPG',
+        'biography': (
+            "John is Google's Developer Ecosystem Lead for Sub-Saharan Africa "
+            "overseeing developer community programs in the region. Prior to "
+            "joining Google, he was a Developer Advocate at Microsoft and spent "
+            "5 years before that as a software developer building enterprise "
+            "solutions. John is passionate about technology-driven innovation "
+            "and has spent the last decade enabling developers in Africa to "
+            "build successful products and startups."
+        ),
+        'talk_title': 'Building the agentic future with Google Antigravity',
+        'talk_abstract': (
+            "Software development is undergoing significant changes, with AI "
+            "playing a key role. Advancements in model intelligence for coding "
+            "encourage us to rethink how development should be done. As a "
+            "result, today's development tools are quite different from those "
+            "of just a few years ago. Google Antigravity embraces this change "
+            "by rethinking what a truly agent-optimized experience should look "
+            "like. Agents need structured reasoning loops, tool-calling "
+            "execution environments, state management, and robust "
+            "orchestration. In this talk, we examine how Antigravity "
+            "simplifies these workflows for Python developers. We'll start "
+            "with a foundational walkthrough of agentic systems, then unpack "
+            "how Antigravity enables developers to rapidly build, test, and "
+            "deploy their own autonomous applications."
+        ),
+        'talk_type': 'Keynote Speaker',
+        'meta_title': f'John Kimani | PyCon Africa {year}',
+        'meta_description': (
+            f"Meet John Kimani, a keynote speaker at PyCon Africa {year}. "
+            "Google's Developer Ecosystem Lead for Sub-Saharan Africa."
+        ),
+        'meta_author': 'PyCon Uganda',
+    }
+    return render(request, f'{year}/speakers/john_kimani.html', context)
