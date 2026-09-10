@@ -66,7 +66,7 @@ SCHEDULE_DATA = [
             {"time": "16:00 – 18:00", "cells": [
                 E,
                 {"title": "SQLAlchemy: the Swiss Army Knife of Databases for Python", "speaker": "ZOKORA ELVIS GBAGNON"},
-                {"title": "CPython Internals", "speaker": "Lincoln Angufibo"},
+                E,
                 E,
             ]},
         ],
