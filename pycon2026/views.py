@@ -145,6 +145,12 @@ SPONSORS_2026 = [
                 "website": "https://www.djangoproject.com/foundation/",
                 "description": "The Django Software Foundation is the nonprofit organisation behind the Django web framework, responsible for stewarding the project, funding a Django Fellow to maintain the framework, and supporting the wider community through grants and sponsorships.\n\nDjango remains one of the most widely used Python web frameworks, and the Foundation's ongoing investment in the project and its community has helped Django developers around the world, including many here in Africa, build on a solid, well-supported foundation.\n\nThe Foundation is supporting PyCon Africa 2026 as both a Bronze and a Diversity sponsor, with the diversity contribution going directly towards making the conference reachable for attendees who would otherwise be unable to join us. We're grateful for their support as we grow the Python community across the continent.",
             },
+            {
+                "name": "DEFNA",
+                "logo": "2026/img/sponsors/DEFNA-Logo.png",
+                "website": "https://www.defna.org/",
+                "description": "DEFNA (Django Events Foundation North America) is a nonprofit that has supported the Django community since 2015, organising DjangoCon US and handing out grants to help local Django events happen around the world.\n\nBeyond running its own conference, DEFNA puts real effort into diversity and financial aid, making sure the Django community stays open to newcomers wherever they are.\n\nWe're happy to have DEFNA on board as a Bronze sponsor of PyCon Africa 2026, supporting our shared goal of a more inclusive Python and Django community.",
+            },
         ],
     },
     {
@@ -156,6 +162,39 @@ SPONSORS_2026 = [
                 "logo": "2026/img/sponsors/oreilly.jpg",
                 "website": "https://www.oreilly.com/",
                 "description": "O'Reilly has spent decades helping people learn the skills and ideas that shape the technology industry, first through its widely recognised technical books and now through an online learning platform offering live courses, books, videos, and interactive content covering everything from Python fundamentals to advanced data engineering.\n\nMany Python developers got their start with an O'Reilly book on their desk, and that tradition of practical, in-depth technical learning continues today through the platform's expanding library of Python and data science content.\n\nWe're thankful for O'Reilly's in-kind support of PyCon Africa 2026, helping us equip attendees with resources to keep learning long after the conference ends.",
+            },
+        ],
+    },
+]
+
+EXPO_SPONSORS_2026 = [
+    {
+        "id": "regional-expo",
+        "label": "Regional Expo Sponsor",
+        "sponsors": [
+            {
+                "name": "Sunbird AI",
+                "logo": "2026/img/sponsors/sunbird-logo.png",
+                "website": "https://sunbird.ai/",
+                "description": "Sunbird AI is a Kampala-based nonprofit building practical AI systems for social good, from local-language speech and translation tools to models that support public health and agriculture across the region.\n\nWe're glad to have Sunbird AI join us as a Regional Expo sponsor for PyCon Africa 2026.",
+            },
+            {
+                "name": "Rift Research Labs",
+                "logo": "2026/img/sponsors/rift-research-labs.png",
+                "website": "https://www.riftresearch.ai",
+                "description": "Rift Research Labs is joining PyCon Africa 2026 as a Regional Expo sponsor. We're grateful for their support and look forward to sharing more about their work soon.",
+            },
+            {
+                "name": "TwelveInks",
+                "logo": "2026/img/sponsors/twelveinks.png",
+                "website": "https://twelveinks.com/",
+                "description": "TwelveInks Company Limited is a technology and cloud solutions provider dedicated to delivering practical, accessible digital tools for businesses and developers across Africa.\n\nThrough products like TwelveInks Cloud, a platform for virtual servers, managed databases, private networks, application deployment, and cybersecurity, as well as TwelveInks WorkDrive, a secure cloud environment for file management and collaboration, TwelveInks provides developers with the core infrastructure needed to launch and scale applications reliably.\n\nWe're proud to have TwelveInks supporting PyCon Africa 2026 as we work together to grow the tech and open-source ecosystem across the continent.",
+            },
+            {
+                "name": "AI Studio Uganda",
+                "logo": "2026/img/sponsors/ai-studio-uganda.png",
+                "website": "https://aistudio.ug/",
+                "description": "AI Studio Uganda builds practical, sovereign AI systems for African institutions, working with businesses and public sector partners on AI solutions designed for local realities.\n\nWe're excited to have AI Studio Uganda join us as a Regional Expo sponsor for PyCon Africa 2026.",
             },
         ],
     },
@@ -316,6 +355,8 @@ def sponsors(request):
     context = {
         "sponsors_data": SPONSORS_2026,
         "has_sponsors": any(tier["sponsors"] for tier in SPONSORS_2026),
+        "expo_sponsors_data": EXPO_SPONSORS_2026,
+        "has_expo_sponsors": any(tier["sponsors"] for tier in EXPO_SPONSORS_2026),
         "year": 2026,
     }
     return render(request, '2026/sponsors/sponsors.html', context)

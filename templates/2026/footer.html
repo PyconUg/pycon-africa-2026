@@ -20,6 +20,19 @@
     margin-bottom: 28px;
   }
 
+  .footer-sponsors-group + .footer-sponsors-group {
+    margin-top: 40px;
+  }
+
+  .footer-sponsors-subtitle {
+    color: #9ca3af;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
   .footer-sponsors-grid {
     display: flex;
     flex-wrap: wrap;
@@ -75,15 +88,33 @@
     <div class="footer-sponsors-inner">
       <h2 class="footer-sponsors-title">Our Sponsors</h2>
 
-      <div class="footer-sponsors-grid">
-        {% for tier in sponsors_data %}
-          {% for sponsor in tier.sponsors %}
-            <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer" class="footer-sponsor-link">
-              <img src="{% static sponsor.logo %}" alt="{{ sponsor.name }}" class="footer-sponsor-logo" />
-            </a>
+      <div class="footer-sponsors-group">
+        {% if has_expo_sponsors %}<h3 class="footer-sponsors-subtitle">Sponsors</h3>{% endif %}
+        <div class="footer-sponsors-grid">
+          {% for tier in sponsors_data %}
+            {% for sponsor in tier.sponsors %}
+              <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer" class="footer-sponsor-link">
+                <img src="{% static sponsor.logo %}" alt="{{ sponsor.name }}" class="footer-sponsor-logo" />
+              </a>
+            {% endfor %}
           {% endfor %}
-        {% endfor %}
+        </div>
       </div>
+
+      {% if has_expo_sponsors %}
+      <div class="footer-sponsors-group">
+        <h3 class="footer-sponsors-subtitle">Expo Companies</h3>
+        <div class="footer-sponsors-grid">
+          {% for tier in expo_sponsors_data %}
+            {% for sponsor in tier.sponsors %}
+              <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer" class="footer-sponsor-link">
+                <img src="{% static sponsor.logo %}" alt="{{ sponsor.name }}" class="footer-sponsor-logo" />
+              </a>
+            {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
     </div>
   </section>
 
