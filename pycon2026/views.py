@@ -181,7 +181,7 @@ EXPO_SPONSORS_2026 = [
             {
                 "name": "Rift Research Labs",
                 "logo": "2026/img/sponsors/rift-research-labs.png",
-                "website": "#",
+                "website": "https://www.riftresearch.ai",
                 "description": "Rift Research Labs is joining PyCon Africa 2026 as a Regional Expo sponsor. We're grateful for their support and look forward to sharing more about their work soon.",
             },
             {
