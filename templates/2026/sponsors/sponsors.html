@@ -15,8 +15,27 @@
 </div>
 
 <div class="max-w-7xl mx-auto px-4 pb-16">
-  <div class="max-w-4xl mx-auto">
+  <div class="max-w-4xl mx-auto" x-data="{ tab: 'sponsors' }">
 
+    {% if has_expo_sponsors %}
+      <!-- Tabs -->
+      <div class="flex flex-wrap justify-center gap-2 mb-10">
+        <button type="button" @click="tab = 'sponsors'"
+                :class="tab === 'sponsors' ? 'text-white' : 'text-gray-600 border-gray-200 hover:text-gray-900'"
+                :style="tab === 'sponsors' ? 'background-color: #177e89; border-color: #177e89;' : ''"
+                class="font-semibold text-sm px-6 py-2.5 rounded-full border transition-colors">
+          Sponsors
+        </button>
+        <button type="button" @click="tab = 'expo'"
+                :class="tab === 'expo' ? 'text-white' : 'text-gray-600 border-gray-200 hover:text-gray-900'"
+                :style="tab === 'expo' ? 'background-color: #177e89; border-color: #177e89;' : ''"
+                class="font-semibold text-sm px-6 py-2.5 rounded-full border transition-colors">
+          Expo Sponsors
+        </button>
+      </div>
+    {% endif %}
+
+    <div x-show="tab === 'sponsors'">
     {% if has_sponsors %}
       <!-- Quick jump to sponsor -->
       <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-12 pb-6 border-b border-gray-200">
@@ -80,6 +99,74 @@
         </a>
       </div>
     {% endif %}
+    </div>
+
+    <div x-show="tab === 'expo'" style="display: none;">
+    {% if has_expo_sponsors %}
+      <!-- Quick jump to expo sponsor -->
+      <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-12 pb-6 border-b border-gray-200">
+        {% for tier in expo_sponsors_data %}
+          {% for sponsor in tier.sponsors %}
+            <a href="#expo-{{ sponsor.name|slugify }}" class="text-sm font-medium text-gray-700 hover:text-pycon-teal">
+              &raquo; {{ sponsor.name }}
+            </a>
+          {% endfor %}
+        {% endfor %}
+      </div>
+
+      {% for tier in expo_sponsors_data %}
+        {% for sponsor in tier.sponsors %}
+          <div id="expo-{{ sponsor.name|slugify }}" class="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden mb-8">
+            <div class="bg-amber-50 border-b border-gray-200 flex items-center justify-center px-8 py-8">
+              <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer">
+                <img src="{% static sponsor.logo %}" alt="{{ sponsor.name }}" class="max-h-16 max-w-[220px] w-auto object-contain" />
+              </a>
+            </div>
+            <div class="p-8">
+              <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                <h2 class="text-2xl font-bold text-gray-900">
+                  <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer" class="hover:text-pycon-teal">
+                    {{ sponsor.name }}
+                  </a>
+                </h2>
+                <span class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-white rounded-full px-4 py-1.5 whitespace-nowrap" style="background-color: #177e89;">
+                  <i class="fa fa-star" aria-hidden="true"></i>
+                  {{ sponsor.label|default:tier.label }}
+                </span>
+              </div>
+              {% if sponsor.description %}
+                <div class="text-gray-700 text-base leading-relaxed mb-6 space-y-4">{{ sponsor.description|linebreaks }}</div>
+              {% endif %}
+              {% if sponsor.website != "#" %}
+                <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer"
+                   class="inline-flex items-center justify-center font-semibold py-2 px-6 rounded-lg text-white hover:shadow-md transition-shadow" style="background-color: #177e89;">
+                  Visit {{ sponsor.name }}
+                </a>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      {% endfor %}
+
+      <div class="text-center border-t border-gray-200 pt-12 mt-4">
+        <p class="text-gray-600 text-base mb-6">
+          Interested in sponsoring PyCon Africa 2026? Get in touch at
+          <a href="mailto:sponsorship@pycon.africa" class="text-pycon-teal hover:underline font-medium">sponsorship@pycon.africa</a>
+        </p>
+        <a href="{% url 'pycon2026:sponsor_us' %}" class="inline-flex items-center justify-center font-semibold py-3 px-8 rounded-lg text-white hover:shadow-md transition-shadow" style="background-color: #177e89;">
+          View Sponsorship Packages
+        </a>
+      </div>
+    {% else %}
+      <div class="text-center py-16">
+        <h3 class="text-xl text-gray-500 font-normal mb-3">No expo sponsors yet</h3>
+        <p class="text-gray-400 mb-8">We're working on securing expo sponsors for PyCon Africa 2026.</p>
+        <a href="{% url 'pycon2026:sponsor_us' %}" class="inline-flex items-center justify-center font-semibold py-3 px-8 rounded-lg text-white" style="background-color: #177e89;">
+          Become an Expo Sponsor
+        </a>
+      </div>
+    {% endif %}
+    </div>
 
   </div>
 </div>

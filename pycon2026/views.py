@@ -167,6 +167,39 @@ SPONSORS_2026 = [
     },
 ]
 
+EXPO_SPONSORS_2026 = [
+    {
+        "id": "regional-expo",
+        "label": "Regional Expo Sponsor",
+        "sponsors": [
+            {
+                "name": "Sunbird AI",
+                "logo": "2026/img/sponsors/sunbird-logo.png",
+                "website": "https://sunbird.ai/",
+                "description": "Sunbird AI is a Kampala-based nonprofit building practical AI systems for social good, from local-language speech and translation tools to models that support public health and agriculture across the region.\n\nWe're glad to have Sunbird AI join us as a Regional Expo sponsor for PyCon Africa 2026.",
+            },
+            {
+                "name": "Rift Research Labs",
+                "logo": "2026/img/sponsors/rift-research-labs.png",
+                "website": "#",
+                "description": "Rift Research Labs is joining PyCon Africa 2026 as a Regional Expo sponsor. We're grateful for their support and look forward to sharing more about their work soon.",
+            },
+            {
+                "name": "Twelveinks",
+                "logo": "2026/img/sponsors/twelveinks.png",
+                "website": "https://twelveinks.com/",
+                "description": "Twelveinks is a Kampala-based IT company offering web hosting, security, and custom software development to businesses across Uganda.\n\nWe're happy to have Twelveinks join us as a Regional Expo sponsor for PyCon Africa 2026.",
+            },
+            {
+                "name": "AI Studio Uganda",
+                "logo": "2026/img/sponsors/ai-studio-uganda.png",
+                "website": "https://aistudio.ug/",
+                "description": "AI Studio Uganda builds practical, sovereign AI systems for African institutions, working with businesses and public sector partners on AI solutions designed for local realities.\n\nWe're excited to have AI Studio Uganda join us as a Regional Expo sponsor for PyCon Africa 2026.",
+            },
+        ],
+    },
+]
+
 
 def home2026(request):
     context = {
@@ -322,6 +355,8 @@ def sponsors(request):
     context = {
         "sponsors_data": SPONSORS_2026,
         "has_sponsors": any(tier["sponsors"] for tier in SPONSORS_2026),
+        "expo_sponsors_data": EXPO_SPONSORS_2026,
+        "has_expo_sponsors": any(tier["sponsors"] for tier in EXPO_SPONSORS_2026),
         "year": 2026,
     }
     return render(request, '2026/sponsors/sponsors.html', context)
