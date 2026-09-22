@@ -83,6 +83,13 @@
             </a>
           {% endfor %}
         {% endfor %}
+        {% for tier in expo_sponsors_data %}
+          {% for sponsor in tier.sponsors %}
+            <a href="{{ sponsor.website }}" target="_blank" rel="noopener noreferrer" class="footer-sponsor-link">
+              <img src="{% static sponsor.logo %}" alt="{{ sponsor.name }}" class="footer-sponsor-logo" />
+            </a>
+          {% endfor %}
+        {% endfor %}
       </div>
     </div>
   </section>
