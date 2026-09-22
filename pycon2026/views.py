@@ -185,10 +185,10 @@ EXPO_SPONSORS_2026 = [
                 "description": "Rift Research Labs is joining PyCon Africa 2026 as a Regional Expo sponsor. We're grateful for their support and look forward to sharing more about their work soon.",
             },
             {
-                "name": "Twelveinks",
+                "name": "TwelveInks",
                 "logo": "2026/img/sponsors/twelveinks.png",
                 "website": "https://twelveinks.com/",
-                "description": "Twelveinks is a Kampala-based IT company offering web hosting, security, and custom software development to businesses across Uganda.\n\nWe're happy to have Twelveinks join us as a Regional Expo sponsor for PyCon Africa 2026.",
+                "description": "TwelveInks Company Limited is a technology and cloud solutions provider dedicated to delivering practical, accessible digital tools for businesses and developers across Africa.\n\nThrough products like TwelveInks Cloud, a platform for virtual servers, managed databases, private networks, application deployment, and cybersecurity, as well as TwelveInks WorkDrive, a secure cloud environment for file management and collaboration, TwelveInks provides developers with the core infrastructure needed to launch and scale applications reliably.\n\nWe're proud to have TwelveInks supporting PyCon Africa 2026 as we work together to grow the tech and open-source ecosystem across the continent.",
             },
             {
                 "name": "AI Studio Uganda",
