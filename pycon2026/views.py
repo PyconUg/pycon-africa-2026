@@ -145,6 +145,12 @@ SPONSORS_2026 = [
                 "website": "https://www.djangoproject.com/foundation/",
                 "description": "The Django Software Foundation is the nonprofit organisation behind the Django web framework, responsible for stewarding the project, funding a Django Fellow to maintain the framework, and supporting the wider community through grants and sponsorships.\n\nDjango remains one of the most widely used Python web frameworks, and the Foundation's ongoing investment in the project and its community has helped Django developers around the world, including many here in Africa, build on a solid, well-supported foundation.\n\nThe Foundation is supporting PyCon Africa 2026 as both a Bronze and a Diversity sponsor, with the diversity contribution going directly towards making the conference reachable for attendees who would otherwise be unable to join us. We're grateful for their support as we grow the Python community across the continent.",
             },
+            {
+                "name": "DEFNA",
+                "logo": "2026/img/sponsors/DEFNA-Logo.png",
+                "website": "https://www.defna.org/",
+                "description": "DEFNA (Django Events Foundation North America) is a nonprofit that has supported the Django community since 2015, organising DjangoCon US and handing out grants to help local Django events happen around the world.\n\nBeyond running its own conference, DEFNA puts real effort into diversity and financial aid, making sure the Django community stays open to newcomers wherever they are.\n\nWe're happy to have DEFNA on board as a Bronze sponsor of PyCon Africa 2026, supporting our shared goal of a more inclusive Python and Django community.",
+            },
         ],
     },
     {
