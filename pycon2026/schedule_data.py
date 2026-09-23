@@ -10,30 +10,22 @@ SCHEDULE_DATA = [
         "label": "Wed, Oct 7 — Workshops & PyData Summit",
         "rooms": ["Victoria Ball Room", "Majestic Hall", "Royal Hall", "Regal Hall"],
         "slots": [
-            {"time": "7:00 – 8:45", "span": True, "title": "Break Tea", "type": "break"},
-            {"time": "9:00 – 11:00", "cells": [
+            {"time": "13:00 – 15:00", "cells": [
                 E,
                 {"title": "The Essence of Data Visualisation: Mapping from Data to Visual Properties", "speaker": "Hassan Kibirige"},
-                {"title": "PyData Summit", "speaker": ""},
+                E,
                 {"title": "Sponsor Workshops", "speaker": ""},
             ]},
-            {"time": "11:00 – 13:00", "cells": [
+            {"time": "15:00 – 17:00", "cells": [
                 E,
                 {"title": "Build and deploy an ADK agent on Cloud Run", "speaker": "Alouzeh Brandone Mahbuh, Samuel Macharia"},
-                {"title": "PyData Summit", "speaker": ""},
+                E,
                 {"title": "Sponsor Workshops", "speaker": ""},
             ]},
-            {"time": "13:00 – 14:00", "span": True, "title": "Lunch", "type": "break"},
-            {"time": "14:00 – 16:00", "cells": [
+            {"time": "17:00 – 19:00", "cells": [
                 E,
                 {"title": "Computer Vision in 10 Lines of Code: Rapid Prototyping with FastAI", "speaker": "Victor Olufemi"},
-                {"title": "PyData Summit", "speaker": ""},
-                {"title": "Sponsor Workshops", "speaker": ""},
-            ]},
-            {"time": "16:00 – 18:00", "cells": [
                 E,
-                {"title": "Building Your First RESTful API", "speaker": "Anthony Addae"},
-                {"title": "PyData Summit", "speaker": ""},
                 {"title": "Sponsor Workshops", "speaker": ""},
             ]},
         ],
