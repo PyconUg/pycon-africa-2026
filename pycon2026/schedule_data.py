@@ -35,30 +35,28 @@ SCHEDULE_DATA = [
         "label": "Thu, Oct 8 — Workshops & WiDs",
         "rooms": ["Victoria Ball Room", "Majestic Hall", "Royal Hall", "Regal Hall"],
         "slots": [
-            {"time": "7:00 – 8:45", "span": True, "title": "Break Tea", "type": "break"},
-            {"time": "9:00 – 11:00", "cells": [
+            {"time": "12:00 – 14:00", "cells": [
                 E,
                 {"title": "Demystifying Robotics & IoT with MicroPython", "speaker": "Zenas Awuku"},
                 {"title": "Humble Data workshop", "speaker": "Cecilia Tivir"},
                 {"title": "WiDs", "speaker": "", "link": "/2026/co-events/women_in_data_science/#program-schedule"},
             ]},
-            {"time": "11:00 – 13:00", "cells": [
+            {"time": "14:00 – 16:00", "cells": [
                 E,
-                {"title": "LLMs Expert Session", "speaker": "GDEs"},
-                {"title": "Securing Django 6.0 Apps with Built-in Content Security Policy", "speaker": "Kiringabakwe Ibrahim"},
+                {"title": "LLMs Expert Session", "speaker": "GDEs", "no_link": True},
+                E,
                 {"title": "WiDs", "speaker": "", "link": "/2026/co-events/women_in_data_science/#program-schedule"},
             ]},
-            {"time": "13:00 – 14:00", "span": True, "title": "Lunch", "type": "break"},
-            {"time": "14:00 – 16:00", "cells": [
+            {"time": "16:00 – 18:00", "cells": [
                 E,
                 {"title": "Hands-On: Building an AI Agent with Python to Detect Risky Customers", "speaker": "Hussein Kizza"},
                 {"title": "Building Pearl-Chat: Overcoming the Technical Challenges of Architecting a Native Luganda LLM in Pure JAX", "speaker": "Wesley Kambale"},
                 {"title": "WiDs", "speaker": "", "link": "/2026/co-events/women_in_data_science/#program-schedule"},
             ]},
-            {"time": "16:00 – 18:00", "cells": [
+            {"time": "18:00 – 20:00", "cells": [
                 E,
                 {"title": "SQLAlchemy: the Swiss Army Knife of Databases for Python", "speaker": "ZOKORA ELVIS GBAGNON"},
-                E,
+                {"title": "Building Your First RESTful API", "speaker": "Anthony Addae"},
                 E,
             ]},
         ],
