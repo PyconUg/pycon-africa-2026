@@ -69,36 +69,36 @@ SCHEDULE_DATA = [
             "Regal Hall - Core",
         ],
         "slots": [
+            {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks"},
+            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote"},
             {"time": "10:20 – 11:05", "cells": [
                 {"title": "Automating Hardware Diagnostics: Resurrecting Motherboards with Python and a Raspberry Pi", "speaker": "Collins Mesue", "label": "Talk · AI/ML"},
                 {"title": "MLOPs with MLFLow (A Value Estimation Example)", "speaker": "Ronald Matovu", "label": "Talk · AI/Agentic"},
-                {"title": "Pyladies Africa", "speaker": "Ruvimbo Delia Hakata, Adeline Makokha, Blossom Dugbatey", "link": "/2026/co-events/pyladies/", "no_link": True},
+                {"title": "Pyladies Africa", "speaker": "", "link": "/2026/co-events/pyladies/"},
                 {"title": "Community Summit", "speaker": ""},
             ]},
             {"time": "11:10 – 11:55", "cells": [
                 {"title": "Getting started with mechanistic interpretability", "speaker": "Rashid Kisejjere", "label": "Talk · AI/ML"},
-                E,
-                {"title": "Pyladies Africa", "speaker": "Ruvimbo Delia Hakata, Adeline Makokha, Blossom Dugbatey", "link": "/2026/co-events/pyladies/", "no_link": True},
+                {"title": "Mastering Deep Learning: One Python Script at a Time", "speaker": "Charles Moruri", "label": "Talk · AI/Agentic"},
+                {"title": "Pyladies Africa", "speaker": "", "link": "/2026/co-events/pyladies/"},
                 {"title": "Community Summit", "speaker": ""},
             ]},
             {"time": "12:00 – 12:45", "cells": [
-                E,
-                {"title": "Mastering Deep Learning: One Python Script at a Time", "speaker": "Charles Moruri", "label": "Talk · AI/Agentic"},
-                {"title": "Pyladies Africa", "speaker": "Ruvimbo Delia Hakata, Adeline Makokha, Blossom Dugbatey", "link": "/2026/co-events/pyladies/", "no_link": True},
-                {"title": "Community Summit", "speaker": ""},
-            ]},
-            {"time": "14:05 – 14:50", "cells": [
                 {"title": "Turning Food into Medicine with Local LLMs: The Future of Chronic Disease Management", "speaker": "Daniel Samuel Etukudo", "label": "Talk · AI/ML"},
                 {"title": "From Hospital Records to REST API: Training and Serving XGBoost Disease Prediction Models in Python", "speaker": "Ernest Essien", "label": "Talk · AI/Agentic"},
-                {"title": "Pyladies Africa", "speaker": "Ruvimbo Delia Hakata, Adeline Makokha, Blossom Dugbatey", "link": "/2026/co-events/pyladies/", "no_link": True},
+                {"title": "Pyladies Africa", "speaker": "", "link": "/2026/co-events/pyladies/"},
                 {"title": "Community Summit", "speaker": ""},
             ]},
-            {"time": "14:55 – 15:40", "cells": [
+            {"time": "12:50 – 13:00", "span": True, "title": "Sponsor Plenary Talk"},
+            {"time": "13:00 – 14:00", "span": True, "title": "Lunch", "type": "break"},
+            {"time": "14:05 – 14:50", "cells": [
                 {"title": "The Mathematical Representation of Vision: From Linear Algebra to Deepfake Detection", "speaker": "Mark Lubega", "label": "Talk · AI/ML"},
                 {"title": "All Seeing, All Knowing: Evaluating Production AI Agents with Logs, Traces and Evals", "speaker": "Daniel Akhabue", "label": "Talk · AI/Agentic"},
-                {"title": "Pyladies Africa", "speaker": "Ruvimbo Delia Hakata, Adeline Makokha, Blossom Dugbatey", "link": "/2026/co-events/pyladies/", "no_link": True},
+                {"title": "Pyladies Africa", "speaker": "", "link": "/2026/co-events/pyladies/"},
                 {"title": "Community Summit", "speaker": ""},
             ]},
+            {"time": "14:55 – 15:55", "span": True, "title": "Closing Keynote\nBuilding the Agentic Future with Google Antigravity", "speaker": "John Kimani, Developer Ecosystem Lead for Sub-Saharan Africa, Google", "speaker_link": "/2026/speakers/john-kimani/"},
+            {"time": "15:55 – 16:20", "span": True, "title": "Opening Reception"},
         ],
     },
     {
