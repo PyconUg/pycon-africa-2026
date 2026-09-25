@@ -153,7 +153,7 @@ urlpatterns = [
     # path('co-events/women_in_data_science/', views.women_in_data_science, name='women_in_data_science'),   
     # path('co-events/ngombor/', view=views.ngombor, name='ngombor')
     path('community/', view=views.community, name='community'),
-    path('co-events/women_in_data_science/', view=views.women_in_data_science, name='women_in_data_science'),
+    # path('co-events/women_in_data_science/', view=views.women_in_data_science, name='women_in_data_science'),
     path('djangogirls/', RedirectView.as_view(pattern_name='pycon2026:django_girls', permanent=True)),
     path('community-web-summit/', RedirectView.as_view(pattern_name='pycon2026:pyladies', permanent=True)),
     path('past-events/', view=views.past_events, name='past_events'),
