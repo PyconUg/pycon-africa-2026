@@ -158,6 +158,7 @@ SCHEDULE_DATA = [
     {
         "id": "day5",
         "label": "Sun, Oct 11 — Conference Day 3",
+        "footnote": "★ Remote session",
         "rooms": [
             "Victoria Ball Room - Security/Web",
             "Majestic Hall - ML/Data science",
@@ -165,50 +166,53 @@ SCHEDULE_DATA = [
             "Regal Hall - Core",
         ],
         "slots": [
+            {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks"},
             {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nA Decade of Language AI: A Reflection on the Insanity (Jade Abbot)"},
             {"time": "10:20 – 11:05", "cells": [
-                E,
+                {"title": "Breaking Bad in Python: A Chaos Engineering Story", "speaker": "Joyce Dzifa Lokko", "label": "Talk · Security/Web"},
                 {"title": "The Lazy Wizard's Guide to Federated Learning: Building ML Models in Difficult Places", "speaker": "Johannes Kolbe", "label": "Talk · ML/Data Science"},
                 {"title": "From Single Agents to Production Teams: Building Multi-Agent Systems with Python, MCP, and Persistent Memory", "speaker": "David Agbolade", "label": "Talk · AI/Agentic"},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
             {"time": "11:10 – 11:40", "cells": [
-                {"title": "Breaking Bad in Python: A Chaos Engineering Story", "speaker": "Joyce Dzifa Lokko", "label": "Short Talk · Security/Web"},
+                {"title": "How I Used Python to Control Kubernetes with Voice Notes on Telegram", "speaker": "Daniel Mwiine", "label": "Short Talk · Security/Web"},
                 {"title": "V-MATH and Veri-Math: Step Level Verification for Enhancing Mathematical Reasoning in Large Language Models", "speaker": "John Paul Rugaba Rugaba", "label": "Short Talk · ML/Data Science"},
                 {"title": "Designing Python-First AI Programs for African Universities: A Practical Framework", "speaker": "Elvira Khwatenge", "label": "Short Talk · AI/Agentic"},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
             {"time": "11:45 – 12:15", "cells": [
-                {"title": "How I Used Python to Control Kubernetes with Voice Notes on Telegram", "speaker": "Daniel Mwiine", "label": "Short Talk · Security/Web"},
+                {"title": "Delivering with Django: Boring Tech, Real Impact in Africa's Startups", "speaker": "Bernard Katamanso", "label": "Short Talk · Security/Web"},
                 {"title": "Federated Learning as a Distributed Systems Problem: Designing Production-Grade ML Systems in Python", "speaker": "David Asem", "label": "Short Talk · ML/Data Science"},
                 {"title": "Speech Synthesis Unpacked: Building a Voice Cloning TTS Model with Python", "speaker": "Nunsi Shiaki", "label": "Short Talk · AI/Agentic"},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
             {"time": "12:20 – 13:00", "cells": [
-                E,
-                E,
-                E,
+                {"title": "Dedicated Expo Hall Time", "speaker": ""},
+                {"title": "Dedicated Expo Hall Time", "speaker": ""},
+                {"title": "Dedicated Expo Hall Time", "speaker": ""},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
+            {"time": "13:00 – 14:00", "span": True, "title": "Lunch", "type": "break"},
             {"time": "14:05 – 14:35", "cells": [
-                {"title": "Delivering with Django: Boring Tech, Real Impact in Africa's Startups", "speaker": "Bernard Katamanso", "label": "Short Talk · Security/Web"},
+                {"title": "PaSSw0rdVib3s!: Finding Passwords in Digital Evidence", "speaker": "Anne Fleur van Luenen", "label": "Short Talk · Security/Web"},
                 {"title": "Continuous translation with Weblate in the age of AI", "speaker": "Gersona Andrianarijaona", "label": "Short Talk · ML/Data Science"},
                 E,
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
             {"time": "14:40 – 15:10", "cells": [
-                {"title": "PaSSw0rdVib3s!: Finding Passwords in Digital Evidence", "speaker": "Anne Fleur van Luenen", "label": "Short Talk · Security/Web"},
+                {"title": "Background Jobs at Scale: Designing Reliable Python Worker Systems", "speaker": "Efe Omoregie", "label": "Short Talk · Security/Web"},
                 {"title": "Building Clinical Tools in Data-Constrained Environments: Python, ML, and the Human Spine", "speaker": "Christine Akoto-Nimoh", "label": "Short Talk · ML/Data Science"},
                 {"title": "Cyber Security Workshop", "speaker": ""},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
             {"time": "15:15 – 15:45", "cells": [
-                {"title": "Background Jobs at Scale: Designing Reliable Python Worker Systems", "speaker": "Efe Omoregie", "label": "Short Talk · Security/Web"},
+                E,
                 {"title": "Building Civic Tech with Python: APIs, Data, and Systems for Public Good", "speaker": "Alamin Magaga", "label": "Short Talk · ML/Data Science"},
                 {"title": "Cyber Security Workshop", "speaker": ""},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
-            {"time": "15:45 – 17:20", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
+            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote\nThe Evolution of Python: Lessons from Its Creator (Guido van Rossum)", "star": True},
+            {"time": "16:50 – 17:20", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
                 {"title": "Your Code is Great...but Who Knows?", "speaker": "Sarah Muwanguzi"},
                 {"title": "Python for Impact: Building Climate Solutions Rooted in African Communities", "speaker": "Tendai Jack"},
                 {"title": "Open Source Is Infrastructure. Why We Must Stop Treating It Like a Hobby", "speaker": "Gertrude Abagale Abagale"},
