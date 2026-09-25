@@ -34,31 +34,27 @@ SCHEDULE_DATA = [
     },
     {
         "id": "day2",
-        "label": "Thu, Oct 8 — Workshops & WiDs",
+        "label": "Thu, Oct 8 — Workshops",
         "rooms": ["Victoria Ball Room", "Majestic Hall", "Royal Hall", "Regal Hall"],
         "slots": [
+            {"time": "10:00 – 16:00", "span": True, "title": "Badge Pickup"},
+            {"time": "10:00 – 12:00", "span": True, "title": "Merch Pickup"},
             {"time": "12:00 – 14:00", "cells": [
                 E,
                 {"title": "Demystifying Robotics & IoT with MicroPython", "speaker": "Zenas Awuku"},
                 {"title": "Humble Data workshop", "speaker": "Cecilia Tivir"},
-                {"title": "WiDs", "speaker": "", "link": "/2026/co-events/women_in_data_science/#program-schedule"},
+                E,
             ]},
             {"time": "14:00 – 16:00", "cells": [
                 E,
-                {"title": "LLMs Expert Session", "speaker": "GDEs", "no_link": True},
+                {"title": "LLMs Expert Session", "speakers": [{"name": "GDEs", "no_link": True}, {"name": "Hassan Bahati Mukisa"}, {"name": "Wesley Kambale"}]},
+                {"title": "Building Your First RESTful API", "speaker": "Anthony Addae"},
                 E,
-                {"title": "WiDs", "speaker": "", "link": "/2026/co-events/women_in_data_science/#program-schedule"},
             ]},
             {"time": "16:00 – 18:00", "cells": [
                 E,
                 {"title": "Hands-On: Building an AI Agent with Python to Detect Risky Customers", "speaker": "Hussein Kizza"},
                 {"title": "Building Pearl-Chat: Overcoming the Technical Challenges of Architecting a Native Luganda LLM in Pure JAX", "speaker": "Wesley Kambale"},
-                {"title": "WiDs", "speaker": "", "link": "/2026/co-events/women_in_data_science/#program-schedule"},
-            ]},
-            {"time": "18:00 – 20:00", "cells": [
-                E,
-                {"title": "SQLAlchemy: the Swiss Army Knife of Databases for Python", "speaker": "ZOKORA ELVIS GBAGNON"},
-                {"title": "Building Your First RESTful API", "speaker": "Anthony Addae"},
                 E,
             ]},
         ],
