@@ -186,17 +186,12 @@ SCHEDULE_DATA = [
                 {"title": "Speech Synthesis Unpacked: Building a Voice Cloning TTS Model with Python", "speaker": "Nunsi Shiaki", "label": "Short Talk · AI/Agentic"},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
-            {"time": "12:20 – 13:00", "cells": [
-                {"title": "Dedicated Expo Hall Time", "speaker": ""},
-                {"title": "Dedicated Expo Hall Time", "speaker": ""},
-                {"title": "Dedicated Expo Hall Time", "speaker": ""},
-                {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
-            ]},
+            {"time": "12:20 – 13:00", "span": True, "title": "Dedicated Expo Hall Time"},
             {"time": "13:00 – 14:00", "span": True, "title": "Lunch", "type": "break"},
             {"time": "14:05 – 14:35", "cells": [
                 {"title": "PaSSw0rdVib3s!: Finding Passwords in Digital Evidence", "speaker": "Anne Fleur van Luenen", "label": "Short Talk · Security/Web"},
                 {"title": "Continuous translation with Weblate in the age of AI", "speaker": "Gersona Andrianarijaona", "label": "Short Talk · ML/Data Science"},
-                E,
+                {"title": "Cyber Security Workshop", "speaker": ""},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
             {"time": "14:40 – 15:10", "cells": [
