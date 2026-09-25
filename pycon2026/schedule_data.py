@@ -10,23 +10,25 @@ SCHEDULE_DATA = [
         "label": "Wed, Oct 7 — Workshops & PyData Summit",
         "rooms": ["Victoria Ball Room", "Majestic Hall", "Royal Hall", "Regal Hall"],
         "slots": [
+            {"time": "10:00 – 16:00", "span": True, "title": "Badge Pickup"},
+            {"time": "10:00 – 12:00", "span": True, "title": "Expo Setup"},
             {"time": "13:00 – 15:00", "cells": [
                 E,
                 {"title": "The Essence of Data Visualisation: Mapping from Data to Visual Properties", "speaker": "Hassan Kibirige"},
                 E,
-                {"title": "Sponsor Workshops", "speaker": ""},
+                E,
             ]},
             {"time": "15:00 – 17:00", "cells": [
                 E,
                 {"title": "Build and deploy an ADK agent on Cloud Run", "speaker": "Alouzeh Brandone Mahbuh, Samuel Macharia"},
                 E,
-                {"title": "Sponsor Workshops", "speaker": ""},
+                E,
             ]},
             {"time": "17:00 – 19:00", "cells": [
                 E,
                 {"title": "Computer Vision in 10 Lines of Code: Rapid Prototyping with FastAI", "speaker": "Victor Olufemi"},
                 E,
-                {"title": "Sponsor Workshops", "speaker": ""},
+                E,
             ]},
         ],
     },
