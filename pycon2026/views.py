@@ -458,21 +458,21 @@ def community(request):
             "description": "A dedicated Python and Django workshop for refugees and persons of concern, organised by PyLadies Kampala.",
             "url": "/2026/co-events/persons_of_concern/",
         },
-        {
-            "name": "Women in Data Science (WiDS)",
-            "description": "Inspiring and connecting women in data science across Africa through talks, networking, and workshops.",
-            "url": "/2026/co-events/women_in_data_science/",
-        },
+        # {
+        # "name": "Women in Data Science (WiDS)",
+        # "description": "Inspiring and connecting women in data science across Africa through talks, networking, and workshops.",
+        # "url": "/2026/co-events/women_in_data_science/",
+        # },
     ]
     return render(request, '2026/community/community.html', {"co_events": co_events})
 
 
-def women_in_data_science(request):
-    context = {
-        'title': 'Women in Data Science (WiDS)',
-        'description': 'Inspiring and connecting women in data science across Africa.',
-    }
-    return render(request, '2026/co-events/women_in_data_science.html', context)
+# def women_in_data_science(request):
+#     context = {
+#         'title': 'Women in Data Science (WiDS)',
+#         'description': 'Inspiring and connecting women in data science across Africa.',
+#     }
+#     return render(request, '2026/co-events/women_in_data_science.html', context)
 
 
 def past_events(request):
