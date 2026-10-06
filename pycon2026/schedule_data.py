@@ -8,7 +8,7 @@ SCHEDULE_DATA = [
     {
         "id": "day1",
         "label": "Wed, Oct 7 — Workshops & PyData Summit",
-        "rooms": ["Victoria Ball Room", "Majestic Hall", "Royal Hall", "Regal Hall"],
+        "rooms": ["Albert Hall", "Majestic Hall", "Royal Hall", "Regal Hall"],
         "slots": [
             {"time": "10:00 – 16:00", "span": True, "title": "Badge Pickup"},
             {"time": "10:00 – 12:00", "span": True, "title": "Expo Setup"},
@@ -26,7 +26,7 @@ SCHEDULE_DATA = [
             ]},
             {"time": "17:00 – 19:00", "cells": [
                 E,
-                {"title": "Computer Vision in 10 Lines of Code: Rapid Prototyping with FastAI", "speaker": "Victor Olufemi"},
+                {"title": "Cyber Security Workshop", "speaker": ""},
                 E,
                 E,
             ]},
@@ -35,7 +35,7 @@ SCHEDULE_DATA = [
     {
         "id": "day2",
         "label": "Thu, Oct 8 — Workshops",
-        "rooms": ["Victoria Ball Room", "Majestic Hall", "Royal Hall", "Regal Hall"],
+        "rooms": ["Albert Hall", "Majestic Hall", "Royal Hall", "Regal Hall"],
         "slots": [
             {"time": "10:00 – 16:00", "span": True, "title": "Badge Pickup"},
             {"time": "10:00 – 12:00", "span": True, "title": "Merch Pickup"},
@@ -43,19 +43,19 @@ SCHEDULE_DATA = [
                 E,
                 {"title": "Demystifying Robotics & IoT with MicroPython", "speaker": "Zenas Awuku"},
                 {"title": "Humble Data workshop", "speaker": "Cecilia Tivir"},
-                E,
+                {"title": "Women in Data Science Workshop", "speaker": ""},
             ]},
             {"time": "14:00 – 16:00", "cells": [
                 E,
                 {"title": "LLMs Expert Session", "speakers": [{"name": "GDEs", "no_link": True}, {"name": "Hassan Bahati Mukisa"}, {"name": "Wesley Kambale"}]},
                 {"title": "Building Your First RESTful API", "speaker": "Anthony Addae"},
-                E,
+                {"title": "Women in Data Science Workshop", "speaker": ""},
             ]},
             {"time": "16:00 – 18:00", "cells": [
                 E,
                 {"title": "Hands-On: Building an AI Agent with Python to Detect Risky Customers", "speaker": "Hussein Kizza"},
                 {"title": "Building Pearl-Chat: Overcoming the Technical Challenges of Architecting a Native Luganda LLM in Pure JAX", "speaker": "Wesley Kambale"},
-                E,
+                {"title": "Women in Data Science Workshop", "speaker": ""},
             ]},
         ],
     },
@@ -63,49 +63,61 @@ SCHEDULE_DATA = [
         "id": "day3",
         "label": "Fri, Oct 9 — Conference Day 1",
         "rooms": [
-            "Victoria Ball Room - AI/ML",
+            "Albert Hall - AI/ML",
             "Majestic Hall - AI/Agentic",
             "Royal Hall - Web/Security",
             "Regal Hall - Core",
         ],
         "slots": [
-            {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks"},
-            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote"},
+            {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks", "speaker": "Ariane Djeupang — International Chair, PyCon Africa"},
+            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nState of the Developer Address", "speaker": "Mark Ssembajjwe"},
             {"time": "10:20 – 11:05", "cells": [
                 {"title": "Automating Hardware Diagnostics: Resurrecting Motherboards with Python and a Raspberry Pi", "speaker": "Collins Mesue", "label": "Talk · AI/ML"},
                 {"title": "MLOPs with MLFLow (A Value Estimation Example)", "speaker": "Ronald Matovu", "label": "Talk · AI/Agentic"},
                 {"title": "Pyladies Africa", "speaker": "", "link": "/2026/co-events/pyladies/"},
-                {"title": "Community Summit", "speaker": ""},
+                {"title": "Open Space", "speaker": ""},
             ]},
             {"time": "11:10 – 11:55", "cells": [
                 {"title": "Getting started with mechanistic interpretability", "speaker": "Rashid Kisejjere", "label": "Talk · AI/ML"},
-                {"title": "Mastering Deep Learning: One Python Script at a Time", "speaker": "Charles Moruri", "label": "Talk · AI/Agentic"},
+                {"title": "Africa’s Talking Integration with AI", "speaker": "Mark Ssembajjwe", "label": "Talk · AI/Agentic"},
                 {"title": "Pyladies Africa", "speaker": "", "link": "/2026/co-events/pyladies/"},
-                {"title": "Community Summit", "speaker": ""},
+                {"title": "Open Space", "speaker": ""},
             ]},
             {"time": "12:00 – 12:45", "cells": [
-                {"title": "Turning Food into Medicine with Local LLMs: The Future of Chronic Disease Management", "speaker": "Daniel Samuel Etukudo", "label": "Talk · AI/ML"},
-                {"title": "From Hospital Records to REST API: Training and Serving XGBoost Disease Prediction Models in Python", "speaker": "Ernest Essien", "label": "Talk · AI/Agentic"},
+                {"title": "Python for Data Science and AI: An African Perspective", "speaker": "Wesley Kambale", "label": "Talk · AI/ML"},
+                {"title": "The Last Mile Is Data", "speaker": "Roland Gafana, AI Studio", "label": "Talk · AI/Agentic"},
                 {"title": "Pyladies Africa", "speaker": "", "link": "/2026/co-events/pyladies/"},
-                {"title": "Community Summit", "speaker": ""},
+                {"title": "Open Space", "speaker": ""},
             ]},
             {"time": "12:50 – 13:00", "span": True, "title": "Sponsor Plenary Talk"},
             {"time": "13:00 – 14:00", "span": True, "title": "Lunch", "type": "break"},
             {"time": "14:05 – 14:50", "cells": [
+                {"title": "Turning Food into Medicine with Local LLMs: The Future of Chronic Disease Management", "speaker": "Daniel Samuel Etukudo", "label": "Talk · AI/ML"},
+                {"title": "From Hospital Records to REST API: Training and Serving XGBoost Disease Prediction Models in Python", "speaker": "Ernest Essien", "label": "Talk · AI/Agentic"},
+                {"title": "Pyladies Africa", "speaker": "", "link": "/2026/co-events/pyladies/"},
+                {"title": "Open Space", "speaker": ""},
+            ]},
+            {"time": "14:55 – 15:40", "cells": [
                 {"title": "The Mathematical Representation of Vision: From Linear Algebra to Deepfake Detection", "speaker": "Mark Lubega", "label": "Talk · AI/ML"},
                 {"title": "All Seeing, All Knowing: Evaluating Production AI Agents with Logs, Traces and Evals", "speaker": "Daniel Akhabue", "label": "Talk · AI/Agentic"},
-                {"title": "Pyladies Africa", "speaker": "", "link": "/2026/co-events/pyladies/"},
-                {"title": "Community Summit", "speaker": ""},
+                E,
+                E,
             ]},
-            {"time": "14:55 – 15:55", "span": True, "title": "Closing Keynote\nBuilding the Agentic Future with Google Antigravity", "speaker": "John Kimani, Developer Ecosystem Lead for Sub-Saharan Africa, Google", "speaker_link": "/2026/speakers/john-kimani/"},
-            {"time": "15:55 – 16:20", "span": True, "title": "Opening Reception"},
+            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote\nBuilding the Agentic Future with Google Antigravity", "speaker": "John Kimani, Developer Ecosystem Lead for Sub-Saharan Africa, Google", "speaker_link": "/2026/speakers/john-kimani/"},
+            {"time": "16:50 – 17:20", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
+                {"title": "Your Code is Great...but Who Knows?", "speaker": "Sarah Muwanguzi"},
+                {"title": "Python for Impact: Building Climate Solutions Rooted in African Communities", "speaker": "Tendai Jack"},
+                {"title": "Open Source Is Infrastructure. Why We Must Stop Treating It Like a Hobby", "speaker": "Gertrude Abagale Abagale"},
+                {"title": "Python for Community Impact: Simple Tech Solutions for Refugee and Rural Communities in Africa", "speaker": "Makala Sankara Anzuruni"},
+            ]},
+            {"time": "17:20 – 17:35", "span": True, "title": "Closing Remarks", "speaker": "Hassan Bahati — Local Chair, PyCon Africa 2026"},
         ],
     },
     {
         "id": "day4",
         "label": "Sat, Oct 10 — Conference Day 2",
         "rooms": [
-            "Victoria Ball Room - Core Python",
+            "Albert Hall - Core Python",
             "Majestic Hall - AI/Agentic",
             "Royal Hall - Security/Web",
             "Regal Hall - Web",
@@ -116,36 +128,50 @@ SCHEDULE_DATA = [
             {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nBuilding AI-Powered Lending Infrastructure (Chris Orwa)"},
             {"time": "10:20 – 11:05", "cells": [
                 {"title": "Working with Audio in Python (Pythonic Approach)", "speaker": "Bashir Kasujja", "label": "Short Talk · Core Python"},
-                {"title": "Detecting Firmware Implants with Python Assisted Bare-Metal Forensics", "speaker": "Arrhat Nag", "label": "Short Talk · AI/Agentic"},
-                {"title": "Enhancing FastMCP Server Security", "speaker": "Mugoya Hillarious", "label": "Short Talk · Security/Web"},
+                {"title": "Building Real-Time Voice Agents That Listen and Respond in Python", "speaker": "Glory Bagai", "label": "Short Talk · AI/Agentic"},
+                {"title": "Python in the Browser: No install, No barrier", "speaker": "Hypolit Zeuchieu", "label": "Short Talk · Security/Web"},
                 {"title": "Django Girls Workshop", "speaker": ""},
                 {"title": "Posters", "speaker": "", "link": "/2026/schedule/accepted-posters/"},
             ]},
             {"time": "11:10 – 11:40", "cells": [
                 {"title": "Python for Microcontrollers: Introduction to MicroPython & Wokwi Simulator", "speaker": "Samuel Lunghe", "label": "Short Talk · Core Python"},
-                {"title": "Building Event-Driven Systems in Python That Survive Production", "speaker": "Abdulmateen Tairu", "label": "Short Talk · AI/Agentic"},
-                {"title": "Python at Scale: A Practical Guide to Serving 1 Million Users with FastAPI and Flask", "speaker": "Moses Daudu", "label": "Short Talk · Security/Web"},
+                {"title": "Detecting Firmware Implants with Python Assisted Bare-Metal Forensics", "speaker": "Arrhat Nag", "label": "Short Talk · AI/Agentic"},
+                {"title": "Enhancing FastMCP Server Security", "speaker": "Mugoya Hillarious", "label": "Short Talk · Security/Web"},
                 {"title": "Django Girls Workshop", "speaker": ""},
                 {"title": "Posters", "speaker": "", "link": "/2026/schedule/accepted-posters/"},
             ]},
             {"time": "11:45 – 12:15", "cells": [
-                {"title": "Deterministic Python: Implementing RTOS Design Concepts in MicroPython", "speaker": "Shawal Mbalire", "label": "Short Talk · Core Python"},
-                {"title": "Designing Python APIs for Data You Don't Control", "speaker": "Saurav Jain", "label": "Short Talk · AI/Agentic"},
-                {"title": "When Step 3 Fails: Reliable Multi-Step Workflows in Celery Using the Saga Pattern", "speaker": "Douglas Amoo-Sargon", "label": "Short Talk · Security/Web"},
+                {"title": "Crafting Legendary Documentation for Your Python Projects", "speaker": "Fanny Nyayic", "label": "Short Talk · Core Python"},
+                {"title": "From Campus to Community: How Ugandan Students Are Building AI Agents with Python", "speaker": "Asiimwe Tracy, Marketing Team lead, AIFest Uganda", "label": "Short Talk · AI/Agentic"},
+                {"title": "Python at Scale: A Practical Guide to Serving 1 Million Users with FastAPI and Flask", "speaker": "Moses Daudu", "label": "Short Talk · Security/Web"},
                 {"title": "Django Girls Workshop", "speaker": ""},
                 {"title": "Posters", "speaker": "", "link": "/2026/schedule/accepted-posters/"},
             ]},
             {"time": "12:20 – 13:00", "span": True, "title": "Open Source, Research and Industry Panel"},
             {"time": "13:00 – 14:00", "span": True, "title": "Lunch", "type": "break"},
             {"time": "14:05 – 14:35", "cells": [
-                {"title": "Building Low-Power IoT Systems with LoRaWAN and Python", "speaker": "Job mbugua", "label": "Short Talk · Core Python"},
-                {"title": "Advanced Design Patterns for ML Systems", "speaker": "Victor Ashioya", "label": "Short Talk · AI/Agentic"},
+                {"title": "Deterministic Python: Implementing RTOS Design Concepts in MicroPython", "speaker": "Shawal Mbalire", "label": "Short Talk · Core Python"},
+                {"title": "Designing Python APIs for Data You Don't Control", "speaker": "Saurav Jain", "label": "Short Talk · AI/Agentic"},
                 {"title": "Async Python and FastAPI: How It Actually Works", "speaker": "Theresa Seyram Agbenyegah", "label": "Short Talk · Security/Web"},
                 {"title": "Django Girls Workshop", "speaker": ""},
                 {"title": "Posters", "speaker": "", "link": "/2026/schedule/accepted-posters/"},
             ]},
-            {"time": "14:40 – 15:40", "span": True, "title": "Closing Keynote"},
-            {"time": "15:40 – 16:10", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
+            {"time": "14:40 – 15:10", "cells": [
+                {"title": "Building Low-Power IoT Systems with LoRaWAN and Python", "speaker": "Job mbugua", "label": "Short Talk · Core Python"},
+                {"title": "Advanced Design Patterns for ML Systems", "speaker": "Victor Ashioya", "label": "Short Talk · AI/Agentic"},
+                E,
+                E,
+                E,
+            ]},
+            {"time": "15:15 – 15:45", "cells": [
+                {"title": "Rift Research Talk", "speaker": ""},
+                {"title": "A Hands-On Practical Framework for Building Recommender Systems at Scale with KerasRS and JAX", "speaker": "Brayan Kai, East Africa Ambassador, Black Python Devs", "label": "Short Talk · AI/Agentic"},
+                {"title": "Kolaborate sponsor talk", "speaker": ""},
+                E,
+                E,
+            ]},
+            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote"},
+            {"time": "16:50 – 17:20", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
                 {"title": "Django Deployment Isn't What It Used to Be.", "speaker": "Victoria Nyamai"},
                 {"title": "Using Python to Automate API Testing in Open Source Projects", "speaker": "Clency Christine"},
                 {"title": "Securing Networks with Python: A Deep Dive into Intrusion Detection, Phishing Prevention, and Vulnerability Scoring", "speaker": "Alpha Lee Munene"},
@@ -153,6 +179,7 @@ SCHEDULE_DATA = [
                 {"title": "The Informal Economy Doesn't Have an API", "speaker": "John Pangara"},
                 {"title": "Design isn't just for the Frontend: Why backend developers should care about UX.", "speaker": "Angella Miriam Birungi"},
             ]},
+            {"time": "17:20 – 17:30", "span": True, "title": "Closing Remarks", "speaker": "Hassan Bahati — Local Chair, PyCon Africa 2026"},
         ],
     },
     {
@@ -160,7 +187,7 @@ SCHEDULE_DATA = [
         "label": "Sun, Oct 11 — Conference Day 3",
         "footnote": "★ Remote session",
         "rooms": [
-            "Victoria Ball Room - Security/Web",
+            "Albert Hall - Security/Web",
             "Majestic Hall - ML/Data science",
             "Royal Hall - AI/Agentic",
             "Regal Hall - Core",
@@ -181,7 +208,7 @@ SCHEDULE_DATA = [
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
             {"time": "11:45 – 12:15", "cells": [
-                {"title": "Delivering with Django: Boring Tech, Real Impact in Africa's Startups", "speaker": "Bernard Katamanso", "label": "Short Talk · Security/Web"},
+                {"title": "Deployment of Python Application on Twelveinks Cloud Platform", "speaker": "Mumbere William", "label": "Short Talk · Security/Web"},
                 {"title": "Federated Learning as a Distributed Systems Problem: Designing Production-Grade ML Systems in Python", "speaker": "David Asem", "label": "Short Talk · ML/Data Science"},
                 {"title": "Speech Synthesis Unpacked: Building a Voice Cloning TTS Model with Python", "speaker": "Nunsi Shiaki", "label": "Short Talk · AI/Agentic"},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
@@ -189,30 +216,24 @@ SCHEDULE_DATA = [
             {"time": "12:20 – 13:00", "span": True, "title": "Dedicated Expo Hall Time"},
             {"time": "13:00 – 14:00", "span": True, "title": "Lunch", "type": "break"},
             {"time": "14:05 – 14:35", "cells": [
-                {"title": "PaSSw0rdVib3s!: Finding Passwords in Digital Evidence", "speaker": "Anne Fleur van Luenen", "label": "Short Talk · Security/Web"},
+                {"title": "Deployment of Custom LLMs using serverless architectures", "speaker": "Patrick Walukagga, Sunbird AI", "label": "Short Talk · Security/Web"},
                 {"title": "Continuous translation with Weblate in the age of AI", "speaker": "Gersona Andrianarijaona", "label": "Short Talk · ML/Data Science"},
-                {"title": "Cyber Security Workshop", "speaker": ""},
+                {"title": "Mastering Deep Learning: One Python Script at a Time", "speaker": "Charles Moruri", "label": "Short Talk · AI/Agentic"},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
             {"time": "14:40 – 15:10", "cells": [
-                {"title": "Background Jobs at Scale: Designing Reliable Python Worker Systems", "speaker": "Efe Omoregie", "label": "Short Talk · Security/Web"},
+                {"title": "PaSSw0rdVib3s!: Finding Passwords in Digital Evidence", "speaker": "Anne Fleur van Luenen", "label": "Short Talk · Security/Web"},
                 {"title": "Building Clinical Tools in Data-Constrained Environments: Python, ML, and the Human Spine", "speaker": "Christine Akoto-Nimoh", "label": "Short Talk · ML/Data Science"},
-                {"title": "Cyber Security Workshop", "speaker": ""},
+                {"title": "Open Space", "speaker": ""},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
             {"time": "15:15 – 15:45", "cells": [
-                E,
+                {"title": "Background Jobs at Scale: Designing Reliable Python Worker Systems", "speaker": "Efe Omoregie", "label": "Short Talk · Security/Web"},
                 {"title": "Building Civic Tech with Python: APIs, Data, and Systems for Public Good", "speaker": "Alamin Magaga", "label": "Short Talk · ML/Data Science"},
-                {"title": "Cyber Security Workshop", "speaker": ""},
+                {"title": "Open Space", "speaker": ""},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
-            {"time": "15:50 – 16:50", "span": True, "title": "Closing Keynote\nThe Evolution of Python: Lessons from Its Creator (Guido van Rossum)", "star": True},
-            {"time": "16:50 – 17:20", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
-                {"title": "Your Code is Great...but Who Knows?", "speaker": "Sarah Muwanguzi"},
-                {"title": "Python for Impact: Building Climate Solutions Rooted in African Communities", "speaker": "Tendai Jack"},
-                {"title": "Open Source Is Infrastructure. Why We Must Stop Treating It Like a Hobby", "speaker": "Gertrude Abagale Abagale"},
-                {"title": "Python for Community Impact: Simple Tech Solutions for Refugee and Rural Communities in Africa", "speaker": "Makala Sankara Anzuruni"},
-            ]},
+            {"time": "17:00 – 18:00", "span": True, "title": "Closing Keynote\nThe Evolution of Python: Lessons from Its Creator (Guido van Rossum)", "star": True},
         ],
     },
 ]
@@ -263,6 +284,8 @@ def _attach_speaker_images(schedule_data):
                 _attach_image(cell, lookup)
                 for speaker in cell.get("speakers", []):
                     _attach_image(speaker, lookup, name_key="name")
+                for session in cell.get("sessions", []):
+                    _attach_image(session, lookup)
             for talk in slot.get("talks", []):
                 _attach_image(talk, lookup)
     return schedule_data

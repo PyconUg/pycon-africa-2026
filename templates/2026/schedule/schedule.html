@@ -70,8 +70,21 @@
                 </td>
                 {% else %}
                 {% for cell in slot.cells %}
-                <td class="{% if cell.title %}has-content{% endif %}">
-                  {% if cell.title %}
+                <td class="{% if cell.title or cell.sessions %}has-content{% endif %}">
+                  {% if cell.sessions %}
+                  {% for session in cell.sessions %}
+                  <div class="cell-session">
+                    <div class="cell-title">{% if session.link %}<a href="{{ session.link }}">{{ session.title }}</a>{% else %}{{ session.title }}{% endif %}</div>
+                    {% if session.speaker %}
+                    <div class="cell-speaker">
+                      {% if session.image %}<img class="speaker-avatar" src="{% static session.image %}" alt="{{ session.speaker }}">{% endif %}
+                      {% if session.no_link %}<strong>{{ session.speaker }}</strong>{% else %}<a href="{% url 'speakers:speaker_search' year=year %}?name={{ session.speaker|urlencode }}"><strong>{{ session.speaker }}</strong></a>{% endif %}
+                    </div>
+                    {% endif %}
+                  </div>
+                  {% endfor %}
+                  {% if cell.label %}<div class="cell-label">{{ cell.label }}</div>{% endif %}
+                  {% elif cell.title %}
                   <div class="cell-title">{% if cell.link %}<a href="{{ cell.link }}">{{ cell.title }}</a>{% else %}{{ cell.title }}{% endif %}</div>
                   {% if cell.speakers %}
                   {% for sp in cell.speakers %}
@@ -231,6 +244,12 @@
 }
 
 /* Cells with content */
+.cell-session + .cell-session {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed #e2e8f0;
+}
+
 .cell-title {
   font-weight: 500;
   color: #1a202c;
