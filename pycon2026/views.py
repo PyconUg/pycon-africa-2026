@@ -118,6 +118,15 @@ SPONSORS_2026 = [
                 "website": "https://blackpythondevs.com/",
                 "description": "Black Python Devs is a global community for Black software engineers and Python enthusiasts, built around mentorship, networking, and creating visible pathways into the Python ecosystem.\n\nThrough meetups, talks, and online spaces, the community connects developers across the diaspora, including a growing base of members here in Africa, and champions representation within Python events and open source projects.\n\nWe're glad to have Black Python Devs supporting PyCon Africa 2026 as we work together to grow a more inclusive Python community on the continent.",
             },
+            {
+                "name": "Africa's Talking",
+                # Sponsoring at the regional level, so this entry overrides the
+                # tier label rather than reading as a global Silver sponsor.
+                "label": "Regional Silver Sponsor",
+                "logo": "2026/img/sponsors/africas-talking.png",
+                "website": "https://africastalking.com/",
+                "description": "Africa's Talking is joining PyCon Africa 2026 as a Regional Silver sponsor. We're grateful for their support and look forward to sharing more about their work soon.",
+            },
         ],
     },
     {
@@ -150,6 +159,27 @@ SPONSORS_2026 = [
                 "logo": "2026/img/sponsors/DEFNA-Logo.png",
                 "website": "https://www.defna.org/",
                 "description": "DEFNA (Django Events Foundation North America) is a nonprofit that has supported the Django community since 2015, organising DjangoCon US and handing out grants to help local Django events happen around the world.\n\nBeyond running its own conference, DEFNA puts real effort into diversity and financial aid, making sure the Django community stays open to newcomers wherever they are.\n\nWe're happy to have DEFNA on board as a Bronze sponsor of PyCon Africa 2026, supporting our shared goal of a more inclusive Python and Django community.",
+            },
+            {
+                "name": "Kolaborate",
+                # Sponsoring at the regional level, so this entry overrides the
+                # tier label rather than reading as a global Bronze sponsor.
+                "label": "Regional Bronze Sponsor",
+                "logo": "2026/img/sponsors/kolaborate.png",
+                "website": "https://www.kolaborate.africa/",
+                "description": "Kolaborate is joining PyCon Africa 2026 as a Regional Bronze sponsor and an Expo sponsor. We're grateful for their support and look forward to sharing more about their work soon.",
+            },
+        ],
+    },
+    {
+        "id": "visibility",
+        "label": "Visibility Sponsor",
+        "sponsors": [
+            {
+                "name": "Valkey",
+                "logo": "2026/img/sponsors/valkey.png",
+                "website": "https://valkey.io/",
+                "description": "Valkey is an open source, high-performance key/value datastore, continuing the Redis-compatible lineage under the stewardship of the Linux Foundation and a broad community of contributors.\n\nPython developers reach for it as a cache, message broker, and session store, and it is supported by the client libraries many Python applications already depend on.\n\nWe're grateful to have Valkey supporting PyCon Africa 2026 as a Visibility sponsor.",
             },
         ],
     },
@@ -195,6 +225,18 @@ EXPO_SPONSORS_2026 = [
                 "logo": "2026/img/sponsors/ai-studio-uganda.png",
                 "website": "https://aistudio.ug/",
                 "description": "AI Studio Uganda builds practical, sovereign AI systems for African institutions, working with businesses and public sector partners on AI solutions designed for local realities.\n\nWe're excited to have AI Studio Uganda join us as a Regional Expo sponsor for PyCon Africa 2026.",
+            },
+            {
+                "name": "Kolaborate",
+                "logo": "2026/img/sponsors/kolaborate.png",
+                "website": "https://www.kolaborate.africa/",
+                "description": "Kolaborate is joining PyCon Africa 2026 as a Regional Bronze sponsor and an Expo sponsor. We're grateful for their support and look forward to sharing more about their work soon.",
+            },
+            {
+                "name": "AI Fest",
+                "logo": "2026/img/sponsors/aifest.png",
+                "website": "https://aifestug.com/",
+                "description": "AI Fest is joining PyCon Africa 2026 as a Regional Expo sponsor. We're grateful for their support and look forward to sharing more about their work soon.",
             },
         ],
     },
