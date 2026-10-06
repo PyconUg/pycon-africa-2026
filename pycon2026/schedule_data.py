@@ -8,7 +8,7 @@ SCHEDULE_DATA = [
     {
         "id": "day1",
         "label": "Wed, Oct 7 — Workshops & PyData Summit",
-        "rooms": ["Victoria Ball Room", "Majestic Hall", "Royal Hall", "Regal Hall"],
+        "rooms": ["Albert Hall", "Majestic Hall", "Royal Hall", "Regal Hall"],
         "slots": [
             {"time": "10:00 – 16:00", "span": True, "title": "Badge Pickup"},
             {"time": "10:00 – 12:00", "span": True, "title": "Expo Setup"},
@@ -35,7 +35,7 @@ SCHEDULE_DATA = [
     {
         "id": "day2",
         "label": "Thu, Oct 8 — Workshops",
-        "rooms": ["Victoria Ball Room", "Majestic Hall", "Royal Hall", "Regal Hall"],
+        "rooms": ["Albert Hall", "Majestic Hall", "Royal Hall", "Regal Hall"],
         "slots": [
             {"time": "10:00 – 16:00", "span": True, "title": "Badge Pickup"},
             {"time": "10:00 – 12:00", "span": True, "title": "Merch Pickup"},
@@ -63,7 +63,7 @@ SCHEDULE_DATA = [
         "id": "day3",
         "label": "Fri, Oct 9 — Conference Day 1",
         "rooms": [
-            "Victoria Ball Room - AI/ML",
+            "Albert Hall - AI/ML",
             "Majestic Hall - AI/Agentic",
             "Royal Hall - Web/Security",
             "Regal Hall - Core",
@@ -105,7 +105,7 @@ SCHEDULE_DATA = [
         "id": "day4",
         "label": "Sat, Oct 10 — Conference Day 2",
         "rooms": [
-            "Victoria Ball Room - Core Python",
+            "Albert Hall - Core Python",
             "Majestic Hall - AI/Agentic",
             "Royal Hall - Security/Web",
             "Regal Hall - Web",
@@ -160,7 +160,7 @@ SCHEDULE_DATA = [
         "label": "Sun, Oct 11 — Conference Day 3",
         "footnote": "★ Remote session",
         "rooms": [
-            "Victoria Ball Room - Security/Web",
+            "Albert Hall - Security/Web",
             "Majestic Hall - ML/Data science",
             "Royal Hall - AI/Agentic",
             "Regal Hall - Core",
