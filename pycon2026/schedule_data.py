@@ -124,7 +124,7 @@ SCHEDULE_DATA = [
             "Pavilion Setup",
         ],
         "slots": [
-            {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks"},
+            {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks", "speaker": "Dorothy Kabarozi — Local Chair, PyCon Africa 2026"},
             {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nBuilding AI-Powered Lending Infrastructure (Chris Orwa)"},
             {"time": "10:20 – 11:05", "cells": [
                 {"title": "Working with Audio in Python (Pythonic Approach)", "speaker": "Bashir Kasujja", "label": "Short Talk · Core Python"},
@@ -164,7 +164,7 @@ SCHEDULE_DATA = [
                 E,
             ]},
             {"time": "15:15 – 15:45", "cells": [
-                {"title": "Rift Research Talk", "speaker": ""},
+                {"title": "Rift Research Labs’ Talk", "speaker": "Michael Mukiibi"},
                 {"title": "A Hands-On Practical Framework for Building Recommender Systems at Scale with KerasRS and JAX", "speaker": "Brayan Kai, East Africa Ambassador, Black Python Devs", "label": "Short Talk · AI/Agentic"},
                 {"title": "Kolaborate sponsor talk", "speaker": ""},
                 E,
@@ -193,7 +193,7 @@ SCHEDULE_DATA = [
             "Regal Hall - Core",
         ],
         "slots": [
-            {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks"},
+            {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks and Overview", "speaker": "Ariane Djeupang — International Chair, PyCon Africa"},
             {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nA Decade of Language AI: A Reflection on the Insanity (Jade Abbot)"},
             {"time": "10:20 – 11:05", "cells": [
                 {"title": "Breaking Bad in Python: A Chaos Engineering Story", "speaker": "Joyce Dzifa Lokko", "label": "Talk · Security/Web"},
