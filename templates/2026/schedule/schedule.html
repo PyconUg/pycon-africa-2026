@@ -62,8 +62,10 @@
                   {% else %}
                   {{ slot.title|linebreaksbr }}{% if slot.star %}<sup class="cell-star">★</sup>{% endif %}
                   {% if slot.speaker %}
-                  <br>
-                  {% if slot.speaker_link %}<a class="span-speaker-link" href="{{ slot.speaker_link }}"><strong>{{ slot.speaker }}</strong></a>{% else %}<strong>{{ slot.speaker }}</strong>{% endif %}
+                  <div class="span-speaker">
+                    {% if slot.image %}<img class="speaker-avatar" src="{% static slot.image %}" alt="{{ slot.speaker }}">{% endif %}
+                    {% if slot.speaker_link %}<a class="span-speaker-link" href="{{ slot.speaker_link }}"><strong>{{ slot.speaker }}</strong></a>{% else %}<strong>{{ slot.speaker }}</strong>{% endif %}
+                  </div>
                   {% endif %}
                   {% if slot.label %}<div class="cell-label">{{ slot.label }}</div>{% endif %}
                   {% endif %}
@@ -241,6 +243,14 @@
   white-space: nowrap;
   text-align: center;
   background: #f9fafb;
+}
+
+.span-speaker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 6px;
 }
 
 /* Cells with content */

@@ -20,13 +20,13 @@ SCHEDULE_DATA = [
             ]},
             {"time": "15:00 – 17:00", "cells": [
                 E,
-                {"title": "Build and deploy an ADK agent on Cloud Run", "speaker": "Alouzeh Brandone Mahbuh, Samuel Macharia"},
+                {"title": "Build and deploy an ADK agent on Cloud Run", "speakers": [{"name": "Alouzeh Brandone Mahbuh"}, {"name": "Samuel Macharia"}]},
                 E,
                 E,
             ]},
             {"time": "17:00 – 19:00", "cells": [
                 E,
-                {"title": "Cyber Security Workshop", "speaker": ""},
+                {"title": "Hands-On: Building an AI Agent with Python to Detect Risky Customers", "speaker": "Hussein Kizza"},
                 E,
                 E,
             ]},
@@ -47,13 +47,13 @@ SCHEDULE_DATA = [
             ]},
             {"time": "14:00 – 16:00", "cells": [
                 E,
-                {"title": "LLMs Expert Session", "speakers": [{"name": "GDEs", "no_link": True}, {"name": "Hassan Bahati Mukisa"}, {"name": "Wesley Kambale"}]},
+                {"title": "LLMs Expert Session", "speakers": [{"name": "GDEs", "no_link": True}, {"name": "Hassan Bahati"}, {"name": "Wesley Kambale"}]},
                 {"title": "Building Your First RESTful API", "speaker": "Anthony Addae"},
                 {"title": "Women in Data Science Workshop", "speaker": ""},
             ]},
             {"time": "16:00 – 18:00", "cells": [
                 E,
-                {"title": "Hands-On: Building an AI Agent with Python to Detect Risky Customers", "speaker": "Hussein Kizza"},
+                {"title": "Cyber Security Workshop", "speaker": ""},
                 {"title": "Building Pearl-Chat: Overcoming the Technical Challenges of Architecting a Native Luganda LLM in Pure JAX", "speaker": "Wesley Kambale"},
                 {"title": "Women in Data Science Workshop", "speaker": ""},
             ]},
@@ -125,7 +125,7 @@ SCHEDULE_DATA = [
         ],
         "slots": [
             {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks", "speaker": "Dorothy Kabarozi — Local Chair, PyCon Africa 2026"},
-            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nBuilding AI-Powered Lending Infrastructure (Chris Orwa)"},
+            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nBuilding AI-Powered Lending Infrastructure", "speaker": "Chris Orwa"},
             {"time": "10:20 – 11:05", "cells": [
                 {"title": "Working with Audio in Python (Pythonic Approach)", "speaker": "Bashir Kasujja", "label": "Short Talk · Core Python"},
                 {"title": "Building Real-Time Voice Agents That Listen and Respond in Python", "speaker": "Glory Bagai", "label": "Short Talk · AI/Agentic"},
@@ -164,9 +164,9 @@ SCHEDULE_DATA = [
                 E,
             ]},
             {"time": "15:15 – 15:45", "cells": [
-                {"title": "Rift Research Labs’ Talk", "speaker": "Michael Mukiibi"},
+                {"title": "Rift Research Labs’ Talk", "speaker": "Michael Mukiibi", "label": "Sponsor Talk"},
                 {"title": "A Hands-On Practical Framework for Building Recommender Systems at Scale with KerasRS and JAX", "speaker": "Brayan Kai, East Africa Ambassador, Black Python Devs", "label": "Short Talk · AI/Agentic"},
-                {"title": "Kolaborate sponsor talk", "speaker": ""},
+                {"title": "Kolaborate sponsor talk", "speaker": "", "label": "Sponsor Talk"},
                 E,
                 E,
             ]},
@@ -194,7 +194,7 @@ SCHEDULE_DATA = [
         ],
         "slots": [
             {"time": "9:00 – 9:15", "span": True, "title": "Opening Remarks and Overview", "speaker": "Ariane Djeupang — International Chair, PyCon Africa"},
-            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nA Decade of Language AI: A Reflection on the Insanity (Jade Abbot)"},
+            {"time": "9:15 – 10:15", "span": True, "title": "Opening Keynote\nA Decade of Language AI: A Reflection on the Insanity", "speaker": "Jade Abbot"},
             {"time": "10:20 – 11:05", "cells": [
                 {"title": "Breaking Bad in Python: A Chaos Engineering Story", "speaker": "Joyce Dzifa Lokko", "label": "Talk · Security/Web"},
                 {"title": "The Lazy Wizard's Guide to Federated Learning: Building ML Models in Difficult Places", "speaker": "Johannes Kolbe", "label": "Talk · ML/Data Science"},
@@ -216,7 +216,7 @@ SCHEDULE_DATA = [
             {"time": "12:20 – 13:00", "span": True, "title": "Dedicated Expo Hall Time"},
             {"time": "13:00 – 14:00", "span": True, "title": "Lunch", "type": "break"},
             {"time": "14:05 – 14:35", "cells": [
-                {"title": "Deployment of Custom LLMs using serverless architectures", "speaker": "Patrick Walukagga, Sunbird AI", "label": "Short Talk · Security/Web"},
+                {"title": "Deployment of Custom LLMs using serverless architectures", "speaker": "Patrick Walukagga, Sunbird AI", "label": "Sponsor Talk"},
                 {"title": "Continuous translation with Weblate in the age of AI", "speaker": "Gersona Andrianarijaona", "label": "Short Talk · ML/Data Science"},
                 {"title": "Mastering Deep Learning: One Python Script at a Time", "speaker": "Charles Moruri", "label": "Short Talk · AI/Agentic"},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
@@ -233,7 +233,7 @@ SCHEDULE_DATA = [
                 {"title": "Open Space", "speaker": ""},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
-            {"time": "17:00 – 18:00", "span": True, "title": "Closing Keynote\nThe Evolution of Python: Lessons from Its Creator (Guido van Rossum)", "star": True},
+            {"time": "17:00 – 18:00", "span": True, "title": "Closing Keynote\nThe Evolution of Python: Lessons from Its Creator", "speaker": "Guido van Rossum", "star": True},
         ],
     },
 ]
@@ -267,19 +267,31 @@ def _build_speaker_image_lookup():
     return lookup
 
 
+def _speaker_name_candidates(name):
+    """The name as written, then the bare name without a trailing role or
+    affiliation (e.g. "Hassan Bahati \u2014 Local Chair, PyCon Africa 2026")."""
+    yield name
+    bare = re.split(r"\s+[\u2014\u2013-]\s+|,", name, maxsplit=1)[0]
+    if bare != name:
+        yield bare
+
+
 def _attach_image(entry, lookup, name_key="speaker"):
     name = entry.get(name_key)
     if not name:
         return
-    image = lookup.get(_normalize_speaker_name(name))
-    if image:
-        entry["image"] = image
+    for candidate in _speaker_name_candidates(name):
+        image = lookup.get(_normalize_speaker_name(candidate))
+        if image:
+            entry["image"] = image
+            return
 
 
 def _attach_speaker_images(schedule_data):
     lookup = _build_speaker_image_lookup()
     for day in schedule_data:
         for slot in day.get("slots", []):
+            _attach_image(slot, lookup)
             for cell in slot.get("cells", []):
                 _attach_image(cell, lookup)
                 for speaker in cell.get("speakers", []):
