@@ -35,7 +35,7 @@ SCHEDULE_DATA = [
     {
         "id": "day2",
         "label": "Thu, Oct 8 — Workshops",
-        "rooms": ["Albert Hall", "Majestic Hall", "Royal Hall", "Regal Hall"],
+        "rooms": ["Albert Hall", "Majestic Hall", "Royal Hall"],
         "slots": [
             {"time": "10:00 – 16:00", "span": True, "title": "Badge Pickup"},
             {"time": "10:00 – 12:00", "span": True, "title": "Merch Pickup"},
@@ -43,19 +43,16 @@ SCHEDULE_DATA = [
                 E,
                 {"title": "Demystifying Robotics & IoT with MicroPython", "speaker": "Zenas Awuku"},
                 {"title": "Humble Data workshop", "speaker": "Cecilia Tivir"},
-                {"title": "Women in Data Science Workshop", "speaker": ""},
             ]},
             {"time": "14:00 – 16:00", "cells": [
                 E,
                 {"title": "LLMs Expert Session", "speakers": [{"name": "GDEs", "no_link": True}, {"name": "Hassan Bahati"}, {"name": "Wesley Kambale"}]},
                 {"title": "Building Your First RESTful API", "speaker": "Anthony Addae"},
-                {"title": "Women in Data Science Workshop", "speaker": ""},
             ]},
             {"time": "16:00 – 18:00", "cells": [
                 E,
-                {"title": "Cyber Security Workshop", "speaker": ""},
+                {"title": "Trust Is a Dependency: Securing the Modern Software Supply Chain", "speaker": "Famious Orishaba, Tabitha Namwone"},
                 {"title": "Building Pearl-Chat: Overcoming the Technical Challenges of Architecting a Native Luganda LLM in Pure JAX", "speaker": "Wesley Kambale"},
-                {"title": "Women in Data Science Workshop", "speaker": ""},
             ]},
         ],
     },
