@@ -230,6 +230,7 @@ SCHEDULE_DATA = [
                 {"title": "Open Space", "speaker": ""},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
             ]},
+            {"time": "15:50 – 16:50", "span": True, "title": "Closing Remarks", "speaker": "Hassan Bahati — Local Chair, PyCon Africa 2026"},
             {"time": "17:00 – 18:00", "span": True, "title": "Closing Keynote\nThe Evolution of Python: Lessons from Its Creator", "speaker": "Guido van Rossum", "star": True},
         ],
     },
