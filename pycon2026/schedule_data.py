@@ -46,7 +46,7 @@ SCHEDULE_DATA = [
             ]},
             {"time": "14:00 – 16:00", "cells": [
                 E,
-                {"title": "LLMs Expert Session", "speakers": [{"name": "GDEs", "no_link": True}, {"name": "Hassan Bahati"}, {"name": "Wesley Kambale"}]},
+                {"title": "LLMs Expert Session", "speakers": [{"name": "GDEs", "no_link": True}, {"name": "Hassan Bahati"}, {"name": "Wesley Kambale"}, {"name": "Ronnie Atuhaire"}, {"name": "Brayan Kai Mwanyumba"}]},
                 {"title": "Building Your First RESTful API", "speaker": "Anthony Addae"},
             ]},
             {"time": "16:00 – 18:00", "cells": [
