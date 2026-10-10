@@ -145,7 +145,6 @@ SCHEDULE_DATA = [
                 {"name": "Roland Gafana"},
                 {"name": "Hassan Kibirige"},
                 {"name": "Shakira Ndagire"},
-                {"name": "Annah Tumworobere"},
             ]},
             {"time": "13:00 – 13:30", "span": True, "type": "lightning", "title": "Lightning Talks", "talks": [
                 {"title": "Django Deployment Isn't What It Used to Be.", "speaker": "Victoria Nyamai"},
