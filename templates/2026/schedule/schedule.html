@@ -61,7 +61,16 @@
                   </div>
                   {% else %}
                   {{ slot.title|linebreaksbr }}{% if slot.star %}<sup class="cell-star">★</sup>{% endif %}
-                  {% if slot.speaker %}
+                  {% if slot.speakers %}
+                  <div class="span-speakers">
+                    {% for sp in slot.speakers %}
+                    <div class="span-speaker">
+                      {% if sp.image %}<img class="speaker-avatar" src="{% static sp.image %}" alt="{{ sp.name }}">{% endif %}
+                      {% if sp.no_link %}<strong>{{ sp.name }}</strong>{% else %}<a class="span-speaker-link" href="{% url 'speakers:speaker_search' year=year %}?name={{ sp.name|urlencode }}"><strong>{{ sp.name }}</strong></a>{% endif %}
+                    </div>
+                    {% endfor %}
+                  </div>
+                  {% elif slot.speaker %}
                   <div class="span-speaker">
                     {% if slot.image %}<img class="speaker-avatar" src="{% static slot.image %}" alt="{{ slot.speaker }}">{% endif %}
                     {% if slot.speaker_link %}<a class="span-speaker-link" href="{{ slot.speaker_link }}"><strong>{{ slot.speaker }}</strong></a>{% else %}<strong>{{ slot.speaker }}</strong>{% endif %}
@@ -243,6 +252,15 @@
   white-space: nowrap;
   text-align: center;
   background: #f9fafb;
+}
+
+.span-speakers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 20px;
+  margin-top: 6px;
 }
 
 .span-speaker {

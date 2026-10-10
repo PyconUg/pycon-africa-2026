@@ -107,7 +107,7 @@ SCHEDULE_DATA = [
                 {"title": "Open Source Is Infrastructure. Why We Must Stop Treating It Like a Hobby", "speaker": "Gertrude Abagale Abagale"},
                 {"title": "Python for Community Impact: Simple Tech Solutions for Refugee and Rural Communities in Africa", "speaker": "Makala Sankara Anzuruni"},
             ]},
-            {"time": "17:20 – 17:35", "span": True, "title": "Closing Remarks", "speaker": "Hassan Bahati — Local Chair, PyCon Africa 2026"},
+            {"time": "17:20 – 17:35", "span": True, "title": "Closing Remarks", "speaker": "Dorothy Kabarozi — Local Chair, PyCon Africa 2026"},
         ],
     },
     {
@@ -143,7 +143,13 @@ SCHEDULE_DATA = [
                 E,
                 {"title": "Posters", "speaker": "", "link": "/2026/schedule/accepted-posters/"},
             ]},
-            {"time": "12:20 – 13:00", "span": True, "title": "Open Source, Research and Industry Panel", "speaker": "Roland Gafana, Kenneth Musasizi, Hassan Kibirige"},
+            {"time": "12:20 – 13:00", "span": True, "title": "Open Source, Research and Industry Panel", "speakers": [
+                {"name": "Kenneth Musasizi"},
+                {"name": "Roland Gafana"},
+                {"name": "Hassan Kibirige"},
+                {"name": "Shakira Ndagire"},
+                {"name": "Annah Tumworobere"},
+            ]},
             {"time": "13:00 – 14:00", "span": True, "title": "Lunch", "type": "break"},
             {"time": "14:05 – 14:35", "cells": [
                 {"title": "Deterministic Python: Implementing RTOS Design Concepts in MicroPython", "speaker": "Shawal Mbalire", "label": "Short Talk · Core Python"},
@@ -288,6 +294,8 @@ def _attach_speaker_images(schedule_data):
     for day in schedule_data:
         for slot in day.get("slots", []):
             _attach_image(slot, lookup)
+            for speaker in slot.get("speakers", []):
+                _attach_image(speaker, lookup, name_key="name")
             for cell in slot.get("cells", []):
                 _attach_image(cell, lookup)
                 for speaker in cell.get("speakers", []):
