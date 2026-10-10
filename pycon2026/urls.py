@@ -34,6 +34,8 @@ urlpatterns = [
     path('speakers_list/', view=views.speakers, name='speakers'),
     path('schedule/', view=views.scheduIe, name='schedule'),
     path('schedule/accepted-posters/', view=views.accepted_posters, name='accepted_posters'),
+    path('schedule/fastdrs/', view=views.fastdrs_talk, name='fastdrs_talk'),
+    path('schedule/offline-finance-analyst/', view=views.offline_finance_analyst_talk, name='offline_finance_analyst_talk'),
     path('our-sponsors/', view=views.sponsors, name='sponsors'),
     path('register/', view=views.register, name='register'),
     path('travel/', view=views.traveladvice, name='traveladvice'),
