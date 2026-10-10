@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% block meta_title %}{% trans "Building an Offline Personal Finance Analyst in Python with Ollama | PyCon Africa 2026" %}{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<!-- Header -->
+<div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
+  <div class="text-center">
+    <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Building an Offline Personal Finance Analyst in Python with Ollama</h1>
+    <div class="flex flex-wrap items-center justify-center gap-3 mt-6 text-sm font-semibold text-gray-700">
+      <span class="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
+        <i class="far fa-calendar-alt text-pycon-teal"></i> Saturday, 10 October 2026
+      </span>
+      <span class="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
+        <i class="far fa-clock text-pycon-teal"></i> 15:45 &ndash; 16:15
+      </span>
+      <span class="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
+        <i class="fas fa-map-marker-alt text-pycon-teal"></i> Majestic Hall
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- Body -->
+<div class="max-w-7xl mx-auto px-4 pb-16">
+  <div class="max-w-4xl mx-auto text-gray-900">
+
+    <!-- Speaker -->
+    <div class="mb-10 flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+      <img src="{% static '2026/img/speakerImages/Calvin Magezi.jpg' %}" alt="Calvin Magezi" class="w-16 h-16 rounded-full object-cover">
+      <div>
+        <p class="font-semibold text-gray-900">Calvin Magezi</p>
+        <p class="text-gray-500 text-sm">Sponsor Talk, Kolaborate</p>
+      </div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="mb-12">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Abstract</h2>
+      </div>
+      <p class="text-lg leading-relaxed mb-4">
+        Your phone already holds your financial history: mobile money confirmations, airtime top-ups and payments. In this 30-minute hands-on session, we build an offline personal finance analyst in Python that reads those messages and shows where your money went, without sending a single message to the cloud.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        We start by exporting messages from an Android phone, redacting personal details, and parsing amounts in UGX with regular expressions and pandas. Then we add a small open language model running locally through Ollama to categorise the messages our rules miss and to write a plain-language summary. Python does all the arithmetic and the model only handles language, so the numbers stay exact.
+      </p>
+      <p class="text-lg leading-relaxed">
+        We finish by testing where the model gets things wrong, such as slang, typos and ambiguous messages, and how to catch those mistakes. Once set up, everything runs offline with no API keys. You will leave with a working notebook and a pattern you can reuse for any private, local data.
+      </p>
+    </div>
+
+    <div class="text-center">
+      <a href="{% url 'pycon2026:schedule' %}" class="inline-flex items-center gap-2 text-pycon-teal font-semibold">
+        <i class="fas fa-arrow-left"></i> Back to the schedule
+      </a>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

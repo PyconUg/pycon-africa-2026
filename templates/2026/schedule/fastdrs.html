@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load i18n static %}
+{% block meta_title %}{% trans "FastDRS: Building an End-to-End Medical Computer Vision System in Python | PyCon Africa 2026" %}{% endblock %}
+
+{% block content %}
+{% include '2026/navbar.html' %}
+
+<!-- Header -->
+<div class="max-w-7xl mx-auto px-4 pt-12 pb-8">
+  <div class="text-center">
+    <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">FastDRS: Building an End-to-End Medical Computer Vision System in Python</h1>
+    <div class="flex flex-wrap items-center justify-center gap-3 mt-6 text-sm font-semibold text-gray-700">
+      <span class="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
+        <i class="far fa-calendar-alt text-pycon-teal"></i> Saturday, 10 October 2026
+      </span>
+      <span class="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
+        <i class="far fa-clock text-pycon-teal"></i> 15:45 &ndash; 16:15
+      </span>
+      <span class="inline-flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-full px-4 py-2">
+        <i class="fas fa-map-marker-alt text-pycon-teal"></i> Albert Hall
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- Body -->
+<div class="max-w-7xl mx-auto px-4 pb-16">
+  <div class="max-w-4xl mx-auto text-gray-900">
+
+    <!-- Speaker -->
+    <div class="mb-10 flex items-center gap-4 p-4 bg-white rounded-lg shadow-sm border border-gray-200">
+      <img src="{% static '2026/img/speakerImages/Michael Mukiibi.jpg' %}" alt="Michael Mukiibi" class="w-16 h-16 rounded-full object-cover">
+      <div>
+        <p class="font-semibold text-gray-900">Michael Mukiibi</p>
+        <p class="text-gray-500 text-sm">Rift Research Labs</p>
+      </div>
+    </div>
+
+    <!-- Abstract -->
+    <div class="mb-12">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-900 mb-1">Abstract</h2>
+      </div>
+      <p class="text-lg leading-relaxed mb-4">
+        Diabetic retinopathy is one of the leading causes of preventable vision loss, yet screening
+        remains difficult to scale in many resource-constrained settings. FastDRS is a Python-based
+        computer vision toolkit developed to explore how modern deep-learning models can support
+        automated diabetic retinopathy screening while keeping practical deployment considerations
+        in view.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        In this talk, I will walk through the engineering journey behind FastDRS, from preparing
+        retinal image data and establishing a baseline to experimenting with and evaluating multiple
+        deep-learning architectures, including ResNet, DenseNet, ConvNeXt, Swin Transformer, and
+        MobileNet. Rather than treating accuracy as the only objective, we examine metrics such as
+        macro F1, sensitivity, specificity, inference latency, parameter count, and model size to
+        understand the trade-offs involved in building a useful screening system.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        The talk will also explore the Python ecosystem behind the project, including PyTorch-based
+        experimentation, reproducible evaluation, experiment tracking, model comparison, and the path
+        toward API and mobile deployment. I will discuss some of the challenges encountered during
+        development, including class imbalance, model selection, evaluation beyond accuracy, and the
+        tension between predictive performance and deployability.
+      </p>
+      <p class="text-lg leading-relaxed mb-4">
+        Finally, I will share what I learned from taking FastDRS from an ML experiment toward a more
+        complete software system, and discuss how Python can serve as the connective layer between
+        research experimentation, model engineering, evaluation, and real-world AI deployment.
+      </p>
+      <p class="text-lg leading-relaxed">
+        The goal is to present another medical AI model, but to show the engineering decisions
+        involved in turning a computer vision idea into a system that can be tested, measured,
+        packaged, and ultimately deployed.
+      </p>
+    </div>
+
+    <div class="text-center">
+      <a href="{% url 'pycon2026:schedule' %}" class="inline-flex items-center gap-2 text-pycon-teal font-semibold">
+        <i class="fas fa-arrow-left"></i> Back to the schedule
+      </a>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

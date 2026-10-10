@@ -361,6 +361,22 @@ def accepted_posters(request):
     template = '2026/schedule/accepted_posters.html'
     return render(request, template, context)
 
+def fastdrs_talk(request):
+    context = {
+        'title': 'FastDRS: Building an End-to-End Medical Computer Vision System in Python',
+        'description': 'Michael Mukiibi on building FastDRS, a Python computer vision toolkit for diabetic retinopathy screening.',
+    }
+    return render(request, '2026/schedule/fastdrs.html', context)
+
+
+def offline_finance_analyst_talk(request):
+    context = {
+        'title': 'Building an Offline Personal Finance Analyst in Python with Ollama',
+        'description': 'Calvin Magezi on building an offline personal finance analyst in Python with a local language model running through Ollama.',
+    }
+    return render(request, '2026/schedule/offline_finance_analyst.html', context)
+
+
 def conduct(request):
     context = {}
     template = '2026/conduct/conduct.html'
