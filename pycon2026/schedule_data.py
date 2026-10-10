@@ -117,7 +117,6 @@ SCHEDULE_DATA = [
             "Albert Hall - Core Python",
             "Majestic Hall - AI/Agentic",
             "Royal Hall - Security/Web",
-            "Regal Hall - Web",
             "Pavilion Setup",
         ],
         "slots": [
