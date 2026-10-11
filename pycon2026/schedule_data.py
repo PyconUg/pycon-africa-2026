@@ -225,7 +225,7 @@ SCHEDULE_DATA = [
             ]},
             {"time": "15:15 – 15:45", "cells": [
                 {"title": "Background Jobs at Scale: Designing Reliable Python Worker Systems", "speaker": "Efe Omoregie", "label": "Short Talk · Security/Web"},
-                {"title": "Building Civic Tech with Python: APIs, Data, and Systems for Public Good", "speaker": "Alamin Magaga", "label": "Short Talk · ML/Data Science"},
+                {"title": "Append-Only Event Sourcing for Tamper-Evident Audit Trails in Python", "speaker": "Ubaydah Abdulwasiu", "label": "Poster Talk · General Python, Web/DevOps"},
                 {"title": "Refugee Program", "speaker": "", "link": "/2026/co-events/persons_of_concern/#workshop-schedule"},
                 {"title": "Open Space", "speaker": ""},
             ]},
